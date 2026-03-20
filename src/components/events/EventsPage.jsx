@@ -134,6 +134,9 @@ export default function EventsPage() {
                     }`}>{card.type}</span>
                   </div>
                   <p className="text-pip-dim text-xs leading-relaxed">{card.text}</p>
+                  {card.consequence && (
+                    <p className="text-amber text-xs leading-relaxed mt-1 italic">{card.consequence}</p>
+                  )}
                 </div>
                 <div className="flex gap-1 shrink-0">
                   <button
