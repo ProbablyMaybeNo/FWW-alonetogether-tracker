@@ -36,7 +36,7 @@ export default function CardDrawer({ deckType, title }) {
       },
       activeEvents: [
         ...prev.activeEvents,
-        { cardId: currentCard.id, name: currentCard.name, text: currentCard.text, type: currentCard.type, sinceRound: prev.round },
+        { cardId: currentCard.id, name: currentCard.name, text: currentCard.text, consequence: currentCard.consequence, type: currentCard.type, sinceRound: prev.round },
       ],
     }))
   }
@@ -93,6 +93,9 @@ export default function CardDrawer({ deckType, title }) {
           </div>
           <h4 className="text-pip text-sm mb-2">{currentCard.name}</h4>
           <p className="text-pip-dim text-xs leading-relaxed">{currentCard.text}</p>
+          {currentCard.consequence && (
+            <p className="text-amber text-xs leading-relaxed mt-1 italic">{currentCard.consequence}</p>
+          )}
         </div>
       ) : (
         <div className="border border-pip-dim/30 border-dashed rounded p-6 text-center">

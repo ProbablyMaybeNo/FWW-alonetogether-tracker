@@ -42,6 +42,9 @@ export default function ActiveEvents() {
               <span className="text-pip-dim text-xs">R{event.sinceRound}</span>
             </div>
             <p className="text-pip-dim text-xs leading-relaxed">{event.text}</p>
+            {event.consequence && (
+              <p className="text-amber text-xs leading-relaxed mt-1 italic">{event.consequence}</p>
+            )}
           </div>
           <div className="flex flex-col gap-1 shrink-0">
             <button
