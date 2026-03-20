@@ -1,0 +1,2116 @@
+[
+  {
+    "id": 1,
+    "name": "A-2018",
+    "faction": "Brotherhood of Steel",
+    "type": "UNIQUE",
+    "caps": 104
+  },
+  {
+    "id": 2,
+    "name": "ARMORED TRAINEE",
+    "faction": "Brotherhood of Steel",
+    "type": "UNIQUE",
+    "caps": 32
+  },
+  {
+    "id": 3,
+    "name": "ASPIRANT GODDARD",
+    "faction": "Brotherhood of Steel",
+    "type": "UNIQUE",
+    "caps": 114
+  },
+  {
+    "id": 4,
+    "name": "AVIATOR",
+    "faction": "Brotherhood of Steel",
+    "type": "UNIQUE",
+    "caps": 90
+  },
+  {
+    "id": 5,
+    "name": "ELDER LYONS",
+    "faction": "Brotherhood of Steel",
+    "type": "UNIQUE",
+    "caps": 52
+  },
+  {
+    "id": 6,
+    "name": "ELDER MAXSON",
+    "faction": "Brotherhood of Steel",
+    "type": "UNIQUE",
+    "caps": 101
+  },
+  {
+    "id": 7,
+    "name": "FIELD SCRIBE",
+    "faction": "Brotherhood of Steel",
+    "type": "UNIQUE",
+    "caps": 41
+  },
+  {
+    "id": 8,
+    "name": "FIELD SCRIBE SHIELD",
+    "faction": "Brotherhood of Steel",
+    "type": "UNIQUE",
+    "caps": 35
+  },
+  {
+    "id": 9,
+    "name": "INITIATE",
+    "faction": "Brotherhood of Steel",
+    "type": "GENERIC",
+    "caps": 35
+  },
+  {
+    "id": 10,
+    "name": "INITIATE BLADE",
+    "faction": "Brotherhood of Steel",
+    "type": "GENERIC",
+    "caps": 34
+  },
+  {
+    "id": 11,
+    "name": "KNIGHT",
+    "faction": "Brotherhood of Steel",
+    "type": "UNIQUE",
+    "caps": 53
+  },
+  {
+    "id": 12,
+    "name": "KNIGHT PATROL",
+    "faction": "Brotherhood of Steel",
+    "type": "UNIQUE",
+    "caps": 35
+  },
+  {
+    "id": 13,
+    "name": "KNIGHT PATROL (BLADE)",
+    "faction": "Brotherhood of Steel",
+    "type": "UNIQUE",
+    "caps": 34
+  },
+  {
+    "id": 14,
+    "name": "KNIGHT TECH",
+    "faction": "Brotherhood of Steel",
+    "type": "UNIQUE",
+    "caps": 50
+  },
+  {
+    "id": 15,
+    "name": "KNIGHT-CAPTAIN CADE",
+    "faction": "Brotherhood of Steel",
+    "type": "UNIQUE",
+    "caps": 63
+  },
+  {
+    "id": 16,
+    "name": "LANCER",
+    "faction": "Brotherhood of Steel",
+    "type": "UNIQUE",
+    "caps": 58
+  },
+  {
+    "id": 17,
+    "name": "LANCER-CAPTAIN KELLS",
+    "faction": "Brotherhood of Steel",
+    "type": "UNIQUE",
+    "caps": 70
+  },
+  {
+    "id": 18,
+    "name": "LIBERTY PRIME I",
+    "faction": "Brotherhood of Steel",
+    "type": "UNIQUE",
+    "caps": 1000
+  },
+  {
+    "id": 19,
+    "name": "PALADIN",
+    "faction": "Brotherhood of Steel",
+    "type": "UNIQUE",
+    "caps": 77
+  },
+  {
+    "id": 20,
+    "name": "PALADIN DANSE",
+    "faction": "Brotherhood of Steel",
+    "type": "UNIQUE",
+    "caps": 88
+  },
+  {
+    "id": 21,
+    "name": "PILOT",
+    "faction": "Brotherhood of Steel",
+    "type": "UNIQUE",
+    "caps": 37
+  },
+  {
+    "id": 22,
+    "name": "RECON KNIGHT",
+    "faction": "Brotherhood of Steel",
+    "type": "UNIQUE",
+    "caps": 51
+  },
+  {
+    "id": 23,
+    "name": "SARAH LYONS",
+    "faction": "Brotherhood of Steel",
+    "type": "UNIQUE",
+    "caps": 139
+  },
+  {
+    "id": 24,
+    "name": "SCRIBE ROTHCHILD",
+    "faction": "Brotherhood of Steel",
+    "type": "UNIQUE",
+    "caps": 63
+  },
+  {
+    "id": 25,
+    "name": "STAR PALADIN CROSS",
+    "faction": "Brotherhood of Steel",
+    "type": "UNIQUE",
+    "caps": 118
+  },
+  {
+    "id": 26,
+    "name": "VERONICA",
+    "faction": "Brotherhood of Steel",
+    "type": "UNIQUE",
+    "caps": 52
+  },
+  {
+    "id": 27,
+    "name": "CENTURION",
+    "faction": "Caesar's Legion",
+    "type": "UNIQUE",
+    "caps": 57
+  },
+  {
+    "id": 28,
+    "name": "DRUMMER BOY",
+    "faction": "Caesar's Legion",
+    "type": "UNIQUE",
+    "caps": 63
+  },
+  {
+    "id": 29,
+    "name": "LEGATE LANIUS",
+    "faction": "Caesar's Legion",
+    "type": "UNIQUE",
+    "caps": 108
+  },
+  {
+    "id": 30,
+    "name": "LEGION EXPLORER",
+    "faction": "Caesar's Legion",
+    "type": "UNIQUE",
+    "caps": 56
+  },
+  {
+    "id": 31,
+    "name": "LEGION SCOUT",
+    "faction": "Caesar's Legion",
+    "type": "UNIQUE",
+    "caps": 71
+  },
+  {
+    "id": 32,
+    "name": "LUCIUS",
+    "faction": "Caesar's Legion",
+    "type": "UNIQUE",
+    "caps": 63
+  },
+  {
+    "id": 33,
+    "name": "PRAETORIAN GUARD",
+    "faction": "Caesar's Legion",
+    "type": "UNIQUE",
+    "caps": 63
+  },
+  {
+    "id": 34,
+    "name": "PRIME LEGIONARY",
+    "faction": "Caesar's Legion",
+    "type": "UNIQUE",
+    "caps": 32
+  },
+  {
+    "id": 35,
+    "name": "RECRUIT LEGIONARY",
+    "faction": "Caesar's Legion",
+    "type": "UNIQUE",
+    "caps": 26
+  },
+  {
+    "id": 36,
+    "name": "THE BURNED MAN",
+    "faction": "Caesar's Legion",
+    "type": "UNIQUE",
+    "caps": 92
+  },
+  {
+    "id": 37,
+    "name": "VETERAN DECANUS",
+    "faction": "Caesar's Legion",
+    "type": "GENERIC",
+    "caps": 47
+  },
+  {
+    "id": 38,
+    "name": "VEXILLARIUS",
+    "faction": "Caesar's Legion",
+    "type": "UNIQUE",
+    "caps": 73
+  },
+  {
+    "id": 39,
+    "name": "VULPES INCULTA",
+    "faction": "Caesar's Legion",
+    "type": "UNIQUE",
+    "caps": 72
+  },
+  {
+    "id": 40,
+    "name": "CHILD OF ATOM",
+    "faction": "Children of Atom",
+    "type": "UNIQUE",
+    "caps": 45
+  },
+  {
+    "id": 41,
+    "name": "PREACHER",
+    "faction": "Children of Atom",
+    "type": "UNIQUE",
+    "caps": 60
+  },
+  {
+    "id": 42,
+    "name": "ROSA MEITNER",
+    "faction": "Children of Atom",
+    "type": "UNIQUE",
+    "caps": 30
+  },
+  {
+    "id": 43,
+    "name": "ALBINO GATORCLAW",
+    "faction": "Creatures",
+    "type": "UNIQUE",
+    "caps": 320
+  },
+  {
+    "id": 44,
+    "name": "ALPHA GLOWING MONGREL I",
+    "faction": "Creatures",
+    "type": "UNIQUE",
+    "caps": 93
+  },
+  {
+    "id": 45,
+    "name": "ALPHA GLOWING MONGREL II",
+    "faction": "Creatures",
+    "type": "UNIQUE",
+    "caps": 105
+  },
+  {
+    "id": 46,
+    "name": "ALPHA MONGREL",
+    "faction": "Creatures",
+    "type": "UNIQUE",
+    "caps": 85
+  },
+  {
+    "id": 47,
+    "name": "BLOATED GLOWING ONE",
+    "faction": "Creatures",
+    "type": "UNIQUE",
+    "caps": 198
+  },
+  {
+    "id": 48,
+    "name": "BLOATFLY",
+    "faction": "Creatures",
+    "type": "UNIQUE",
+    "caps": 39
+  },
+  {
+    "id": 49,
+    "name": "BLOODBUG",
+    "faction": "Creatures",
+    "type": "UNIQUE",
+    "caps": 63
+  },
+  {
+    "id": 50,
+    "name": "BRAHMIN",
+    "faction": "Creatures",
+    "type": "UNIQUE",
+    "caps": 30
+  },
+  {
+    "id": 51,
+    "name": "CENTAUR",
+    "faction": "Creatures",
+    "type": "UNIQUE",
+    "caps": 65
+  },
+  {
+    "id": 52,
+    "name": "DEATHCLAW",
+    "faction": "Creatures",
+    "type": "UNIQUE",
+    "caps": 240
+  },
+  {
+    "id": 53,
+    "name": "DEATHCLAW MATRIARCH I",
+    "faction": "Creatures",
+    "type": "UNIQUE",
+    "caps": 200
+  },
+  {
+    "id": 54,
+    "name": "DEATHCLAW MATRIARCH II",
+    "faction": "Creatures",
+    "type": "UNIQUE",
+    "caps": 190
+  },
+  {
+    "id": 55,
+    "name": "DEATHSKULL RADSCORPION I",
+    "faction": "Creatures",
+    "type": "UNIQUE",
+    "caps": 100
+  },
+  {
+    "id": 56,
+    "name": "DEATHSKULL RADSCORPION II",
+    "faction": "Creatures",
+    "type": "UNIQUE",
+    "caps": 125
+  },
+  {
+    "id": 57,
+    "name": "DOG",
+    "faction": "Creatures",
+    "type": "GENERIC",
+    "caps": 72
+  },
+  {
+    "id": 58,
+    "name": "DOMESTICATED DEATHCLAW",
+    "faction": "Creatures",
+    "type": "UNIQUE",
+    "caps": 230
+  },
+  {
+    "id": 59,
+    "name": "FERAL GHOUL",
+    "faction": "Creatures",
+    "type": "UNIQUE",
+    "caps": 49
+  },
+  {
+    "id": 60,
+    "name": "FOG CRAWLER",
+    "faction": "Creatures",
+    "type": "UNIQUE",
+    "caps": 288
+  },
+  {
+    "id": 61,
+    "name": "GATORCLAW",
+    "faction": "Creatures",
+    "type": "UNIQUE",
+    "caps": 260
+  },
+  {
+    "id": 62,
+    "name": "GLOWING BLOATFLY",
+    "faction": "Creatures",
+    "type": "UNIQUE",
+    "caps": 79
+  },
+  {
+    "id": 63,
+    "name": "GLOWING BLOODBUG",
+    "faction": "Creatures",
+    "type": "UNIQUE",
+    "caps": 110
+  },
+  {
+    "id": 64,
+    "name": "GLOWING RADROACH SWARM",
+    "faction": "Creatures",
+    "type": "UNIQUE",
+    "caps": 45
+  },
+  {
+    "id": 65,
+    "name": "GLOWING STINGWING",
+    "faction": "Creatures",
+    "type": "UNIQUE",
+    "caps": 102
+  },
+  {
+    "id": 66,
+    "name": "GLOWING YAO GUAI",
+    "faction": "Creatures",
+    "type": "UNIQUE",
+    "caps": 188
+  },
+  {
+    "id": 67,
+    "name": "LEGION MONGREL",
+    "faction": "Creatures",
+    "type": "UNIQUE",
+    "caps": 68
+  },
+  {
+    "id": 68,
+    "name": "MIRELURK",
+    "faction": "Creatures",
+    "type": "UNIQUE",
+    "caps": 63
+  },
+  {
+    "id": 69,
+    "name": "MIRELURK HATCHLINGS",
+    "faction": "Creatures",
+    "type": "UNIQUE",
+    "caps": 18
+  },
+  {
+    "id": 70,
+    "name": "MIRELURK HUNTER",
+    "faction": "Creatures",
+    "type": "UNIQUE",
+    "caps": 167
+  },
+  {
+    "id": 71,
+    "name": "MIRELURK KING",
+    "faction": "Creatures",
+    "type": "UNIQUE",
+    "caps": 195
+  },
+  {
+    "id": 72,
+    "name": "MIRELURK QUEEN",
+    "faction": "Creatures",
+    "type": "UNIQUE",
+    "caps": 250
+  },
+  {
+    "id": 73,
+    "name": "MOLE RAT",
+    "faction": "Creatures",
+    "type": "UNIQUE",
+    "caps": 17
+  },
+  {
+    "id": 74,
+    "name": "MONGREL",
+    "faction": "Creatures",
+    "type": "GENERIC",
+    "caps": 63
+  },
+  {
+    "id": 75,
+    "name": "MUTANT HOUND",
+    "faction": "Creatures",
+    "type": "UNIQUE",
+    "caps": 63
+  },
+  {
+    "id": 76,
+    "name": "MUTANT HOUND FIEND",
+    "faction": "Creatures",
+    "type": "UNIQUE",
+    "caps": 71
+  },
+  {
+    "id": 77,
+    "name": "PUTRID GLOWING ONE",
+    "faction": "Creatures",
+    "type": "UNIQUE",
+    "caps": 181
+  },
+  {
+    "id": 78,
+    "name": "RABID MOLE RAT",
+    "faction": "Creatures",
+    "type": "UNIQUE",
+    "caps": 27
+  },
+  {
+    "id": 79,
+    "name": "RADROACH SWARM",
+    "faction": "Creatures",
+    "type": "UNIQUE",
+    "caps": 25
+  },
+  {
+    "id": 80,
+    "name": "RADSCORPION",
+    "faction": "Creatures",
+    "type": "UNIQUE",
+    "caps": 85
+  },
+  {
+    "id": 81,
+    "name": "RADSTAG",
+    "faction": "Creatures",
+    "type": "UNIQUE",
+    "caps": 71
+  },
+  {
+    "id": 82,
+    "name": "RADSTAG DOE",
+    "faction": "Creatures",
+    "type": "UNIQUE",
+    "caps": 60
+  },
+  {
+    "id": 83,
+    "name": "SHIPBREAKER I",
+    "faction": "Creatures",
+    "type": "UNIQUE",
+    "caps": 220
+  },
+  {
+    "id": 84,
+    "name": "SHIPBREAKER II",
+    "faction": "Creatures",
+    "type": "UNIQUE",
+    "caps": 205
+  },
+  {
+    "id": 85,
+    "name": "SOFTSHELL MIRELURK",
+    "faction": "Creatures",
+    "type": "UNIQUE",
+    "caps": 41
+  },
+  {
+    "id": 86,
+    "name": "STINGWING",
+    "faction": "Creatures",
+    "type": "UNIQUE",
+    "caps": 72
+  },
+  {
+    "id": 87,
+    "name": "WEAK FERAL GHOUL",
+    "faction": "Creatures",
+    "type": "UNIQUE",
+    "caps": 31
+  },
+  {
+    "id": 88,
+    "name": "YAO GUAI",
+    "faction": "Creatures",
+    "type": "UNIQUE",
+    "caps": 159
+  },
+  {
+    "id": 89,
+    "name": "YOUNG DEATHCLAW",
+    "faction": "Creatures",
+    "type": "UNIQUE",
+    "caps": 116
+  },
+  {
+    "id": 90,
+    "name": "YOUNG FOG CRAWLER",
+    "faction": "Creatures",
+    "type": "UNIQUE",
+    "caps": 168
+  },
+  {
+    "id": 91,
+    "name": "YOUNG MIRELURK QUEEN",
+    "faction": "Creatures",
+    "type": "UNIQUE",
+    "caps": 185
+  },
+  {
+    "id": 92,
+    "name": "YOUNG RADSCORPION",
+    "faction": "Creatures",
+    "type": "UNIQUE",
+    "caps": 57
+  },
+  {
+    "id": 93,
+    "name": "COLONEL AUTUMN",
+    "faction": "Enclave",
+    "type": "UNIQUE",
+    "caps": 95
+  },
+  {
+    "id": 94,
+    "name": "ENCLAVE SOLDIER",
+    "faction": "Enclave",
+    "type": "UNIQUE",
+    "caps": 87
+  },
+  {
+    "id": 95,
+    "name": "ENCLAVE TRAINEE",
+    "faction": "Enclave",
+    "type": "UNIQUE",
+    "caps": 28
+  },
+  {
+    "id": 96,
+    "name": "FRANK HORRIGAN I",
+    "faction": "Enclave",
+    "type": "UNIQUE",
+    "caps": 180
+  },
+  {
+    "id": 97,
+    "name": "FRANK HORRIGAN II",
+    "faction": "Enclave",
+    "type": "UNIQUE",
+    "caps": 190
+  },
+  {
+    "id": 98,
+    "name": "FRANK HORRIGAN III",
+    "faction": "Enclave",
+    "type": "UNIQUE",
+    "caps": 80
+  },
+  {
+    "id": 99,
+    "name": "HELLFIRE TROOPER",
+    "faction": "Enclave",
+    "type": "UNIQUE",
+    "caps": 100
+  },
+  {
+    "id": 100,
+    "name": "INFANTRY",
+    "faction": "Enclave",
+    "type": "UNIQUE",
+    "caps": 42
+  },
+  {
+    "id": 101,
+    "name": "LIEUTENANT",
+    "faction": "Enclave",
+    "type": "UNIQUE",
+    "caps": 57
+  },
+  {
+    "id": 102,
+    "name": "TESLA SOLDIER",
+    "faction": "Enclave",
+    "type": "UNIQUE",
+    "caps": 93
+  },
+  {
+    "id": 103,
+    "name": "WARRANT OFFICER",
+    "faction": "Enclave",
+    "type": "UNIQUE",
+    "caps": 60
+  },
+  {
+    "id": 104,
+    "name": "ACK ACK",
+    "faction": "Gunners",
+    "type": "UNIQUE",
+    "caps": 80
+  },
+  {
+    "id": 105,
+    "name": "GUNNER COMMANDER",
+    "faction": "Gunners",
+    "type": "GENERIC",
+    "caps": 75
+  },
+  {
+    "id": 106,
+    "name": "GUNNER CONSCRIPT",
+    "faction": "Gunners",
+    "type": "GENERIC",
+    "caps": 36
+  },
+  {
+    "id": 107,
+    "name": "GUNNER PRIVATE",
+    "faction": "Gunners",
+    "type": "GENERIC",
+    "caps": 46
+  },
+  {
+    "id": 108,
+    "name": "GUNNER SERGEANT",
+    "faction": "Gunners",
+    "type": "GENERIC",
+    "caps": 60
+  },
+  {
+    "id": 109,
+    "name": "LIEUTENANT CLINT",
+    "faction": "Gunners",
+    "type": "UNIQUE",
+    "caps": 122
+  },
+  {
+    "id": 110,
+    "name": "SERGEANT BAKER",
+    "faction": "Gunners",
+    "type": "UNIQUE",
+    "caps": 71
+  },
+  {
+    "id": 111,
+    "name": "TESSA",
+    "faction": "Gunners",
+    "type": "UNIQUE",
+    "caps": 115
+  },
+  {
+    "id": 112,
+    "name": "BATTERED GEN 1 SYNTH",
+    "faction": "Institute",
+    "type": "UNIQUE",
+    "caps": 24
+  },
+  {
+    "id": 113,
+    "name": "COURSER",
+    "faction": "Institute",
+    "type": "UNIQUE",
+    "caps": 120
+  },
+  {
+    "id": 114,
+    "name": "ENGINEER",
+    "faction": "Institute",
+    "type": "GENERIC",
+    "caps": 45
+  },
+  {
+    "id": 115,
+    "name": "GEN 1 SYNTH",
+    "faction": "Institute",
+    "type": "UNIQUE",
+    "caps": 30
+  },
+  {
+    "id": 116,
+    "name": "PATROLLER",
+    "faction": "Institute",
+    "type": "UNIQUE",
+    "caps": 59
+  },
+  {
+    "id": 117,
+    "name": "SCIENCE SPECIALIST",
+    "faction": "Institute",
+    "type": "UNIQUE",
+    "caps": 40
+  },
+  {
+    "id": 118,
+    "name": "SCIENTIST",
+    "faction": "Institute",
+    "type": "GENERIC",
+    "caps": 40
+  },
+  {
+    "id": 119,
+    "name": "TECHNICIAN",
+    "faction": "Institute",
+    "type": "GENERIC",
+    "caps": 41
+  },
+  {
+    "id": 120,
+    "name": "TROOPER",
+    "faction": "Institute",
+    "type": "GENERIC",
+    "caps": 77
+  },
+  {
+    "id": 121,
+    "name": "TROOPER SCOUT",
+    "faction": "Institute",
+    "type": "GENERIC",
+    "caps": 60
+  },
+  {
+    "id": 122,
+    "name": "X6-88 COURSER",
+    "faction": "Institute",
+    "type": "UNIQUE",
+    "caps": 144
+  },
+  {
+    "id": 123,
+    "name": "Z2-47",
+    "faction": "Institute",
+    "type": "UNIQUE",
+    "caps": 117
+  },
+  {
+    "id": 124,
+    "name": "MINUTEMAN",
+    "faction": "Minutemen",
+    "type": "GENERIC",
+    "caps": 52
+  },
+  {
+    "id": 125,
+    "name": "PRESTON GARVEY",
+    "faction": "Minutemen",
+    "type": "UNIQUE",
+    "caps": 109
+  },
+  {
+    "id": 126,
+    "name": "RONNIE SHAW",
+    "faction": "Minutemen",
+    "type": "UNIQUE",
+    "caps": 94
+  },
+  {
+    "id": 127,
+    "name": "SKIRMISHER",
+    "faction": "Minutemen",
+    "type": "UNIQUE",
+    "caps": 40
+  },
+  {
+    "id": 128,
+    "name": "STURGES",
+    "faction": "Minutemen",
+    "type": "UNIQUE",
+    "caps": 83
+  },
+  {
+    "id": 129,
+    "name": "1ST RECON SHARPSHOOTER",
+    "faction": "NCR",
+    "type": "UNIQUE",
+    "caps": 113
+  },
+  {
+    "id": 130,
+    "name": "AVERY",
+    "faction": "NCR",
+    "type": "UNIQUE",
+    "caps": 70
+  },
+  {
+    "id": 131,
+    "name": "BOONE",
+    "faction": "NCR",
+    "type": "UNIQUE",
+    "caps": 100
+  },
+  {
+    "id": 132,
+    "name": "CHIEF HANLON",
+    "faction": "NCR",
+    "type": "UNIQUE",
+    "caps": 73
+  },
+  {
+    "id": 133,
+    "name": "GENERAL LEE OLIVER",
+    "faction": "NCR",
+    "type": "UNIQUE",
+    "caps": 72
+  },
+  {
+    "id": 134,
+    "name": "LIEUTENANT GOROBETS",
+    "faction": "NCR",
+    "type": "UNIQUE",
+    "caps": 69
+  },
+  {
+    "id": 135,
+    "name": "NCR CIVILIAN RANGER",
+    "faction": "NCR",
+    "type": "UNIQUE",
+    "caps": 66
+  },
+  {
+    "id": 136,
+    "name": "NCR HEAVY TROOPER",
+    "faction": "NCR",
+    "type": "UNIQUE",
+    "caps": 50
+  },
+  {
+    "id": 137,
+    "name": "NCR PATROL RANGER",
+    "faction": "NCR",
+    "type": "UNIQUE",
+    "caps": 50
+  },
+  {
+    "id": 138,
+    "name": "NCR TROOPER",
+    "faction": "NCR",
+    "type": "UNIQUE",
+    "caps": 31
+  },
+  {
+    "id": 139,
+    "name": "NCR TROOPER MP",
+    "faction": "NCR",
+    "type": "GENERIC",
+    "caps": 30
+  },
+  {
+    "id": 140,
+    "name": "NCR VETERAN RANGER",
+    "faction": "NCR",
+    "type": "GENERIC",
+    "caps": 86
+  },
+  {
+    "id": 141,
+    "name": "DISCIPLE",
+    "faction": "Nuka World / Disciples",
+    "type": "GENERIC",
+    "caps": 84
+  },
+  {
+    "id": 142,
+    "name": "DISCIPLES BUTCHER",
+    "faction": "Nuka World / Disciples",
+    "type": "GENERIC",
+    "caps": 113
+  },
+  {
+    "id": 143,
+    "name": "DISCIPLES DIXIE",
+    "faction": "Nuka World / Disciples",
+    "type": "GENERIC",
+    "caps": 87
+  },
+  {
+    "id": 144,
+    "name": "DISCIPLES NISHA",
+    "faction": "Nuka World / Disciples",
+    "type": "GENERIC",
+    "caps": 115
+  },
+  {
+    "id": 145,
+    "name": "DISCIPLES PILLAGER",
+    "faction": "Nuka World / Disciples",
+    "type": "GENERIC",
+    "caps": 62
+  },
+  {
+    "id": 146,
+    "name": "DISCIPLES SAVOY",
+    "faction": "Nuka World / Disciples",
+    "type": "GENERIC",
+    "caps": 77
+  },
+  {
+    "id": 147,
+    "name": "DISCIPLES SCAVVER",
+    "faction": "Nuka World / Disciples",
+    "type": "GENERIC",
+    "caps": 42
+  },
+  {
+    "id": 148,
+    "name": "DISCIPLES SURVIVALIST",
+    "faction": "Nuka World / Disciples",
+    "type": "GENERIC",
+    "caps": 65
+  },
+  {
+    "id": 149,
+    "name": "DISCIPLES TORMENTOR",
+    "faction": "Nuka World / Disciples",
+    "type": "GENERIC",
+    "caps": 80
+  },
+  {
+    "id": 150,
+    "name": "DISCIPLES VETERAN",
+    "faction": "Nuka World / Disciples",
+    "type": "GENERIC",
+    "caps": 82
+  },
+  {
+    "id": 151,
+    "name": "DISCIPLES WASTER",
+    "faction": "Nuka World / Disciples",
+    "type": "GENERIC",
+    "caps": 39
+  },
+  {
+    "id": 152,
+    "name": "OPERATOR BUTCHER",
+    "faction": "Nuka World / Operators",
+    "type": "GENERIC",
+    "caps": 112
+  },
+  {
+    "id": 153,
+    "name": "OPERATOR LIZZIE",
+    "faction": "Nuka World / Operators",
+    "type": "GENERIC",
+    "caps": 25
+  },
+  {
+    "id": 154,
+    "name": "OPERATOR MAGS",
+    "faction": "Nuka World / Operators",
+    "type": "GENERIC",
+    "caps": 109
+  },
+  {
+    "id": 155,
+    "name": "OPERATOR PILLAGER",
+    "faction": "Nuka World / Operators",
+    "type": "GENERIC",
+    "caps": 57
+  },
+  {
+    "id": 156,
+    "name": "OPERATOR SCAVVER",
+    "faction": "Nuka World / Operators",
+    "type": "GENERIC",
+    "caps": 30
+  },
+  {
+    "id": 157,
+    "name": "OPERATOR SURVIVALIST",
+    "faction": "Nuka World / Operators",
+    "type": "GENERIC",
+    "caps": 48
+  },
+  {
+    "id": 158,
+    "name": "OPERATOR TORMENTOR",
+    "faction": "Nuka World / Operators",
+    "type": "GENERIC",
+    "caps": 63
+  },
+  {
+    "id": 159,
+    "name": "OPERATOR VETERAN",
+    "faction": "Nuka World / Operators",
+    "type": "GENERIC",
+    "caps": 67
+  },
+  {
+    "id": 160,
+    "name": "OPERATOR WASTER",
+    "faction": "Nuka World / Operators",
+    "type": "GENERIC",
+    "caps": 31
+  },
+  {
+    "id": 161,
+    "name": "OPERATOR WILLIAM",
+    "faction": "Nuka World / Operators",
+    "type": "GENERIC",
+    "caps": 62
+  },
+  {
+    "id": 162,
+    "name": "FIST",
+    "faction": "Nuka World / Pack",
+    "type": "UNIQUE",
+    "caps": 72
+  },
+  {
+    "id": 163,
+    "name": "HOUND MASTER",
+    "faction": "Nuka World / Pack",
+    "type": "UNIQUE",
+    "caps": 82
+  },
+  {
+    "id": 164,
+    "name": "PACK BUTCHER",
+    "faction": "Nuka World / Pack",
+    "type": "GENERIC",
+    "caps": 139
+  },
+  {
+    "id": 165,
+    "name": "PACK HOUND",
+    "faction": "Nuka World / Pack",
+    "type": "GENERIC",
+    "caps": 69
+  },
+  {
+    "id": 166,
+    "name": "PACK MASON",
+    "faction": "Nuka World / Pack",
+    "type": "GENERIC",
+    "caps": 122
+  },
+  {
+    "id": 167,
+    "name": "PACK PILLAGER",
+    "faction": "Nuka World / Pack",
+    "type": "GENERIC",
+    "caps": 48
+  },
+  {
+    "id": 168,
+    "name": "PACK SCAVVER",
+    "faction": "Nuka World / Pack",
+    "type": "GENERIC",
+    "caps": 35
+  },
+  {
+    "id": 169,
+    "name": "PACK SURVIVALIST",
+    "faction": "Nuka World / Pack",
+    "type": "GENERIC",
+    "caps": 47
+  },
+  {
+    "id": 170,
+    "name": "PACK TORMENTOR",
+    "faction": "Nuka World / Pack",
+    "type": "GENERIC",
+    "caps": 67
+  },
+  {
+    "id": 171,
+    "name": "PACK VETERAN",
+    "faction": "Nuka World / Pack",
+    "type": "GENERIC",
+    "caps": 73
+  },
+  {
+    "id": 172,
+    "name": "PACK WASTER",
+    "faction": "Nuka World / Pack",
+    "type": "GENERIC",
+    "caps": 35
+  },
+  {
+    "id": 173,
+    "name": "BEDLAM",
+    "faction": "Nuka World / Raiders",
+    "type": "UNIQUE",
+    "caps": 56
+  },
+  {
+    "id": 174,
+    "name": "COLTER",
+    "faction": "Nuka World / Raiders",
+    "type": "UNIQUE",
+    "caps": 152
+  },
+  {
+    "id": 175,
+    "name": "GAGE",
+    "faction": "Nuka World / Raiders",
+    "type": "UNIQUE",
+    "caps": 101
+  },
+  {
+    "id": 176,
+    "name": "CITO",
+    "faction": "Nuka World / Survivors",
+    "type": "UNIQUE",
+    "caps": 83
+  },
+  {
+    "id": 177,
+    "name": "NUKA-GIRL",
+    "faction": "Nuka World / Survivors",
+    "type": "UNIQUE",
+    "caps": 98
+  },
+  {
+    "id": 178,
+    "name": "OSWALD THE OUTRAGEOUS",
+    "faction": "Nuka World / Survivors",
+    "type": "UNIQUE",
+    "caps": 108
+  },
+  {
+    "id": 179,
+    "name": "SHANK",
+    "faction": "Nuka World / Survivors",
+    "type": "UNIQUE",
+    "caps": 39
+  },
+  {
+    "id": 180,
+    "name": "SIERRA PETROVITA",
+    "faction": "Nuka World / Survivors",
+    "type": "UNIQUE",
+    "caps": 31
+  },
+  {
+    "id": 181,
+    "name": "BANDIT",
+    "faction": "Raiders",
+    "type": "UNIQUE",
+    "caps": 39
+  },
+  {
+    "id": 182,
+    "name": "FORGED",
+    "faction": "Raiders",
+    "type": "UNIQUE",
+    "caps": 37
+  },
+  {
+    "id": 183,
+    "name": "JAKE FINCH",
+    "faction": "Raiders",
+    "type": "UNIQUE",
+    "caps": 63
+  },
+  {
+    "id": 184,
+    "name": "PSYCHO",
+    "faction": "Raiders",
+    "type": "GENERIC",
+    "caps": 40
+  },
+  {
+    "id": 185,
+    "name": "PSYCHO OUTLAW",
+    "faction": "Raiders",
+    "type": "GENERIC",
+    "caps": 41
+  },
+  {
+    "id": 186,
+    "name": "RAIDER",
+    "faction": "Raiders",
+    "type": "GENERIC",
+    "caps": 36
+  },
+  {
+    "id": 187,
+    "name": "RAIDER OUTLAW",
+    "faction": "Raiders",
+    "type": "GENERIC",
+    "caps": 34
+  },
+  {
+    "id": 188,
+    "name": "SINJIN",
+    "faction": "Raiders",
+    "type": "UNIQUE",
+    "caps": 85
+  },
+  {
+    "id": 189,
+    "name": "SLAG",
+    "faction": "Raiders",
+    "type": "UNIQUE",
+    "caps": 105
+  },
+  {
+    "id": 190,
+    "name": "THUG",
+    "faction": "Raiders",
+    "type": "GENERIC",
+    "caps": 48
+  },
+  {
+    "id": 191,
+    "name": "VETERAN RAIDER",
+    "faction": "Raiders",
+    "type": "GENERIC",
+    "caps": 69
+  },
+  {
+    "id": 192,
+    "name": "DEACON",
+    "faction": "Railroad",
+    "type": "UNIQUE",
+    "caps": 75
+  },
+  {
+    "id": 193,
+    "name": "DESDEMONA",
+    "faction": "Railroad",
+    "type": "UNIQUE",
+    "caps": 97
+  },
+  {
+    "id": 194,
+    "name": "DR. CARRINGTON",
+    "faction": "Railroad",
+    "type": "UNIQUE",
+    "caps": 57
+  },
+  {
+    "id": 195,
+    "name": "GLORY",
+    "faction": "Railroad",
+    "type": "UNIQUE",
+    "caps": 65
+  },
+  {
+    "id": 196,
+    "name": "P.A.M.",
+    "faction": "Railroad",
+    "type": "UNIQUE",
+    "caps": 100
+  },
+  {
+    "id": 197,
+    "name": "RAILROAD HEAVY",
+    "faction": "Railroad",
+    "type": "UNIQUE",
+    "caps": 53
+  },
+  {
+    "id": 198,
+    "name": "TINKER TOM",
+    "faction": "Railroad",
+    "type": "UNIQUE",
+    "caps": 55
+  },
+  {
+    "id": 199,
+    "name": "ASSAULTRON",
+    "faction": "Robots",
+    "type": "UNIQUE",
+    "caps": 249
+  },
+  {
+    "id": 200,
+    "name": "BATTERED ASSAULTRON",
+    "faction": "Robots",
+    "type": "UNIQUE",
+    "caps": 120
+  },
+  {
+    "id": 201,
+    "name": "BATTERED PROTECTRON",
+    "faction": "Robots",
+    "type": "UNIQUE",
+    "caps": 44
+  },
+  {
+    "id": 202,
+    "name": "BATTERED SENTRY BOT",
+    "faction": "Robots",
+    "type": "UNIQUE",
+    "caps": 154
+  },
+  {
+    "id": 203,
+    "name": "CODSWORTH",
+    "faction": "Robots",
+    "type": "UNIQUE",
+    "caps": 105
+  },
+  {
+    "id": 204,
+    "name": "EYEBOT",
+    "faction": "Robots",
+    "type": "UNIQUE",
+    "caps": 47
+  },
+  {
+    "id": 205,
+    "name": "GUARDIAN NUKATRON",
+    "faction": "Robots",
+    "type": "UNIQUE",
+    "caps": 93
+  },
+  {
+    "id": 206,
+    "name": "MISS NANNY",
+    "faction": "Robots",
+    "type": "UNIQUE",
+    "caps": 67
+  },
+  {
+    "id": 207,
+    "name": "MR FROTHY DISPENSER",
+    "faction": "Robots",
+    "type": "UNIQUE",
+    "caps": 67
+  },
+  {
+    "id": 208,
+    "name": "MR FROTHY SERVER",
+    "faction": "Robots",
+    "type": "UNIQUE",
+    "caps": 78
+  },
+  {
+    "id": 209,
+    "name": "MR GUTSY",
+    "faction": "Robots",
+    "type": "UNIQUE",
+    "caps": 90
+  },
+  {
+    "id": 210,
+    "name": "MR HANDY",
+    "faction": "Robots",
+    "type": "UNIQUE",
+    "caps": 82
+  },
+  {
+    "id": 211,
+    "name": "MR HANDY TYPE-1",
+    "faction": "Robots",
+    "type": "UNIQUE",
+    "caps": 39
+  },
+  {
+    "id": 212,
+    "name": "N.I.R.A.",
+    "faction": "Robots",
+    "type": "UNIQUE",
+    "caps": 42
+  },
+  {
+    "id": 213,
+    "name": "NIRA",
+    "faction": "Robots",
+    "type": "UNIQUE",
+    "caps": 42
+  },
+  {
+    "id": 214,
+    "name": "NUKATRON",
+    "faction": "Robots",
+    "type": "UNIQUE",
+    "caps": 59
+  },
+  {
+    "id": 215,
+    "name": "POLICE PROTECTRON",
+    "faction": "Robots",
+    "type": "UNIQUE",
+    "caps": 73
+  },
+  {
+    "id": 216,
+    "name": "PROTECTRON",
+    "faction": "Robots",
+    "type": "UNIQUE",
+    "caps": 63
+  },
+  {
+    "id": 217,
+    "name": "PROTECTRON FIRE BRIGADIER",
+    "faction": "Robots",
+    "type": "UNIQUE",
+    "caps": 70
+  },
+  {
+    "id": 218,
+    "name": "ROBOBRAIN",
+    "faction": "Robots",
+    "type": "UNIQUE",
+    "caps": 85
+  },
+  {
+    "id": 219,
+    "name": "SECURITRON MK I",
+    "faction": "Robots",
+    "type": "UNIQUE",
+    "caps": 115
+  },
+  {
+    "id": 220,
+    "name": "SECURITRON MK II",
+    "faction": "Robots",
+    "type": "UNIQUE",
+    "caps": 215
+  },
+  {
+    "id": 221,
+    "name": "SENTRY BOT",
+    "faction": "Robots",
+    "type": "UNIQUE",
+    "caps": 268
+  },
+  {
+    "id": 222,
+    "name": "SPACE SENTRY",
+    "faction": "Robots",
+    "type": "UNIQUE",
+    "caps": 270
+  },
+  {
+    "id": 223,
+    "name": "SPACE SENTRY ANNIHILATOR",
+    "faction": "Robots",
+    "type": "UNIQUE",
+    "caps": 520
+  },
+  {
+    "id": 224,
+    "name": "THE MECHANIST",
+    "faction": "Robots",
+    "type": "UNIQUE",
+    "caps": 75
+  },
+  {
+    "id": 225,
+    "name": "UTILITY PROTECTRON",
+    "faction": "Robots",
+    "type": "UNIQUE",
+    "caps": 80
+  },
+  {
+    "id": 226,
+    "name": "BEHEMOTH",
+    "faction": "Super Mutants",
+    "type": "UNIQUE",
+    "caps": 212
+  },
+  {
+    "id": 227,
+    "name": "BRUTE",
+    "faction": "Super Mutants",
+    "type": "GENERIC",
+    "caps": 77
+  },
+  {
+    "id": 228,
+    "name": "FAWKES",
+    "faction": "Super Mutants",
+    "type": "UNIQUE",
+    "caps": 89
+  },
+  {
+    "id": 229,
+    "name": "HAMMER",
+    "faction": "Super Mutants",
+    "type": "UNIQUE",
+    "caps": 73
+  },
+  {
+    "id": 230,
+    "name": "HEAVY",
+    "faction": "Super Mutants",
+    "type": "UNIQUE",
+    "caps": 50
+  },
+  {
+    "id": 231,
+    "name": "LILY",
+    "faction": "Super Mutants",
+    "type": "UNIQUE",
+    "caps": 101
+  },
+  {
+    "id": 232,
+    "name": "MARCUS",
+    "faction": "Super Mutants",
+    "type": "UNIQUE",
+    "caps": 100
+  },
+  {
+    "id": 233,
+    "name": "NIGHTKIN",
+    "faction": "Super Mutants",
+    "type": "UNIQUE",
+    "caps": 75
+  },
+  {
+    "id": 234,
+    "name": "OVERLORD",
+    "faction": "Super Mutants",
+    "type": "UNIQUE",
+    "caps": 119
+  },
+  {
+    "id": 235,
+    "name": "STRONG",
+    "faction": "Super Mutants",
+    "type": "UNIQUE",
+    "caps": 80
+  },
+  {
+    "id": 236,
+    "name": "SUICIDER",
+    "faction": "Super Mutants",
+    "type": "UNIQUE",
+    "caps": 53
+  },
+  {
+    "id": 237,
+    "name": "SUPER MUTANT",
+    "faction": "Super Mutants",
+    "type": "UNIQUE",
+    "caps": 40
+  },
+  {
+    "id": 237,
+    "name": "SUPER MUTANT",
+    "faction": "Super Mutants",
+    "type": "UNIQUE",
+    "caps": 40
+  },
+  {
+    "id": 238,
+    "name": "SWAN I",
+    "faction": "Super Mutants",
+    "type": "UNIQUE",
+    "caps": 225
+  },
+  {
+    "id": 239,
+    "name": "SWAN II",
+    "faction": "Super Mutants",
+    "type": "UNIQUE",
+    "caps": 201
+  },
+  {
+    "id": 240,
+    "name": "TABITHA",
+    "faction": "Super Mutants",
+    "type": "UNIQUE",
+    "caps": 117
+  },
+  {
+    "id": 241,
+    "name": "WEAK BEHEMOTH",
+    "faction": "Super Mutants",
+    "type": "UNIQUE",
+    "caps": 150
+  },
+  {
+    "id": 242,
+    "name": "ARCADE GANNON",
+    "faction": "Survivors",
+    "type": "UNIQUE",
+    "caps": 51
+  },
+  {
+    "id": 243,
+    "name": "ARLEN GLASS",
+    "faction": "Survivors",
+    "type": "UNIQUE",
+    "caps": 36
+  },
+  {
+    "id": 244,
+    "name": "BRICK",
+    "faction": "Survivors",
+    "type": "UNIQUE",
+    "caps": 78
+  },
+  {
+    "id": 245,
+    "name": "BUTCH",
+    "faction": "Survivors",
+    "type": "UNIQUE",
+    "caps": 117
+  },
+  {
+    "id": 246,
+    "name": "BUTCHER",
+    "faction": "Survivors",
+    "type": "GENERIC",
+    "caps": 46
+  },
+  {
+    "id": 247,
+    "name": "CAIT",
+    "faction": "Survivors",
+    "type": "UNIQUE",
+    "caps": 74
+  },
+  {
+    "id": 248,
+    "name": "CASS",
+    "faction": "Survivors",
+    "type": "UNIQUE",
+    "caps": 56
+  },
+  {
+    "id": 249,
+    "name": "CHARON",
+    "faction": "Survivors",
+    "type": "UNIQUE",
+    "caps": 61
+  },
+  {
+    "id": 250,
+    "name": "CHEM MAKER",
+    "faction": "Survivors",
+    "type": "UNIQUE",
+    "caps": 41
+  },
+  {
+    "id": 251,
+    "name": "COMMANDER",
+    "faction": "Survivors",
+    "type": "UNIQUE",
+    "caps": 83
+  },
+  {
+    "id": 252,
+    "name": "CONRAD KELLOGG",
+    "faction": "Survivors",
+    "type": "UNIQUE",
+    "caps": 87
+  },
+  {
+    "id": 253,
+    "name": "CURIE",
+    "faction": "Survivors",
+    "type": "UNIQUE",
+    "caps": 90
+  },
+  {
+    "id": 254,
+    "name": "DEFENDER",
+    "faction": "Survivors",
+    "type": "UNIQUE",
+    "caps": 46
+  },
+  {
+    "id": 255,
+    "name": "DEIDRE",
+    "faction": "Survivors",
+    "type": "UNIQUE",
+    "caps": 50
+  },
+  {
+    "id": 256,
+    "name": "DOGMEAT",
+    "faction": "Survivors",
+    "type": "UNIQUE",
+    "caps": 83
+  },
+  {
+    "id": 257,
+    "name": "DOGMEAT GUARD DOG",
+    "faction": "Survivors",
+    "type": "UNIQUE",
+    "caps": 91
+  },
+  {
+    "id": 258,
+    "name": "DOGMEAT SCOUT",
+    "faction": "Survivors",
+    "type": "UNIQUE",
+    "caps": 84
+  },
+  {
+    "id": 259,
+    "name": "DONOVAN",
+    "faction": "Survivors",
+    "type": "UNIQUE",
+    "caps": 70
+  },
+  {
+    "id": 260,
+    "name": "ED-E",
+    "faction": "Survivors",
+    "type": "UNIQUE",
+    "caps": 67
+  },
+  {
+    "id": 261,
+    "name": "ENSLAVED TECH",
+    "faction": "Survivors",
+    "type": "UNIQUE",
+    "caps": 32
+  },
+  {
+    "id": 262,
+    "name": "FIXER",
+    "faction": "Survivors",
+    "type": "UNIQUE",
+    "caps": 35
+  },
+  {
+    "id": 263,
+    "name": "FORAGER",
+    "faction": "Survivors",
+    "type": "UNIQUE",
+    "caps": 39
+  },
+  {
+    "id": 264,
+    "name": "GHOUL",
+    "faction": "Survivors",
+    "type": "GENERIC",
+    "caps": 31
+  },
+  {
+    "id": 265,
+    "name": "GROGNAK",
+    "faction": "Survivors",
+    "type": "UNIQUE",
+    "caps": 150
+  },
+  {
+    "id": 266,
+    "name": "HANCOCK",
+    "faction": "Survivors",
+    "type": "UNIQUE",
+    "caps": 63
+  },
+  {
+    "id": 267,
+    "name": "HANDYMAN",
+    "faction": "Survivors",
+    "type": "UNIQUE",
+    "caps": 48
+  },
+  {
+    "id": 268,
+    "name": "HOLLY",
+    "faction": "Survivors",
+    "type": "UNIQUE",
+    "caps": 59
+  },
+  {
+    "id": 269,
+    "name": "HUNTER",
+    "faction": "Survivors",
+    "type": "UNIQUE",
+    "caps": 48
+  },
+  {
+    "id": 270,
+    "name": "JONES",
+    "faction": "Survivors",
+    "type": "UNIQUE",
+    "caps": 39
+  },
+  {
+    "id": 271,
+    "name": "LONE WANDERER",
+    "faction": "Survivors",
+    "type": "UNIQUE",
+    "caps": 125
+  },
+  {
+    "id": 272,
+    "name": "LORENZO CABOT",
+    "faction": "Survivors",
+    "type": "UNIQUE",
+    "caps": 79
+  },
+  {
+    "id": 273,
+    "name": "LUCAS SIMMS",
+    "faction": "Survivors",
+    "type": "UNIQUE",
+    "caps": 107
+  },
+  {
+    "id": 274,
+    "name": "MADISON LI",
+    "faction": "Survivors",
+    "type": "UNIQUE",
+    "caps": 57
+  },
+  {
+    "id": 275,
+    "name": "MAMA MURPHY",
+    "faction": "Survivors",
+    "type": "UNIQUE",
+    "caps": 80
+  },
+  {
+    "id": 276,
+    "name": "MASTER",
+    "faction": "Survivors",
+    "type": "UNIQUE",
+    "caps": 87
+  },
+  {
+    "id": 277,
+    "name": "MISTER TIMS",
+    "faction": "Survivors",
+    "type": "UNIQUE",
+    "caps": 72
+  },
+  {
+    "id": 278,
+    "name": "MOIRA BROWN",
+    "faction": "Survivors",
+    "type": "UNIQUE",
+    "caps": 51
+  },
+  {
+    "id": 279,
+    "name": "NICK VALENTINE",
+    "faction": "Survivors",
+    "type": "UNIQUE",
+    "caps": 66
+  },
+  {
+    "id": 280,
+    "name": "PIPER",
+    "faction": "Survivors",
+    "type": "UNIQUE",
+    "caps": 54
+  },
+  {
+    "id": 281,
+    "name": "RAUL",
+    "faction": "Survivors",
+    "type": "UNIQUE",
+    "caps": 62
+  },
+  {
+    "id": 282,
+    "name": "REILLY",
+    "faction": "Survivors",
+    "type": "UNIQUE",
+    "caps": 65
+  },
+  {
+    "id": 283,
+    "name": "RESEARCHER",
+    "faction": "Survivors",
+    "type": "GENERIC",
+    "caps": 30
+  },
+  {
+    "id": 284,
+    "name": "REX",
+    "faction": "Survivors",
+    "type": "UNIQUE",
+    "caps": 69
+  },
+  {
+    "id": 285,
+    "name": "SCAVENGER",
+    "faction": "Survivors",
+    "type": "UNIQUE",
+    "caps": 39
+  },
+  {
+    "id": 286,
+    "name": "SCAVVER",
+    "faction": "Survivors",
+    "type": "GENERIC",
+    "caps": 54
+  },
+  {
+    "id": 287,
+    "name": "SCAVVER OUTLAW",
+    "faction": "Survivors",
+    "type": "GENERIC",
+    "caps": 50
+  },
+  {
+    "id": 288,
+    "name": "SCOUT",
+    "faction": "Survivors",
+    "type": "UNIQUE",
+    "caps": 62
+  },
+  {
+    "id": 289,
+    "name": "SETTLER",
+    "faction": "Survivors",
+    "type": "GENERIC",
+    "caps": 40
+  },
+  {
+    "id": 290,
+    "name": "SNIPER",
+    "faction": "Survivors",
+    "type": "UNIQUE",
+    "caps": 58
+  },
+  {
+    "id": 291,
+    "name": "SOLE SURVIVOR",
+    "faction": "Survivors",
+    "type": "UNIQUE",
+    "caps": 89
+  },
+  {
+    "id": 292,
+    "name": "SOLE SURVIVOR DAY ONE",
+    "faction": "Survivors",
+    "type": "UNIQUE",
+    "caps": 68
+  },
+  {
+    "id": 293,
+    "name": "SOLE SURVIVOR LONER",
+    "faction": "Survivors",
+    "type": "UNIQUE",
+    "caps": 112
+  },
+  {
+    "id": 294,
+    "name": "SOLE SURVIVOR TECH",
+    "faction": "Survivors",
+    "type": "UNIQUE",
+    "caps": 89
+  },
+  {
+    "id": 295,
+    "name": "THE COURIER",
+    "faction": "Survivors",
+    "type": "UNIQUE",
+    "caps": 80
+  },
+  {
+    "id": 296,
+    "name": "THEO",
+    "faction": "Survivors",
+    "type": "UNIQUE",
+    "caps": 24
+  },
+  {
+    "id": 297,
+    "name": "THREE DOG",
+    "faction": "Survivors",
+    "type": "UNIQUE",
+    "caps": 59
+  },
+  {
+    "id": 298,
+    "name": "WISEMAN",
+    "faction": "Survivors",
+    "type": "UNIQUE",
+    "caps": 64
+  },
+  {
+    "id": 299,
+    "name": "VAULT DWELLER",
+    "faction": "Vault Dwellers",
+    "type": "UNIQUE",
+    "caps": 32
+  },
+  {
+    "id": 300,
+    "name": "VAULT SECURITY OFFICER",
+    "faction": "Vault Dwellers",
+    "type": "UNIQUE",
+    "caps": 42
+  },
+  {
+    "id": 301,
+    "name": "ALIEN",
+    "faction": "Zetans",
+    "type": "UNIQUE",
+    "caps": 105
+  }
+]

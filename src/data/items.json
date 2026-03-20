@@ -1,0 +1,6351 @@
+[
+  {
+    "id": 1,
+    "name": "ATOMIC COCKTAIL",
+    "type": "ITEM",
+    "subType": "Drink",
+    "caps": 2
+  },
+  {
+    "id": 2,
+    "name": "BEER",
+    "type": "ITEM",
+    "subType": "Drink",
+    "caps": 9
+  },
+  {
+    "id": 3,
+    "name": "BOURBON",
+    "type": "ITEM",
+    "subType": "Drink",
+    "caps": 8
+  },
+  {
+    "id": 4,
+    "name": "DIRTY WASTELANDER",
+    "type": "ITEM",
+    "subType": "Drink",
+    "caps": 6
+  },
+  {
+    "id": 5,
+    "name": "ICE COLD GWINNETT ALE",
+    "type": "ITEM",
+    "subType": "Drink",
+    "caps": 6
+  },
+  {
+    "id": 6,
+    "name": "MOONSHINE",
+    "type": "ITEM",
+    "subType": "Drink",
+    "caps": 3
+  },
+  {
+    "id": 7,
+    "name": "RUM",
+    "type": "ITEM",
+    "subType": "Drink",
+    "caps": 4
+  },
+  {
+    "id": 8,
+    "name": "VODKA",
+    "type": "ITEM",
+    "subType": "Drink",
+    "caps": 8
+  },
+  {
+    "id": 9,
+    "name": "WHISKEY",
+    "type": "ITEM",
+    "subType": "Drink",
+    "caps": 4
+  },
+  {
+    "id": 10,
+    "name": "WINE",
+    "type": "ITEM",
+    "subType": "Drink",
+    "caps": 5
+  },
+  {
+    "id": 11,
+    "name": "ARMORED PADS",
+    "type": "ITEM",
+    "subType": "Armor",
+    "caps": 4
+  },
+  {
+    "id": 12,
+    "name": "ARMY HELMET",
+    "type": "ITEM",
+    "subType": "Armor",
+    "caps": 14
+  },
+  {
+    "id": 13,
+    "name": "ASSAULT MARINE ARMOR",
+    "type": "ITEM",
+    "subType": "Armor",
+    "caps": 20
+  },
+  {
+    "id": 14,
+    "name": "BLADED HELMET",
+    "type": "ITEM",
+    "subType": "Armor",
+    "caps": 4
+  },
+  {
+    "id": 15,
+    "name": "BROTHERHOOD OF STEEL KNIGHT SUIT",
+    "type": "ITEM",
+    "subType": "Armor",
+    "caps": 8
+  },
+  {
+    "id": 16,
+    "name": "BROTHERHOOD OF STEEL SPECIAL OPS SUIT",
+    "type": "ITEM",
+    "subType": "Armor",
+    "caps": 12
+  },
+  {
+    "id": 17,
+    "name": "CHAIN DOG COLLAR",
+    "type": "ITEM",
+    "subType": "Armor",
+    "caps": 14
+  },
+  {
+    "id": 18,
+    "name": "CHAINS",
+    "type": "ITEM",
+    "subType": "Armor",
+    "caps": 10
+  },
+  {
+    "id": 19,
+    "name": "CLEANROOM SUIT",
+    "type": "ITEM",
+    "subType": "Armor",
+    "caps": 18
+  },
+  {
+    "id": 20,
+    "name": "COASTAL ARMOR",
+    "type": "ITEM",
+    "subType": "Armor",
+    "caps": 15
+  },
+  {
+    "id": 21,
+    "name": "COMBAT ARMOR",
+    "type": "ITEM",
+    "subType": "Armor",
+    "caps": 8
+  },
+  {
+    "id": 22,
+    "name": "COMMANDO CHEST PIECE",
+    "type": "ITEM",
+    "subType": "Armor",
+    "caps": 5
+  },
+  {
+    "id": 23,
+    "name": "CORRUGATED PLATES",
+    "type": "ITEM",
+    "subType": "Armor",
+    "caps": 4
+  },
+  {
+    "id": 24,
+    "name": "DAMAGED HAZMAT SUIT",
+    "type": "ITEM",
+    "subType": "Armor",
+    "caps": 5
+  },
+  {
+    "id": 25,
+    "name": "DAMAGED LEGATE ARMOR",
+    "type": "ITEM",
+    "subType": "Armor",
+    "caps": 27
+  },
+  {
+    "id": 26,
+    "name": "DISCIPLES ARMOR",
+    "type": "ITEM",
+    "subType": "Armor",
+    "caps": 22
+  },
+  {
+    "id": 27,
+    "name": "ENCLAVE POWER ARMOR",
+    "type": "ITEM",
+    "subType": "Armor",
+    "caps": 49
+  },
+  {
+    "id": 28,
+    "name": "ENCLAVE SCOUT ARMOR",
+    "type": "ITEM",
+    "subType": "Armor",
+    "caps": 12
+  },
+  {
+    "id": 29,
+    "name": "ENVIRONMENTAL SUIT",
+    "type": "ITEM",
+    "subType": "Armor",
+    "caps": 12
+  },
+  {
+    "id": 30,
+    "name": "FIST'S ARMOR",
+    "type": "ITEM",
+    "subType": "Armor",
+    "caps": 17
+  },
+  {
+    "id": 31,
+    "name": "FREEFALL LEG ARMOR",
+    "type": "ITEM",
+    "subType": "Armor",
+    "caps": 5
+  },
+  {
+    "id": 32,
+    "name": "GAGE'S OUTFIT",
+    "type": "ITEM",
+    "subType": "Armor",
+    "caps": 15
+  },
+  {
+    "id": 33,
+    "name": "GECKO BAKED METAL ARMOR",
+    "type": "ITEM",
+    "subType": "Armor",
+    "caps": 11
+  },
+  {
+    "id": 34,
+    "name": "GECKO-BACKED METAL ARMOR",
+    "type": "ITEM",
+    "subType": "Armor",
+    "caps": 11
+  },
+  {
+    "id": 35,
+    "name": "HAZMAT SUIT",
+    "type": "ITEM",
+    "subType": "Armor",
+    "caps": 20
+  },
+  {
+    "id": 36,
+    "name": "HEAVY BROTHERHOOD COMBAT CHESTPLATE",
+    "type": "ITEM",
+    "subType": "Armor",
+    "caps": 10
+  },
+  {
+    "id": 37,
+    "name": "HEAVY COMBAT ARMOR",
+    "type": "ITEM",
+    "subType": "Armor",
+    "caps": 45
+  },
+  {
+    "id": 38,
+    "name": "HEAVY DISCIPLES ARMOR",
+    "type": "ITEM",
+    "subType": "Armor",
+    "caps": 45
+  },
+  {
+    "id": 39,
+    "name": "HEAVY GAUNTLETS",
+    "type": "ITEM",
+    "subType": "Armor",
+    "caps": 20
+  },
+  {
+    "id": 40,
+    "name": "HEAVY OPERATOR ARMOR",
+    "type": "ITEM",
+    "subType": "Armor",
+    "caps": 49
+  },
+  {
+    "id": 41,
+    "name": "HEAVY PACK ARMOR",
+    "type": "ITEM",
+    "subType": "Armor",
+    "caps": 47
+  },
+  {
+    "id": 42,
+    "name": "HEAVY RAIDER ARMOR",
+    "type": "ITEM",
+    "subType": "Armor",
+    "caps": 22
+  },
+  {
+    "id": 43,
+    "name": "HEAVY RITUAL ARMOR",
+    "type": "ITEM",
+    "subType": "Armor",
+    "caps": 18
+  },
+  {
+    "id": 44,
+    "name": "HEAVY SYNTH ARMOR",
+    "type": "ITEM",
+    "subType": "Armor",
+    "caps": 45
+  },
+  {
+    "id": 45,
+    "name": "HEAVY SYNTH ARMOR (LIGHT)",
+    "type": "ITEM",
+    "subType": "Armor",
+    "caps": 25
+  },
+  {
+    "id": 46,
+    "name": "HELLFIRE ARMOR",
+    "type": "ITEM",
+    "subType": "Armor",
+    "caps": 60
+  },
+  {
+    "id": 47,
+    "name": "INCARNATE ARMOR",
+    "type": "ITEM",
+    "subType": "Armor",
+    "caps": 12
+  },
+  {
+    "id": 48,
+    "name": "INQUISITOR MARINE ARMOR",
+    "type": "ITEM",
+    "subType": "Armor",
+    "caps": 20
+  },
+  {
+    "id": 49,
+    "name": "LIGHT RAIDER ARMOR",
+    "type": "ITEM",
+    "subType": "Armor",
+    "caps": 3
+  },
+  {
+    "id": 50,
+    "name": "LIGHT RITUAL ARMOR",
+    "type": "ITEM",
+    "subType": "Armor",
+    "caps": 8
+  },
+  {
+    "id": 51,
+    "name": "LIGHT SYNTH ARMOR",
+    "type": "ITEM",
+    "subType": "Armor",
+    "caps": 15
+  },
+  {
+    "id": 52,
+    "name": "MECHANIST ARMOR AND HELMET",
+    "type": "ITEM",
+    "subType": "Armor",
+    "caps": 52
+  },
+  {
+    "id": 53,
+    "name": "MEDIUM RITUAL ARMOR",
+    "type": "ITEM",
+    "subType": "Armor",
+    "caps": 12
+  },
+  {
+    "id": 54,
+    "name": "NCR SALVAGED POWER ARMOR",
+    "type": "ITEM",
+    "subType": "Armor",
+    "caps": 37
+  },
+  {
+    "id": 55,
+    "name": "OPERATORS ARMOR",
+    "type": "ITEM",
+    "subType": "Armor",
+    "caps": 34
+  },
+  {
+    "id": 56,
+    "name": "OVERBOSS POWER ARMOR",
+    "type": "ITEM",
+    "subType": "Armor",
+    "caps": 51
+  },
+  {
+    "id": 57,
+    "name": "PACK ARMOR",
+    "type": "ITEM",
+    "subType": "Armor",
+    "caps": 24
+  },
+  {
+    "id": 58,
+    "name": "POWER ARMOR FRAME",
+    "type": "ITEM",
+    "subType": "Armor",
+    "caps": 15
+  },
+  {
+    "id": 59,
+    "name": "PROTECTOR'S RIGHT ARM GUARD",
+    "type": "ITEM",
+    "subType": "Armor",
+    "caps": 10
+  },
+  {
+    "id": 60,
+    "name": "RAIDER POWER ARMOR",
+    "type": "ITEM",
+    "subType": "Armor",
+    "caps": 34
+  },
+  {
+    "id": 61,
+    "name": "RANGER BATTLE ARMOR",
+    "type": "ITEM",
+    "subType": "Armor",
+    "caps": 10
+  },
+  {
+    "id": 62,
+    "name": "RECON ARMOR",
+    "type": "ITEM",
+    "subType": "Armor",
+    "caps": 16
+  },
+  {
+    "id": 63,
+    "name": "ROCK'S BLADED HELM",
+    "type": "ITEM",
+    "subType": "Armor",
+    "caps": 18
+  },
+  {
+    "id": 64,
+    "name": "SLAG'S POWER ARMOR",
+    "type": "ITEM",
+    "subType": "Armor",
+    "caps": 44
+  },
+  {
+    "id": 65,
+    "name": "SLAGS POWER ARMOR",
+    "type": "ITEM",
+    "subType": "Armor",
+    "caps": 44
+  },
+  {
+    "id": 66,
+    "name": "SPIKED HARNESS",
+    "type": "ITEM",
+    "subType": "Armor",
+    "caps": 5
+  },
+  {
+    "id": 67,
+    "name": "STURDY COMBAT ARMOR",
+    "type": "ITEM",
+    "subType": "Armor",
+    "caps": 22
+  },
+  {
+    "id": 68,
+    "name": "STURDY LEATHER ARMOR",
+    "type": "ITEM",
+    "subType": "Armor",
+    "caps": 15
+  },
+  {
+    "id": 69,
+    "name": "STURDY METAL ARMOR",
+    "type": "ITEM",
+    "subType": "Armor",
+    "caps": 15
+  },
+  {
+    "id": 70,
+    "name": "STURDY RAIDER ARMOR",
+    "type": "ITEM",
+    "subType": "Armor",
+    "caps": 8
+  },
+  {
+    "id": 71,
+    "name": "STURDY SYNTH ARMOR",
+    "type": "ITEM",
+    "subType": "Armor",
+    "caps": 22
+  },
+  {
+    "id": 72,
+    "name": "SUPER MUTANT BODY ARMOR",
+    "type": "ITEM",
+    "subType": "Armor",
+    "caps": 21
+  },
+  {
+    "id": 73,
+    "name": "SUPER MUTANT COWL ARMOR",
+    "type": "ITEM",
+    "subType": "Armor",
+    "caps": 7
+  },
+  {
+    "id": 74,
+    "name": "SUPER MUTANT HEAVY ARMOR",
+    "type": "ITEM",
+    "subType": "Armor",
+    "caps": 11
+  },
+  {
+    "id": 75,
+    "name": "SUPER MUTANT LIGHT ARMOR",
+    "type": "ITEM",
+    "subType": "Armor",
+    "caps": 4
+  },
+  {
+    "id": 76,
+    "name": "SUPER MUTANT OVERLORD ARMOR",
+    "type": "ITEM",
+    "subType": "Armor",
+    "caps": 51
+  },
+  {
+    "id": 77,
+    "name": "T-45 POWER ARMOR",
+    "type": "ITEM",
+    "subType": "Armor",
+    "caps": 44
+  },
+  {
+    "id": 78,
+    "name": "T-51 POWER ARMOR",
+    "type": "ITEM",
+    "subType": "Armor",
+    "caps": 60
+  },
+  {
+    "id": 79,
+    "name": "T-60 POWER ARMOR",
+    "type": "ITEM",
+    "subType": "Armor",
+    "caps": 82
+  },
+  {
+    "id": 80,
+    "name": "T-60F POWER ARMOR",
+    "type": "ITEM",
+    "subType": "Armor",
+    "caps": 118
+  },
+  {
+    "id": 81,
+    "name": "TESLA COIL HARNESS",
+    "type": "ITEM",
+    "subType": "Armor",
+    "caps": 5
+  },
+  {
+    "id": 82,
+    "name": "TESSA'S POWER ARMOR",
+    "type": "ITEM",
+    "subType": "Armor",
+    "caps": 30
+  },
+  {
+    "id": 83,
+    "name": "TRAPPER ARMOR",
+    "type": "ITEM",
+    "subType": "Armor",
+    "caps": 12
+  },
+  {
+    "id": 84,
+    "name": "TRAPPER HEAVY ARMOR",
+    "type": "ITEM",
+    "subType": "Armor",
+    "caps": 18
+  },
+  {
+    "id": 85,
+    "name": "WASTELAND ARMOR",
+    "type": "ITEM",
+    "subType": "Armor",
+    "caps": 10
+  },
+  {
+    "id": 86,
+    "name": "X-01 POWER ARMOR",
+    "type": "ITEM",
+    "subType": "Armor",
+    "caps": 102
+  },
+  {
+    "id": 87,
+    "name": "ZEALOT'S MARINE ARMOR",
+    "type": "ITEM",
+    "subType": "Armor",
+    "caps": 20
+  },
+  {
+    "id": 88,
+    "name": "ZETAN FLIGHT SUIT",
+    "type": "ITEM",
+    "subType": "Armor",
+    "caps": 15
+  },
+  {
+    "id": 89,
+    "name": "ZETAN INQUISITOR SUIT",
+    "type": "ITEM",
+    "subType": "Armor",
+    "caps": 18
+  },
+  {
+    "id": 90,
+    "name": "ZETAN POWER SUIT",
+    "type": "ITEM",
+    "subType": "Armor",
+    "caps": 25
+  },
+  {
+    "id": 91,
+    "name": "ASSAULTRON HEAD",
+    "type": "ITEM",
+    "subType": "Automatron Part",
+    "caps": 92
+  },
+  {
+    "id": 92,
+    "name": "ASSAULTRON LEGS",
+    "type": "ITEM",
+    "subType": "Automatron Part",
+    "caps": 88
+  },
+  {
+    "id": 93,
+    "name": "ASSAULTRON TORSO",
+    "type": "ITEM",
+    "subType": "Automatron Part",
+    "caps": 66
+  },
+  {
+    "id": 94,
+    "name": "JUNKBOT TORSO",
+    "type": "ITEM",
+    "subType": "Automatron Part",
+    "caps": 8
+  },
+  {
+    "id": 95,
+    "name": "MR HANDY HEAD",
+    "type": "ITEM",
+    "subType": "Automatron Part",
+    "caps": 16
+  },
+  {
+    "id": 96,
+    "name": "MR HANDY LEGS",
+    "type": "ITEM",
+    "subType": "Automatron Part",
+    "caps": 27
+  },
+  {
+    "id": 97,
+    "name": "MR HANDY TORSO",
+    "type": "ITEM",
+    "subType": "Automatron Part",
+    "caps": 17
+  },
+  {
+    "id": 98,
+    "name": "PROTECTRON HEAD",
+    "type": "ITEM",
+    "subType": "Automatron Part",
+    "caps": 2
+  },
+  {
+    "id": 99,
+    "name": "PROTECTRON LEGS",
+    "type": "ITEM",
+    "subType": "Automatron Part",
+    "caps": 1
+  },
+  {
+    "id": 100,
+    "name": "PROTECTRON TORSO",
+    "type": "ITEM",
+    "subType": "Automatron Part",
+    "caps": 17
+  },
+  {
+    "id": 101,
+    "name": "ROBOBRAIN HEAD",
+    "type": "ITEM",
+    "subType": "Automatron Part",
+    "caps": 56
+  },
+  {
+    "id": 102,
+    "name": "ROBOBRAIN LEGS",
+    "type": "ITEM",
+    "subType": "Automatron Part",
+    "caps": 8
+  },
+  {
+    "id": 103,
+    "name": "ROBOBRAIN TORSO",
+    "type": "ITEM",
+    "subType": "Automatron Part",
+    "caps": 28
+  },
+  {
+    "id": 104,
+    "name": "SENTRY BOT HEAD",
+    "type": "ITEM",
+    "subType": "Automatron Part",
+    "caps": 55
+  },
+  {
+    "id": 105,
+    "name": "SENTRY BOT LEGS",
+    "type": "ITEM",
+    "subType": "Automatron Part",
+    "caps": 6
+  },
+  {
+    "id": 106,
+    "name": "SENTRY BOT TORSO",
+    "type": "ITEM",
+    "subType": "Automatron Part",
+    "caps": 173
+  },
+  {
+    "id": 107,
+    "name": "ADDICTOL",
+    "type": "ITEM",
+    "subType": "Chem",
+    "caps": 3
+  },
+  {
+    "id": 108,
+    "name": "ANTI-VENOM BALM",
+    "type": "ITEM",
+    "subType": "Chem",
+    "caps": 9
+  },
+  {
+    "id": 109,
+    "name": "BERRY MENTATS",
+    "type": "ITEM",
+    "subType": "Chem",
+    "caps": 13
+  },
+  {
+    "id": 110,
+    "name": "BUFFOUT",
+    "type": "ITEM",
+    "subType": "Chem",
+    "caps": 13
+  },
+  {
+    "id": 111,
+    "name": "BUFFTATS",
+    "type": "ITEM",
+    "subType": "Chem",
+    "caps": 17
+  },
+  {
+    "id": 112,
+    "name": "CALMEX",
+    "type": "ITEM",
+    "subType": "Chem",
+    "caps": 16
+  },
+  {
+    "id": 113,
+    "name": "DAY TRIPPER",
+    "type": "ITEM",
+    "subType": "Chem",
+    "caps": 11
+  },
+  {
+    "id": 114,
+    "name": "DOCTORS BAG",
+    "type": "ITEM",
+    "subType": "Chem",
+    "caps": 12
+  },
+  {
+    "id": 115,
+    "name": "EMERGENCY ANTI-VENOM",
+    "type": "ITEM",
+    "subType": "Chem",
+    "caps": 5
+  },
+  {
+    "id": 116,
+    "name": "FURY",
+    "type": "ITEM",
+    "subType": "Chem",
+    "caps": 8
+  },
+  {
+    "id": 117,
+    "name": "HEALING POWDER",
+    "type": "ITEM",
+    "subType": "Chem",
+    "caps": 10
+  },
+  {
+    "id": 118,
+    "name": "JET",
+    "type": "ITEM",
+    "subType": "Chem",
+    "caps": 12
+  },
+  {
+    "id": 119,
+    "name": "MED-X",
+    "type": "ITEM",
+    "subType": "Chem",
+    "caps": 10
+  },
+  {
+    "id": 120,
+    "name": "MENTATS",
+    "type": "ITEM",
+    "subType": "Chem",
+    "caps": 9
+  },
+  {
+    "id": 121,
+    "name": "MYSTERIOUS SERUM",
+    "type": "ITEM",
+    "subType": "Chem",
+    "caps": 25
+  },
+  {
+    "id": 122,
+    "name": "ORANGE MENTATS",
+    "type": "ITEM",
+    "subType": "Chem",
+    "caps": 13
+  },
+  {
+    "id": 123,
+    "name": "OVERDRIVE",
+    "type": "ITEM",
+    "subType": "Chem",
+    "caps": 10
+  },
+  {
+    "id": 124,
+    "name": "PSYCHOBUFF",
+    "type": "ITEM",
+    "subType": "Chem",
+    "caps": 19
+  },
+  {
+    "id": 125,
+    "name": "RAD-X",
+    "type": "ITEM",
+    "subType": "Chem",
+    "caps": 5
+  },
+  {
+    "id": 126,
+    "name": "RADAWAY",
+    "type": "ITEM",
+    "subType": "Chem",
+    "caps": 10
+  },
+  {
+    "id": 127,
+    "name": "REBOUND",
+    "type": "ITEM",
+    "subType": "Chem",
+    "caps": 8
+  },
+  {
+    "id": 128,
+    "name": "REFRESHING BEVERAGE",
+    "type": "ITEM",
+    "subType": "Chem",
+    "caps": 40
+  },
+  {
+    "id": 129,
+    "name": "SPARK",
+    "type": "ITEM",
+    "subType": "Chem",
+    "caps": 8
+  },
+  {
+    "id": 130,
+    "name": "STEADY",
+    "type": "ITEM",
+    "subType": "Chem",
+    "caps": 6
+  },
+  {
+    "id": 131,
+    "name": "STIMPAK",
+    "type": "ITEM",
+    "subType": "Chem",
+    "caps": 26
+  },
+  {
+    "id": 132,
+    "name": "ULTRA JET",
+    "type": "ITEM",
+    "subType": "Chem",
+    "caps": 16
+  },
+  {
+    "id": 133,
+    "name": "X-111 COMPOUND",
+    "type": "ITEM",
+    "subType": "Chem",
+    "caps": 20
+  },
+  {
+    "id": 134,
+    "name": "X-CELL",
+    "type": "ITEM",
+    "subType": "Chem",
+    "caps": 17
+  },
+  {
+    "id": 135,
+    "name": "1ST RECON BERET",
+    "type": "ITEM",
+    "subType": "Clothing",
+    "caps": 12
+  },
+  {
+    "id": 136,
+    "name": "AIRSHIP CAPTAIN'S HAT",
+    "type": "ITEM",
+    "subType": "Clothing",
+    "caps": 5
+  },
+  {
+    "id": 137,
+    "name": "ASSAULT GAS MASK",
+    "type": "ITEM",
+    "subType": "Clothing",
+    "caps": 2
+  },
+  {
+    "id": 138,
+    "name": "ATOM CATS JACKET AND JEANS",
+    "type": "ITEM",
+    "subType": "Clothing",
+    "caps": 3
+  },
+  {
+    "id": 139,
+    "name": "AVIATOR CAP",
+    "type": "ITEM",
+    "subType": "Clothing",
+    "caps": 21
+  },
+  {
+    "id": 140,
+    "name": "BASEBALL CAP",
+    "type": "ITEM",
+    "subType": "Clothing",
+    "caps": 5
+  },
+  {
+    "id": 141,
+    "name": "BATTERED FEDORA",
+    "type": "ITEM",
+    "subType": "Clothing",
+    "caps": 5
+  },
+  {
+    "id": 142,
+    "name": "BLUE RIDGE CARAVAN OUTFIT",
+    "type": "ITEM",
+    "subType": "Clothing",
+    "caps": 5
+  },
+  {
+    "id": 143,
+    "name": "BOWLER HAT",
+    "type": "ITEM",
+    "subType": "Clothing",
+    "caps": 3
+  },
+  {
+    "id": 144,
+    "name": "BROTHERHOOD OF STEEL HOOD",
+    "type": "ITEM",
+    "subType": "Clothing",
+    "caps": 7
+  },
+  {
+    "id": 145,
+    "name": "BROTHERHOOD OF STEEL INFANTRY UNIFORM",
+    "type": "ITEM",
+    "subType": "Clothing",
+    "caps": 6
+  },
+  {
+    "id": 146,
+    "name": "CAMOUFLAGE",
+    "type": "ITEM",
+    "subType": "Clothing",
+    "caps": 22
+  },
+  {
+    "id": 147,
+    "name": "CAPPY GLASSES",
+    "type": "ITEM",
+    "subType": "Clothing",
+    "caps": 8
+  },
+  {
+    "id": 148,
+    "name": "CHASE'S UNIFORM",
+    "type": "ITEM",
+    "subType": "Clothing",
+    "caps": 10
+  },
+  {
+    "id": 149,
+    "name": "CHILD OF ATOM RAGS",
+    "type": "ITEM",
+    "subType": "Clothing",
+    "caps": 4
+  },
+  {
+    "id": 150,
+    "name": "DIRTY POSTMAN UNIFORM",
+    "type": "ITEM",
+    "subType": "Clothing",
+    "caps": 6
+  },
+  {
+    "id": 151,
+    "name": "DOG BANDANA",
+    "type": "ITEM",
+    "subType": "Clothing",
+    "caps": 4
+  },
+  {
+    "id": 152,
+    "name": "ELDER ROBES",
+    "type": "ITEM",
+    "subType": "Clothing",
+    "caps": 10
+  },
+  {
+    "id": 153,
+    "name": "ENCLAVE OFFICER'S HAT",
+    "type": "ITEM",
+    "subType": "Clothing",
+    "caps": 5
+  },
+  {
+    "id": 154,
+    "name": "ENGINEER'S UNIFORM",
+    "type": "ITEM",
+    "subType": "Clothing",
+    "caps": 5
+  },
+  {
+    "id": 155,
+    "name": "EYEGLASSES",
+    "type": "ITEM",
+    "subType": "Clothing",
+    "caps": 7
+  },
+  {
+    "id": 156,
+    "name": "FISHERMAN'S OVERALLS",
+    "type": "ITEM",
+    "subType": "Clothing",
+    "caps": 5
+  },
+  {
+    "id": 157,
+    "name": "HIGH CONFESSOR'S HELM",
+    "type": "ITEM",
+    "subType": "Clothing",
+    "caps": 8
+  },
+  {
+    "id": 158,
+    "name": "HIGH CONFESSOR'S ROBES",
+    "type": "ITEM",
+    "subType": "Clothing",
+    "caps": 8
+  },
+  {
+    "id": 159,
+    "name": "HUNTER'S LONG COAT",
+    "type": "ITEM",
+    "subType": "Clothing",
+    "caps": 10
+  },
+  {
+    "id": 160,
+    "name": "INSTITUTE DIVISION HEAD COAT",
+    "type": "ITEM",
+    "subType": "Clothing",
+    "caps": 7
+  },
+  {
+    "id": 161,
+    "name": "INSTITUTE LAB COAT",
+    "type": "ITEM",
+    "subType": "Clothing",
+    "caps": 5
+  },
+  {
+    "id": 162,
+    "name": "LAB COAT",
+    "type": "ITEM",
+    "subType": "Clothing",
+    "caps": 4
+  },
+  {
+    "id": 163,
+    "name": "LEG GUARDS",
+    "type": "ITEM",
+    "subType": "Clothing",
+    "caps": 7
+  },
+  {
+    "id": 164,
+    "name": "LIMB BRACES",
+    "type": "ITEM",
+    "subType": "Clothing",
+    "caps": 8
+  },
+  {
+    "id": 165,
+    "name": "MAGICIAN'S COSTUME",
+    "type": "ITEM",
+    "subType": "Clothing",
+    "caps": 32
+  },
+  {
+    "id": 166,
+    "name": "MAGNIFYING VISOR",
+    "type": "ITEM",
+    "subType": "Clothing",
+    "caps": 5
+  },
+  {
+    "id": 167,
+    "name": "MARINE WETSUIT",
+    "type": "ITEM",
+    "subType": "Clothing",
+    "caps": 8
+  },
+  {
+    "id": 168,
+    "name": "MILITARY FATIGUES",
+    "type": "ITEM",
+    "subType": "Clothing",
+    "caps": 7
+  },
+  {
+    "id": 169,
+    "name": "MIRELURK CARAPACE",
+    "type": "ITEM",
+    "subType": "Clothing",
+    "caps": 23
+  },
+  {
+    "id": 170,
+    "name": "NCR ENGINEER JUMPSUIT",
+    "type": "ITEM",
+    "subType": "Clothing",
+    "caps": 10
+  },
+  {
+    "id": 171,
+    "name": "NCR JUMPSUIT",
+    "type": "ITEM",
+    "subType": "Clothing",
+    "caps": 15
+  },
+  {
+    "id": 172,
+    "name": "OLD FISHERMAN'S HAT",
+    "type": "ITEM",
+    "subType": "Clothing",
+    "caps": 3
+  },
+  {
+    "id": 173,
+    "name": "PATCHED THREE-PIECE SUIT",
+    "type": "ITEM",
+    "subType": "Clothing",
+    "caps": 8
+  },
+  {
+    "id": 174,
+    "name": "RADIO PACK",
+    "type": "ITEM",
+    "subType": "Clothing",
+    "caps": 3
+  },
+  {
+    "id": 175,
+    "name": "RED FLIGHT HELMET",
+    "type": "ITEM",
+    "subType": "Clothing",
+    "caps": 3
+  },
+  {
+    "id": 176,
+    "name": "RITUAL MASK",
+    "type": "ITEM",
+    "subType": "Clothing",
+    "caps": 5
+  },
+  {
+    "id": 177,
+    "name": "ROAD GOGGLES",
+    "type": "ITEM",
+    "subType": "Clothing",
+    "caps": 5
+  },
+  {
+    "id": 178,
+    "name": "ROBES OF ATOM'S DEVOTED",
+    "type": "ITEM",
+    "subType": "Clothing",
+    "caps": 6
+  },
+  {
+    "id": 179,
+    "name": "ROBOTIC BITS",
+    "type": "ITEM",
+    "subType": "Clothing",
+    "caps": 7
+  },
+  {
+    "id": 180,
+    "name": "SCRIBE ROBES",
+    "type": "ITEM",
+    "subType": "Clothing",
+    "caps": 10
+  },
+  {
+    "id": 181,
+    "name": "SEA CAPTAIN'S HAT",
+    "type": "ITEM",
+    "subType": "Clothing",
+    "caps": 4
+  },
+  {
+    "id": 182,
+    "name": "SHERIFF'S OUTFIT",
+    "type": "ITEM",
+    "subType": "Clothing",
+    "caps": 26
+  },
+  {
+    "id": 183,
+    "name": "SHOULDER RAGS",
+    "type": "ITEM",
+    "subType": "Clothing",
+    "caps": 6
+  },
+  {
+    "id": 184,
+    "name": "SPIKED MUZZLE",
+    "type": "ITEM",
+    "subType": "Clothing",
+    "caps": 3
+  },
+  {
+    "id": 185,
+    "name": "STALKER OUTFIT",
+    "type": "ITEM",
+    "subType": "Clothing",
+    "caps": 8
+  },
+  {
+    "id": 186,
+    "name": "THE GHOUL'S OUTFIT",
+    "type": "ITEM",
+    "subType": "Clothing",
+    "caps": 15
+  },
+  {
+    "id": 187,
+    "name": "THREE DOG'S HEADWEAR",
+    "type": "ITEM",
+    "subType": "Clothing",
+    "caps": 10
+  },
+  {
+    "id": 188,
+    "name": "TRAPPER LEATHERS",
+    "type": "ITEM",
+    "subType": "Clothing",
+    "caps": 6
+  },
+  {
+    "id": 189,
+    "name": "TRICORN HAT",
+    "type": "ITEM",
+    "subType": "Clothing",
+    "caps": 5
+  },
+  {
+    "id": 190,
+    "name": "TRIGGERMAN BOWLER",
+    "type": "ITEM",
+    "subType": "Clothing",
+    "caps": 5
+  },
+  {
+    "id": 191,
+    "name": "TUXEDO",
+    "type": "ITEM",
+    "subType": "Clothing",
+    "caps": 10
+  },
+  {
+    "id": 192,
+    "name": "VAULT 111 JUMPSUIT",
+    "type": "ITEM",
+    "subType": "Clothing",
+    "caps": 9
+  },
+  {
+    "id": 193,
+    "name": "VAULT 33 JUMPSUIT",
+    "type": "ITEM",
+    "subType": "Clothing",
+    "caps": 8
+  },
+  {
+    "id": 194,
+    "name": "WASTELAND OUTFIT",
+    "type": "ITEM",
+    "subType": "Clothing",
+    "caps": 3
+  },
+  {
+    "id": 195,
+    "name": "WILDMAN RAGS",
+    "type": "ITEM",
+    "subType": "Clothing",
+    "caps": 15
+  },
+  {
+    "id": 196,
+    "name": "ANGLER MEAT",
+    "type": "ITEM",
+    "subType": "Food",
+    "caps": 12
+  },
+  {
+    "id": 197,
+    "name": "BIGHORNER STEAK",
+    "type": "ITEM",
+    "subType": "Food",
+    "caps": 8
+  },
+  {
+    "id": 198,
+    "name": "BLOATFLY MEAT",
+    "type": "ITEM",
+    "subType": "Food",
+    "caps": 17
+  },
+  {
+    "id": 199,
+    "name": "BLOOD PACK",
+    "type": "ITEM",
+    "subType": "Food",
+    "caps": 15
+  },
+  {
+    "id": 200,
+    "name": "BRAHMIN MEAT",
+    "type": "ITEM",
+    "subType": "Food",
+    "caps": 20
+  },
+  {
+    "id": 201,
+    "name": "CARAVAN LUNCH",
+    "type": "ITEM",
+    "subType": "Food",
+    "caps": 16
+  },
+  {
+    "id": 202,
+    "name": "CAVE FUNGUS",
+    "type": "ITEM",
+    "subType": "Food",
+    "caps": 8
+  },
+  {
+    "id": 203,
+    "name": "COTTON CANDY BITES",
+    "type": "ITEM",
+    "subType": "Food",
+    "caps": 7
+  },
+  {
+    "id": 204,
+    "name": "CRAM",
+    "type": "ITEM",
+    "subType": "Food",
+    "caps": 12
+  },
+  {
+    "id": 205,
+    "name": "DEATHCLAW MEAT",
+    "type": "ITEM",
+    "subType": "Food",
+    "caps": 30
+  },
+  {
+    "id": 206,
+    "name": "FOG CRAWLER MEAT",
+    "type": "ITEM",
+    "subType": "Food",
+    "caps": 28
+  },
+  {
+    "id": 207,
+    "name": "FRESH MELON",
+    "type": "ITEM",
+    "subType": "Food",
+    "caps": 10
+  },
+  {
+    "id": 208,
+    "name": "GECKO KEBAB",
+    "type": "ITEM",
+    "subType": "Food",
+    "caps": 16
+  },
+  {
+    "id": 209,
+    "name": "GRILLED HERMIT CRAB MEAT",
+    "type": "ITEM",
+    "subType": "Food",
+    "caps": 15
+  },
+  {
+    "id": 210,
+    "name": "GULPER INNARDS",
+    "type": "ITEM",
+    "subType": "Food",
+    "caps": 10
+  },
+  {
+    "id": 211,
+    "name": "GULPER SLURRY",
+    "type": "ITEM",
+    "subType": "Food",
+    "caps": 10
+  },
+  {
+    "id": 212,
+    "name": "GUM DROPS",
+    "type": "ITEM",
+    "subType": "Food",
+    "caps": 2
+  },
+  {
+    "id": 213,
+    "name": "HERMIT CRAB MEAT",
+    "type": "ITEM",
+    "subType": "Food",
+    "caps": 15
+  },
+  {
+    "id": 214,
+    "name": "HOLY WATER",
+    "type": "ITEM",
+    "subType": "Food",
+    "caps": 7
+  },
+  {
+    "id": 215,
+    "name": "HONEY MESQUITE POD",
+    "type": "ITEM",
+    "subType": "Food",
+    "caps": 5
+  },
+  {
+    "id": 216,
+    "name": "IGUANA BITS",
+    "type": "ITEM",
+    "subType": "Food",
+    "caps": 20
+  },
+  {
+    "id": 217,
+    "name": "IGUANA ON A STICK",
+    "type": "ITEM",
+    "subType": "Food",
+    "caps": 15
+  },
+  {
+    "id": 218,
+    "name": "MIRELURK MEAT",
+    "type": "ITEM",
+    "subType": "Food",
+    "caps": 24
+  },
+  {
+    "id": 219,
+    "name": "MOLE RAT MEAT",
+    "type": "ITEM",
+    "subType": "Food",
+    "caps": 24
+  },
+  {
+    "id": 220,
+    "name": "MUTANT HOUND MEAT",
+    "type": "ITEM",
+    "subType": "Food",
+    "caps": 22
+  },
+  {
+    "id": 221,
+    "name": "NUKA-CHERRY",
+    "type": "ITEM",
+    "subType": "Food",
+    "caps": 23
+  },
+  {
+    "id": 222,
+    "name": "NUKA-COLA",
+    "type": "ITEM",
+    "subType": "Food",
+    "caps": 15
+  },
+  {
+    "id": 223,
+    "name": "NUKA-COLA DARK",
+    "type": "ITEM",
+    "subType": "Food",
+    "caps": 7
+  },
+  {
+    "id": 224,
+    "name": "NUKA-COLA LOVE RECIPE",
+    "type": "ITEM",
+    "subType": "Food",
+    "caps": 25
+  },
+  {
+    "id": 225,
+    "name": "NUKA-COLA ORANGE",
+    "type": "ITEM",
+    "subType": "Food",
+    "caps": 33
+  },
+  {
+    "id": 226,
+    "name": "NUKA-COLA QUANTUM",
+    "type": "ITEM",
+    "subType": "Food",
+    "caps": 41
+  },
+  {
+    "id": 227,
+    "name": "NUKA-COLA QUARTZ",
+    "type": "ITEM",
+    "subType": "Food",
+    "caps": 21
+  },
+  {
+    "id": 228,
+    "name": "NUKA-COLA VICTORY",
+    "type": "ITEM",
+    "subType": "Food",
+    "caps": 41
+  },
+  {
+    "id": 229,
+    "name": "NUKA-COLA WILD",
+    "type": "ITEM",
+    "subType": "Food",
+    "caps": 18
+  },
+  {
+    "id": 230,
+    "name": "PERFECTLY PRESERVED PIE",
+    "type": "ITEM",
+    "subType": "Food",
+    "caps": 20
+  },
+  {
+    "id": 231,
+    "name": "POACHED ANGLER",
+    "type": "ITEM",
+    "subType": "Food",
+    "caps": 12
+  },
+  {
+    "id": 232,
+    "name": "QUEEN MIRELURK MEAT",
+    "type": "ITEM",
+    "subType": "Food",
+    "caps": 33
+  },
+  {
+    "id": 233,
+    "name": "RADROACH MEAT",
+    "type": "ITEM",
+    "subType": "Food",
+    "caps": 10
+  },
+  {
+    "id": 234,
+    "name": "RADSCORPION EGG",
+    "type": "ITEM",
+    "subType": "Food",
+    "caps": 23
+  },
+  {
+    "id": 235,
+    "name": "RADSCORPION MEAT",
+    "type": "ITEM",
+    "subType": "Food",
+    "caps": 24
+  },
+  {
+    "id": 236,
+    "name": "RADSTAG MEAT",
+    "type": "ITEM",
+    "subType": "Food",
+    "caps": 24
+  },
+  {
+    "id": 237,
+    "name": "SQUIRREL BITS",
+    "type": "ITEM",
+    "subType": "Food",
+    "caps": 10
+  },
+  {
+    "id": 238,
+    "name": "SQUIRREL ON A STICK",
+    "type": "ITEM",
+    "subType": "Food",
+    "caps": 15
+  },
+  {
+    "id": 239,
+    "name": "SQUIRREL STEW",
+    "type": "ITEM",
+    "subType": "Food",
+    "caps": 20
+  },
+  {
+    "id": 240,
+    "name": "SUGAR BOMBS",
+    "type": "ITEM",
+    "subType": "Food",
+    "caps": 7
+  },
+  {
+    "id": 241,
+    "name": "SUNSET SARSAPARILLA",
+    "type": "ITEM",
+    "subType": "Food",
+    "caps": 17
+  },
+  {
+    "id": 242,
+    "name": "TARBERRY",
+    "type": "ITEM",
+    "subType": "Food",
+    "caps": 7
+  },
+  {
+    "id": 243,
+    "name": "TATO AND WATER",
+    "type": "ITEM",
+    "subType": "Food",
+    "caps": 12
+  },
+  {
+    "id": 244,
+    "name": "YAO GUAI MEAT",
+    "type": "ITEM",
+    "subType": "Food",
+    "caps": 29
+  },
+  {
+    "id": 245,
+    "name": "YAO GUAI RIB MEAT",
+    "type": "ITEM",
+    "subType": "Food",
+    "caps": 24
+  },
+  {
+    "id": 246,
+    "name": "ADMIN PASSWORD",
+    "type": "ITEM",
+    "subType": "Utility",
+    "caps": 25
+  },
+  {
+    "id": 247,
+    "name": "ARMOR PIERCING AMMO",
+    "type": "ITEM",
+    "subType": "Utility",
+    "caps": 1
+  },
+  {
+    "id": 248,
+    "name": "ARTILLERY SMOKE GRENADE",
+    "type": "ITEM",
+    "subType": "Utility",
+    "caps": 4
+  },
+  {
+    "id": 249,
+    "name": "BINOCULARS",
+    "type": "ITEM",
+    "subType": "Utility",
+    "caps": 4
+  },
+  {
+    "id": 250,
+    "name": "CAR SECURITY OVERRIDE",
+    "type": "ITEM",
+    "subType": "Utility",
+    "caps": 1
+  },
+  {
+    "id": 251,
+    "name": "CHEMICAL COATING",
+    "type": "ITEM",
+    "subType": "Utility",
+    "caps": 8
+  },
+  {
+    "id": 252,
+    "name": "CLIMBING SPIKES",
+    "type": "ITEM",
+    "subType": "Utility",
+    "caps": 5
+  },
+  {
+    "id": 253,
+    "name": "CREATURE PATCH",
+    "type": "ITEM",
+    "subType": "Utility",
+    "caps": 8
+  },
+  {
+    "id": 254,
+    "name": "CUSTOM AMMO",
+    "type": "ITEM",
+    "subType": "Utility",
+    "caps": 10
+  },
+  {
+    "id": 255,
+    "name": "DEAD MAN'S SWITCH",
+    "type": "ITEM",
+    "subType": "Utility",
+    "caps": 5
+  },
+  {
+    "id": 256,
+    "name": "DEATHCLAW CONTROL SCRAMBLER",
+    "type": "ITEM",
+    "subType": "Utility",
+    "caps": 10
+  },
+  {
+    "id": 257,
+    "name": "DOMESTICATION UNIT",
+    "type": "ITEM",
+    "subType": "Utility",
+    "caps": 12
+  },
+  {
+    "id": 258,
+    "name": "DRAFT CODEX",
+    "type": "ITEM",
+    "subType": "Utility",
+    "caps": 9
+  },
+  {
+    "id": 259,
+    "name": "FIRE EXTINGUISHER",
+    "type": "ITEM",
+    "subType": "Utility",
+    "caps": 4
+  },
+  {
+    "id": 260,
+    "name": "FLASHLIGHT",
+    "type": "ITEM",
+    "subType": "Utility",
+    "caps": 3
+  },
+  {
+    "id": 261,
+    "name": "FRAGILE BOBBY PIN",
+    "type": "ITEM",
+    "subType": "Utility",
+    "caps": 4
+  },
+  {
+    "id": 262,
+    "name": "FUSION CORE",
+    "type": "ITEM",
+    "subType": "Utility",
+    "caps": 9
+  },
+  {
+    "id": 263,
+    "name": "GEN 1 SYNTH OVERRIDE",
+    "type": "ITEM",
+    "subType": "Utility",
+    "caps": 12
+  },
+  {
+    "id": 264,
+    "name": "HAND-WRITTEN NOTE",
+    "type": "ITEM",
+    "subType": "Utility",
+    "caps": 25
+  },
+  {
+    "id": 265,
+    "name": "HEAVY LASER TURRET",
+    "type": "ITEM",
+    "subType": "Utility",
+    "caps": 15
+  },
+  {
+    "id": 266,
+    "name": "HEAVY WEAPON MOUNT",
+    "type": "ITEM",
+    "subType": "Utility",
+    "caps": 28
+  },
+  {
+    "id": 267,
+    "name": "HOLLOW POINT AMMO",
+    "type": "ITEM",
+    "subType": "Utility",
+    "caps": 2
+  },
+  {
+    "id": 268,
+    "name": "INCENDIARY AMMO",
+    "type": "ITEM",
+    "subType": "Utility",
+    "caps": 3
+  },
+  {
+    "id": 269,
+    "name": "LYONS' INSIGNIA",
+    "type": "ITEM",
+    "subType": "Utility",
+    "caps": 4
+  },
+  {
+    "id": 270,
+    "name": "MIRELURK EGGS",
+    "type": "ITEM",
+    "subType": "Utility",
+    "caps": 12
+  },
+  {
+    "id": 271,
+    "name": "MR HANDY FUEL",
+    "type": "ITEM",
+    "subType": "Utility",
+    "caps": 2
+  },
+  {
+    "id": 272,
+    "name": "NCR EMERGENCY RADIO",
+    "type": "ITEM",
+    "subType": "Utility",
+    "caps": 4
+  },
+  {
+    "id": 273,
+    "name": "OVERCLOCKER",
+    "type": "ITEM",
+    "subType": "Utility",
+    "caps": 8
+  },
+  {
+    "id": 274,
+    "name": "PHEROMONE EMITTER",
+    "type": "ITEM",
+    "subType": "Utility",
+    "caps": 8
+  },
+  {
+    "id": 275,
+    "name": "PHEROMONE MASK",
+    "type": "ITEM",
+    "subType": "Utility",
+    "caps": 12
+  },
+  {
+    "id": 276,
+    "name": "PIPBOY",
+    "type": "ITEM",
+    "subType": "Utility",
+    "caps": 18
+  },
+  {
+    "id": 277,
+    "name": "POWER ARMOR PATCH",
+    "type": "ITEM",
+    "subType": "Utility",
+    "caps": 5
+  },
+  {
+    "id": 278,
+    "name": "PULSE SHIELD",
+    "type": "ITEM",
+    "subType": "Utility",
+    "caps": 8
+  },
+  {
+    "id": 279,
+    "name": "ROBOBRAIN ARMS",
+    "type": "ITEM",
+    "subType": "Utility",
+    "caps": 5
+  },
+  {
+    "id": 280,
+    "name": "ROBOT REPAIR KIT",
+    "type": "ITEM",
+    "subType": "Utility",
+    "caps": 20
+  },
+  {
+    "id": 281,
+    "name": "ROBOT REPAIR PATCH",
+    "type": "ITEM",
+    "subType": "Utility",
+    "caps": 8
+  },
+  {
+    "id": 282,
+    "name": "ROPE",
+    "type": "ITEM",
+    "subType": "Utility",
+    "caps": 2
+  },
+  {
+    "id": 283,
+    "name": "SELF-DESTRUCT",
+    "type": "ITEM",
+    "subType": "Utility",
+    "caps": 5
+  },
+  {
+    "id": 284,
+    "name": "SKELETON KEY",
+    "type": "ITEM",
+    "subType": "Utility",
+    "caps": 25
+  },
+  {
+    "id": 285,
+    "name": "SNAKEBITE TOURNIQUET",
+    "type": "ITEM",
+    "subType": "Utility",
+    "caps": 2
+  },
+  {
+    "id": 286,
+    "name": "STAR PALADIN INSIGNIA",
+    "type": "ITEM",
+    "subType": "Utility",
+    "caps": 5
+  },
+  {
+    "id": 287,
+    "name": "STEALTH BOY",
+    "type": "ITEM",
+    "subType": "Utility",
+    "caps": 22
+  },
+  {
+    "id": 288,
+    "name": "STETHOSCOPE",
+    "type": "ITEM",
+    "subType": "Utility",
+    "caps": 4
+  },
+  {
+    "id": 289,
+    "name": "STUFFED MONKEY",
+    "type": "ITEM",
+    "subType": "Utility",
+    "caps": 5
+  },
+  {
+    "id": 290,
+    "name": "SYNTH BOOSTER",
+    "type": "ITEM",
+    "subType": "Utility",
+    "caps": 15
+  },
+  {
+    "id": 291,
+    "name": "TEMPORARY PASSWORD",
+    "type": "ITEM",
+    "subType": "Utility",
+    "caps": 4
+  },
+  {
+    "id": 292,
+    "name": "THEO'S AMMO CASE",
+    "type": "ITEM",
+    "subType": "Utility",
+    "caps": 8
+  },
+  {
+    "id": 293,
+    "name": "THIRD-ARM CLAMP",
+    "type": "ITEM",
+    "subType": "Utility",
+    "caps": 4
+  },
+  {
+    "id": 294,
+    "name": "TURRET INHIBITORS",
+    "type": "ITEM",
+    "subType": "Utility",
+    "caps": 3
+  },
+  {
+    "id": 295,
+    "name": "UNSENT LETTER",
+    "type": "ITEM",
+    "subType": "Utility",
+    "caps": 50
+  },
+  {
+    "id": 296,
+    "name": "VERTEBIRD SIGNAL GRENADE",
+    "type": "ITEM",
+    "subType": "Utility",
+    "caps": 4
+  },
+  {
+    "id": 297,
+    "name": "VERTIBIRD SIGNAL GRENADE",
+    "type": "ITEM",
+    "subType": "Utility",
+    "caps": 4
+  },
+  {
+    "id": 298,
+    "name": "WEAPON REPAIR KIT",
+    "type": "ITEM",
+    "subType": "Utility",
+    "caps": 4
+  },
+  {
+    "id": 299,
+    "name": "ZAPPER",
+    "type": "ITEM",
+    "subType": "Utility",
+    "caps": 8
+  },
+  {
+    "id": 300,
+    "name": "ADMIRAL'S FRIEND",
+    "type": "ITEM",
+    "subType": "Heavy Weapon",
+    "caps": 20
+  },
+  {
+    "id": 301,
+    "name": "BROADSIDER",
+    "type": "ITEM",
+    "subType": "Heavy Weapon",
+    "caps": 31
+  },
+  {
+    "id": 302,
+    "name": "EUGENE",
+    "type": "ITEM",
+    "subType": "Heavy Weapon",
+    "caps": 36
+  },
+  {
+    "id": 303,
+    "name": "FAT MAN",
+    "type": "ITEM",
+    "subType": "Heavy Weapon",
+    "caps": 45
+  },
+  {
+    "id": 304,
+    "name": "FAWKES' GATLING LASER",
+    "type": "ITEM",
+    "subType": "Heavy Weapon",
+    "caps": 45
+  },
+  {
+    "id": 305,
+    "name": "FINAL JUDGEMENT",
+    "type": "ITEM",
+    "subType": "Heavy Weapon",
+    "caps": 35
+  },
+  {
+    "id": 306,
+    "name": "FLOATER FIREBALL",
+    "type": "ITEM",
+    "subType": "Heavy Weapon",
+    "caps": 0
+  },
+  {
+    "id": 307,
+    "name": "FLOATER FLAMETHROWER",
+    "type": "ITEM",
+    "subType": "Heavy Weapon",
+    "caps": 0
+  },
+  {
+    "id": 308,
+    "name": "FLOATER FREEZER BREATH",
+    "type": "ITEM",
+    "subType": "Heavy Weapon",
+    "caps": 0
+  },
+  {
+    "id": 309,
+    "name": "FREEZING JUNK JET",
+    "type": "ITEM",
+    "subType": "Heavy Weapon",
+    "caps": 12
+  },
+  {
+    "id": 310,
+    "name": "GATLING LASER",
+    "type": "ITEM",
+    "subType": "Heavy Weapon",
+    "caps": 30
+  },
+  {
+    "id": 311,
+    "name": "HARPOON GUN",
+    "type": "ITEM",
+    "subType": "Heavy Weapon",
+    "caps": 25
+  },
+  {
+    "id": 312,
+    "name": "HEAVY INCINERATOR",
+    "type": "ITEM",
+    "subType": "Heavy Weapon",
+    "caps": 35
+  },
+  {
+    "id": 313,
+    "name": "INCINERATOR",
+    "type": "ITEM",
+    "subType": "Heavy Weapon",
+    "caps": 22
+  },
+  {
+    "id": 314,
+    "name": "JUNK JET",
+    "type": "ITEM",
+    "subType": "Heavy Weapon",
+    "caps": 10
+  },
+  {
+    "id": 315,
+    "name": "LIGHT MACHINE GUN",
+    "type": "ITEM",
+    "subType": "Heavy Weapon",
+    "caps": 18
+  },
+  {
+    "id": 316,
+    "name": "MINIGUN",
+    "type": "ITEM",
+    "subType": "Heavy Weapon",
+    "caps": 23
+  },
+  {
+    "id": 317,
+    "name": "MISSILE LAUNCHER",
+    "type": "ITEM",
+    "subType": "Heavy Weapon",
+    "caps": 52
+  },
+  {
+    "id": 318,
+    "name": "MORTAR LAUNCHER",
+    "type": "ITEM",
+    "subType": "Heavy Weapon",
+    "caps": 43
+  },
+  {
+    "id": 319,
+    "name": "SCORCHBEAST QUEEN SCREAM",
+    "type": "ITEM",
+    "subType": "Heavy Weapon",
+    "caps": 0
+  },
+  {
+    "id": 320,
+    "name": "SCORCHBEAST SONIC SCREAM",
+    "type": "ITEM",
+    "subType": "Heavy Weapon",
+    "caps": 0
+  },
+  {
+    "id": 321,
+    "name": "SECURITRON GATLING LASER",
+    "type": "ITEM",
+    "subType": "Heavy Weapon",
+    "caps": 20
+  },
+  {
+    "id": 322,
+    "name": "SECURITRON MISSILE LAUNCHER",
+    "type": "ITEM",
+    "subType": "Heavy Weapon",
+    "caps": 52
+  },
+  {
+    "id": 323,
+    "name": "SPACE LASER",
+    "type": "ITEM",
+    "subType": "Heavy Weapon",
+    "caps": 20
+  },
+  {
+    "id": 324,
+    "name": "TESLA CANNON",
+    "type": "ITEM",
+    "subType": "Heavy Weapon",
+    "caps": 35
+  },
+  {
+    "id": 325,
+    "name": "BELOVED",
+    "type": "ITEM",
+    "subType": "Leader",
+    "caps": 16
+  },
+  {
+    "id": 326,
+    "name": "BERSERKER",
+    "type": "ITEM",
+    "subType": "Leader",
+    "caps": 8
+  },
+  {
+    "id": 327,
+    "name": "BLITZER",
+    "type": "ITEM",
+    "subType": "Leader",
+    "caps": 4
+  },
+  {
+    "id": 328,
+    "name": "BODYGUARD",
+    "type": "ITEM",
+    "subType": "Leader",
+    "caps": 12
+  },
+  {
+    "id": 329,
+    "name": "BRAWLER",
+    "type": "ITEM",
+    "subType": "Leader",
+    "caps": 7
+  },
+  {
+    "id": 330,
+    "name": "BRUISER",
+    "type": "ITEM",
+    "subType": "Leader",
+    "caps": 11
+  },
+  {
+    "id": 331,
+    "name": "CO-ORDINATOR",
+    "type": "ITEM",
+    "subType": "Leader",
+    "caps": 18
+  },
+  {
+    "id": 332,
+    "name": "CREATURE CONTROLLER",
+    "type": "ITEM",
+    "subType": "Leader",
+    "caps": 5
+  },
+  {
+    "id": 333,
+    "name": "DWELLER",
+    "type": "ITEM",
+    "subType": "Leader",
+    "caps": 8
+  },
+  {
+    "id": 334,
+    "name": "FUSILIER",
+    "type": "ITEM",
+    "subType": "Leader",
+    "caps": 12
+  },
+  {
+    "id": 335,
+    "name": "GATHERER",
+    "type": "ITEM",
+    "subType": "Leader",
+    "caps": 12
+  },
+  {
+    "id": 336,
+    "name": "GRENADIER",
+    "type": "ITEM",
+    "subType": "Leader",
+    "caps": 4
+  },
+  {
+    "id": 337,
+    "name": "OLD TIMER",
+    "type": "ITEM",
+    "subType": "Leader",
+    "caps": 3
+  },
+  {
+    "id": 338,
+    "name": "PROCURER",
+    "type": "ITEM",
+    "subType": "Leader",
+    "caps": 10
+  },
+  {
+    "id": 339,
+    "name": "ROBOT CONTROLLER",
+    "type": "ITEM",
+    "subType": "Leader",
+    "caps": 5
+  },
+  {
+    "id": 340,
+    "name": "SELFLESS",
+    "type": "ITEM",
+    "subType": "Leader",
+    "caps": 5
+  },
+  {
+    "id": 341,
+    "name": "SKIPPER",
+    "type": "ITEM",
+    "subType": "Leader",
+    "caps": 15
+  },
+  {
+    "id": 342,
+    "name": "STALKER",
+    "type": "ITEM",
+    "subType": "Leader",
+    "caps": 8
+  },
+  {
+    "id": 343,
+    "name": "SYNTH EXPERT",
+    "type": "ITEM",
+    "subType": "Leader",
+    "caps": 12
+  },
+  {
+    "id": 344,
+    "name": "TACTICIAN",
+    "type": "ITEM",
+    "subType": "Leader",
+    "caps": 13
+  },
+  {
+    "id": 345,
+    "name": "TECH",
+    "type": "ITEM",
+    "subType": "Leader",
+    "caps": 9
+  },
+  {
+    "id": 346,
+    "name": "TECH CHIEF",
+    "type": "ITEM",
+    "subType": "Leader",
+    "caps": 17
+  },
+  {
+    "id": 347,
+    "name": "THIEF",
+    "type": "ITEM",
+    "subType": "Leader",
+    "caps": 12
+  },
+  {
+    "id": 348,
+    "name": "VETERAN",
+    "type": "ITEM",
+    "subType": "Leader",
+    "caps": 8
+  },
+  {
+    "id": 349,
+    "name": "WARDEN",
+    "type": "ITEM",
+    "subType": "Leader",
+    "caps": 12
+  },
+  {
+    "id": 350,
+    "name": "WASTELAND SEARCHER",
+    "type": "ITEM",
+    "subType": "Leader",
+    "caps": 5
+  },
+  {
+    "id": 351,
+    "name": "WRESTLER",
+    "type": "ITEM",
+    "subType": "Leader",
+    "caps": 7
+  },
+  {
+    "id": 352,
+    "name": "ALIEN SWIPE",
+    "type": "ITEM",
+    "subType": "Melee",
+    "caps": 5
+  },
+  {
+    "id": 353,
+    "name": "ANGLER CLAW",
+    "type": "ITEM",
+    "subType": "Melee",
+    "caps": 0
+  },
+  {
+    "id": 354,
+    "name": "ASSAULTRON BLADE",
+    "type": "ITEM",
+    "subType": "Melee",
+    "caps": 4
+  },
+  {
+    "id": 355,
+    "name": "ASSAULTRON SWIPE",
+    "type": "ITEM",
+    "subType": "Melee",
+    "caps": 12
+  },
+  {
+    "id": 356,
+    "name": "BALLISTIC FIST",
+    "type": "ITEM",
+    "subType": "Melee",
+    "caps": 16
+  },
+  {
+    "id": 357,
+    "name": "BASEBALL BAT",
+    "type": "ITEM",
+    "subType": "Melee",
+    "caps": 3
+  },
+  {
+    "id": 358,
+    "name": "BATON",
+    "type": "ITEM",
+    "subType": "Melee",
+    "caps": 10
+  },
+  {
+    "id": 359,
+    "name": "BLADE OF THE EAST",
+    "type": "ITEM",
+    "subType": "Melee",
+    "caps": 25
+  },
+  {
+    "id": 360,
+    "name": "BLOATED GLOWING ONE SWIPE",
+    "type": "ITEM",
+    "subType": "Melee",
+    "caps": 0
+  },
+  {
+    "id": 361,
+    "name": "BLOODBUG PROBOSCIS",
+    "type": "ITEM",
+    "subType": "Melee",
+    "caps": 0
+  },
+  {
+    "id": 362,
+    "name": "BLOODIED BOARD",
+    "type": "ITEM",
+    "subType": "Melee",
+    "caps": 9
+  },
+  {
+    "id": 363,
+    "name": "BLOODIED PIPE WRENCH",
+    "type": "ITEM",
+    "subType": "Melee",
+    "caps": 7
+  },
+  {
+    "id": 364,
+    "name": "BOARD",
+    "type": "ITEM",
+    "subType": "Melee",
+    "caps": 8
+  },
+  {
+    "id": 365,
+    "name": "BRAHMIN TRAMPLE",
+    "type": "ITEM",
+    "subType": "Melee",
+    "caps": 0
+  },
+  {
+    "id": 366,
+    "name": "CATTLE PROD",
+    "type": "ITEM",
+    "subType": "Melee",
+    "caps": 7
+  },
+  {
+    "id": 367,
+    "name": "CENTAUR LASH",
+    "type": "ITEM",
+    "subType": "Melee",
+    "caps": 0
+  },
+  {
+    "id": 368,
+    "name": "CHAINSAW",
+    "type": "ITEM",
+    "subType": "Melee",
+    "caps": 18
+  },
+  {
+    "id": 369,
+    "name": "CHARON'S COMBAT KNIFE",
+    "type": "ITEM",
+    "subType": "Melee",
+    "caps": 10
+  },
+  {
+    "id": 370,
+    "name": "CHINESE OFFICER'S SWORD",
+    "type": "ITEM",
+    "subType": "Melee",
+    "caps": 7
+  },
+  {
+    "id": 371,
+    "name": "COLOSSUS KICK",
+    "type": "ITEM",
+    "subType": "Melee",
+    "caps": 0
+  },
+  {
+    "id": 372,
+    "name": "COMBAT KNIFE",
+    "type": "ITEM",
+    "subType": "Melee",
+    "caps": 9
+  },
+  {
+    "id": 373,
+    "name": "COMMIE WHACKER",
+    "type": "ITEM",
+    "subType": "Melee",
+    "caps": 4
+  },
+  {
+    "id": 374,
+    "name": "CRIPPLING TIRE IRON",
+    "type": "ITEM",
+    "subType": "Melee",
+    "caps": 18
+  },
+  {
+    "id": 375,
+    "name": "CULTIST BLADE",
+    "type": "ITEM",
+    "subType": "Melee",
+    "caps": 8
+  },
+  {
+    "id": 376,
+    "name": "CULTIST DAGGER",
+    "type": "ITEM",
+    "subType": "Melee",
+    "caps": 4
+  },
+  {
+    "id": 377,
+    "name": "DEATHCLAW CRUSH",
+    "type": "ITEM",
+    "subType": "Melee",
+    "caps": 0
+  },
+  {
+    "id": 378,
+    "name": "DEATHCLAW GAUNTLET",
+    "type": "ITEM",
+    "subType": "Melee",
+    "caps": 15
+  },
+  {
+    "id": 379,
+    "name": "DEATHCLAW HEAD BUTT",
+    "type": "ITEM",
+    "subType": "Melee",
+    "caps": 0
+  },
+  {
+    "id": 380,
+    "name": "DEATHCLAW ROAR",
+    "type": "ITEM",
+    "subType": "Melee",
+    "caps": 0
+  },
+  {
+    "id": 381,
+    "name": "DEATHCLAW SWIPE",
+    "type": "ITEM",
+    "subType": "Melee",
+    "caps": 0
+  },
+  {
+    "id": 382,
+    "name": "DEATHCLAW TAIL SWEEP",
+    "type": "ITEM",
+    "subType": "Melee",
+    "caps": 0
+  },
+  {
+    "id": 383,
+    "name": "DEATHCLAW TRAMPLE",
+    "type": "ITEM",
+    "subType": "Melee",
+    "caps": 0
+  },
+  {
+    "id": 384,
+    "name": "DEATHSKULL PINCERS & STING",
+    "type": "ITEM",
+    "subType": "Melee",
+    "caps": 0
+  },
+  {
+    "id": 385,
+    "name": "DISCIPLES BLADE",
+    "type": "ITEM",
+    "subType": "Melee",
+    "caps": 12
+  },
+  {
+    "id": 386,
+    "name": "DOG BITE",
+    "type": "ITEM",
+    "subType": "Melee",
+    "caps": 0
+  },
+  {
+    "id": 387,
+    "name": "DOG TAG FIST",
+    "type": "ITEM",
+    "subType": "Melee",
+    "caps": 2
+  },
+  {
+    "id": 388,
+    "name": "EMPTY MINIGUN",
+    "type": "ITEM",
+    "subType": "Melee",
+    "caps": 14
+  },
+  {
+    "id": 389,
+    "name": "FERAL GHOUL SWIPE",
+    "type": "ITEM",
+    "subType": "Melee",
+    "caps": 0
+  },
+  {
+    "id": 390,
+    "name": "FIRE AXE",
+    "type": "ITEM",
+    "subType": "Melee",
+    "caps": 7
+  },
+  {
+    "id": 391,
+    "name": "FIRE HYDRANT BAT",
+    "type": "ITEM",
+    "subType": "Melee",
+    "caps": 38
+  },
+  {
+    "id": 392,
+    "name": "FOG CRAWLER CLAW",
+    "type": "ITEM",
+    "subType": "Melee",
+    "caps": 0
+  },
+  {
+    "id": 393,
+    "name": "FOG CRAWLER GROUND POUND",
+    "type": "ITEM",
+    "subType": "Melee",
+    "caps": 0
+  },
+  {
+    "id": 394,
+    "name": "FOG VOMIT",
+    "type": "ITEM",
+    "subType": "Melee",
+    "caps": 0
+  },
+  {
+    "id": 395,
+    "name": "FREEZING MACHETE",
+    "type": "ITEM",
+    "subType": "Melee",
+    "caps": 5
+  },
+  {
+    "id": 396,
+    "name": "GATORCLAW CLAWS",
+    "type": "ITEM",
+    "subType": "Melee",
+    "caps": 0
+  },
+  {
+    "id": 397,
+    "name": "GATORCLAW JAWS",
+    "type": "ITEM",
+    "subType": "Melee",
+    "caps": 0
+  },
+  {
+    "id": 398,
+    "name": "GLOWING BLOODBUG PROBOSCIS",
+    "type": "ITEM",
+    "subType": "Melee",
+    "caps": 0
+  },
+  {
+    "id": 399,
+    "name": "GLOWING BLOODBUG STING",
+    "type": "ITEM",
+    "subType": "Melee",
+    "caps": 0
+  },
+  {
+    "id": 400,
+    "name": "GLOWING RADROACH SWARM BITE",
+    "type": "ITEM",
+    "subType": "Melee",
+    "caps": 0
+  },
+  {
+    "id": 401,
+    "name": "GLOWING RADTOAD TEETH",
+    "type": "ITEM",
+    "subType": "Melee",
+    "caps": 0
+  },
+  {
+    "id": 402,
+    "name": "GLOWING WENDIGO SWIPE",
+    "type": "ITEM",
+    "subType": "Melee",
+    "caps": 0
+  },
+  {
+    "id": 403,
+    "name": "GLOWING YAO GUAI SWIPE",
+    "type": "ITEM",
+    "subType": "Melee",
+    "caps": 0
+  },
+  {
+    "id": 404,
+    "name": "GRAFTON SLAM",
+    "type": "ITEM",
+    "subType": "Melee",
+    "caps": 0
+  },
+  {
+    "id": 405,
+    "name": "GROGNAK'S AXE",
+    "type": "ITEM",
+    "subType": "Melee",
+    "caps": 16
+  },
+  {
+    "id": 406,
+    "name": "GROGNAK'S SWORD",
+    "type": "ITEM",
+    "subType": "Melee",
+    "caps": 20
+  },
+  {
+    "id": 407,
+    "name": "GULPER BITE",
+    "type": "ITEM",
+    "subType": "Melee",
+    "caps": 0
+  },
+  {
+    "id": 408,
+    "name": "GULPER SLAM",
+    "type": "ITEM",
+    "subType": "Melee",
+    "caps": 0
+  },
+  {
+    "id": 409,
+    "name": "HAND SAW BLADE",
+    "type": "ITEM",
+    "subType": "Melee",
+    "caps": 6
+  },
+  {
+    "id": 410,
+    "name": "HAND SHOCK",
+    "type": "ITEM",
+    "subType": "Melee",
+    "caps": 25
+  },
+  {
+    "id": 411,
+    "name": "HAND VICE GRIP",
+    "type": "ITEM",
+    "subType": "Melee",
+    "caps": 3
+  },
+  {
+    "id": 412,
+    "name": "HATCHLING SONIC WAVE",
+    "type": "ITEM",
+    "subType": "Melee",
+    "caps": 0
+  },
+  {
+    "id": 413,
+    "name": "HERMIT CRAB PINCER",
+    "type": "ITEM",
+    "subType": "Melee",
+    "caps": 0
+  },
+  {
+    "id": 414,
+    "name": "HORRIGAN'S KNIFE",
+    "type": "ITEM",
+    "subType": "Melee",
+    "caps": 40
+  },
+  {
+    "id": 415,
+    "name": "HOUND BITE",
+    "type": "ITEM",
+    "subType": "Melee",
+    "caps": 0
+  },
+  {
+    "id": 416,
+    "name": "HUGE CLUB",
+    "type": "ITEM",
+    "subType": "Melee",
+    "caps": 21
+  },
+  {
+    "id": 417,
+    "name": "HUNTER'S BASEBALL BAT",
+    "type": "ITEM",
+    "subType": "Melee",
+    "caps": 4
+  },
+  {
+    "id": 418,
+    "name": "INCENDIARY BATON",
+    "type": "ITEM",
+    "subType": "Melee",
+    "caps": 13
+  },
+  {
+    "id": 419,
+    "name": "INCENDIARY SUPER SLEDGE",
+    "type": "ITEM",
+    "subType": "Melee",
+    "caps": 33
+  },
+  {
+    "id": 420,
+    "name": "IRRADIATED SLEDGEHAMMER",
+    "type": "ITEM",
+    "subType": "Melee",
+    "caps": 14
+  },
+  {
+    "id": 421,
+    "name": "JUNKIE'S NAIL BOARD",
+    "type": "ITEM",
+    "subType": "Melee",
+    "caps": 4
+  },
+  {
+    "id": 422,
+    "name": "LEAD PIPE",
+    "type": "ITEM",
+    "subType": "Melee",
+    "caps": 9
+  },
+  {
+    "id": 423,
+    "name": "MACHETE",
+    "type": "ITEM",
+    "subType": "Melee",
+    "caps": 3
+  },
+  {
+    "id": 424,
+    "name": "MACHETE GLADIUS",
+    "type": "ITEM",
+    "subType": "Melee",
+    "caps": 5
+  },
+  {
+    "id": 425,
+    "name": "MARCUS PUNCH",
+    "type": "ITEM",
+    "subType": "Melee",
+    "caps": 0
+  },
+  {
+    "id": 426,
+    "name": "MATRIARCH SWIPE",
+    "type": "ITEM",
+    "subType": "Melee",
+    "caps": 0
+  },
+  {
+    "id": 427,
+    "name": "MEAT HOOK",
+    "type": "ITEM",
+    "subType": "Melee",
+    "caps": 5
+  },
+  {
+    "id": 428,
+    "name": "MEGA SLOTH CLAWS",
+    "type": "ITEM",
+    "subType": "Melee",
+    "caps": 0
+  },
+  {
+    "id": 429,
+    "name": "MIRELURK CLAW",
+    "type": "ITEM",
+    "subType": "Melee",
+    "caps": 0
+  },
+  {
+    "id": 430,
+    "name": "MIRELURK HATCHLING CLAW",
+    "type": "ITEM",
+    "subType": "Melee",
+    "caps": 0
+  },
+  {
+    "id": 431,
+    "name": "MIRELURK HUNTER CLAW",
+    "type": "ITEM",
+    "subType": "Melee",
+    "caps": 0
+  },
+  {
+    "id": 432,
+    "name": "MIRELURK KING CLAWS",
+    "type": "ITEM",
+    "subType": "Melee",
+    "caps": 0
+  },
+  {
+    "id": 433,
+    "name": "MIRELURK QUEEN CLAW",
+    "type": "ITEM",
+    "subType": "Melee",
+    "caps": 0
+  },
+  {
+    "id": 434,
+    "name": "MOLE RAT BITE",
+    "type": "ITEM",
+    "subType": "Melee",
+    "caps": 0
+  },
+  {
+    "id": 435,
+    "name": "MOLE RAT REPELLENT STICK",
+    "type": "ITEM",
+    "subType": "Melee",
+    "caps": 2
+  },
+  {
+    "id": 436,
+    "name": "MONGREL BITE",
+    "type": "ITEM",
+    "subType": "Melee",
+    "caps": 0
+  },
+  {
+    "id": 437,
+    "name": "MOTHMAN SONIC WAVE",
+    "type": "ITEM",
+    "subType": "Melee",
+    "caps": 0
+  },
+  {
+    "id": 438,
+    "name": "MR HANDY BUZZ BLADE",
+    "type": "ITEM",
+    "subType": "Melee",
+    "caps": 7
+  },
+  {
+    "id": 439,
+    "name": "MR HANDY BUZZSAW",
+    "type": "ITEM",
+    "subType": "Melee",
+    "caps": 6
+  },
+  {
+    "id": 440,
+    "name": "NAIL BOARD",
+    "type": "ITEM",
+    "subType": "Melee",
+    "caps": 3
+  },
+  {
+    "id": 441,
+    "name": "NUKALURK HATCHLINGS CLAW",
+    "type": "ITEM",
+    "subType": "Melee",
+    "caps": 0
+  },
+  {
+    "id": 442,
+    "name": "NUKALURK QUEEN CLAW",
+    "type": "ITEM",
+    "subType": "Melee",
+    "caps": 0
+  },
+  {
+    "id": 443,
+    "name": "PENETRATING LEAD PIPE",
+    "type": "ITEM",
+    "subType": "Melee",
+    "caps": 13
+  },
+  {
+    "id": 444,
+    "name": "PIPE WRENCH",
+    "type": "ITEM",
+    "subType": "Melee",
+    "caps": 6
+  },
+  {
+    "id": 445,
+    "name": "PLASMA INFUSED ASSAULTRON BLADE",
+    "type": "ITEM",
+    "subType": "Melee",
+    "caps": 5
+  },
+  {
+    "id": 446,
+    "name": "POISONER'S RIPPER",
+    "type": "ITEM",
+    "subType": "Melee",
+    "caps": 7
+  },
+  {
+    "id": 447,
+    "name": "POLE HOOK",
+    "type": "ITEM",
+    "subType": "Melee",
+    "caps": 5
+  },
+  {
+    "id": 448,
+    "name": "POWER FIST",
+    "type": "ITEM",
+    "subType": "Melee",
+    "caps": 6
+  },
+  {
+    "id": 449,
+    "name": "POWER-ARMOURED FIST",
+    "type": "ITEM",
+    "subType": "Melee",
+    "caps": 6
+  },
+  {
+    "id": 450,
+    "name": "PUTRID GLOWING ONE SWIPE",
+    "type": "ITEM",
+    "subType": "Melee",
+    "caps": 0
+  },
+  {
+    "id": 451,
+    "name": "RADROACH SWARM BITE",
+    "type": "ITEM",
+    "subType": "Melee",
+    "caps": 0
+  },
+  {
+    "id": 452,
+    "name": "RADSCORPION PINCERS & STING",
+    "type": "ITEM",
+    "subType": "Melee",
+    "caps": 0
+  },
+  {
+    "id": 453,
+    "name": "RADSTAG DOE GORE",
+    "type": "ITEM",
+    "subType": "Melee",
+    "caps": 0
+  },
+  {
+    "id": 454,
+    "name": "RADSTAG GORE",
+    "type": "ITEM",
+    "subType": "Melee",
+    "caps": 0
+  },
+  {
+    "id": 455,
+    "name": "RADTOAD TEETH",
+    "type": "ITEM",
+    "subType": "Melee",
+    "caps": 0
+  },
+  {
+    "id": 456,
+    "name": "REBAR CLUB",
+    "type": "ITEM",
+    "subType": "Melee",
+    "caps": 18
+  },
+  {
+    "id": 457,
+    "name": "RELENTLESS CHINESE OFFICER'S SWORD",
+    "type": "ITEM",
+    "subType": "Melee",
+    "caps": 9
+  },
+  {
+    "id": 458,
+    "name": "RIPPER",
+    "type": "ITEM",
+    "subType": "Melee",
+    "caps": 6
+  },
+  {
+    "id": 459,
+    "name": "ROBOT SWIPE",
+    "type": "ITEM",
+    "subType": "Melee",
+    "caps": 14
+  },
+  {
+    "id": 460,
+    "name": "SCORCHBEAST CLAWS",
+    "type": "ITEM",
+    "subType": "Melee",
+    "caps": 0
+  },
+  {
+    "id": 461,
+    "name": "SCORCHBEAST QUEEN BLAST",
+    "type": "ITEM",
+    "subType": "Melee",
+    "caps": 0
+  },
+  {
+    "id": 462,
+    "name": "SCORCHBEAST QUEEN CLAWS",
+    "type": "ITEM",
+    "subType": "Melee",
+    "caps": 0
+  },
+  {
+    "id": 463,
+    "name": "SCORCHBEAST QUEEN RADIATION SWEEP",
+    "type": "ITEM",
+    "subType": "Melee",
+    "caps": 0
+  },
+  {
+    "id": 464,
+    "name": "SCORCHED SWIPE",
+    "type": "ITEM",
+    "subType": "Melee",
+    "caps": 0
+  },
+  {
+    "id": 465,
+    "name": "SHEEPSQUATCH RAM",
+    "type": "ITEM",
+    "subType": "Melee",
+    "caps": 0
+  },
+  {
+    "id": 466,
+    "name": "SHEEPSQUATCH SWIPE",
+    "type": "ITEM",
+    "subType": "Melee",
+    "caps": 0
+  },
+  {
+    "id": 467,
+    "name": "SHIP ANCHOR",
+    "type": "ITEM",
+    "subType": "Melee",
+    "caps": 34
+  },
+  {
+    "id": 468,
+    "name": "SHIP ANCHOR SLAM",
+    "type": "ITEM",
+    "subType": "Melee",
+    "caps": 0
+  },
+  {
+    "id": 469,
+    "name": "SHIP ANCHOR SWEEP",
+    "type": "ITEM",
+    "subType": "Melee",
+    "caps": 0
+  },
+  {
+    "id": 470,
+    "name": "SHISHKEBAB",
+    "type": "ITEM",
+    "subType": "Melee",
+    "caps": 15
+  },
+  {
+    "id": 471,
+    "name": "SKI SWORD",
+    "type": "ITEM",
+    "subType": "Melee",
+    "caps": 8
+  },
+  {
+    "id": 472,
+    "name": "SLEDGEHAMMER",
+    "type": "ITEM",
+    "subType": "Melee",
+    "caps": 12
+  },
+  {
+    "id": 473,
+    "name": "SNALLYGASTER TONGUE LASH",
+    "type": "ITEM",
+    "subType": "Melee",
+    "caps": 0
+  },
+  {
+    "id": 474,
+    "name": "SPEAR",
+    "type": "ITEM",
+    "subType": "Melee",
+    "caps": 6
+  },
+  {
+    "id": 475,
+    "name": "STAGGERING TIRE IRON",
+    "type": "ITEM",
+    "subType": "Melee",
+    "caps": 16
+  },
+  {
+    "id": 476,
+    "name": "STINGWING STING",
+    "type": "ITEM",
+    "subType": "Melee",
+    "caps": 0
+  },
+  {
+    "id": 477,
+    "name": "STUN BATON",
+    "type": "ITEM",
+    "subType": "Melee",
+    "caps": 25
+  },
+  {
+    "id": 478,
+    "name": "SUPER SLEDGE",
+    "type": "ITEM",
+    "subType": "Melee",
+    "caps": 30
+  },
+  {
+    "id": 479,
+    "name": "SWAN GRAB",
+    "type": "ITEM",
+    "subType": "Melee",
+    "caps": 0
+  },
+  {
+    "id": 480,
+    "name": "SWITCHBLADE",
+    "type": "ITEM",
+    "subType": "Melee",
+    "caps": 2
+  },
+  {
+    "id": 481,
+    "name": "SWORD OF WONDERS",
+    "type": "ITEM",
+    "subType": "Melee",
+    "caps": 15
+  },
+  {
+    "id": 482,
+    "name": "TESSA'S FIST",
+    "type": "ITEM",
+    "subType": "Melee",
+    "caps": 0
+  },
+  {
+    "id": 483,
+    "name": "THERMIC LANCE",
+    "type": "ITEM",
+    "subType": "Melee",
+    "caps": 35
+  },
+  {
+    "id": 484,
+    "name": "TIRE IRON",
+    "type": "ITEM",
+    "subType": "Melee",
+    "caps": 12
+  },
+  {
+    "id": 485,
+    "name": "TROUBLESHOOTER'S NAIL BOARD",
+    "type": "ITEM",
+    "subType": "Melee",
+    "caps": 2
+  },
+  {
+    "id": 486,
+    "name": "TROUBLESHOOTER'S PIPE WRENCH",
+    "type": "ITEM",
+    "subType": "Melee",
+    "caps": 7
+  },
+  {
+    "id": 487,
+    "name": "VERTIBIRD BLADE",
+    "type": "ITEM",
+    "subType": "Melee",
+    "caps": 22
+  },
+  {
+    "id": 488,
+    "name": "WAR GLAIVE",
+    "type": "ITEM",
+    "subType": "Melee",
+    "caps": 12
+  },
+  {
+    "id": 489,
+    "name": "WEAK FERAL GHOUL SWIPE",
+    "type": "ITEM",
+    "subType": "Melee",
+    "caps": 0
+  },
+  {
+    "id": 490,
+    "name": "WENDIGO SWIPE",
+    "type": "ITEM",
+    "subType": "Melee",
+    "caps": 0
+  },
+  {
+    "id": 491,
+    "name": "WOUNDING MACHETE",
+    "type": "ITEM",
+    "subType": "Melee",
+    "caps": 3
+  },
+  {
+    "id": 492,
+    "name": "YAO GUAI SWIPE",
+    "type": "ITEM",
+    "subType": "Melee",
+    "caps": 0
+  },
+  {
+    "id": 493,
+    "name": "YOUNG DEATHCLAW CRUSH",
+    "type": "ITEM",
+    "subType": "Melee",
+    "caps": 0
+  },
+  {
+    "id": 494,
+    "name": "YOUNG DEATHCLAW SWIPE",
+    "type": "ITEM",
+    "subType": "Melee",
+    "caps": 0
+  },
+  {
+    "id": 495,
+    "name": "YOUNG FOG CRAWLER CLAW",
+    "type": "ITEM",
+    "subType": "Melee",
+    "caps": 0
+  },
+  {
+    "id": 496,
+    "name": "YOUNG MIRELURK QUEEN CLAW",
+    "type": "ITEM",
+    "subType": "Melee",
+    "caps": 0
+  },
+  {
+    "id": 497,
+    "name": "BOTTLECAP MINE",
+    "type": "ITEM",
+    "subType": "Mine",
+    "caps": 10
+  },
+  {
+    "id": 498,
+    "name": "C-4 PLASTIC EXPLOSIVE",
+    "type": "ITEM",
+    "subType": "Mine",
+    "caps": 10
+  },
+  {
+    "id": 499,
+    "name": "FRAGMENTATION MINE",
+    "type": "ITEM",
+    "subType": "Mine",
+    "caps": 5
+  },
+  {
+    "id": 500,
+    "name": "PULSE MINE",
+    "type": "ITEM",
+    "subType": "Mine",
+    "caps": 4
+  },
+  {
+    "id": 501,
+    "name": "ABRAXO PAINT",
+    "type": "ITEM",
+    "subType": "Mod",
+    "caps": 12
+  },
+  {
+    "id": 502,
+    "name": "ALIGNED SIGHTS",
+    "type": "ITEM",
+    "subType": "Mod",
+    "caps": 12
+  },
+  {
+    "id": 503,
+    "name": "ARM BREAKER",
+    "type": "ITEM",
+    "subType": "Mod",
+    "caps": 4
+  },
+  {
+    "id": 504,
+    "name": "ARMOR PIERCING RECEIVER",
+    "type": "ITEM",
+    "subType": "Mod",
+    "caps": 4
+  },
+  {
+    "id": 505,
+    "name": "ASBESTOS LINING",
+    "type": "ITEM",
+    "subType": "Mod",
+    "caps": 13
+  },
+  {
+    "id": 506,
+    "name": "AUTOMATIC",
+    "type": "ITEM",
+    "subType": "Mod",
+    "caps": 12
+  },
+  {
+    "id": 507,
+    "name": "BALANCED",
+    "type": "ITEM",
+    "subType": "Mod",
+    "caps": 9
+  },
+  {
+    "id": 508,
+    "name": "BALLISTIC WEAVE",
+    "type": "ITEM",
+    "subType": "Mod",
+    "caps": 7
+  },
+  {
+    "id": 509,
+    "name": "BARBED",
+    "type": "ITEM",
+    "subType": "Mod",
+    "caps": 3
+  },
+  {
+    "id": 510,
+    "name": "BAYONET",
+    "type": "ITEM",
+    "subType": "Mod",
+    "caps": 2
+  },
+  {
+    "id": 511,
+    "name": "BAYONET MOD",
+    "type": "ITEM",
+    "subType": "Mod",
+    "caps": 2
+  },
+  {
+    "id": 512,
+    "name": "BIOCOMM MESH",
+    "type": "ITEM",
+    "subType": "Mod",
+    "caps": 6
+  },
+  {
+    "id": 513,
+    "name": "BOOSTED SERVOS",
+    "type": "ITEM",
+    "subType": "Mod",
+    "caps": 6
+  },
+  {
+    "id": 514,
+    "name": "BRACED",
+    "type": "ITEM",
+    "subType": "Mod",
+    "caps": 5
+  },
+  {
+    "id": 515,
+    "name": "CLOSE QUARTERS",
+    "type": "ITEM",
+    "subType": "Mod",
+    "caps": 7
+  },
+  {
+    "id": 516,
+    "name": "COMFORT GRIP",
+    "type": "ITEM",
+    "subType": "Mod",
+    "caps": 10
+  },
+  {
+    "id": 517,
+    "name": "CONDITIONING: ACTIVE",
+    "type": "ITEM",
+    "subType": "Mod",
+    "caps": 5
+  },
+  {
+    "id": 518,
+    "name": "CONDITIONING: ADRENALINE",
+    "type": "ITEM",
+    "subType": "Mod",
+    "caps": 3
+  },
+  {
+    "id": 519,
+    "name": "CONDITIONING: ANKLE BITER",
+    "type": "ITEM",
+    "subType": "Mod",
+    "caps": 8
+  },
+  {
+    "id": 520,
+    "name": "CONDITIONING: ARM BREAKER",
+    "type": "ITEM",
+    "subType": "Mod",
+    "caps": 12
+  },
+  {
+    "id": 521,
+    "name": "CONDITIONING: CHAMPION",
+    "type": "ITEM",
+    "subType": "Mod",
+    "caps": 10
+  },
+  {
+    "id": 522,
+    "name": "CONDITIONING: CHANCER",
+    "type": "ITEM",
+    "subType": "Mod",
+    "caps": 12
+  },
+  {
+    "id": 523,
+    "name": "CONDITIONING: CHIEF",
+    "type": "ITEM",
+    "subType": "Mod",
+    "caps": 15
+  },
+  {
+    "id": 524,
+    "name": "CONDITIONING: CRAFTY",
+    "type": "ITEM",
+    "subType": "Mod",
+    "caps": 5
+  },
+  {
+    "id": 525,
+    "name": "CONDITIONING: DASH",
+    "type": "ITEM",
+    "subType": "Mod",
+    "caps": 9
+  },
+  {
+    "id": 526,
+    "name": "CONDITIONING: FAST",
+    "type": "ITEM",
+    "subType": "Mod",
+    "caps": 4
+  },
+  {
+    "id": 527,
+    "name": "CONDITIONING: FEROCIOUS",
+    "type": "ITEM",
+    "subType": "Mod",
+    "caps": 3
+  },
+  {
+    "id": 528,
+    "name": "CONDITIONING: HAYMAKER",
+    "type": "ITEM",
+    "subType": "Mod",
+    "caps": 12
+  },
+  {
+    "id": 529,
+    "name": "CONDITIONING: HIT AND RUN",
+    "type": "ITEM",
+    "subType": "Mod",
+    "caps": 8
+  },
+  {
+    "id": 530,
+    "name": "CONDITIONING: INDEPENDENT",
+    "type": "ITEM",
+    "subType": "Mod",
+    "caps": 11
+  },
+  {
+    "id": 531,
+    "name": "CONDITIONING: LEAN",
+    "type": "ITEM",
+    "subType": "Mod",
+    "caps": 3
+  },
+  {
+    "id": 532,
+    "name": "CONDITIONING: RAGE",
+    "type": "ITEM",
+    "subType": "Mod",
+    "caps": 2
+  },
+  {
+    "id": 533,
+    "name": "CONDITIONING: SAVAGE",
+    "type": "ITEM",
+    "subType": "Mod",
+    "caps": 8
+  },
+  {
+    "id": 534,
+    "name": "CONDITIONING: SNIFFER",
+    "type": "ITEM",
+    "subType": "Mod",
+    "caps": 5
+  },
+  {
+    "id": 535,
+    "name": "CONDITIONING: STUNNING",
+    "type": "ITEM",
+    "subType": "Mod",
+    "caps": 12
+  },
+  {
+    "id": 536,
+    "name": "CONDITIONING: VICIOUS",
+    "type": "ITEM",
+    "subType": "Mod",
+    "caps": 8
+  },
+  {
+    "id": 537,
+    "name": "CONDITIONING: VIGILANT",
+    "type": "ITEM",
+    "subType": "Mod",
+    "caps": 5
+  },
+  {
+    "id": 538,
+    "name": "CONDITIONING: WILY",
+    "type": "ITEM",
+    "subType": "Mod",
+    "caps": 7
+  },
+  {
+    "id": 539,
+    "name": "CORE ASSEMBLY",
+    "type": "ITEM",
+    "subType": "Mod",
+    "caps": 3
+  },
+  {
+    "id": 540,
+    "name": "COUNTERWEIGHT",
+    "type": "ITEM",
+    "subType": "Mod",
+    "caps": 5
+  },
+  {
+    "id": 541,
+    "name": "CUSHIONED",
+    "type": "ITEM",
+    "subType": "Mod",
+    "caps": 1
+  },
+  {
+    "id": 542,
+    "name": "CUSTOM FITTED",
+    "type": "ITEM",
+    "subType": "Mod",
+    "caps": 5
+  },
+  {
+    "id": 543,
+    "name": "DAMAGE SELF-DESTRUCT",
+    "type": "ITEM",
+    "subType": "Mod",
+    "caps": 4
+  },
+  {
+    "id": 544,
+    "name": "DISSIPATING",
+    "type": "ITEM",
+    "subType": "Mod",
+    "caps": 7
+  },
+  {
+    "id": 545,
+    "name": "ELDER PAINT",
+    "type": "ITEM",
+    "subType": "Mod",
+    "caps": 8
+  },
+  {
+    "id": 546,
+    "name": "EMERGENCY PROTOCOLS",
+    "type": "ITEM",
+    "subType": "Mod",
+    "caps": 6
+  },
+  {
+    "id": 547,
+    "name": "ENRAGE",
+    "type": "ITEM",
+    "subType": "Mod",
+    "caps": 18
+  },
+  {
+    "id": 548,
+    "name": "EXPLOSIVE SHIELDING",
+    "type": "ITEM",
+    "subType": "Mod",
+    "caps": 4
+  },
+  {
+    "id": 549,
+    "name": "EXPLOSIVE VENT",
+    "type": "ITEM",
+    "subType": "Mod",
+    "caps": 6
+  },
+  {
+    "id": 550,
+    "name": "HACKING MODULE",
+    "type": "ITEM",
+    "subType": "Mod",
+    "caps": 5
+  },
+  {
+    "id": 551,
+    "name": "HAIR TRIGGER",
+    "type": "ITEM",
+    "subType": "Mod",
+    "caps": 6
+  },
+  {
+    "id": 552,
+    "name": "HARDENED RECEIVER",
+    "type": "ITEM",
+    "subType": "Mod",
+    "caps": 7
+  },
+  {
+    "id": 553,
+    "name": "HEADLAMP",
+    "type": "ITEM",
+    "subType": "Mod",
+    "caps": 3
+  },
+  {
+    "id": 554,
+    "name": "HEADLAMP (POWER ARMOR)",
+    "type": "ITEM",
+    "subType": "Mod",
+    "caps": 8
+  },
+  {
+    "id": 555,
+    "name": "HIGH CALIBER",
+    "type": "ITEM",
+    "subType": "Mod",
+    "caps": 8
+  },
+  {
+    "id": 556,
+    "name": "HOT ROD SHARK PAINT",
+    "type": "ITEM",
+    "subType": "Mod",
+    "caps": 6
+  },
+  {
+    "id": 557,
+    "name": "HYDRAULIC BRACERS",
+    "type": "ITEM",
+    "subType": "Mod",
+    "caps": 3
+  },
+  {
+    "id": 558,
+    "name": "IMPACT EXCHANGER",
+    "type": "ITEM",
+    "subType": "Mod",
+    "caps": 9
+  },
+  {
+    "id": 559,
+    "name": "IMPROVED FLEXIBILITY",
+    "type": "ITEM",
+    "subType": "Mod",
+    "caps": 2
+  },
+  {
+    "id": 560,
+    "name": "INTERNAL DATABASE",
+    "type": "ITEM",
+    "subType": "Mod",
+    "caps": 3
+  },
+  {
+    "id": 561,
+    "name": "JAGGED",
+    "type": "ITEM",
+    "subType": "Mod",
+    "caps": 6
+  },
+  {
+    "id": 562,
+    "name": "JET PACK",
+    "type": "ITEM",
+    "subType": "Mod",
+    "caps": 8
+  },
+  {
+    "id": 563,
+    "name": "LEAD LINED",
+    "type": "ITEM",
+    "subType": "Mod",
+    "caps": 4
+  },
+  {
+    "id": 564,
+    "name": "LENGTHENED BARREL",
+    "type": "ITEM",
+    "subType": "Mod",
+    "caps": 4
+  },
+  {
+    "id": 565,
+    "name": "LIGHT",
+    "type": "ITEM",
+    "subType": "Mod",
+    "caps": 6
+  },
+  {
+    "id": 566,
+    "name": "LIGHTWEIGHT",
+    "type": "ITEM",
+    "subType": "Mod",
+    "caps": 3
+  },
+  {
+    "id": 567,
+    "name": "LOCKPICK MODULE",
+    "type": "ITEM",
+    "subType": "Mod",
+    "caps": 5
+  },
+  {
+    "id": 568,
+    "name": "LONG BARREL",
+    "type": "ITEM",
+    "subType": "Mod",
+    "caps": 4
+  },
+  {
+    "id": 569,
+    "name": "MAGNETIC ATTACHMENT",
+    "type": "ITEM",
+    "subType": "Mod",
+    "caps": 2
+  },
+  {
+    "id": 570,
+    "name": "MARKSMAN'S",
+    "type": "ITEM",
+    "subType": "Mod",
+    "caps": 5
+  },
+  {
+    "id": 571,
+    "name": "MEDIC PUMP",
+    "type": "ITEM",
+    "subType": "Mod",
+    "caps": 10
+  },
+  {
+    "id": 572,
+    "name": "MOTHMAN ICON",
+    "type": "ITEM",
+    "subType": "Mod",
+    "caps": 8
+  },
+  {
+    "id": 573,
+    "name": "MUFFLED",
+    "type": "ITEM",
+    "subType": "Mod",
+    "caps": 5
+  },
+  {
+    "id": 574,
+    "name": "MULTI-CALIBER",
+    "type": "ITEM",
+    "subType": "Mod",
+    "caps": 3
+  },
+  {
+    "id": 575,
+    "name": "MULTI-CALIBRE",
+    "type": "ITEM",
+    "subType": "Mod",
+    "caps": 3
+  },
+  {
+    "id": 576,
+    "name": "MULTI-PURPOSE",
+    "type": "ITEM",
+    "subType": "Mod",
+    "caps": 3
+  },
+  {
+    "id": 577,
+    "name": "NOXIOUS ARMOR",
+    "type": "ITEM",
+    "subType": "Mod",
+    "caps": 14
+  },
+  {
+    "id": 578,
+    "name": "NUKA-COLA PAINT JOB",
+    "type": "ITEM",
+    "subType": "Mod",
+    "caps": 5
+  },
+  {
+    "id": 579,
+    "name": "NUKA-COLA QUANTUM PAINT JOB",
+    "type": "ITEM",
+    "subType": "Mod",
+    "caps": 15
+  },
+  {
+    "id": 580,
+    "name": "OPTIMIZED SENSORS",
+    "type": "ITEM",
+    "subType": "Mod",
+    "caps": 5
+  },
+  {
+    "id": 581,
+    "name": "OPTIMIZED SERVOS",
+    "type": "ITEM",
+    "subType": "Mod",
+    "caps": 5
+  },
+  {
+    "id": 582,
+    "name": "PADDED",
+    "type": "ITEM",
+    "subType": "Mod",
+    "caps": 6
+  },
+  {
+    "id": 583,
+    "name": "PNEUMATIC",
+    "type": "ITEM",
+    "subType": "Mod",
+    "caps": 6
+  },
+  {
+    "id": 584,
+    "name": "POWERFUL",
+    "type": "ITEM",
+    "subType": "Mod",
+    "caps": 12
+  },
+  {
+    "id": 585,
+    "name": "PRECISION",
+    "type": "ITEM",
+    "subType": "Mod",
+    "caps": 10
+  },
+  {
+    "id": 586,
+    "name": "PROCESSOR OVERCHARGER",
+    "type": "ITEM",
+    "subType": "Mod",
+    "caps": 2
+  },
+  {
+    "id": 587,
+    "name": "RADIATION COILS",
+    "type": "ITEM",
+    "subType": "Mod",
+    "caps": 5
+  },
+  {
+    "id": 588,
+    "name": "RE-BORED",
+    "type": "ITEM",
+    "subType": "Mod",
+    "caps": 8
+  },
+  {
+    "id": 589,
+    "name": "REACTIVE PLATES",
+    "type": "ITEM",
+    "subType": "Mod",
+    "caps": 9
+  },
+  {
+    "id": 590,
+    "name": "RECON SENSORS",
+    "type": "ITEM",
+    "subType": "Mod",
+    "caps": 4
+  },
+  {
+    "id": 591,
+    "name": "RECON SENSORS (ROBOT)",
+    "type": "ITEM",
+    "subType": "Mod",
+    "caps": 4
+  },
+  {
+    "id": 592,
+    "name": "REFINED",
+    "type": "ITEM",
+    "subType": "Mod",
+    "caps": 2
+  },
+  {
+    "id": 593,
+    "name": "REFLEX SIGHTS",
+    "type": "ITEM",
+    "subType": "Mod",
+    "caps": 10
+  },
+  {
+    "id": 594,
+    "name": "REGENERATION FIELD",
+    "type": "ITEM",
+    "subType": "Mod",
+    "caps": 8
+  },
+  {
+    "id": 595,
+    "name": "RESISTANCE FIELD",
+    "type": "ITEM",
+    "subType": "Mod",
+    "caps": 14
+  },
+  {
+    "id": 596,
+    "name": "RUSTY KNUCKLES",
+    "type": "ITEM",
+    "subType": "Mod",
+    "caps": 2
+  },
+  {
+    "id": 597,
+    "name": "SEMI-AUTO",
+    "type": "ITEM",
+    "subType": "Mod",
+    "caps": 6
+  },
+  {
+    "id": 598,
+    "name": "SENSOR ARRAY (POWER ARMOR)",
+    "type": "ITEM",
+    "subType": "Mod",
+    "caps": 12
+  },
+  {
+    "id": 599,
+    "name": "SENSOR ARRAY (ROBOTS)",
+    "type": "ITEM",
+    "subType": "Mod",
+    "caps": 18
+  },
+  {
+    "id": 600,
+    "name": "SERRATED BAYONET",
+    "type": "ITEM",
+    "subType": "Mod",
+    "caps": 3
+  },
+  {
+    "id": 601,
+    "name": "SERRATED BODYWORK",
+    "type": "ITEM",
+    "subType": "Mod",
+    "caps": 3
+  },
+  {
+    "id": 602,
+    "name": "SERVO BOOST",
+    "type": "ITEM",
+    "subType": "Mod",
+    "caps": 4
+  },
+  {
+    "id": 603,
+    "name": "SILENCED",
+    "type": "ITEM",
+    "subType": "Mod",
+    "caps": 2
+  },
+  {
+    "id": 604,
+    "name": "SPIKED",
+    "type": "ITEM",
+    "subType": "Mod",
+    "caps": 3
+  },
+  {
+    "id": 605,
+    "name": "STEALTH FIELD",
+    "type": "ITEM",
+    "subType": "Mod",
+    "caps": 8
+  },
+  {
+    "id": 606,
+    "name": "STUN PACK",
+    "type": "ITEM",
+    "subType": "Mod",
+    "caps": 3
+  },
+  {
+    "id": 607,
+    "name": "SUBROUTINE: BASH",
+    "type": "ITEM",
+    "subType": "Mod",
+    "caps": 5
+  },
+  {
+    "id": 608,
+    "name": "SUBROUTINE: CARNAGE",
+    "type": "ITEM",
+    "subType": "Mod",
+    "caps": 9
+  },
+  {
+    "id": 609,
+    "name": "SUBROUTINE: COMBAT ANALYSIS",
+    "type": "ITEM",
+    "subType": "Mod",
+    "caps": 10
+  },
+  {
+    "id": 610,
+    "name": "SUBROUTINE: COMBATIVE",
+    "type": "ITEM",
+    "subType": "Mod",
+    "caps": 8
+  },
+  {
+    "id": 611,
+    "name": "SUBROUTINE: EMERGENCY",
+    "type": "ITEM",
+    "subType": "Mod",
+    "caps": 3
+  },
+  {
+    "id": 612,
+    "name": "SUBROUTINE: PAUSE",
+    "type": "ITEM",
+    "subType": "Mod",
+    "caps": 7
+  },
+  {
+    "id": 613,
+    "name": "SUBROUTINE: QUICK",
+    "type": "ITEM",
+    "subType": "Mod",
+    "caps": 5
+  },
+  {
+    "id": 614,
+    "name": "SUBROUTINE: REMOTE",
+    "type": "ITEM",
+    "subType": "Mod",
+    "caps": 11
+  },
+  {
+    "id": 615,
+    "name": "SUPERIOR MATERIALS",
+    "type": "ITEM",
+    "subType": "Mod",
+    "caps": 10
+  },
+  {
+    "id": 616,
+    "name": "TACTICAL",
+    "type": "ITEM",
+    "subType": "Mod",
+    "caps": 15
+  },
+  {
+    "id": 617,
+    "name": "TARGETING HUD",
+    "type": "ITEM",
+    "subType": "Mod",
+    "caps": 10
+  },
+  {
+    "id": 618,
+    "name": "TERMINAL SELF-DESTRUCT",
+    "type": "ITEM",
+    "subType": "Mod",
+    "caps": 25
+  },
+  {
+    "id": 619,
+    "name": "TESLA BRACERS",
+    "type": "ITEM",
+    "subType": "Mod",
+    "caps": 2
+  },
+  {
+    "id": 620,
+    "name": "TESLA COILS (POWER ARMOR)",
+    "type": "ITEM",
+    "subType": "Mod",
+    "caps": 7
+  },
+  {
+    "id": 621,
+    "name": "TESLA COILS (ROBOT)",
+    "type": "ITEM",
+    "subType": "Mod",
+    "caps": 2
+  },
+  {
+    "id": 622,
+    "name": "TESLA COILS (ROBOTS)",
+    "type": "ITEM",
+    "subType": "Mod",
+    "caps": 2
+  },
+  {
+    "id": 623,
+    "name": "THICKER PLATING",
+    "type": "ITEM",
+    "subType": "Mod",
+    "caps": 8
+  },
+  {
+    "id": 624,
+    "name": "TOXIC",
+    "type": "ITEM",
+    "subType": "Mod",
+    "caps": 5
+  },
+  {
+    "id": 625,
+    "name": "V.A.T.S. MATRIX OVERLAY",
+    "type": "ITEM",
+    "subType": "Mod",
+    "caps": 8
+  },
+  {
+    "id": 626,
+    "name": "VENOMOUS",
+    "type": "ITEM",
+    "subType": "Mod",
+    "caps": 3
+  },
+  {
+    "id": 627,
+    "name": "VIM! REFRESH PAINT",
+    "type": "ITEM",
+    "subType": "Mod",
+    "caps": 18
+  },
+  {
+    "id": 628,
+    "name": "WELDED PLATE",
+    "type": "ITEM",
+    "subType": "Mod",
+    "caps": 4
+  },
+  {
+    "id": 629,
+    "name": "ACE OPERATOR",
+    "type": "ITEM",
+    "subType": "Perk",
+    "caps": 9
+  },
+  {
+    "id": 630,
+    "name": "ACTION BOY / GIRL",
+    "type": "ITEM",
+    "subType": "Perk",
+    "caps": 5
+  },
+  {
+    "id": 631,
+    "name": "ADAMANTIUM SKELETON",
+    "type": "ITEM",
+    "subType": "Perk",
+    "caps": 8
+  },
+  {
+    "id": 632,
+    "name": "AGILE",
+    "type": "ITEM",
+    "subType": "Perk",
+    "caps": 5
+  },
+  {
+    "id": 633,
+    "name": "ANIMAL FRIEND",
+    "type": "ITEM",
+    "subType": "Perk",
+    "caps": 8
+  },
+  {
+    "id": 634,
+    "name": "ANIMAL FRIEND II",
+    "type": "ITEM",
+    "subType": "Perk",
+    "caps": 6
+  },
+  {
+    "id": 635,
+    "name": "ANIMAL FRIEND III",
+    "type": "ITEM",
+    "subType": "Perk",
+    "caps": 4
+  },
+  {
+    "id": 636,
+    "name": "ARMORER",
+    "type": "ITEM",
+    "subType": "Perk",
+    "caps": 3
+  },
+  {
+    "id": 637,
+    "name": "ARTILLERIST",
+    "type": "ITEM",
+    "subType": "Perk",
+    "caps": 5
+  },
+  {
+    "id": 638,
+    "name": "ATTACK DOG",
+    "type": "ITEM",
+    "subType": "Perk",
+    "caps": 7
+  },
+  {
+    "id": 639,
+    "name": "BASHER",
+    "type": "ITEM",
+    "subType": "Perk",
+    "caps": 5
+  },
+  {
+    "id": 640,
+    "name": "BIG LEAGUES",
+    "type": "ITEM",
+    "subType": "Perk",
+    "caps": 5
+  },
+  {
+    "id": 641,
+    "name": "BLACKSMITH",
+    "type": "ITEM",
+    "subType": "Perk",
+    "caps": 3
+  },
+  {
+    "id": 642,
+    "name": "BLITZ",
+    "type": "ITEM",
+    "subType": "Perk",
+    "caps": 5
+  },
+  {
+    "id": 643,
+    "name": "BLOODY MESS",
+    "type": "ITEM",
+    "subType": "Perk",
+    "caps": 3
+  },
+  {
+    "id": 644,
+    "name": "CHARISMATIC",
+    "type": "ITEM",
+    "subType": "Perk",
+    "caps": 5
+  },
+  {
+    "id": 645,
+    "name": "CHEM RESISTANT",
+    "type": "ITEM",
+    "subType": "Perk",
+    "caps": 3
+  },
+  {
+    "id": 646,
+    "name": "CHEMIST",
+    "type": "ITEM",
+    "subType": "Perk",
+    "caps": 6
+  },
+  {
+    "id": 647,
+    "name": "CHOSEN DISCIPLE",
+    "type": "ITEM",
+    "subType": "Perk",
+    "caps": 7
+  },
+  {
+    "id": 648,
+    "name": "COLLABORATIVE",
+    "type": "ITEM",
+    "subType": "Perk",
+    "caps": 15
+  },
+  {
+    "id": 649,
+    "name": "COMMAND: ACT",
+    "type": "ITEM",
+    "subType": "Perk",
+    "caps": 17
+  },
+  {
+    "id": 650,
+    "name": "COMMAND: ATTACK",
+    "type": "ITEM",
+    "subType": "Perk",
+    "caps": 16
+  },
+  {
+    "id": 651,
+    "name": "COMMAND: COUNTER",
+    "type": "ITEM",
+    "subType": "Perk",
+    "caps": 4
+  },
+  {
+    "id": 652,
+    "name": "COMMAND: FIND",
+    "type": "ITEM",
+    "subType": "Perk",
+    "caps": 8
+  },
+  {
+    "id": 653,
+    "name": "COMMAND: GUIDED STRIKE",
+    "type": "ITEM",
+    "subType": "Perk",
+    "caps": 12
+  },
+  {
+    "id": 654,
+    "name": "COMMAND: HEEL",
+    "type": "ITEM",
+    "subType": "Perk",
+    "caps": 10
+  },
+  {
+    "id": 655,
+    "name": "COMMAND: IMPETUOUS",
+    "type": "ITEM",
+    "subType": "Perk",
+    "caps": 5
+  },
+  {
+    "id": 656,
+    "name": "COMMAND: PACK ASSAULT",
+    "type": "ITEM",
+    "subType": "Perk",
+    "caps": 2
+  },
+  {
+    "id": 657,
+    "name": "COMMAND: PACK ATTACK",
+    "type": "ITEM",
+    "subType": "Perk",
+    "caps": 7
+  },
+  {
+    "id": 658,
+    "name": "COMMAND: PROTECT",
+    "type": "ITEM",
+    "subType": "Perk",
+    "caps": 4
+  },
+  {
+    "id": 659,
+    "name": "COMMAND: SCATTER",
+    "type": "ITEM",
+    "subType": "Perk",
+    "caps": 15
+  },
+  {
+    "id": 660,
+    "name": "COMMAND: SPEED",
+    "type": "ITEM",
+    "subType": "Perk",
+    "caps": 16
+  },
+  {
+    "id": 661,
+    "name": "COMMAND: TAKE IT",
+    "type": "ITEM",
+    "subType": "Perk",
+    "caps": 10
+  },
+  {
+    "id": 662,
+    "name": "COMPANION",
+    "type": "ITEM",
+    "subType": "Perk",
+    "caps": 10
+  },
+  {
+    "id": 663,
+    "name": "CONCENTRATED FIRE",
+    "type": "ITEM",
+    "subType": "Perk",
+    "caps": 5
+  },
+  {
+    "id": 664,
+    "name": "CREATURE TRAINER",
+    "type": "ITEM",
+    "subType": "Perk",
+    "caps": 4
+  },
+  {
+    "id": 665,
+    "name": "DEMOLITION EXPERT",
+    "type": "ITEM",
+    "subType": "Perk",
+    "caps": 5
+  },
+  {
+    "id": 666,
+    "name": "ENDURING",
+    "type": "ITEM",
+    "subType": "Perk",
+    "caps": 5
+  },
+  {
+    "id": 667,
+    "name": "ENTANGLE",
+    "type": "ITEM",
+    "subType": "Perk",
+    "caps": 8
+  },
+  {
+    "id": 668,
+    "name": "FINESSE",
+    "type": "ITEM",
+    "subType": "Perk",
+    "caps": 10
+  },
+  {
+    "id": 669,
+    "name": "FIRE RESISTANT",
+    "type": "ITEM",
+    "subType": "Perk",
+    "caps": 7
+  },
+  {
+    "id": 670,
+    "name": "GHOULISH",
+    "type": "ITEM",
+    "subType": "Perk",
+    "caps": 10
+  },
+  {
+    "id": 671,
+    "name": "GUN NUT - HEAVY",
+    "type": "ITEM",
+    "subType": "Perk",
+    "caps": 3
+  },
+  {
+    "id": 672,
+    "name": "GUN NUT - PISTOL",
+    "type": "ITEM",
+    "subType": "Perk",
+    "caps": 3
+  },
+  {
+    "id": 673,
+    "name": "GUN NUT - RIFLE",
+    "type": "ITEM",
+    "subType": "Perk",
+    "caps": 3
+  },
+  {
+    "id": 674,
+    "name": "GUNSLINGER",
+    "type": "ITEM",
+    "subType": "Perk",
+    "caps": 5
+  },
+  {
+    "id": 675,
+    "name": "HACK ROBOT",
+    "type": "ITEM",
+    "subType": "Perk",
+    "caps": 5
+  },
+  {
+    "id": 676,
+    "name": "HACKER",
+    "type": "ITEM",
+    "subType": "Perk",
+    "caps": 4
+  },
+  {
+    "id": 677,
+    "name": "HEAVY GUNNER",
+    "type": "ITEM",
+    "subType": "Perk",
+    "caps": 3
+  },
+  {
+    "id": 678,
+    "name": "HEROIC",
+    "type": "ITEM",
+    "subType": "Perk",
+    "caps": 48
+  },
+  {
+    "id": 679,
+    "name": "HIT THE DECK",
+    "type": "ITEM",
+    "subType": "Perk",
+    "caps": 3
+  },
+  {
+    "id": 680,
+    "name": "HUNTSMAN",
+    "type": "ITEM",
+    "subType": "Perk",
+    "caps": 7
+  },
+  {
+    "id": 681,
+    "name": "IMPATIENT",
+    "type": "ITEM",
+    "subType": "Perk",
+    "caps": 6
+  },
+  {
+    "id": 682,
+    "name": "INTELLIGENT",
+    "type": "ITEM",
+    "subType": "Perk",
+    "caps": 5
+  },
+  {
+    "id": 683,
+    "name": "IRRESPONSIBLE",
+    "type": "ITEM",
+    "subType": "Perk",
+    "caps": 10
+  },
+  {
+    "id": 684,
+    "name": "LEAD BELLY",
+    "type": "ITEM",
+    "subType": "Perk",
+    "caps": 5
+  },
+  {
+    "id": 685,
+    "name": "LIFE GIVER",
+    "type": "ITEM",
+    "subType": "Perk",
+    "caps": 7
+  },
+  {
+    "id": 686,
+    "name": "LIGHT STEP",
+    "type": "ITEM",
+    "subType": "Perk",
+    "caps": 5
+  },
+  {
+    "id": 687,
+    "name": "LOCAL LEADER",
+    "type": "ITEM",
+    "subType": "Perk",
+    "caps": 5
+  },
+  {
+    "id": 688,
+    "name": "LOCAL LEADER II",
+    "type": "ITEM",
+    "subType": "Perk",
+    "caps": 5
+  },
+  {
+    "id": 689,
+    "name": "LOCKSMITH",
+    "type": "ITEM",
+    "subType": "Perk",
+    "caps": 4
+  },
+  {
+    "id": 690,
+    "name": "LUCKY",
+    "type": "ITEM",
+    "subType": "Perk",
+    "caps": 5
+  },
+  {
+    "id": 691,
+    "name": "MEDIC",
+    "type": "ITEM",
+    "subType": "Perk",
+    "caps": 4
+  },
+  {
+    "id": 692,
+    "name": "MEND ROBOT",
+    "type": "ITEM",
+    "subType": "Perk",
+    "caps": 5
+  },
+  {
+    "id": 693,
+    "name": "MOVING TARGET",
+    "type": "ITEM",
+    "subType": "Perk",
+    "caps": 6
+  },
+  {
+    "id": 694,
+    "name": "MYSTERIOUS STRANGER",
+    "type": "ITEM",
+    "subType": "Perk",
+    "caps": 4
+  },
+  {
+    "id": 695,
+    "name": "MYSTERIOUS STRANGER II",
+    "type": "ITEM",
+    "subType": "Perk",
+    "caps": 13
+  },
+  {
+    "id": 696,
+    "name": "MYSTERIOUS STRANGER III",
+    "type": "ITEM",
+    "subType": "Perk",
+    "caps": 3
+  },
+  {
+    "id": 697,
+    "name": "NERD RAGE",
+    "type": "ITEM",
+    "subType": "Perk",
+    "caps": 6
+  },
+  {
+    "id": 698,
+    "name": "NIMBLE",
+    "type": "ITEM",
+    "subType": "Perk",
+    "caps": 5
+  },
+  {
+    "id": 699,
+    "name": "NINJA",
+    "type": "ITEM",
+    "subType": "Perk",
+    "caps": 6
+  },
+  {
+    "id": 700,
+    "name": "NUCLEAR PHYSICIST",
+    "type": "ITEM",
+    "subType": "Perk",
+    "caps": 10
+  },
+  {
+    "id": 701,
+    "name": "ORDERS",
+    "type": "ITEM",
+    "subType": "Perk",
+    "caps": 5
+  },
+  {
+    "id": 702,
+    "name": "PACK ALPHA",
+    "type": "ITEM",
+    "subType": "Perk",
+    "caps": 28
+  },
+  {
+    "id": 703,
+    "name": "PACK LEADER",
+    "type": "ITEM",
+    "subType": "Perk",
+    "caps": 23
+  },
+  {
+    "id": 704,
+    "name": "PAIN TRAIN",
+    "type": "ITEM",
+    "subType": "Perk",
+    "caps": 1
+  },
+  {
+    "id": 705,
+    "name": "PENETRATOR",
+    "type": "ITEM",
+    "subType": "Perk",
+    "caps": 15
+  },
+  {
+    "id": 706,
+    "name": "PERCEPTIVE",
+    "type": "ITEM",
+    "subType": "Perk",
+    "caps": 5
+  },
+  {
+    "id": 707,
+    "name": "PROGRAM: ACT",
+    "type": "ITEM",
+    "subType": "Perk",
+    "caps": 13
+  },
+  {
+    "id": 708,
+    "name": "PROGRAM: AGGRESSIVE",
+    "type": "ITEM",
+    "subType": "Perk",
+    "caps": 8
+  },
+  {
+    "id": 709,
+    "name": "PROGRAM: ATTACK",
+    "type": "ITEM",
+    "subType": "Perk",
+    "caps": 16
+  },
+  {
+    "id": 710,
+    "name": "PROGRAM: COORDINATED",
+    "type": "ITEM",
+    "subType": "Perk",
+    "caps": 2
+  },
+  {
+    "id": 711,
+    "name": "PROGRAM: HACK",
+    "type": "ITEM",
+    "subType": "Perk",
+    "caps": 8
+  },
+  {
+    "id": 712,
+    "name": "PROGRAM: INTERCEPT",
+    "type": "ITEM",
+    "subType": "Perk",
+    "caps": 4
+  },
+  {
+    "id": 713,
+    "name": "PROGRAM: PICK",
+    "type": "ITEM",
+    "subType": "Perk",
+    "caps": 8
+  },
+  {
+    "id": 714,
+    "name": "PROGRAM: RETURN",
+    "type": "ITEM",
+    "subType": "Perk",
+    "caps": 10
+  },
+  {
+    "id": 715,
+    "name": "PROGRAM: SPEED",
+    "type": "ITEM",
+    "subType": "Perk",
+    "caps": 14
+  },
+  {
+    "id": 716,
+    "name": "PROGRAM: SPREAD",
+    "type": "ITEM",
+    "subType": "Perk",
+    "caps": 12
+  },
+  {
+    "id": 717,
+    "name": "PROGRAM: SYNCHRONIZED",
+    "type": "ITEM",
+    "subType": "Perk",
+    "caps": 11
+  },
+  {
+    "id": 718,
+    "name": "PROGRAM: VOLLEY",
+    "type": "ITEM",
+    "subType": "Perk",
+    "caps": 16
+  },
+  {
+    "id": 719,
+    "name": "PYROMANIAC",
+    "type": "ITEM",
+    "subType": "Perk",
+    "caps": 10
+  },
+  {
+    "id": 720,
+    "name": "QUICK THINKING",
+    "type": "ITEM",
+    "subType": "Perk",
+    "caps": 2
+  },
+  {
+    "id": 721,
+    "name": "RAD RESISTANT",
+    "type": "ITEM",
+    "subType": "Perk",
+    "caps": 3
+  },
+  {
+    "id": 722,
+    "name": "REFRACTOR",
+    "type": "ITEM",
+    "subType": "Perk",
+    "caps": 9
+  },
+  {
+    "id": 723,
+    "name": "RIFLEMAN",
+    "type": "ITEM",
+    "subType": "Perk",
+    "caps": 5
+  },
+  {
+    "id": 724,
+    "name": "ROBOTICS EXPERT",
+    "type": "ITEM",
+    "subType": "Perk",
+    "caps": 4
+  },
+  {
+    "id": 725,
+    "name": "ROOTED",
+    "type": "ITEM",
+    "subType": "Perk",
+    "caps": 4
+  },
+  {
+    "id": 726,
+    "name": "SHOTGUN DEVOTEE",
+    "type": "ITEM",
+    "subType": "Perk",
+    "caps": 6
+  },
+  {
+    "id": 727,
+    "name": "SHOTGUN SURGEON",
+    "type": "ITEM",
+    "subType": "Perk",
+    "caps": 6
+  },
+  {
+    "id": 728,
+    "name": "SNEAK",
+    "type": "ITEM",
+    "subType": "Perk",
+    "caps": 5
+  },
+  {
+    "id": 729,
+    "name": "STEADY AIM",
+    "type": "ITEM",
+    "subType": "Perk",
+    "caps": 8
+  },
+  {
+    "id": 730,
+    "name": "STRONG BACK",
+    "type": "ITEM",
+    "subType": "Perk",
+    "caps": 6
+  },
+  {
+    "id": 731,
+    "name": "STRONG CONSTITUTION",
+    "type": "ITEM",
+    "subType": "Perk",
+    "caps": 5
+  },
+  {
+    "id": 732,
+    "name": "STUN RESISTANT",
+    "type": "ITEM",
+    "subType": "Perk",
+    "caps": 13
+  },
+  {
+    "id": 733,
+    "name": "TOUGHNESS",
+    "type": "ITEM",
+    "subType": "Perk",
+    "caps": 9
+  },
+  {
+    "id": 734,
+    "name": "TRAVEL LIGHT",
+    "type": "ITEM",
+    "subType": "Perk",
+    "caps": 7
+  },
+  {
+    "id": 735,
+    "name": "WEAPON HANDLING",
+    "type": "ITEM",
+    "subType": "Perk",
+    "caps": 5
+  },
+  {
+    "id": 736,
+    "name": ".357 MAGNUM REVOLVER",
+    "type": "ITEM",
+    "subType": "Pistol",
+    "caps": 8
+  },
+  {
+    "id": 737,
+    "name": ".44 MAGNUM REVOLVER",
+    "type": "ITEM",
+    "subType": "Pistol",
+    "caps": 8
+  },
+  {
+    "id": 738,
+    "name": ".44 REVOLVER",
+    "type": "ITEM",
+    "subType": "Pistol",
+    "caps": 6
+  },
+  {
+    "id": 739,
+    "name": "10MM PISTOL",
+    "type": "ITEM",
+    "subType": "Pistol",
+    "caps": 6
+  },
+  {
+    "id": 740,
+    "name": "12.7MM PISTOL",
+    "type": "ITEM",
+    "subType": "Pistol",
+    "caps": 4
+  },
+  {
+    "id": 741,
+    "name": "A LIGHT BURNING IN THE DARKNESS",
+    "type": "ITEM",
+    "subType": "Pistol",
+    "caps": 14
+  },
+  {
+    "id": 742,
+    "name": "ACID SOAKER",
+    "type": "ITEM",
+    "subType": "Pistol",
+    "caps": 35
+  },
+  {
+    "id": 743,
+    "name": "ALIEN BLASTER",
+    "type": "ITEM",
+    "subType": "Pistol",
+    "caps": 9
+  },
+  {
+    "id": 744,
+    "name": "ALIEN CRYO BLASTER",
+    "type": "ITEM",
+    "subType": "Pistol",
+    "caps": 8
+  },
+  {
+    "id": 745,
+    "name": "ALIEN LASER",
+    "type": "ITEM",
+    "subType": "Pistol",
+    "caps": 5
+  },
+  {
+    "id": 746,
+    "name": "ALIEN TOXIN BLASTER",
+    "type": "ITEM",
+    "subType": "Pistol",
+    "caps": 8
+  },
+  {
+    "id": 747,
+    "name": "BLOATFLY LARVA",
+    "type": "ITEM",
+    "subType": "Pistol",
+    "caps": 0
+  },
+  {
+    "id": 748,
+    "name": "BLOODBUG BLOOD SPRAY",
+    "type": "ITEM",
+    "subType": "Pistol",
+    "caps": 0
+  },
+  {
+    "id": 749,
+    "name": "BOLT-ACTION PIPE PISTOL",
+    "type": "ITEM",
+    "subType": "Pistol",
+    "caps": 1
+  },
+  {
+    "id": 750,
+    "name": "COLONEL AUTUMN'S 10MM PISTOL",
+    "type": "ITEM",
+    "subType": "Pistol",
+    "caps": 10
+  },
+  {
+    "id": 751,
+    "name": "DEADEYE GAMMA GUN",
+    "type": "ITEM",
+    "subType": "Pistol",
+    "caps": 17
+  },
+  {
+    "id": 752,
+    "name": "EXPLOSIVE 10MM PISTOL",
+    "type": "ITEM",
+    "subType": "Pistol",
+    "caps": 9
+  },
+  {
+    "id": 753,
+    "name": "EYEBOT LASER",
+    "type": "ITEM",
+    "subType": "Pistol",
+    "caps": 4
+  },
+  {
+    "id": 754,
+    "name": "EYEBOT TESLA CANNON",
+    "type": "ITEM",
+    "subType": "Pistol",
+    "caps": 12
+  },
+  {
+    "id": 755,
+    "name": "FLARE GUN",
+    "type": "ITEM",
+    "subType": "Pistol",
+    "caps": 5
+  },
+  {
+    "id": 756,
+    "name": "GAMMA GUN",
+    "type": "ITEM",
+    "subType": "Pistol",
+    "caps": 13
+  },
+  {
+    "id": 757,
+    "name": "GLOWING BLOATFLY LARVA",
+    "type": "ITEM",
+    "subType": "Pistol",
+    "caps": 0
+  },
+  {
+    "id": 758,
+    "name": "GLOWING BLOODBUG BLOOD SPRAY",
+    "type": "ITEM",
+    "subType": "Pistol",
+    "caps": 0
+  },
+  {
+    "id": 759,
+    "name": "GLOWING BLOODBUG SPRAY",
+    "type": "ITEM",
+    "subType": "Pistol",
+    "caps": 0
+  },
+  {
+    "id": 760,
+    "name": "GLOWING TRI-BARBED TONGUE",
+    "type": "ITEM",
+    "subType": "Pistol",
+    "caps": 0
+  },
+  {
+    "id": 761,
+    "name": "HAND CRYOJET",
+    "type": "ITEM",
+    "subType": "Pistol",
+    "caps": 10
+  },
+  {
+    "id": 762,
+    "name": "HAND GAMMA GUN",
+    "type": "ITEM",
+    "subType": "Pistol",
+    "caps": 15
+  },
+  {
+    "id": 763,
+    "name": "HAND LIGHTNING GUN",
+    "type": "ITEM",
+    "subType": "Pistol",
+    "caps": 4
+  },
+  {
+    "id": 764,
+    "name": "HAND NAIL GUN",
+    "type": "ITEM",
+    "subType": "Pistol",
+    "caps": 7
+  },
+  {
+    "id": 765,
+    "name": "HUNTER'S 10MM PISTOL",
+    "type": "ITEM",
+    "subType": "Pistol",
+    "caps": 8
+  },
+  {
+    "id": 766,
+    "name": "HUNTING REVOLVER",
+    "type": "ITEM",
+    "subType": "Pistol",
+    "caps": 7
+  },
+  {
+    "id": 767,
+    "name": "INDY'S FREEZING .44",
+    "type": "ITEM",
+    "subType": "Pistol",
+    "caps": 9
+  },
+  {
+    "id": 768,
+    "name": "INSTITUTE LASER PISTOL",
+    "type": "ITEM",
+    "subType": "Pistol",
+    "caps": 3
+  },
+  {
+    "id": 769,
+    "name": "IRRADIATED BOLT ACTION PIPE PISTOL",
+    "type": "ITEM",
+    "subType": "Pistol",
+    "caps": 3
+  },
+  {
+    "id": 770,
+    "name": "IRRADIATED BOLT-ACTION PIPE PISTOL",
+    "type": "ITEM",
+    "subType": "Pistol",
+    "caps": 3
+  },
+  {
+    "id": 771,
+    "name": "KELLOGG'S PISTOL",
+    "type": "ITEM",
+    "subType": "Pistol",
+    "caps": 10
+  },
+  {
+    "id": 772,
+    "name": "KNEECAPPER .44 REVOLVER",
+    "type": "ITEM",
+    "subType": "Pistol",
+    "caps": 7
+  },
+  {
+    "id": 773,
+    "name": "LASER PISTOL",
+    "type": "ITEM",
+    "subType": "Pistol",
+    "caps": 7
+  },
+  {
+    "id": 774,
+    "name": "LORENZO'S ARTIFACT GUN",
+    "type": "ITEM",
+    "subType": "Pistol",
+    "caps": 18
+  },
+  {
+    "id": 775,
+    "name": "LUCY'S TRANQUILIZER PISTOL",
+    "type": "ITEM",
+    "subType": "Pistol",
+    "caps": 8
+  },
+  {
+    "id": 776,
+    "name": "MR HANDY FLAMER",
+    "type": "ITEM",
+    "subType": "Pistol",
+    "caps": 10
+  },
+  {
+    "id": 777,
+    "name": "MR HANDY PLASMA PISTOL",
+    "type": "ITEM",
+    "subType": "Pistol",
+    "caps": 6
+  },
+  {
+    "id": 778,
+    "name": "NUKA COLA SPRAYER",
+    "type": "ITEM",
+    "subType": "Pistol",
+    "caps": 8
+  },
+  {
+    "id": 779,
+    "name": "NUKATRON COLA DISPENSER",
+    "type": "ITEM",
+    "subType": "Pistol",
+    "caps": 4
+  },
+  {
+    "id": 780,
+    "name": "NUKATRON QUANTUM COLA DISPENSER",
+    "type": "ITEM",
+    "subType": "Pistol",
+    "caps": 15
+  },
+  {
+    "id": 781,
+    "name": "PENETRATING LASER PISTOL",
+    "type": "ITEM",
+    "subType": "Pistol",
+    "caps": 8
+  },
+  {
+    "id": 782,
+    "name": "PIPE PISTOL",
+    "type": "ITEM",
+    "subType": "Pistol",
+    "caps": 2
+  },
+  {
+    "id": 783,
+    "name": "PIPE REVOLVER",
+    "type": "ITEM",
+    "subType": "Pistol",
+    "caps": 4
+  },
+  {
+    "id": 784,
+    "name": "PLASMA DEFENDER",
+    "type": "ITEM",
+    "subType": "Pistol",
+    "caps": 12
+  },
+  {
+    "id": 785,
+    "name": "PLASMA INFUSED BOLT-ACTION PIPE PISTOL",
+    "type": "ITEM",
+    "subType": "Pistol",
+    "caps": 4
+  },
+  {
+    "id": 786,
+    "name": "PLASMA PISTOL",
+    "type": "ITEM",
+    "subType": "Pistol",
+    "caps": 6
+  },
+  {
+    "id": 787,
+    "name": "POISONER'S PIPE PISTOL",
+    "type": "ITEM",
+    "subType": "Pistol",
+    "caps": 3
+  },
+  {
+    "id": 788,
+    "name": "PROTECTRON HAND LASER",
+    "type": "ITEM",
+    "subType": "Pistol",
+    "caps": 10
+  },
+  {
+    "id": 789,
+    "name": "PROTECTRON'S GAZE",
+    "type": "ITEM",
+    "subType": "Pistol",
+    "caps": 7
+  },
+  {
+    "id": 790,
+    "name": "PULSE GUN",
+    "type": "ITEM",
+    "subType": "Pistol",
+    "caps": 11
+  },
+  {
+    "id": 791,
+    "name": "RANGER SEQUOIA",
+    "type": "ITEM",
+    "subType": "Pistol",
+    "caps": 13
+  },
+  {
+    "id": 792,
+    "name": "RAPID FIRE PLASMA PISTOL",
+    "type": "ITEM",
+    "subType": "Pistol",
+    "caps": 12
+  },
+  {
+    "id": 793,
+    "name": "ROBOBRAIN MESMETRON",
+    "type": "ITEM",
+    "subType": "Pistol",
+    "caps": 15
+  },
+  {
+    "id": 794,
+    "name": "SCOPED .44 MAGNUM",
+    "type": "ITEM",
+    "subType": "Pistol",
+    "caps": 10
+  },
+  {
+    "id": 795,
+    "name": "SCOPED 44. MAGNUM",
+    "type": "ITEM",
+    "subType": "Pistol",
+    "caps": 10
+  },
+  {
+    "id": 796,
+    "name": "SNALLYGASTER TOXIC SLIME",
+    "type": "ITEM",
+    "subType": "Pistol",
+    "caps": 0
+  },
+  {
+    "id": 797,
+    "name": "STAGGERING INSTITUTE LASER PISTOL",
+    "type": "ITEM",
+    "subType": "Pistol",
+    "caps": 7
+  },
+  {
+    "id": 798,
+    "name": "STAGGERING PIPE PISTOL",
+    "type": "ITEM",
+    "subType": "Pistol",
+    "caps": 3
+  },
+  {
+    "id": 799,
+    "name": "THE GHOUL'S PISTOL",
+    "type": "ITEM",
+    "subType": "Pistol",
+    "caps": 10
+  },
+  {
+    "id": 800,
+    "name": "THIRST ZAPPER COLA",
+    "type": "ITEM",
+    "subType": "Pistol",
+    "caps": 2
+  },
+  {
+    "id": 801,
+    "name": "TOP UP NUKA COLA SPRAYER",
+    "type": "ITEM",
+    "subType": "Pistol",
+    "caps": 12
+  },
+  {
+    "id": 802,
+    "name": "TRI-BARBED TONGUE",
+    "type": "ITEM",
+    "subType": "Pistol",
+    "caps": 0
+  },
+  {
+    "id": 803,
+    "name": "WESTERN REVOLVER",
+    "type": "ITEM",
+    "subType": "Pistol",
+    "caps": 5
+  },
+  {
+    "id": 804,
+    "name": "WOUNDING LASER PISTOL",
+    "type": "ITEM",
+    "subType": "Pistol",
+    "caps": 8
+  },
+  {
+    "id": 805,
+    "name": "ALIEN DISINTEGRATOR",
+    "type": "ITEM",
+    "subType": "Rifle",
+    "caps": 12
+  },
+  {
+    "id": 806,
+    "name": "ANTI-MATERIAL RIFLE",
+    "type": "ITEM",
+    "subType": "Rifle",
+    "caps": 37
+  },
+  {
+    "id": 807,
+    "name": "ANTI-MATERIEL RIFLE",
+    "type": "ITEM",
+    "subType": "Rifle",
+    "caps": 37
+  },
+  {
+    "id": 808,
+    "name": "ASSAULT CARBINE",
+    "type": "ITEM",
+    "subType": "Rifle",
+    "caps": 8
+  },
+  {
+    "id": 809,
+    "name": "ASSAULT RIFLE",
+    "type": "ITEM",
+    "subType": "Rifle",
+    "caps": 9
+  },
+  {
+    "id": 810,
+    "name": "ASSAULTRON HEAD LASER",
+    "type": "ITEM",
+    "subType": "Rifle",
+    "caps": 40
+  },
+  {
+    "id": 811,
+    "name": "AUTOMATIC LASER RIFLE",
+    "type": "ITEM",
+    "subType": "Rifle",
+    "caps": 18
+  },
+  {
+    "id": 812,
+    "name": "BATTERED ASSAULTRON HEAD LASER",
+    "type": "ITEM",
+    "subType": "Rifle",
+    "caps": 30
+  },
+  {
+    "id": 813,
+    "name": "BOLT-ACTION PIPE RIFLE",
+    "type": "ITEM",
+    "subType": "Rifle",
+    "caps": 11
+  },
+  {
+    "id": 814,
+    "name": "CARAVAN SHOTGUN",
+    "type": "ITEM",
+    "subType": "Rifle",
+    "caps": 9
+  },
+  {
+    "id": 815,
+    "name": "CHARON'S SHOTGUN",
+    "type": "ITEM",
+    "subType": "Rifle",
+    "caps": 10
+  },
+  {
+    "id": 816,
+    "name": "CHINESE ASSAULT RIFLE",
+    "type": "ITEM",
+    "subType": "Rifle",
+    "caps": 19
+  },
+  {
+    "id": 817,
+    "name": "COMBAT RIFLE",
+    "type": "ITEM",
+    "subType": "Rifle",
+    "caps": 16
+  },
+  {
+    "id": 818,
+    "name": "COMBAT SHOTGUN",
+    "type": "ITEM",
+    "subType": "Rifle",
+    "caps": 9
+  },
+  {
+    "id": 819,
+    "name": "COWBOY REPEATER",
+    "type": "ITEM",
+    "subType": "Rifle",
+    "caps": 8
+  },
+  {
+    "id": 820,
+    "name": "CRIPPLING BOLT-ACTION PIPE RIFLE",
+    "type": "ITEM",
+    "subType": "Rifle",
+    "caps": 17
+  },
+  {
+    "id": 821,
+    "name": "DEADEYE INSTITUTE LASER RIFLE",
+    "type": "ITEM",
+    "subType": "Rifle",
+    "caps": 15
+  },
+  {
+    "id": 822,
+    "name": "DOUBLE-BARREL SHOTGUN",
+    "type": "ITEM",
+    "subType": "Rifle",
+    "caps": 15
+  },
+  {
+    "id": 823,
+    "name": "EXPLOSIVE COMBAT RIFLE",
+    "type": "ITEM",
+    "subType": "Rifle",
+    "caps": 19
+  },
+  {
+    "id": 824,
+    "name": "FLAMER",
+    "type": "ITEM",
+    "subType": "Rifle",
+    "caps": 24
+  },
+  {
+    "id": 825,
+    "name": "FREEZING COMBAT SHOTGUN",
+    "type": "ITEM",
+    "subType": "Rifle",
+    "caps": 11
+  },
+  {
+    "id": 826,
+    "name": "GAUSS RIFLE",
+    "type": "ITEM",
+    "subType": "Rifle",
+    "caps": 42
+  },
+  {
+    "id": 827,
+    "name": "GRENADE LAUNCHER",
+    "type": "ITEM",
+    "subType": "Rifle",
+    "caps": 35
+  },
+  {
+    "id": 828,
+    "name": "HANDMADE RIFLE",
+    "type": "ITEM",
+    "subType": "Rifle",
+    "caps": 10
+  },
+  {
+    "id": 829,
+    "name": "HARDENED SNIPER RIFLE",
+    "type": "ITEM",
+    "subType": "Rifle",
+    "caps": 28
+  },
+  {
+    "id": 830,
+    "name": "HATCHLING SONIC SCREECH",
+    "type": "ITEM",
+    "subType": "Rifle",
+    "caps": 0
+  },
+  {
+    "id": 831,
+    "name": "HEAVY ASSAULT RIFLE",
+    "type": "ITEM",
+    "subType": "Rifle",
+    "caps": 15
+  },
+  {
+    "id": 832,
+    "name": "HENRIETTA",
+    "type": "ITEM",
+    "subType": "Rifle",
+    "caps": 20
+  },
+  {
+    "id": 833,
+    "name": "HORRIGAN'S PLASMA GUN",
+    "type": "ITEM",
+    "subType": "Rifle",
+    "caps": 30
+  },
+  {
+    "id": 834,
+    "name": "HUNTER'S HUNTING RIFLE",
+    "type": "ITEM",
+    "subType": "Rifle",
+    "caps": 20
+  },
+  {
+    "id": 835,
+    "name": "HUNTER'S LASER MUSKET",
+    "type": "ITEM",
+    "subType": "Rifle",
+    "caps": 15
+  },
+  {
+    "id": 836,
+    "name": "HUNTING RIFLE",
+    "type": "ITEM",
+    "subType": "Rifle",
+    "caps": 18
+  },
+  {
+    "id": 837,
+    "name": "HUNTING SHOTGUN",
+    "type": "ITEM",
+    "subType": "Rifle",
+    "caps": 9
+  },
+  {
+    "id": 838,
+    "name": "INCENDIARY ASSAULT RIFLE",
+    "type": "ITEM",
+    "subType": "Rifle",
+    "caps": 14
+  },
+  {
+    "id": 839,
+    "name": "INSTITUTE LASER RIFLE",
+    "type": "ITEM",
+    "subType": "Rifle",
+    "caps": 11
+  },
+  {
+    "id": 840,
+    "name": "IRRADIATED PIPE RIFLE",
+    "type": "ITEM",
+    "subType": "Rifle",
+    "caps": 9
+  },
+  {
+    "id": 841,
+    "name": "JUNKIE'S BOLT ACTION PIPE RIFLE",
+    "type": "ITEM",
+    "subType": "Rifle",
+    "caps": 14
+  },
+  {
+    "id": 842,
+    "name": "JUNKIE'S BOLT-ACTION PIPE RIFLE",
+    "type": "ITEM",
+    "subType": "Rifle",
+    "caps": 14
+  },
+  {
+    "id": 843,
+    "name": "KNEECAPPER LASER MUSKET",
+    "type": "ITEM",
+    "subType": "Rifle",
+    "caps": 15
+  },
+  {
+    "id": 844,
+    "name": "LASER MUSKET",
+    "type": "ITEM",
+    "subType": "Rifle",
+    "caps": 13
+  },
+  {
+    "id": 845,
+    "name": "LASER RIFLE",
+    "type": "ITEM",
+    "subType": "Rifle",
+    "caps": 24
+  },
+  {
+    "id": 846,
+    "name": "LASER TURRET",
+    "type": "ITEM",
+    "subType": "Rifle",
+    "caps": 10
+  },
+  {
+    "id": 847,
+    "name": "MACHINE GUN TURRET MK I",
+    "type": "ITEM",
+    "subType": "Rifle",
+    "caps": 10
+  },
+  {
+    "id": 848,
+    "name": "MACHINE GUN TURRET MK III",
+    "type": "ITEM",
+    "subType": "Rifle",
+    "caps": 15
+  },
+  {
+    "id": 849,
+    "name": "MACHINE GUN TURRET MK1",
+    "type": "ITEM",
+    "subType": "Rifle",
+    "caps": 10
+  },
+  {
+    "id": 850,
+    "name": "MACHINE GUN TURRET MK3",
+    "type": "ITEM",
+    "subType": "Rifle",
+    "caps": 15
+  },
+  {
+    "id": 851,
+    "name": "MARKSMAN CARBINE",
+    "type": "ITEM",
+    "subType": "Rifle",
+    "caps": 19
+  },
+  {
+    "id": 852,
+    "name": "MARKSMAN'S .50 HUNTING RIFLE",
+    "type": "ITEM",
+    "subType": "Rifle",
+    "caps": 30
+  },
+  {
+    "id": 853,
+    "name": "MIRELURK HUNTER ACID",
+    "type": "ITEM",
+    "subType": "Rifle",
+    "caps": 0
+  },
+  {
+    "id": 854,
+    "name": "MIRELURK KING SONIC SCREAM",
+    "type": "ITEM",
+    "subType": "Rifle",
+    "caps": 0
+  },
+  {
+    "id": 855,
+    "name": "MIRELURK QUEEN ACID",
+    "type": "ITEM",
+    "subType": "Rifle",
+    "caps": 0
+  },
+  {
+    "id": 856,
+    "name": "MOTHMAN SONIC SCREECH",
+    "type": "ITEM",
+    "subType": "Rifle",
+    "caps": 0
+  },
+  {
+    "id": 857,
+    "name": "MR HANDY SMG",
+    "type": "ITEM",
+    "subType": "Rifle",
+    "caps": 10
+  },
+  {
+    "id": 858,
+    "name": "NUKALURK QUEEN ACID",
+    "type": "ITEM",
+    "subType": "Rifle",
+    "caps": 0
+  },
+  {
+    "id": 859,
+    "name": "PIPE RIFLE",
+    "type": "ITEM",
+    "subType": "Rifle",
+    "caps": 7
+  },
+  {
+    "id": 860,
+    "name": "PLASMA INFUSED COMBAT SHOTGUN",
+    "type": "ITEM",
+    "subType": "Rifle",
+    "caps": 11
+  },
+  {
+    "id": 861,
+    "name": "PLASMA RIFLE",
+    "type": "ITEM",
+    "subType": "Rifle",
+    "caps": 16
+  },
+  {
+    "id": 862,
+    "name": "PLASMA SPLITTER RIFLE",
+    "type": "ITEM",
+    "subType": "Rifle",
+    "caps": 20
+  },
+  {
+    "id": 863,
+    "name": "PUMP-ACTION SHOTGUN",
+    "type": "ITEM",
+    "subType": "Rifle",
+    "caps": 12
+  },
+  {
+    "id": 864,
+    "name": "RADIUM RIFLE",
+    "type": "ITEM",
+    "subType": "Rifle",
+    "caps": 18
+  },
+  {
+    "id": 865,
+    "name": "RAILWAY RIFLE",
+    "type": "ITEM",
+    "subType": "Rifle",
+    "caps": 15
+  },
+  {
+    "id": 866,
+    "name": "RELENTLESS LASER RIFLE",
+    "type": "ITEM",
+    "subType": "Rifle",
+    "caps": 27
+  },
+  {
+    "id": 867,
+    "name": "ROBOBRAIN LASER",
+    "type": "ITEM",
+    "subType": "Rifle",
+    "caps": 7
+  },
+  {
+    "id": 868,
+    "name": "SAWED-OFF SHOTGUN",
+    "type": "ITEM",
+    "subType": "Rifle",
+    "caps": 15
+  },
+  {
+    "id": 869,
+    "name": "SECURITRON GRENADE LAUNCHER",
+    "type": "ITEM",
+    "subType": "Rifle",
+    "caps": 35
+  },
+  {
+    "id": 870,
+    "name": "SECURITRON SMG",
+    "type": "ITEM",
+    "subType": "Rifle",
+    "caps": 10
+  },
+  {
+    "id": 871,
+    "name": "SERVICE RIFLE",
+    "type": "ITEM",
+    "subType": "Rifle",
+    "caps": 6
+  },
+  {
+    "id": 872,
+    "name": "SNIPER RIFLE",
+    "type": "ITEM",
+    "subType": "Rifle",
+    "caps": 25
+  },
+  {
+    "id": 873,
+    "name": "STAGGERING PIPE RIFLE",
+    "type": "ITEM",
+    "subType": "Rifle",
+    "caps": 13
+  },
+  {
+    "id": 874,
+    "name": "SUBMACHINE GUN",
+    "type": "ITEM",
+    "subType": "Rifle",
+    "caps": 10
+  },
+  {
+    "id": 875,
+    "name": "SYRINGER",
+    "type": "ITEM",
+    "subType": "Rifle",
+    "caps": 20
+  },
+  {
+    "id": 876,
+    "name": "TESLA RIFLE",
+    "type": "ITEM",
+    "subType": "Rifle",
+    "caps": 16
+  },
+  {
+    "id": 877,
+    "name": "THE GHOUL'S RIFLE",
+    "type": "ITEM",
+    "subType": "Rifle",
+    "caps": 18
+  },
+  {
+    "id": 878,
+    "name": "TRAIL CARBINE",
+    "type": "ITEM",
+    "subType": "Rifle",
+    "caps": 23
+  },
+  {
+    "id": 879,
+    "name": "TROUBLESHOOTER'S COMBAT RIFLE",
+    "type": "ITEM",
+    "subType": "Rifle",
+    "caps": 17
+  },
+  {
+    "id": 880,
+    "name": "BASEBALL GRENADE",
+    "type": "ITEM",
+    "subType": "Grenade",
+    "caps": 5
+  },
+  {
+    "id": 881,
+    "name": "BEHEMOTH ROCK THROW",
+    "type": "ITEM",
+    "subType": "Grenade",
+    "caps": 0
+  },
+  {
+    "id": 882,
+    "name": "CENTAUR SPIT",
+    "type": "ITEM",
+    "subType": "Grenade",
+    "caps": 0
+  },
+  {
+    "id": 883,
+    "name": "COLOSSUS ACIDIC SPITTLE",
+    "type": "ITEM",
+    "subType": "Grenade",
+    "caps": 0
+  },
+  {
+    "id": 884,
+    "name": "COLOSSUS POISON SPITTLE",
+    "type": "ITEM",
+    "subType": "Grenade",
+    "caps": 0
+  },
+  {
+    "id": 885,
+    "name": "CRYO GRENADE",
+    "type": "ITEM",
+    "subType": "Grenade",
+    "caps": 6
+  },
+  {
+    "id": 886,
+    "name": "DIRT THROW",
+    "type": "ITEM",
+    "subType": "Grenade",
+    "caps": 0
+  },
+  {
+    "id": 887,
+    "name": "FRAGMENTATION GRENADE",
+    "type": "ITEM",
+    "subType": "Grenade",
+    "caps": 6
+  },
+  {
+    "id": 888,
+    "name": "FURY GRENADE",
+    "type": "ITEM",
+    "subType": "Grenade",
+    "caps": 14
+  },
+  {
+    "id": 889,
+    "name": "INCENDIARY GRENADE",
+    "type": "ITEM",
+    "subType": "Grenade",
+    "caps": 7
+  },
+  {
+    "id": 890,
+    "name": "LONG-FUSE DYNAMITE",
+    "type": "ITEM",
+    "subType": "Grenade",
+    "caps": 3
+  },
+  {
+    "id": 891,
+    "name": "MIRELURK HATCHLINGS CLAW",
+    "type": "ITEM",
+    "subType": "Grenade",
+    "caps": 0
+  },
+  {
+    "id": 892,
+    "name": "MIRELURK QUEEN BROOD",
+    "type": "ITEM",
+    "subType": "Grenade",
+    "caps": 0
+  },
+  {
+    "id": 893,
+    "name": "MOLOTOV COCKTAIL",
+    "type": "ITEM",
+    "subType": "Grenade",
+    "caps": 4
+  },
+  {
+    "id": 894,
+    "name": "NUKA QUANTUM GRENADE",
+    "type": "ITEM",
+    "subType": "Grenade",
+    "caps": 18
+  },
+  {
+    "id": 895,
+    "name": "NUKALURK QUEEN BROOD",
+    "type": "ITEM",
+    "subType": "Grenade",
+    "caps": 0
+  },
+  {
+    "id": 896,
+    "name": "NUKALURK QUEEN LOB",
+    "type": "ITEM",
+    "subType": "Grenade",
+    "caps": 0
+  },
+  {
+    "id": 897,
+    "name": "OIL BOMB",
+    "type": "ITEM",
+    "subType": "Grenade",
+    "caps": 0
+  },
+  {
+    "id": 898,
+    "name": "PERSUASION GRENADE",
+    "type": "ITEM",
+    "subType": "Grenade",
+    "caps": 5
+  },
+  {
+    "id": 899,
+    "name": "PLASMA GRENADE",
+    "type": "ITEM",
+    "subType": "Grenade",
+    "caps": 7
+  },
+  {
+    "id": 900,
+    "name": "PREDATOR GRENADE",
+    "type": "ITEM",
+    "subType": "Grenade",
+    "caps": 14
+  },
+  {
+    "id": 901,
+    "name": "PULSE GRENADE",
+    "type": "ITEM",
+    "subType": "Grenade",
+    "caps": 3
+  },
+  {
+    "id": 902,
+    "name": "SHEEPSQUATCH POISON QUILLS",
+    "type": "ITEM",
+    "subType": "Grenade",
+    "caps": 0
+  },
+  {
+    "id": 903,
+    "name": "STUN GRENADE",
+    "type": "ITEM",
+    "subType": "Grenade",
+    "caps": 4
+  },
+  {
+    "id": 904,
+    "name": "SUICIDER MINI NUKE",
+    "type": "ITEM",
+    "subType": "Grenade",
+    "caps": 30
+  },
+  {
+    "id": 905,
+    "name": "SYNTH RELAY GRENADE",
+    "type": "ITEM",
+    "subType": "Grenade",
+    "caps": 18
+  },
+  {
+    "id": 906,
+    "name": "THROWING SPEAR",
+    "type": "ITEM",
+    "subType": "Grenade",
+    "caps": 3
+  },
+  {
+    "id": 907,
+    "name": "WEAK BEHEMOTH ROCK THROW",
+    "type": "ITEM",
+    "subType": "Grenade",
+    "caps": 0
+  }
+]
