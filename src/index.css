@@ -1,0 +1,86 @@
+@import "tailwindcss";
+
+@theme {
+  --color-pip: #14b814;
+  --color-pip-dim: #0a5c0a;
+  --color-pip-glow: #14b81440;
+  --color-amber: #ff9900;
+  --color-amber-dim: #805000;
+  --color-terminal: #0a0a0a;
+  --color-panel: #111411;
+  --color-panel-light: #1a1e1a;
+  --color-panel-alt: #151915;
+  --color-danger: #cc3333;
+  --color-danger-dim: #661a1a;
+  --font-family-mono: 'Share Tech Mono', 'Courier New', monospace;
+}
+
+@font-face {
+  font-family: 'Share Tech Mono';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('https://fonts.gstatic.com/s/sharetechmono/v15/J7aHnp1uDWRBEqV98dVQztYldFcLowEF.woff2') format('woff2');
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-pip-dim) var(--color-terminal);
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-family-mono);
+  background-color: var(--color-terminal);
+  color: var(--color-pip);
+  min-height: 100vh;
+}
+
+#root {
+  min-height: 100vh;
+}
+
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9999;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0, 0, 0, 0.06) 2px,
+    rgba(0, 0, 0, 0.06) 4px
+  );
+}
+
+input:focus, select:focus, textarea:focus, button:focus-visible {
+  outline: 1px solid var(--color-pip);
+  box-shadow: 0 0 8px var(--color-pip-glow);
+}
+
+::selection {
+  background: var(--color-pip-dim);
+  color: var(--color-pip);
+}
+
+input, select, textarea {
+  font-family: var(--font-family-mono);
+  background-color: var(--color-panel);
+  color: var(--color-pip);
+  border: 1px solid var(--color-pip-dim);
+  border-radius: 4px;
+  padding: 6px 10px;
+  font-size: 14px;
+}
+
+select option {
+  background-color: var(--color-panel);
+  color: var(--color-pip);
+}
+
+button {
+  font-family: var(--font-family-mono);
+  cursor: pointer;
+}

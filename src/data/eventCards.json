@@ -1,0 +1,702 @@
+[
+  {
+    "id": 1,
+    "name": "MUTANT STRANGLER VINES",
+    "type": "EVENT",
+    "deckType": "settlement",
+    "text": "No Structures can be built until 2 Resources plus 1 Resource per Land are discarded. The vines get out of hand overnight."
+  },
+  {
+    "id": 2,
+    "name": "MAINTENANCE",
+    "type": "EVENT",
+    "deckType": "settlement",
+    "text": "Randomize 1 Structure plus 1 per Land. For each: EITHER Spend 1 Resource to maintain OR Structure gains 1 Structural Damage (cannot repair this Settlement Use)."
+  },
+  {
+    "id": 3,
+    "name": "RESOURCE THEFT",
+    "type": "EVENT",
+    "deckType": "settlement",
+    "text": "Lose 1 Resource per Land. CONSEQUENCE: If a Turret has been built since last effect, discard card; otherwise resolve again + add CONSEQUENCE."
+  },
+  {
+    "id": 4,
+    "name": "INFESTATION",
+    "type": "EVENT",
+    "deckType": "settlement",
+    "text": "Until 2 Resources per Land are discarded, no Structures can be repaired and tokens cannot be removed during Settlement use or Battle Set-up."
+  },
+  {
+    "id": 5,
+    "name": "RAIDER ULTIMATUM",
+    "type": "EVENT",
+    "deckType": "settlement",
+    "text": "EITHER Discard 2 items and add CONSEQUENCE. OR Resolve Settlement Attack Rating 4+1 per Land minus defense. CONSEQUENCE: Resolve again + add CONSEQUENCE."
+  },
+  {
+    "id": 6,
+    "name": "BREWING TROUBLE",
+    "type": "EVENT ★",
+    "deckType": "settlement",
+    "text": "Attack Rating 1 plus 3 per Land. Defender is always aware. Morning scouts noticed advance enemy camps."
+  },
+  {
+    "id": 7,
+    "name": "PILLAGE LIFE",
+    "type": "EVENT",
+    "deckType": "settlement",
+    "text": "Attack Rating 9. For 1st and every other Structural Damage discard 1 random item instead (if not using scenario). Scenario: Victory Condition: Pillage."
+  },
+  {
+    "id": 8,
+    "name": "HOSTILE TAKEOVER",
+    "type": "EVENT",
+    "deckType": "settlement",
+    "text": "Attack Rating 6. Watch Towers have no Defense value. Defender is always unaware. Scenario: Deployment: Surprise."
+  },
+  {
+    "id": 9,
+    "name": "FIRE STARTERS",
+    "type": "EVENT",
+    "deckType": "settlement",
+    "text": "Attack Rating 5+1 per Land. Scenario: Deployment: Distraction."
+  },
+  {
+    "id": 10,
+    "name": "POWER STRUGGLE",
+    "type": "EVENT",
+    "deckType": "settlement",
+    "text": "Attack Rating 3+1 per Land. Target Infrastructure Structures. Scenario: Victory Condition: Sabotage | Deployment: Sewers."
+  },
+  {
+    "id": 11,
+    "name": "THE LONG GAME",
+    "type": "EVENT",
+    "deckType": "settlement",
+    "text": "Attack Rating 8. Target Small Structures. Scenario: Victory Condition: Disable."
+  },
+  {
+    "id": 12,
+    "name": "TRADE WAR",
+    "type": "EVENT",
+    "deckType": "settlement",
+    "text": "Attack Rating 7. Target Item Structures. Scenario: Victory Condition: Shutdown."
+  },
+  {
+    "id": 13,
+    "name": "GREASE THE WHEELS",
+    "type": "EVENT",
+    "deckType": "settlement",
+    "text": "EITHER Discard 2 items OR increase the next Attack Rating by 1."
+  },
+  {
+    "id": 14,
+    "name": "NO SHORTAGE OF TROUBLE",
+    "type": "EVENT",
+    "deckType": "settlement",
+    "text": "Attack Rating 6. Target Stores, Maintenance Sheds and Lockers. Scenario: Victory Condition: Disrupt."
+  },
+  {
+    "id": 15,
+    "name": "SELF DEFENSE",
+    "type": "EVENT",
+    "deckType": "settlement",
+    "text": "Attack Rating 5+2 per Land. Target Defense Structures. Scenario: Victory Condition: Weaken."
+  },
+  {
+    "id": 16,
+    "name": "SCRAP PILES",
+    "type": "EVENT",
+    "deckType": "settlement",
+    "text": "EITHER Keep scrap: +1 Attack Rating (+1 per Land) and gain 3 Resources after attack. OR Clear now: Discard 2 Resources, -1 next Attack Rating."
+  },
+  {
+    "id": 17,
+    "name": "FIRE!",
+    "type": "EVENT",
+    "deckType": "settlement",
+    "text": "Allocate 1 Structural Damage to random Structure, then 3 more to Structures within Red of first one."
+  },
+  {
+    "id": 18,
+    "name": "STORM WINDS",
+    "type": "EVENT",
+    "deckType": "settlement",
+    "text": "Allocate 3 Structural Damage to different Structures. Prioritize Badly Damaged, then Damaged, then Undamaged. Reinforced structures immune."
+  },
+  {
+    "id": 19,
+    "name": "OUTAGES",
+    "type": "EVENT",
+    "deckType": "settlement",
+    "text": "Randomize 1 Structure per Land from power/water providers. They provide nothing until CONSEQUENCE. CONSEQUENCE: Weather stabilises, effect ends."
+  },
+  {
+    "id": 20,
+    "name": "SUBSIDENCE",
+    "type": "EVENT",
+    "deckType": "settlement",
+    "text": "Randomly select 1 Structure. CONSEQUENCE: If not currently Reinforced, it suffers 2 Structural Damage."
+  },
+  {
+    "id": 21,
+    "name": "MINOR QUAKE",
+    "type": "EVENT",
+    "deckType": "settlement",
+    "text": "Allocate 1 Structural Damage +1 per Land to EACH different Structure. Reinforced Structures immune."
+  },
+  {
+    "id": 22,
+    "name": "BUSH FIRE",
+    "type": "EVENT",
+    "deckType": "settlement",
+    "text": "No Explore cards can be drawn until CONSEQUENCE. CONSEQUENCE: Fire burns out, effect ends."
+  },
+  {
+    "id": 23,
+    "name": "VACATION",
+    "type": "EVENT",
+    "deckType": "settlement",
+    "text": "Randomize 2 Item Structures. These cannot be used for the remainder of this Settlement use."
+  },
+  {
+    "id": 24,
+    "name": "HUNGRY HUNGRY CRICKETS",
+    "type": "EVENT",
+    "deckType": "settlement",
+    "text": "Draw 2 fewer Food & Drink cards from Cooking Stations until CONSEQUENCE. CONSEQUENCE: Crops recuperate, effect ends."
+  },
+  {
+    "id": 25,
+    "name": "MONGREL PACK",
+    "type": "EVENT",
+    "deckType": "settlement",
+    "text": "EITHER Add 1 Stun to model during next Battle Set-up and add CONSEQUENCE. OR Discard 2 Food & Drink items. CONSEQUENCE: Resolve again + add CONSEQUENCE."
+  },
+  {
+    "id": 26,
+    "name": "SLIM PICKINGS",
+    "type": "EVENT",
+    "deckType": "settlement",
+    "text": "All Item structures draw 1 fewer card than normal until CONSEQUENCE. CONSEQUENCE: Attacks ease, effect ends."
+  },
+  {
+    "id": 27,
+    "name": "RESOURCE CONTAMINATION",
+    "type": "EVENT",
+    "deckType": "settlement",
+    "text": "Structures that give Resources give 1 fewer Resource until CONSEQUENCE. CONSEQUENCE: Quality restored, effect ends."
+  },
+  {
+    "id": 28,
+    "name": "CAUSTIC MIST",
+    "type": "EVENT",
+    "deckType": "settlement",
+    "text": "For 5 random items in pool: EITHER Spend 1 Resource to restore immediately OR item cannot be equipped for next battle (50% value if sold)."
+  },
+  {
+    "id": 29,
+    "name": "INQUISITIVE DEATHCLAW",
+    "type": "EVENT",
+    "deckType": "settlement",
+    "text": "EXPLORE CONSEQUENCE: Deathclaw tracks back to Settlement. Driven off but causes 2 Structural Damage and 1 Stun Token to 1 model next Battle Set-up."
+  },
+  {
+    "id": 30,
+    "name": "TAKEN IN THE NIGHT",
+    "type": "EVENT",
+    "deckType": "settlement",
+    "text": "Set aside 3 random items from pool (unavailable). EXPLORE CONSEQUENCE: Items found, effect ends."
+  },
+  {
+    "id": 31,
+    "name": "HOUSE CLEARANCE",
+    "type": "EVENT",
+    "deckType": "settlement",
+    "text": "Gain 5 Resources."
+  },
+  {
+    "id": 32,
+    "name": "ACCIDENT AT WORK",
+    "type": "EVENT",
+    "deckType": "settlement",
+    "text": "Current Leader gains 1 Stun Token every Battle Set-up until CONSEQUENCE. EXPLORE CONSEQUENCE: Doctor returns to heal Leader, effect ends."
+  },
+  {
+    "id": 33,
+    "name": "BLOODWORM FEVER",
+    "type": "EVENT",
+    "deckType": "settlement",
+    "text": "Allocate 1 Damage to 3 different models every Battle Set-up until CONSEQUENCE. EXPLORE CONSEQUENCE: Cure found, effect ends."
+  },
+  {
+    "id": 34,
+    "name": "HIGH QUALITY JUNK",
+    "type": "EVENT",
+    "deckType": "settlement",
+    "text": "Gain 1 extra Resource each time a Structure gives Resources until CONSEQUENCE. CONSEQUENCE: Quality junk runs out, effect ends."
+  },
+  {
+    "id": 35,
+    "name": "TOUGH FACADE",
+    "type": "EVENT",
+    "deckType": "settlement",
+    "text": "During remainder of Settlement use, up to 3 Structures can be Reinforced at cost of 1 Resource each."
+  },
+  {
+    "id": 36,
+    "name": "WHISTLE BLOWER",
+    "type": "EVENT",
+    "deckType": "settlement",
+    "text": "Discard any number of items. Reduce next Attack Rating by 1 for each item discarded."
+  },
+  {
+    "id": 37,
+    "name": "GENEROSITY",
+    "type": "EVENT",
+    "deckType": "settlement",
+    "text": "When the next Structure that gives an item is used, draw 1 extra item AND keep 1 extra item."
+  },
+  {
+    "id": 38,
+    "name": "LIGHT DAMAGE",
+    "type": "EVENT",
+    "deckType": "settlement",
+    "text": "During remainder of Settlement use, up to 4 Structures can be repaired costing 1 fewer Resource than usual."
+  },
+  {
+    "id": 39,
+    "name": "TEAM EFFORT",
+    "type": "EVENT",
+    "deckType": "settlement",
+    "text": "EITHER Any 1 Structure made Undamaged regardless of current state (even if Wrecked). OR Repair up to 3 different Structures once each."
+  },
+  {
+    "id": 40,
+    "name": "BOUNTIFUL HAULS",
+    "type": "EVENT",
+    "deckType": "settlement",
+    "text": "Draw 1 additional item when using Item Structures until CONSEQUENCE. CONSEQUENCE: Glut ends, effect ends."
+  },
+  {
+    "id": 41,
+    "name": "READING FOR PLEASURE",
+    "type": "EVENT",
+    "deckType": "settlement",
+    "text": "When the next Structure that gives a Boost is used, draw and keep 2 extra Boosts."
+  },
+  {
+    "id": 42,
+    "name": "THE INSIDE TRACK",
+    "type": "EVENT",
+    "deckType": "settlement",
+    "text": "Next time an Explore card is drawn, draw 1 extra Explore card and choose which to resolve. Place other on top or bottom of Explore Deck."
+  },
+  {
+    "id": 43,
+    "name": "FORGOTTEN DEFENSES",
+    "type": "EVENT",
+    "deckType": "settlement",
+    "text": "Pay 1 Resource to add CONSEQUENCE. CONSEQUENCE: Gain 1 Machinegun Mk I Turret."
+  },
+  {
+    "id": 44,
+    "name": "FAVORS REPAID",
+    "type": "EVENT",
+    "deckType": "settlement",
+    "text": "All costs to use a Structure decreased by 50% (round up) until CONSEQUENCE. CONSEQUENCE: Favors repaid, effect ends."
+  },
+  {
+    "id": 45,
+    "name": "SCOUT GROUP",
+    "type": "EVENT",
+    "deckType": "settlement",
+    "text": "Temporarily gain 1 Ranger Outpost and 1 Scout Camp until CONSEQUENCE. CONSEQUENCE: EITHER pay 1 Food & Drink + 1 other item to extend OR group moves on."
+  },
+  {
+    "id": 46,
+    "name": "ABUNDANT SUPPLIES",
+    "type": "EVENT",
+    "deckType": "settlement",
+    "text": "Barracks and Medical Centers remove double their usual amount of conditions/damage until CONSEQUENCE. CONSEQUENCE: Supplies return to normal."
+  },
+  {
+    "id": 47,
+    "name": "MISSING TRADER",
+    "type": "EVENT",
+    "deckType": "settlement",
+    "text": "Randomize 1 Item Structure (Jervis's) which cannot be used until EXPLORE CONSEQUENCE. EXPLORE CONSEQUENCE: Jervis found. Next 3 uses of his Structure: draw+keep 1 extra card."
+  },
+  {
+    "id": 48,
+    "name": "INCOMING!",
+    "type": "EVENT",
+    "deckType": "settlement",
+    "text": "For each Item discarded (or Structure used) which heals at least 1 Regular Damage, gain 30 Caps. Can do this 5 times until next Settlement Event."
+  },
+  {
+    "id": 49,
+    "name": "FRESH FINDS",
+    "type": "EVENT",
+    "deckType": "settlement",
+    "text": "Gain 1 Weapon item and 1 Junk item."
+  },
+  {
+    "id": 50,
+    "name": "WARNING SIGNAL",
+    "type": "EVENT",
+    "deckType": "settlement",
+    "text": "Discard Resources to build signal fire. CONSEQUENCE: Roll Red Die. If <= Resources discarded, signal warns neighbor — gain 3 items as gift."
+  },
+  {
+    "id": 51,
+    "name": "KEEN TO LEARN",
+    "type": "EVENT",
+    "deckType": "settlement",
+    "text": "Immediately gain 1 Perk for free."
+  },
+  {
+    "id": 52,
+    "name": "DIFFICULT SHORTAGES",
+    "type": "EVENT",
+    "deckType": "settlement",
+    "text": "For remainder of this Settlement Use: one item type value doubled, only draw 1 card of that type from Item Structures. Roll Red Die: Star=Junk, Half=Chems, Star+Half=Gear."
+  },
+  {
+    "id": 53,
+    "name": "SUPPLY ISSUES",
+    "type": "EVENT",
+    "deckType": "settlement",
+    "text": "For remainder of this Settlement Use: one item type value doubled, only draw 1 card of that type. Roll Red Die: Star=Food & Drink, Half=Clothing, Star+Half=Armor."
+  },
+  {
+    "id": 54,
+    "name": "LOST TRADE",
+    "type": "EXPLORE",
+    "deckType": "explore",
+    "text": "Trader is several days late. Keep a lookout. EXPLORE CONSEQUENCE: Trader found alive (Brahmin dead). Gain 1 Item Structure OR upgrade 1 existing Item Structure (draws 1 more card)."
+  },
+  {
+    "id": 55,
+    "name": "FOLLOW THE LEADER",
+    "type": "EXPLORE",
+    "deckType": "explore",
+    "text": "Discard 1 item. All Item Structures draw 1 more card than normal until end of this Settlement Use."
+  },
+  {
+    "id": 56,
+    "name": "A CALL FOR HELP",
+    "type": "EXPLORE",
+    "deckType": "explore",
+    "text": "The dog indicates someone needs help. EXPLORE CONSEQUENCE: Gain 1 Crafting Structure."
+  },
+  {
+    "id": 57,
+    "name": "A CURIOUS MAP",
+    "type": "EXPLORE",
+    "deckType": "explore",
+    "text": "EXPLORE CONSEQUENCE: Cache found. Gain 30 Caps, 1 Weapon and 2 other items."
+  },
+  {
+    "id": 58,
+    "name": "CELEBRATION",
+    "type": "EXPLORE",
+    "deckType": "explore",
+    "text": "Discard 1 Alcohol item. During Set-up for next Battle: remove up to 3 tokens from a model and add 1 Armor Boost."
+  },
+  {
+    "id": 59,
+    "name": "FARMED OUT",
+    "type": "EXPLORE",
+    "deckType": "explore",
+    "text": "Roll Red Die: Star=Gain 1 item + 75 Caps. Half=Gain 1 Stun + 1 Damage + 2 items. Star+Half=Next Attack Rating +2."
+  },
+  {
+    "id": 60,
+    "name": "HOME FROM HOME",
+    "type": "EXPLORE",
+    "deckType": "explore",
+    "text": "Mark any usable unused Structures as used without their effect. Gain 25 Caps each. Infrastructure excluded. Max 200 Caps."
+  },
+  {
+    "id": 61,
+    "name": "EASTFIELD STEELWORKS",
+    "type": "EXPLORE",
+    "deckType": "explore",
+    "text": "Gain 2 Resources. SETTLEMENT EVENT CONSEQUENCE: Scrap owners want it back. Lose 4 Resources."
+  },
+  {
+    "id": 62,
+    "name": "RELAY TOWER 2SW-314",
+    "type": "EXPLORE",
+    "deckType": "explore",
+    "text": "Gain 2 Resources."
+  },
+  {
+    "id": 63,
+    "name": "TAFFINGTON BOATHOUSE",
+    "type": "EXPLORE",
+    "deckType": "explore",
+    "text": "EITHER Easy pickings: Gain 2 Resources. OR Go inside: Roll Red Die, gain that many Resources plus 1 Chem item."
+  },
+  {
+    "id": 64,
+    "name": "HILLSIDE DRIVE-THRU",
+    "type": "EXPLORE",
+    "deckType": "explore",
+    "text": "Gain 1 additional Resource when Resources are gained from Structures until CONSEQUENCE. CONSEQUENCE: Landslide crashes, effect ends."
+  },
+  {
+    "id": 65,
+    "name": "EAGLE STAR DINER",
+    "type": "EXPLORE",
+    "deckType": "explore",
+    "text": "Discard up to 3 items. Next time you gain Resources from a Structure, gain additional Resources = 1 + number of items discarded."
+  },
+  {
+    "id": 66,
+    "name": "RICKETY SHACK",
+    "type": "EXPLORE",
+    "deckType": "explore",
+    "text": "Discard up to 3 items. Next Resources from Structure: roll Red Die. If <= items discarded, gain additional 4 Resources."
+  },
+  {
+    "id": 67,
+    "name": "SUNNY PEAK CAMPSITE",
+    "type": "EXPLORE",
+    "deckType": "explore",
+    "text": "Spend 3 or 6 Resources to add CONSEQUENCE. CONSEQUENCE: 3 Resources=remove 1 token next Set-up. 6 Resources=remove 3 tokens next Set-up."
+  },
+  {
+    "id": 68,
+    "name": "BROKEN HORSE FARM",
+    "type": "EXPLORE",
+    "deckType": "explore",
+    "text": "Discard up to 3 non-Junk items and gain 2 Resources for each."
+  },
+  {
+    "id": 69,
+    "name": "BRAMBLE COTTAGE",
+    "type": "EXPLORE",
+    "deckType": "explore",
+    "text": "Draw 3 Food/Clothing items. Gain any mix by spending 2 Resources each."
+  },
+  {
+    "id": 70,
+    "name": "LURTON CREEK",
+    "type": "EXPLORE",
+    "deckType": "explore",
+    "text": "EITHER Leave: Lose 2 Resources. OR Challenge (Test CHA): Success=draw 2 weapon items. Fail=lose 4 Resources."
+  },
+  {
+    "id": 71,
+    "name": "LOGGING CAMP",
+    "type": "EXPLORE",
+    "deckType": "explore",
+    "text": "Gain 2 Armor items. SETTLEMENT EVENT CONSEQUENCE: -3 Power / -3 Water until end of this Settlement use."
+  },
+  {
+    "id": 72,
+    "name": "NORTH PUMPHOUSE",
+    "type": "EXPLORE",
+    "deckType": "explore",
+    "text": "Discard any Weapon/Food/Junk/Chem item. Select up to 2 Structures providing power/water and permanently +1 their output each."
+  },
+  {
+    "id": 73,
+    "name": "LONELY CABIN",
+    "type": "EXPLORE",
+    "deckType": "explore",
+    "text": "Gain 0-4 Resources. If you gain 1+, add CONSEQUENCE. CONSEQUENCE: Attack Rating 3+1 per Resource gained. Scenario: Victory Condition: Vandalise."
+  },
+  {
+    "id": 74,
+    "name": "REGAL CLINIC",
+    "type": "EXPLORE",
+    "deckType": "explore",
+    "text": "Remove 1 generator from Settlement to add CONSEQUENCE. CONSEQUENCE: Remove 3 tokens during next Set-up."
+  },
+  {
+    "id": 75,
+    "name": "UNATTENDED CAMP",
+    "type": "EXPLORE",
+    "deckType": "explore",
+    "text": "Draw 0-3 items. If 1+ drawn, add CONSEQUENCE. CONSEQUENCE: Roll Red Die per item drawn. Attack Rating = total rolls. Scenario: Victory Condition: Pillage."
+  },
+  {
+    "id": 76,
+    "name": "RAIL STATION",
+    "type": "EXPLORE",
+    "deckType": "explore",
+    "text": "Draw up to 3 Items one at a time. For each Item drawn, increase next Attack Rating by number drawn so far."
+  },
+  {
+    "id": 77,
+    "name": "EVERSON BRIDGE",
+    "type": "EXPLORE",
+    "deckType": "explore",
+    "text": "EITHER Pay: Discard 1 item. OR Refuse: Increase next Attack Rating by 2."
+  },
+  {
+    "id": 78,
+    "name": "LANG FARMSTEAD",
+    "type": "EXPLORE",
+    "deckType": "explore",
+    "text": "Choose 1-4 hours. Roll Red Die. If <= hours, +3 next Attack Rating. Roll again; if <= hours, draw 1 Junk item."
+  },
+  {
+    "id": 79,
+    "name": "WITHERED FOREST",
+    "type": "EXPLORE",
+    "deckType": "explore",
+    "text": "Test PER: Success=Draw 1 Weapon + 2 Junk + 1 Armor. Fail=Apply 1 Structural Damage, repeat card (max 5 times)."
+  },
+  {
+    "id": 80,
+    "name": "SWOLLEN RIVER",
+    "type": "EXPLORE",
+    "deckType": "explore",
+    "text": "If you open gates: draw 3 Food/Chem items, then roll Red Die and apply Structural Damage = result minus 1."
+  },
+  {
+    "id": 81,
+    "name": "BLACKHORN CAMP",
+    "type": "EXPLORE",
+    "deckType": "explore",
+    "text": "Test CHA: Success=Reduce next Attack Rating by 2. Fail=Increase next Attack Rating by 1."
+  },
+  {
+    "id": 82,
+    "name": "CLEARVIEW PARK",
+    "type": "EXPLORE",
+    "deckType": "explore",
+    "text": "Test STR: Success=1 model starts next Battle with Stun Token, then Repair 4 times. Fail=As success but Repair once only."
+  },
+  {
+    "id": 83,
+    "name": "CABIN ON THE HILL",
+    "type": "EXPLORE",
+    "deckType": "explore",
+    "text": "EITHER Search cabin: Draw 3 Food/Junk, roll Red Die, apply that Structural Damage. OR Return to help: Roll Red Die, apply Structural Damage = result minus 2."
+  },
+  {
+    "id": 84,
+    "name": "PIVERTON QUARRY",
+    "type": "EXPLORE",
+    "deckType": "explore",
+    "text": "Clear Mole Rats: Roll Red Die. For each Star, gain 1 Resource, then Repair 2 times."
+  },
+  {
+    "id": 85,
+    "name": "BROKEN OVERPASS",
+    "type": "EXPLORE",
+    "deckType": "explore",
+    "text": "EITHER Help: Gain Stun + Test AGI (success=1 Item Structure draws 3 from now on). OR Leave: Remove 1 Item Structure from Settlement."
+  },
+  {
+    "id": 86,
+    "name": "HOME FIXIT",
+    "type": "EXPLORE",
+    "deckType": "explore",
+    "text": "EITHER Read books: Repairs cost 1 fewer Resource this Settlement use. OR Search (Test PER-2): Success=Gain 1 Weapon + 1 Junk."
+  },
+  {
+    "id": 87,
+    "name": "BARKSIDE RANCH",
+    "type": "EXPLORE",
+    "deckType": "explore",
+    "text": "For every 2 Item Structures you mark as used without their benefit, return 1 non-Wrecked Structure to Undamaged."
+  },
+  {
+    "id": 88,
+    "name": "DARK FARMHOUSE",
+    "type": "EXPLORE",
+    "deckType": "explore",
+    "text": "Agree: Gain 80 Caps but 1 generator outputs zero power for you until CONSEQUENCE. CONSEQUENCE: Batteries charged, effect ends."
+  },
+  {
+    "id": 89,
+    "name": "MOTO FITTER",
+    "type": "EXPLORE",
+    "deckType": "explore",
+    "text": "Gain 4 barricades (optional). If you do, Test AGI: Success=Gain 1 Resource. Fail=Gain 1 Resource + 1 Stun Token."
+  },
+  {
+    "id": 90,
+    "name": "DEER LAKE CAMP",
+    "type": "EXPLORE",
+    "deckType": "explore",
+    "text": "EITHER Mark Medical Centre as used (gain 3 other items instead). OR Drive off Sentry Bot: Gain 1 Stun + 30 Caps."
+  },
+  {
+    "id": 91,
+    "name": "HUNGRY MONGRELS",
+    "type": "EXPLORE",
+    "deckType": "explore",
+    "text": "EITHER Ignore: 1 model starts next battle with Stun Token + add EXPLORE CONSEQUENCE. OR Pay (discard 1 Food): Discard this card. CONSEQUENCE: Resolve again."
+  },
+  {
+    "id": 92,
+    "name": "FREEWAY ROBBERY",
+    "type": "EXPLORE",
+    "deckType": "explore",
+    "text": "EITHER Run: Gain 1 Stun + add EXPLORE CONSEQUENCE. OR Pay (discard 1 item): Discard card. CONSEQUENCE: Resolve again."
+  },
+  {
+    "id": 93,
+    "name": "PASSING TRADE",
+    "type": "EXPLORE",
+    "deckType": "explore",
+    "text": "EITHER Pass: Discard. OR Trade: Discard 2 items, name 1 item type (not Chems), draw 3 of that type, keep 1. Add EXPLORE CONSEQUENCE. CONSEQUENCE: Resolve again."
+  },
+  {
+    "id": 94,
+    "name": "DRY LAKEBED",
+    "type": "EXPLORE",
+    "deckType": "explore",
+    "text": "EITHER Avoid it: Add EXPLORE CONSEQUENCE. OR Discourage it (Test STR): Success=Gain 1 Resource. CONSEQUENCE: Gain 1 Stun Token, then resolve again."
+  },
+  {
+    "id": 95,
+    "name": "REMOTE CAMP SITE",
+    "type": "EXPLORE",
+    "deckType": "explore",
+    "text": "Roll Red Die. If any Star: draw 3 Food/Junk items. Otherwise add CONSEQUENCE or discard. CONSEQUENCE: Gain 1 Stun, then resolve again."
+  },
+  {
+    "id": 96,
+    "name": "SCAVENGER HUNT",
+    "type": "EXPLORE",
+    "deckType": "explore",
+    "text": "Roll Red Die. If any Star: draw 1 Power Armor item. Otherwise add CONSEQUENCE or discard. CONSEQUENCE: Gain 1 Stun, then resolve again."
+  },
+  {
+    "id": 97,
+    "name": "ABBERWORTH SALOON",
+    "type": "EXPLORE",
+    "deckType": "explore",
+    "text": "Draw 3 items. If you keep them, add EXPLORE CONSEQUENCE (no items from Explore cards until resolved). CONSEQUENCE: Merc accepts loot, effect ends."
+  },
+  {
+    "id": 98,
+    "name": "LEAVESTON CAVE",
+    "type": "EXPLORE",
+    "deckType": "explore",
+    "text": "Resolve 1 Radiation Damage then roll Red Die. If any Star: draw 3 weapon items. Otherwise add CONSEQUENCE or discard. CONSEQUENCE: Resolve again."
+  },
+  {
+    "id": 99,
+    "name": "GUNNER CACHE",
+    "type": "EXPLORE",
+    "deckType": "explore",
+    "text": "EITHER Try again later: Add CONSEQUENCE. OR Give up: Discard, draw new Explore card. CONSEQUENCE: Test PER: Success=Draw 2 Weapon items. Fail=Add CONSEQUENCE again."
+  },
+  {
+    "id": 100,
+    "name": "WATER TOWER",
+    "type": "EXPLORE",
+    "deckType": "explore",
+    "text": "Pay 30 Caps to add CONSEQUENCE. If items are gained from Explore cards, also draw 1 Junk item until CONSEQUENCE. CONSEQUENCE: Scribe leaves, effect ends."
+  }
+]
