@@ -1,19 +1,27 @@
 import { useState } from 'react'
-import { Plus, Trash2, RotateCcw, Zap, Droplets, Building2, Coins } from 'lucide-react'
+import { Plus, Trash2, RotateCcw, Zap, Droplets, Building2, Coins, Recycle } from 'lucide-react'
 import { useCampaign } from '../../context/CampaignContext'
 import { calcPowerGenerated, calcPowerConsumed, calcWaterGenerated, calcWaterConsumed, getStructureRef, calcSettlementTotalCaps } from '../../utils/calculations'
-import structuresData from '../../data/structures.json'
 import AddStructureModal from './AddStructureModal'
+import ItemPoolPanel from './ItemPoolPanel'
+import { BarracksModal, MedicalCenterModal } from './StructureUseModals'
 
 const CONDITION_OPTIONS = ['Undamaged', 'Damaged', 'Badly Damaged', 'Wrecked', 'Reinforced']
 
 // Free Phase 3 starting structures: 2x Generator-Small(1), Stores(53), Maintenance Shed(54), Listening Post(50)
 const PHASE3_FREE_IDS = [1, 1, 53, 54, 50]
 
+// Structures with special use handlers
+const SPECIAL_STRUCTURE_NAMES = ['Listening Post', 'Ranger Outpost', 'Scout Camp', 'Barracks', 'Medical Center']
+
 export default function SettlementPage() {
   const { state, setState } = useCampaign()
   const [showAddStructure, setShowAddStructure] = useState(false)
   const [atValidOnly, setAtValidOnly] = useState(true)
+  const [showBarracks, setShowBarracks] = useState(false)
+  const [showMedCenter, setShowMedCenter] = useState(false)
+  // Lost model recovery: array of units to check
+  const [lostRecoveryQueue, setLostRecoveryQueue] = useState([])
 
   const structures = state.settlement.structures || []
   const phase = state.phase ?? 1
@@ -31,6 +39,11 @@ export default function SettlementPage() {
   const waterUsed = calcWaterConsumed(structures)
   const totalCost = calcSettlementTotalCaps(structures)
   const usedCount = structures.filter(s => s.usedThisRound).length
+
+  // Quest-based land claim
+  const completedQuestCount = (state.questCards || []).filter(q => q.status === 'Complete').length
+
+  const roster = state.roster || []
 
   function handleAddStructure(structure) {
     setState(prev => ({
@@ -50,16 +63,82 @@ export default function SettlementPage() {
     }))
   }
 
-  function handleToggleUsed(instanceId) {
+  function handleScrapStructure(instanceId) {
+    const s = structures.find(st => st.instanceId === instanceId)
+    if (!s) return
+    const ref = getStructureRef(s.structureId)
+    if (!ref) return
+    const scrapValue = Math.floor((ref.cost || 0) / 2)
+    if (!confirm(`Scrap ${ref.name} for ${scrapValue}c?`)) return
     setState(prev => ({
       ...prev,
+      caps: (prev.caps || 0) + scrapValue,
       settlement: {
         ...prev.settlement,
-        structures: prev.settlement.structures.map(s =>
-          s.instanceId === instanceId ? { ...s, usedThisRound: !s.usedThisRound } : s
-        ),
+        structures: prev.settlement.structures.filter(st => st.instanceId !== instanceId),
       },
     }))
+  }
+
+  function checkLostUnits(exploreCount) {
+    const lost = roster.filter(u => u.fate === 'Lost')
+    if (lost.length > 0) {
+      setLostRecoveryQueue(lost.map(u => ({ ...u, exploreCount })))
+    }
+  }
+
+  function handleToggleUsed(instanceId) {
+    const s = structures.find(st => st.instanceId === instanceId)
+    if (!s) return
+    const ref = getStructureRef(s.structureId)
+    const structureName = ref?.name || ''
+
+    // First toggle the state
+    setState(prev => {
+      const newUsed = !s.usedThisRound
+      const newStructures = prev.settlement.structures.map(st =>
+        st.instanceId === instanceId ? { ...st, usedThisRound: newUsed } : st
+      )
+
+      if (!newUsed) {
+        // Un-toggling: just update
+        return {
+          ...prev,
+          settlement: { ...prev.settlement, structures: newStructures },
+        }
+      }
+
+      // Special handling on toggle ON
+      let extraUpdates = {}
+
+      if (structureName === 'Listening Post') {
+        const deduct = confirm('Listening Post use costs 50c. Deduct from caps?\n\n[OK = Deduct 50c | Cancel = Skip]')
+        extraUpdates.caps = deduct ? Math.max(0, (prev.caps || 0) - 50) : prev.caps
+        const newCount = (prev.exploreCardsThisRound || 0) + 1
+        extraUpdates.exploreCardsThisRound = newCount
+        setTimeout(() => checkLostUnits(newCount), 100)
+      } else if (structureName === 'Ranger Outpost') {
+        alert('Ranger Outpost: free Explore card this round.')
+        const newCount = (prev.exploreCardsThisRound || 0) + 1
+        extraUpdates.exploreCardsThisRound = newCount
+        setTimeout(() => checkLostUnits(newCount), 100)
+      } else if (structureName === 'Scout Camp') {
+        alert('Scout Camp: draw and optionally redraw 1 Explore card.')
+        const newCount = (prev.exploreCardsThisRound || 0) + 1
+        extraUpdates.exploreCardsThisRound = newCount
+        setTimeout(() => checkLostUnits(newCount), 100)
+      } else if (structureName === 'Barracks') {
+        setTimeout(() => setShowBarracks(true), 100)
+      } else if (structureName === 'Medical Center') {
+        setTimeout(() => setShowMedCenter(true), 100)
+      }
+
+      return {
+        ...prev,
+        ...extraUpdates,
+        settlement: { ...prev.settlement, structures: newStructures },
+      }
+    })
   }
 
   function handleUpdateStructure(instanceId, field, value) {
@@ -94,6 +173,14 @@ export default function SettlementPage() {
     }))
   }
 
+  function handleClaimLandViaQuests() {
+    if (!confirm('Claim additional land via 5 completed quests? (No cap cost)')) return
+    setState(prev => ({
+      ...prev,
+      settlement: { ...prev.settlement, landPurchased: true },
+    }))
+  }
+
   function handlePhase3Setup() {
     if (!confirm('Add free starting structures? (2× Generator – Small, Stores, Maintenance Shed, Listening Post)')) return
     const newStructures = PHASE3_FREE_IDS.map(id => ({
@@ -113,6 +200,47 @@ export default function SettlementPage() {
     }))
   }
 
+  function handleBarracksApply(unitSlotId, condKey) {
+    setState(prev => ({
+      ...prev,
+      roster: prev.roster.map(u =>
+        u.slotId === unitSlotId ? { ...u, [condKey]: false } : u
+      ),
+    }))
+  }
+
+  function handleMedCenterApply(unitSlotId, action) {
+    setState(prev => ({
+      ...prev,
+      roster: prev.roster.map(u => {
+        if (u.slotId !== unitSlotId) return u
+        if (action === 'heal') {
+          return { ...u, regDamage: Math.max(0, (u.regDamage || 0) - 2) }
+        } else if (action === 'addiction') {
+          return { ...u, addiction: '' }
+        }
+        return u
+      }),
+    }))
+  }
+
+  // Lost recovery handlers
+  const currentLostUnit = lostRecoveryQueue[0] || null
+
+  function handleMarkFound(unitSlotId) {
+    setState(prev => ({
+      ...prev,
+      roster: prev.roster.map(u =>
+        u.slotId === unitSlotId ? { ...u, fate: 'Active' } : u
+      ),
+    }))
+    setLostRecoveryQueue(prev => prev.slice(1))
+  }
+
+  function handleNotFound() {
+    setLostRecoveryQueue(prev => prev.slice(1))
+  }
+
   return (
     <div className="p-4 max-w-5xl mx-auto">
       {/* Caps read-only */}
@@ -122,6 +250,31 @@ export default function SettlementPage() {
         <span className="text-amber font-bold text-sm">{(caps).toLocaleString()}c</span>
         <span className="text-pip-dim text-xs ml-2">(manage on Overview)</span>
       </div>
+
+      {/* Lost Model Recovery Alert */}
+      {currentLostUnit && (
+        <div className="mb-4 border border-amber rounded bg-amber-dim/10 px-4 py-3">
+          <div className="text-amber text-xs font-bold mb-1">LOST MODEL RECOVERY</div>
+          <p className="text-pip-dim text-xs mb-2">
+            <span className="text-pip font-bold">{currentLostUnit.unitName}</span> is Lost. Roll a red die: if result ≤{' '}
+            <span className="text-amber font-bold">{currentLostUnit.exploreCount}</span> they are found.
+          </p>
+          <div className="flex gap-2">
+            <button
+              onClick={() => handleMarkFound(currentLostUnit.slotId)}
+              className="text-xs px-3 py-1.5 border border-pip text-pip rounded hover:bg-pip-dim/30"
+            >
+              MARK FOUND
+            </button>
+            <button
+              onClick={handleNotFound}
+              className="text-xs px-3 py-1.5 border border-pip-dim text-pip-dim rounded hover:text-pip"
+            >
+              Not found
+            </button>
+          </div>
+        </div>
+      )}
 
       {/* Dashboard */}
       <div className="grid grid-cols-2 sm:grid-cols-5 gap-2 mb-4">
@@ -151,9 +304,9 @@ export default function SettlementPage() {
         </div>
       </div>
 
-      {/* Buy Land button */}
+      {/* Buy Land / Quest Claim buttons */}
       {!landPurchased && usedSlots >= 12 && (
-        <div className="mb-4">
+        <div className="mb-4 flex gap-2 flex-wrap">
           <button
             onClick={handleBuyLand}
             disabled={caps < 500}
@@ -161,6 +314,16 @@ export default function SettlementPage() {
           >
             BUY LAND (+10 SLOTS) — 500c
           </button>
+          {completedQuestCount >= 5 ? (
+            <button
+              onClick={handleClaimLandViaQuests}
+              className="flex items-center gap-2 px-4 py-2 border border-pip rounded text-pip text-sm hover:bg-pip-dim/20 transition-colors"
+            >
+              CLAIM LAND (5 Quests ✓)
+            </button>
+          ) : (
+            <span className="text-pip-dim text-xs self-center">{completedQuestCount}/5 quests completed</span>
+          )}
         </div>
       )}
 
@@ -220,6 +383,7 @@ export default function SettlementPage() {
           {structures.map(s => {
             const ref = getStructureRef(s.structureId)
             if (!ref) return null
+            const isSpecial = SPECIAL_STRUCTURE_NAMES.includes(ref.name)
             return (
               <div key={s.instanceId} className={`border rounded px-3 py-2 flex items-start gap-3 transition-colors ${
                 s.usedThisRound ? 'border-pip-dim/20 bg-panel-alt opacity-60' : 'border-pip-dim/50 bg-panel'
@@ -228,7 +392,8 @@ export default function SettlementPage() {
                   onClick={() => handleToggleUsed(s.instanceId)}
                   className={`mt-1 w-5 h-5 rounded border shrink-0 flex items-center justify-center text-xs ${
                     s.usedThisRound ? 'border-pip bg-pip text-terminal' : 'border-pip-dim hover:border-pip'
-                  }`}
+                  } ${isSpecial ? 'ring-1 ring-amber/30' : ''}`}
+                  title={isSpecial ? `${ref.name} — has special use effect` : undefined}
                 >
                   {s.usedThisRound ? '✓' : ''}
                 </button>
@@ -236,6 +401,7 @@ export default function SettlementPage() {
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 flex-wrap">
                     <span className="text-pip text-sm font-bold">{ref.name}</span>
+                    {isSpecial && <span className="text-amber text-xs">★</span>}
                     <span className="text-xs text-pip-dim">{ref.category}</span>
                     <span className="text-xs text-amber">{ref.cost}c</span>
                     {ref.pwrGen > 0 && <span className="text-xs text-pip">+{ref.pwrGen}⚡</span>}
@@ -254,20 +420,48 @@ export default function SettlementPage() {
                   </div>
                 </div>
 
-                <button onClick={() => handleRemoveStructure(s.instanceId)} className="text-pip-dim hover:text-danger shrink-0 mt-1">
-                  <Trash2 size={14} />
-                </button>
+                <div className="flex flex-col gap-1 shrink-0">
+                  {s.condition === 'Undamaged' && (
+                    <button
+                      onClick={() => handleScrapStructure(s.instanceId)}
+                      className="text-pip-dim hover:text-amber flex items-center gap-0.5 text-xs"
+                      title={`Scrap for ${Math.floor((ref.cost || 0) / 2)}c`}
+                    >
+                      <Recycle size={12} />
+                    </button>
+                  )}
+                  <button onClick={() => handleRemoveStructure(s.instanceId)} className="text-pip-dim hover:text-danger mt-1">
+                    <Trash2 size={14} />
+                  </button>
+                </div>
               </div>
             )
           })}
         </div>
       )}
 
+      {/* Item Pool Panel */}
+      <ItemPoolPanel structures={structures} />
+
       <AddStructureModal
         isOpen={showAddStructure}
         onClose={() => setShowAddStructure(false)}
         onAdd={handleAddStructure}
         atValidOnly={atValidOnly}
+      />
+
+      <BarracksModal
+        isOpen={showBarracks}
+        onClose={() => setShowBarracks(false)}
+        roster={roster}
+        onApply={handleBarracksApply}
+      />
+
+      <MedicalCenterModal
+        isOpen={showMedCenter}
+        onClose={() => setShowMedCenter(false)}
+        roster={roster}
+        onApply={handleMedCenterApply}
       />
     </div>
   )

@@ -46,4 +46,4 @@ export function rollFate(lucScore = 3, timesRemoved = 0) {
   }
 }
 
-export const STATUS_OPTIONS = ['Active', 'Delayed', 'Lost', 'Shaken', 'Captured', 'Injured', 'Dead']
+export const STATUS_OPTIONS = ['Active', 'Pending', 'Delayed', 'Lost', 'Shaken', 'Captured', 'Injured', 'Dead']

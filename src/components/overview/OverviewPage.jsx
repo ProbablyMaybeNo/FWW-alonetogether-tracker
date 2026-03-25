@@ -5,6 +5,7 @@ import { calcPowerGenerated, calcPowerConsumed, calcWaterGenerated, calcWaterCon
 import StatCard from '../layout/StatCard'
 import CardDrawer from './CardDrawer'
 import ActiveEvents from './ActiveEvents'
+import NewRoundModal from './NewRoundModal'
 import { SCAVENGER_OBJECTIVES } from '../../data/scavengerObjectives'
 
 const PHASES = [
@@ -19,12 +20,14 @@ export default function OverviewPage({ onTabChange }) {
   const [editingCaps, setEditingCaps] = useState(false)
   const [capsInput, setCapsInput] = useState('')
   const [capsAdjust, setCapsAdjust] = useState('')
+  const [showNewRound, setShowNewRound] = useState(false)
 
   const { roster, settlement, player, round } = state
   const structures = settlement.structures || []
   const caps = state.caps ?? 0
   const phase = state.phase ?? 1
   const phaseInfo = PHASES[phase - 1] || PHASES[0]
+  const exploreCards = state.exploreCardsThisRound ?? 0
 
   const pwrGen = calcPowerGenerated(structures)
   const pwrUsed = calcPowerConsumed(structures)
@@ -98,23 +101,39 @@ export default function OverviewPage({ onTabChange }) {
         <p className="text-pip-dim text-xs italic">{phaseInfo.subtitle}</p>
       </div>
 
-      {/* Phase Stepper */}
-      <div className="flex items-center justify-center gap-4">
-        <button
-          onClick={() => handlePhaseChange(-1)}
-          disabled={phase <= 1}
-          className="p-1.5 border border-pip-dim rounded text-pip-dim hover:text-pip disabled:opacity-30 transition-colors"
-        >
-          <ChevronLeft size={14} />
-        </button>
-        <span className="text-pip-dim text-xs tracking-wider">PHASE {phase} OF 4</span>
-        <button
-          onClick={() => handlePhaseChange(1)}
-          disabled={phase >= 4}
-          className="p-1.5 border border-pip-dim rounded text-pip-dim hover:text-pip disabled:opacity-30 transition-colors"
-        >
-          <ChevronRight size={14} />
-        </button>
+      {/* Phase Stepper + NEW ROUND */}
+      <div className="flex items-center justify-between gap-4 flex-wrap">
+        <div className="flex items-center gap-4">
+          <button
+            onClick={() => handlePhaseChange(-1)}
+            disabled={phase <= 1}
+            className="p-1.5 border border-pip-dim rounded text-pip-dim hover:text-pip disabled:opacity-30 transition-colors"
+          >
+            <ChevronLeft size={14} />
+          </button>
+          <span className="text-pip-dim text-xs tracking-wider">PHASE {phase} OF 4</span>
+          <button
+            onClick={() => handlePhaseChange(1)}
+            disabled={phase >= 4}
+            className="p-1.5 border border-pip-dim rounded text-pip-dim hover:text-pip disabled:opacity-30 transition-colors"
+          >
+            <ChevronRight size={14} />
+          </button>
+        </div>
+
+        <div className="flex items-center gap-3">
+          {exploreCards > 0 && (
+            <span className="text-pip-dim text-xs">
+              Explore Cards This Round: <span className="text-pip font-bold">{exploreCards}</span>
+            </span>
+          )}
+          <button
+            onClick={() => setShowNewRound(true)}
+            className="px-4 py-2 border border-pip text-pip rounded text-sm tracking-wider hover:bg-pip-dim/30 transition-colors font-bold"
+          >
+            NEW ROUND
+          </button>
+        </div>
       </div>
 
       {/* Player Info */}
@@ -193,9 +212,9 @@ export default function OverviewPage({ onTabChange }) {
           <StatCard label="STRUCTURES" value={structures.length} icon={Building2} />
           <StatCard label="POWER" value={`${pwrGen - pwrUsed}`} icon={Zap} color={pwrGen - pwrUsed < 0 ? 'danger' : 'pip'} />
           <StatCard label="WATER" value={`${waterGen - waterUsed}`} icon={Droplets} color={waterGen - waterUsed < 0 ? 'danger' : 'pip'} />
-          <StatCard label="STORES" value={`${poolCounts['Stores']}/6`} icon={Archive} small />
-          <StatCard label="MAINT SHED" value={`${poolCounts['Maint. Shed']}/6`} icon={Archive} small />
-          <StatCard label="LOCKERS" value={`${poolCounts['Locker']}/6`} icon={Archive} small />
+          <StatCard label="STORED" value={poolCounts.stored} icon={Archive} small />
+          <StatCard label="LOCKERS" value={poolCounts.locker} icon={Archive} small />
+          <StatCard label="STORES" value={poolCounts.stores} icon={Archive} small />
           <StatCard label="EVENTS" value={(state.activeEvents || []).length} icon={ScrollText} color={state.activeEvents?.length > 0 ? 'amber' : 'pip'} />
           <div
             className="border border-pip-dim/40 rounded bg-panel p-2 text-center cursor-pointer hover:bg-panel-alt transition-colors"
@@ -227,6 +246,8 @@ export default function OverviewPage({ onTabChange }) {
         </div>
         <ActiveEvents />
       </div>
+
+      <NewRoundModal isOpen={showNewRound} onClose={() => setShowNewRound(false)} />
     </div>
   )
 }

@@ -74,9 +74,14 @@ export function calcRosterTotalCaps(roster) {
 }
 
 export function calcItemPoolCounts(itemPool) {
-  const counts = { 'Stores': 0, 'Maint. Shed': 0, 'Locker': 0, 'Temp Pool': 0 }
+  const counts = { stored: 0, locker: 0, stores: 0, recovery: 0 }
   ;(itemPool?.items || []).forEach(item => {
-    if (counts[item.location] !== undefined) counts[item.location]++
+    const loc = item.location
+    // support legacy location names
+    if (loc === 'stored' || loc === 'Maint. Shed') counts.stored++
+    else if (loc === 'locker' || loc === 'Locker') counts.locker++
+    else if (loc === 'stores' || loc === 'Stores') counts.stores++
+    else if (loc === 'recovery' || loc === 'Temp Pool') counts.recovery++
   })
   return counts
 }
