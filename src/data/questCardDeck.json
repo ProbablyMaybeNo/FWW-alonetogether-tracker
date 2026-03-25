@@ -1,0 +1,793 @@
+[
+  {
+    "id": 10484,
+    "name": "Guerilla In The Midst Part 2",
+    "series": "Guerilla In The Midst",
+    "part": "2",
+    "isMultiPart": true
+  },
+  {
+    "id": 10485,
+    "name": "Double Locked",
+    "series": "Double Locked",
+    "part": null,
+    "isMultiPart": false
+  },
+  {
+    "id": 10486,
+    "name": "Plague Of Radroaches",
+    "series": "Plague Of Radroaches",
+    "part": null,
+    "isMultiPart": false
+  },
+  {
+    "id": 10487,
+    "name": "Sending A Message",
+    "series": "Sending A Message",
+    "part": null,
+    "isMultiPart": false
+  },
+  {
+    "id": 10488,
+    "name": "The Raised Bridge",
+    "series": "The Raised Bridge",
+    "part": null,
+    "isMultiPart": false
+  },
+  {
+    "id": 10489,
+    "name": "Edens Project",
+    "series": "Edens Project",
+    "part": null,
+    "isMultiPart": false
+  },
+  {
+    "id": 10490,
+    "name": "A Legend Returns Part 2",
+    "series": "A Legend Returns",
+    "part": "2",
+    "isMultiPart": true
+  },
+  {
+    "id": 10491,
+    "name": "Getting Technical",
+    "series": "Getting Technical",
+    "part": null,
+    "isMultiPart": false
+  },
+  {
+    "id": 10492,
+    "name": "Grognak The Barbarian #10",
+    "series": "Grognak The Barbarian",
+    "part": "10",
+    "isMultiPart": true
+  },
+  {
+    "id": 10493,
+    "name": "Sleeper Virus",
+    "series": "Sleeper Virus",
+    "part": null,
+    "isMultiPart": false
+  },
+  {
+    "id": 10494,
+    "name": "Adams Menagerie Part 2",
+    "series": "Adams Menagerie",
+    "part": "2",
+    "isMultiPart": true
+  },
+  {
+    "id": 10495,
+    "name": "Tools Of War Part 1",
+    "series": "Tools Of War",
+    "part": "1",
+    "isMultiPart": true
+  },
+  {
+    "id": 10496,
+    "name": "Calling All Stations",
+    "series": "Calling All Stations",
+    "part": null,
+    "isMultiPart": false
+  },
+  {
+    "id": 10497,
+    "name": "Capturing Memories",
+    "series": "Capturing Memories",
+    "part": null,
+    "isMultiPart": false
+  },
+  {
+    "id": 10498,
+    "name": "Giddyup Buttercup Part 1",
+    "series": "Giddyup Buttercup",
+    "part": "1",
+    "isMultiPart": true
+  },
+  {
+    "id": 10499,
+    "name": "Gifts From Above",
+    "series": "Gifts From Above",
+    "part": null,
+    "isMultiPart": false
+  },
+  {
+    "id": 10500,
+    "name": "A Bet's A Bet",
+    "series": "A Bet's A Bet",
+    "part": null,
+    "isMultiPart": false
+  },
+  {
+    "id": 10501,
+    "name": "A Sting In The Tale",
+    "series": "A Sting In The Tale",
+    "part": null,
+    "isMultiPart": false
+  },
+  {
+    "id": 10502,
+    "name": "Grognak The Barbarian #1",
+    "series": "Grognak The Barbarian",
+    "part": "1",
+    "isMultiPart": true
+  },
+  {
+    "id": 10503,
+    "name": "Caravan Cheat",
+    "series": "Caravan Cheat",
+    "part": null,
+    "isMultiPart": false
+  },
+  {
+    "id": 10504,
+    "name": "The Thief's Trail Part 2A",
+    "series": "The Thief's Trail",
+    "part": "2A",
+    "isMultiPart": true
+  },
+  {
+    "id": 10505,
+    "name": "Robotics Engineer",
+    "series": "Robotics Engineer",
+    "part": null,
+    "isMultiPart": false
+  },
+  {
+    "id": 10506,
+    "name": "Escort The Witness Part 1",
+    "series": "Escort The Witness",
+    "part": "1",
+    "isMultiPart": true
+  },
+  {
+    "id": 10507,
+    "name": "Tactical Analysis",
+    "series": "Tactical Analysis",
+    "part": null,
+    "isMultiPart": false
+  },
+  {
+    "id": 10508,
+    "name": "USS Constitution Part 2",
+    "series": "USS Constitution",
+    "part": "2",
+    "isMultiPart": true
+  },
+  {
+    "id": 10509,
+    "name": "Revenge Part 1",
+    "series": "Revenge",
+    "part": "1",
+    "isMultiPart": true
+  },
+  {
+    "id": 10510,
+    "name": "Dead Drop",
+    "series": "Dead Drop",
+    "part": null,
+    "isMultiPart": false
+  },
+  {
+    "id": 10511,
+    "name": "Elusive Pet",
+    "series": "Elusive Pet",
+    "part": null,
+    "isMultiPart": false
+  },
+  {
+    "id": 10512,
+    "name": "Buried Treasure Part 1",
+    "series": "Buried Treasure",
+    "part": "1",
+    "isMultiPart": true
+  },
+  {
+    "id": 10513,
+    "name": "The Secret Elixir Part 1",
+    "series": "The Secret Elixir",
+    "part": "1",
+    "isMultiPart": true
+  },
+  {
+    "id": 10514,
+    "name": "Bounty",
+    "series": "Bounty",
+    "part": null,
+    "isMultiPart": false
+  },
+  {
+    "id": 10515,
+    "name": "The Insider",
+    "series": "The Insider",
+    "part": null,
+    "isMultiPart": false
+  },
+  {
+    "id": 10516,
+    "name": "Adams Menagerie Part 1",
+    "series": "Adams Menagerie",
+    "part": "1",
+    "isMultiPart": true
+  },
+  {
+    "id": 10517,
+    "name": "The Collector",
+    "series": "The Collector",
+    "part": null,
+    "isMultiPart": false
+  },
+  {
+    "id": 10518,
+    "name": "Revenge Part 3",
+    "series": "Revenge",
+    "part": "3",
+    "isMultiPart": true
+  },
+  {
+    "id": 10519,
+    "name": "Nick Valentine Part 3",
+    "series": "Nick Valentine",
+    "part": "3",
+    "isMultiPart": true
+  },
+  {
+    "id": 10520,
+    "name": "A Legend Returns Part 1",
+    "series": "A Legend Returns",
+    "part": "1",
+    "isMultiPart": true
+  },
+  {
+    "id": 10521,
+    "name": "Karma Incoming",
+    "series": "Karma Incoming",
+    "part": null,
+    "isMultiPart": false
+  },
+  {
+    "id": 10522,
+    "name": "Tools Of War Part 2",
+    "series": "Tools Of War",
+    "part": "2",
+    "isMultiPart": true
+  },
+  {
+    "id": 10523,
+    "name": "The Lost Station Part 2",
+    "series": "The Lost Station",
+    "part": "2",
+    "isMultiPart": true
+  },
+  {
+    "id": 10524,
+    "name": "Artificial Insanity Part 2",
+    "series": "Artificial Insanity",
+    "part": "2",
+    "isMultiPart": true
+  },
+  {
+    "id": 10525,
+    "name": "Nick Valentine Part 2",
+    "series": "Nick Valentine",
+    "part": "2",
+    "isMultiPart": true
+  },
+  {
+    "id": 10526,
+    "name": "Revenge Part 2",
+    "series": "Revenge",
+    "part": "2",
+    "isMultiPart": true
+  },
+  {
+    "id": 10527,
+    "name": "Pest Removal",
+    "series": "Pest Removal",
+    "part": null,
+    "isMultiPart": false
+  },
+  {
+    "id": 10528,
+    "name": "One-Armed Bandit",
+    "series": "One-Armed Bandit",
+    "part": null,
+    "isMultiPart": false
+  },
+  {
+    "id": 10529,
+    "name": "Escort The Witness Part 2A",
+    "series": "Escort The Witness",
+    "part": "2A",
+    "isMultiPart": true
+  },
+  {
+    "id": 10530,
+    "name": "The Secret Elixir Part 2",
+    "series": "The Secret Elixir",
+    "part": "2",
+    "isMultiPart": true
+  },
+  {
+    "id": 10531,
+    "name": "Makeshift Armor",
+    "series": "Makeshift Armor",
+    "part": null,
+    "isMultiPart": false
+  },
+  {
+    "id": 10532,
+    "name": "The Lost Watch",
+    "series": "The Lost Watch",
+    "part": null,
+    "isMultiPart": false
+  },
+  {
+    "id": 10533,
+    "name": "Misplaced Secrets",
+    "series": "Misplaced Secrets",
+    "part": null,
+    "isMultiPart": false
+  },
+  {
+    "id": 10534,
+    "name": "Potential Witness",
+    "series": "Potential Witness",
+    "part": null,
+    "isMultiPart": false
+  },
+  {
+    "id": 10535,
+    "name": "The Missing Trooper Part 1",
+    "series": "The Missing Trooper",
+    "part": "1",
+    "isMultiPart": true
+  },
+  {
+    "id": 10536,
+    "name": "The Armor Fanatic Part 1",
+    "series": "The Armor Fanatic",
+    "part": "1",
+    "isMultiPart": true
+  },
+  {
+    "id": 10537,
+    "name": "Treasure Hunt",
+    "series": "Treasure Hunt",
+    "part": null,
+    "isMultiPart": false
+  },
+  {
+    "id": 10538,
+    "name": "USS Constitution Part 1",
+    "series": "USS Constitution",
+    "part": "1",
+    "isMultiPart": true
+  },
+  {
+    "id": 10539,
+    "name": "Food Hunt",
+    "series": "Food Hunt",
+    "part": null,
+    "isMultiPart": false
+  },
+  {
+    "id": 10540,
+    "name": "The Armor Fanatic Part 2",
+    "series": "The Armor Fanatic",
+    "part": "2",
+    "isMultiPart": true
+  },
+  {
+    "id": 10541,
+    "name": "Enemy Of My Enemy",
+    "series": "Enemy Of My Enemy",
+    "part": null,
+    "isMultiPart": false
+  },
+  {
+    "id": 10542,
+    "name": "The Crimson Caravan",
+    "series": "The Crimson Caravan",
+    "part": null,
+    "isMultiPart": false
+  },
+  {
+    "id": 10543,
+    "name": "The Thief's Trail Part 1",
+    "series": "The Thief's Trail",
+    "part": "1",
+    "isMultiPart": true
+  },
+  {
+    "id": 10544,
+    "name": "Nick Valentine Part 1",
+    "series": "Nick Valentine",
+    "part": "1",
+    "isMultiPart": true
+  },
+  {
+    "id": 10545,
+    "name": "Cease Fire",
+    "series": "Cease Fire",
+    "part": null,
+    "isMultiPart": false
+  },
+  {
+    "id": 10546,
+    "name": "The Missing Trooper Part 3",
+    "series": "The Missing Trooper",
+    "part": "3",
+    "isMultiPart": true
+  },
+  {
+    "id": 10547,
+    "name": "Horner Herder",
+    "series": "Horner Herder",
+    "part": null,
+    "isMultiPart": false
+  },
+  {
+    "id": 10549,
+    "name": "Weapons Engineer",
+    "series": "Weapons Engineer",
+    "part": null,
+    "isMultiPart": false
+  },
+  {
+    "id": 10550,
+    "name": "The Missing Trooper Part 2",
+    "series": "The Missing Trooper",
+    "part": "2",
+    "isMultiPart": true
+  },
+  {
+    "id": 10551,
+    "name": "Radiation Ideation",
+    "series": "Radiation Ideation",
+    "part": null,
+    "isMultiPart": false
+  },
+  {
+    "id": 10552,
+    "name": "The Stand In",
+    "series": "The Stand In",
+    "part": null,
+    "isMultiPart": false
+  },
+  {
+    "id": 10553,
+    "name": "Know Your Enemy",
+    "series": "Know Your Enemy",
+    "part": null,
+    "isMultiPart": false
+  },
+  {
+    "id": 10554,
+    "name": "Echoes Of Yesterday",
+    "series": "Echoes Of Yesterday",
+    "part": null,
+    "isMultiPart": false
+  },
+  {
+    "id": 10555,
+    "name": "Protectron Strike Team",
+    "series": "Protectron Strike Team",
+    "part": null,
+    "isMultiPart": false
+  },
+  {
+    "id": 10556,
+    "name": "Grognak The Barbarian #3",
+    "series": "Grognak The Barbarian",
+    "part": "3",
+    "isMultiPart": true
+  },
+  {
+    "id": 10558,
+    "name": "Artificial Insanity Part 1",
+    "series": "Artificial Insanity",
+    "part": "1",
+    "isMultiPart": true
+  },
+  {
+    "id": 10559,
+    "name": "Handy Delivery Part 2",
+    "series": "Handy Delivery",
+    "part": "2",
+    "isMultiPart": true
+  },
+  {
+    "id": 10560,
+    "name": "Radio Interference",
+    "series": "Radio Interference",
+    "part": null,
+    "isMultiPart": false
+  },
+  {
+    "id": 10561,
+    "name": "Agent Of Secrets",
+    "series": "Agent Of Secrets",
+    "part": null,
+    "isMultiPart": false
+  },
+  {
+    "id": 10562,
+    "name": "Escort The Witness Part 2B",
+    "series": "Escort The Witness",
+    "part": "2B",
+    "isMultiPart": true
+  },
+  {
+    "id": 10563,
+    "name": "Problems In Paradise",
+    "series": "Problems In Paradise",
+    "part": null,
+    "isMultiPart": false
+  },
+  {
+    "id": 10564,
+    "name": "Robotic Secrets",
+    "series": "Robotic Secrets",
+    "part": null,
+    "isMultiPart": false
+  },
+  {
+    "id": 10566,
+    "name": "Battle Codex Part 3",
+    "series": "Battle Codex",
+    "part": "3",
+    "isMultiPart": true
+  },
+  {
+    "id": 10567,
+    "name": "Tags Of The Fallen",
+    "series": "Tags Of The Fallen",
+    "part": null,
+    "isMultiPart": false
+  },
+  {
+    "id": 10568,
+    "name": "Guerilla In The Midst Part 1",
+    "series": "Guerilla In The Midst",
+    "part": "1",
+    "isMultiPart": true
+  },
+  {
+    "id": 10569,
+    "name": "Adams Menagerie Part 3",
+    "series": "Adams Menagerie",
+    "part": "3",
+    "isMultiPart": true
+  },
+  {
+    "id": 10570,
+    "name": "Recipes Of The Wasteland",
+    "series": "Recipes Of The Wasteland",
+    "part": null,
+    "isMultiPart": false
+  },
+  {
+    "id": 10571,
+    "name": "The Lost Station Part 1",
+    "series": "The Lost Station",
+    "part": "1",
+    "isMultiPart": true
+  },
+  {
+    "id": 10572,
+    "name": "The Thief's Trail Part 2B",
+    "series": "The Thief's Trail",
+    "part": "2B",
+    "isMultiPart": true
+  },
+  {
+    "id": 10573,
+    "name": "Wounded Glowing One",
+    "series": "Wounded Glowing One",
+    "part": null,
+    "isMultiPart": false
+  },
+  {
+    "id": 10574,
+    "name": "Junk Collection",
+    "series": "Junk Collection",
+    "part": null,
+    "isMultiPart": false
+  },
+  {
+    "id": 10575,
+    "name": "Battle Codex Part 2",
+    "series": "Battle Codex",
+    "part": "2",
+    "isMultiPart": true
+  },
+  {
+    "id": 10576,
+    "name": "Handy Delivery Part 1",
+    "series": "Handy Delivery",
+    "part": "1",
+    "isMultiPart": true
+  },
+  {
+    "id": 10577,
+    "name": "Tales Of The Lurker",
+    "series": "Tales Of The Lurker",
+    "part": null,
+    "isMultiPart": false
+  },
+  {
+    "id": 10578,
+    "name": "Giddyup Buttercup Part 2",
+    "series": "Giddyup Buttercup",
+    "part": "2",
+    "isMultiPart": true
+  },
+  {
+    "id": 10579,
+    "name": "The Poisoned Deathclaw",
+    "series": "The Poisoned Deathclaw",
+    "part": null,
+    "isMultiPart": false
+  },
+  {
+    "id": 10580,
+    "name": "The Time Lock Safe",
+    "series": "The Time Lock Safe",
+    "part": null,
+    "isMultiPart": false
+  },
+  {
+    "id": 10581,
+    "name": "Artificial Insanity Part 3",
+    "series": "Artificial Insanity",
+    "part": "3",
+    "isMultiPart": true
+  },
+  {
+    "id": 10582,
+    "name": "Photo Shoot",
+    "series": "Photo Shoot",
+    "part": null,
+    "isMultiPart": false
+  },
+  {
+    "id": 10583,
+    "name": "The Missing Sample",
+    "series": "The Missing Sample",
+    "part": null,
+    "isMultiPart": false
+  },
+  {
+    "id": 10584,
+    "name": "Battle Codex Part 1",
+    "series": "Battle Codex",
+    "part": "1",
+    "isMultiPart": true
+  },
+  {
+    "id": 10585,
+    "name": "Buried Treasure Part 2",
+    "series": "Buried Treasure",
+    "part": "2",
+    "isMultiPart": true
+  },
+  {
+    "id": 10586,
+    "name": "Innocent Bystander",
+    "series": "Innocent Bystander",
+    "part": null,
+    "isMultiPart": false
+  },
+  {
+    "id": 10587,
+    "name": "Target Practice",
+    "series": "Target Practice",
+    "part": null,
+    "isMultiPart": false
+  },
+  {
+    "id": 10588,
+    "name": "The Stolen Key",
+    "series": "The Stolen Key",
+    "part": null,
+    "isMultiPart": false
+  },
+  {
+    "id": 10589,
+    "name": "Deathclaw Statues Part 1",
+    "series": "Deathclaw Statues",
+    "part": "1",
+    "isMultiPart": true
+  },
+  {
+    "id": 10590,
+    "name": "Grognak The Barbarian #2",
+    "series": "Grognak The Barbarian",
+    "part": "2",
+    "isMultiPart": true
+  },
+  {
+    "id": 10591,
+    "name": "The Armor Fanatic Part 3",
+    "series": "The Armor Fanatic",
+    "part": "3",
+    "isMultiPart": true
+  },
+  {
+    "id": 10592,
+    "name": "Boomer Bomber",
+    "series": "Boomer Bomber",
+    "part": null,
+    "isMultiPart": false
+  },
+  {
+    "id": 10593,
+    "name": "Big T's Task",
+    "series": "Big T's Task",
+    "part": null,
+    "isMultiPart": false
+  },
+  {
+    "id": 10594,
+    "name": "Blessing Of Atom",
+    "series": "Blessing Of Atom",
+    "part": null,
+    "isMultiPart": false
+  },
+  {
+    "id": 10595,
+    "name": "Lost Plans",
+    "series": "Lost Plans",
+    "part": null,
+    "isMultiPart": false
+  },
+  {
+    "id": 10596,
+    "name": "Potential Partnership",
+    "series": "Potential Partnership",
+    "part": null,
+    "isMultiPart": false
+  },
+  {
+    "id": 10597,
+    "name": "Deathclaw Statues Part 2",
+    "series": "Deathclaw Statues",
+    "part": "2",
+    "isMultiPart": true
+  },
+  {
+    "id": 10598,
+    "name": "Wasteland Health Survey",
+    "series": "Wasteland Health Survey",
+    "part": null,
+    "isMultiPart": false
+  },
+  {
+    "id": 10599,
+    "name": "A Legend Returns Part 3",
+    "series": "A Legend Returns",
+    "part": "3",
+    "isMultiPart": true
+  }
+]

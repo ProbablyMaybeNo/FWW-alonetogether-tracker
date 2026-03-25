@@ -28,6 +28,9 @@ const DEFAULT_STATE = {
   eventCards: {},
   activeEvents: [],
   questCards: [],
+  drawnQuestIds: [],
+  discardedQuestIds: [],
+  exploreLocations: {},
   activeScavengerObjective: null,
   completedObjectives: [],
   objectiveProgress: {},
@@ -101,6 +104,9 @@ function migrateState(stored) {
       completedObjectives: stored.completedObjectives ?? [],
       objectiveProgress: stored.objectiveProgress ?? {},
       secretPurposeHistory: stored.secretPurposeHistory ?? [],
+      drawnQuestIds: stored.drawnQuestIds ?? [],
+      discardedQuestIds: stored.discardedQuestIds ?? [],
+      exploreLocations: stored.exploreLocations ?? {},
     }
     return migrated
   }
@@ -112,6 +118,9 @@ function migrateState(stored) {
       version: 3,
       phase1CapLimit: stored.phase1CapLimit ?? 750,
       exploreCardsThisRound: stored.exploreCardsThisRound ?? 0,
+      drawnQuestIds: stored.drawnQuestIds ?? [],
+      discardedQuestIds: stored.discardedQuestIds ?? [],
+      exploreLocations: stored.exploreLocations ?? {},
       roster: (stored.roster || []).map(migrateUnit),
       itemPool: {
         items: (stored.itemPool?.items || []).map(migrateItem),

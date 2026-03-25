@@ -2,7 +2,8 @@ import { useState } from 'react'
 import { useCampaign } from '../../context/CampaignContext'
 import { SECRET_PURPOSES } from '../../data/secretPurposes'
 import { SCAVENGER_OBJECTIVES } from '../../data/scavengerObjectives'
-import { Plus, X, Check } from 'lucide-react'
+import questCardDeck from '../../data/questCardDeck.json'
+import { Plus, X, Check, Shuffle, ChevronDown, ChevronRight } from 'lucide-react'
 
 const SUB_TABS = [
   { id: 'secret',    label: 'SECRET PURPOSES' },
@@ -243,14 +244,60 @@ function ScavengerObjectives() {
 function QuestCardsPanel() {
   const { state, setState } = useCampaign()
   const [newName, setNewName] = useState('')
-  const [newPart, setNewPart] = useState(1)
+  const [newPart, setNewPart] = useState('1')
+  const [drawnCard, setDrawnCard] = useState(null)
+  const [showDeckBrowser, setShowDeckBrowser] = useState(false)
+  const [deckSearch, setDeckSearch] = useState('')
 
   const quests = state.questCards || []
+  const drawnQuestIds = state.drawnQuestIds || []
+  const discardedQuestIds = state.discardedQuestIds || []
   const activeCount = quests.filter(q => q.status === 'Active').length
 
-  function handleAdd() {
-    if (!newName.trim()) return
-    if (activeCount >= 3) return
+  // Remaining in deck = not yet drawn or discarded
+  const usedIds = new Set([...drawnQuestIds, ...discardedQuestIds])
+  const remainingDeck = questCardDeck.filter(c => !usedIds.has(c.id))
+
+  function handleDrawRandom() {
+    if (remainingDeck.length === 0) return
+    const idx = Math.floor(Math.random() * remainingDeck.length)
+    const card = remainingDeck[idx]
+    setDrawnCard(card)
+    setState(prev => ({
+      ...prev,
+      drawnQuestIds: [...(prev.drawnQuestIds || []), card.id],
+    }))
+  }
+
+  function handleAddDrawnToQuests() {
+    if (!drawnCard || activeCount >= 3) return
+    const partLabel = drawnCard.part ? `Part ${drawnCard.part}` : null
+    setState(prev => ({
+      ...prev,
+      questCards: [...(prev.questCards || []), {
+        id: Date.now(),
+        cardId: drawnCard.id,
+        name: drawnCard.series || drawnCard.name,
+        part: drawnCard.part || '1',
+        status: 'Active',
+        startedRound: prev.round ?? 0,
+      }],
+    }))
+    setDrawnCard(null)
+  }
+
+  function handleDiscardDrawnCard() {
+    if (!drawnCard) return
+    setState(prev => ({
+      ...prev,
+      discardedQuestIds: [...(prev.discardedQuestIds || []), drawnCard.id],
+      drawnQuestIds: (prev.drawnQuestIds || []).filter(id => id !== drawnCard.id),
+    }))
+    setDrawnCard(null)
+  }
+
+  function handleAddManual() {
+    if (!newName.trim() || activeCount >= 3) return
     setState(prev => ({
       ...prev,
       questCards: [...(prev.questCards || []), {
@@ -262,7 +309,7 @@ function QuestCardsPanel() {
       }],
     }))
     setNewName('')
-    setNewPart(1)
+    setNewPart('1')
   }
 
   function handleToggleStatus(id) {
@@ -278,85 +325,210 @@ function QuestCardsPanel() {
     setState(prev => ({ ...prev, questCards: prev.questCards.filter(q => q.id !== id) }))
   }
 
+  function handleResetDeck() {
+    if (!confirm('Reset quest deck? This clears all drawn/discarded tracking. Your active quest log is unaffected.')) return
+    setState(prev => ({ ...prev, drawnQuestIds: [], discardedQuestIds: [] }))
+    setDrawnCard(null)
+  }
+
+  function handleDeckPickCard(card) {
+    if (usedIds.has(card.id)) return
+    setDrawnCard(card)
+    setState(prev => ({
+      ...prev,
+      drawnQuestIds: [...(prev.drawnQuestIds || []), card.id],
+    }))
+    setShowDeckBrowser(false)
+  }
+
+  const filteredDeck = deckSearch
+    ? questCardDeck.filter(c => c.name.toLowerCase().includes(deckSearch.toLowerCase()))
+    : questCardDeck
+
   return (
-    <div className="space-y-4">
+    <div className="space-y-5">
+
+      {/* Deck Status */}
+      <div className="border border-pip-dim/30 rounded bg-panel-alt px-3 py-2">
+        <div className="flex items-center justify-between flex-wrap gap-2">
+          <div className="flex gap-4 text-xs">
+            <span className="text-pip">{remainingDeck.length} <span className="text-pip-dim">in deck</span></span>
+            <span className="text-pip-dim">{drawnQuestIds.length} drawn</span>
+            <span className="text-pip-dim">{discardedQuestIds.length} discarded</span>
+            <span className="text-pip-dim">{questCardDeck.length} total</span>
+          </div>
+          <button onClick={handleResetDeck} className="text-xs text-danger-dim hover:text-danger">RESET DECK</button>
+        </div>
+      </div>
+
+      {/* Draw Controls */}
+      <div className="space-y-2">
+        <div className="flex gap-2 flex-wrap">
+          <button
+            onClick={handleDrawRandom}
+            disabled={remainingDeck.length === 0}
+            className="flex items-center gap-2 px-4 py-2 border border-pip rounded text-pip text-xs hover:bg-pip-dim/30 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+          >
+            <Shuffle size={12} /> DRAW RANDOM ({remainingDeck.length})
+          </button>
+          <button
+            onClick={() => setShowDeckBrowser(b => !b)}
+            className="flex items-center gap-2 px-3 py-2 border border-pip-dim/30 rounded text-pip-dim text-xs hover:text-pip transition-colors"
+          >
+            {showDeckBrowser ? <ChevronDown size={12} /> : <ChevronRight size={12} />}
+            BROWSE DECK
+          </button>
+        </div>
+
+        {/* Deck Browser */}
+        {showDeckBrowser && (
+          <div className="border border-pip-dim/30 rounded bg-panel-alt p-3 space-y-2">
+            <input
+              type="text"
+              value={deckSearch}
+              onChange={e => setDeckSearch(e.target.value)}
+              placeholder="Search quest cards..."
+              className="w-full text-xs"
+            />
+            <div className="max-h-48 overflow-y-auto space-y-1">
+              {filteredDeck.map(card => {
+                const isUsed = usedIds.has(card.id)
+                return (
+                  <button
+                    key={card.id}
+                    onClick={() => handleDeckPickCard(card)}
+                    disabled={isUsed}
+                    className={`w-full text-left px-2 py-1 rounded text-xs transition-colors ${
+                      isUsed
+                        ? 'text-pip-dim/40 cursor-not-allowed line-through'
+                        : 'text-pip hover:bg-pip-dim/20 cursor-pointer'
+                    }`}
+                  >
+                    <span className="font-bold">{card.name}</span>
+                    {card.isMultiPart && (
+                      <span className="text-pip-dim ml-2">[{card.series}]</span>
+                    )}
+                  </button>
+                )
+              })}
+            </div>
+          </div>
+        )}
+
+        {/* Drawn Card Display */}
+        {drawnCard && (
+          <div className="border border-amber rounded p-3 bg-amber-dim/5">
+            <div className="text-xs text-amber mb-1 font-bold tracking-wider">DRAWN CARD</div>
+            <div className="text-pip font-bold text-sm mb-1">{drawnCard.name}</div>
+            {drawnCard.isMultiPart && (
+              <div className="text-pip-dim text-xs mb-3">
+                Series: <span className="text-pip">{drawnCard.series}</span>
+                {' — '}<span className="text-amber">Part {drawnCard.part}</span>
+              </div>
+            )}
+            <div className="flex gap-2">
+              <button
+                onClick={handleAddDrawnToQuests}
+                disabled={activeCount >= 3}
+                className="flex-1 py-1.5 border border-pip text-pip text-xs rounded hover:bg-pip-dim/30 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+              >
+                ADD TO QUEST LOG
+              </button>
+              <button
+                onClick={handleDiscardDrawnCard}
+                className="px-3 py-1.5 border border-pip-dim/30 text-pip-dim text-xs rounded hover:text-danger transition-colors"
+              >
+                DISCARD
+              </button>
+            </div>
+          </div>
+        )}
+      </div>
+
       {activeCount >= 3 && (
         <div className="border border-amber rounded px-3 py-2 text-amber text-xs">
           ⚠ Max 3 active quests
         </div>
       )}
 
-      {/* Add form */}
-      <div className="flex gap-2 flex-wrap">
-        <input
-          type="text"
-          value={newName}
-          onChange={(e) => setNewName(e.target.value)}
-          onKeyDown={(e) => { if (e.key === 'Enter') handleAdd() }}
-          placeholder="Quest name..."
-          className="flex-1 text-xs"
-        />
-        <div className="flex gap-1">
-          {[1, 2].map(p => (
-            <button
-              key={p}
-              onClick={() => setNewPart(p)}
-              className={`px-3 py-1 text-xs border rounded transition-colors ${
-                newPart === p ? 'border-pip text-pip bg-pip-dim/20' : 'border-pip-dim/30 text-pip-dim hover:text-pip'
-              }`}
-            >
-              Part {p}
-            </button>
-          ))}
-        </div>
-        <button
-          onClick={handleAdd}
-          disabled={activeCount >= 3}
-          className="px-3 py-1 border border-pip-dim text-pip text-sm rounded hover:bg-pip-dim/30 disabled:opacity-30 disabled:cursor-not-allowed"
-        >
-          <Plus size={14} />
-        </button>
+      {/* Quest Log */}
+      <div>
+        <h3 className="text-pip text-xs tracking-wider mb-2 border-b border-pip-dim/30 pb-1">QUEST LOG</h3>
+
+        {quests.length === 0 ? (
+          <p className="text-pip-dim text-xs text-center py-4">No quests in log. Draw a card or add manually below.</p>
+        ) : (
+          <div className="space-y-2">
+            {quests.map(q => (
+              <div
+                key={q.id}
+                className={`flex items-center gap-3 border rounded px-3 py-2 transition-colors ${
+                  q.status === 'Complete' ? 'border-pip-dim/20 bg-panel-alt opacity-60' : 'border-pip-dim/40 bg-panel'
+                }`}
+              >
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-2 flex-wrap">
+                    <span className={`text-sm ${q.status === 'Complete' ? 'text-pip-dim line-through' : 'text-pip'}`}>{q.name}</span>
+                    <span className={`text-xs px-2 py-0.5 rounded border ${
+                      q.part && q.part !== '1' ? 'border-amber/50 text-amber' : 'border-pip-dim/40 text-pip-dim'
+                    }`}>
+                      Part {q.part || '1'}
+                    </span>
+                    <span className="text-pip-dim text-xs">R{q.startedRound ?? 0}</span>
+                  </div>
+                </div>
+                <button
+                  onClick={() => handleToggleStatus(q.id)}
+                  className={`p-1.5 border rounded text-xs transition-colors ${
+                    q.status === 'Complete' ? 'border-pip text-pip' : 'border-pip-dim/30 text-pip-dim hover:text-pip'
+                  }`}
+                  title={q.status === 'Complete' ? 'Mark Active' : 'Mark Complete'}
+                >
+                  <Check size={12} />
+                </button>
+                <button onClick={() => handleRemove(q.id)} className="text-pip-dim hover:text-danger p-1">
+                  <X size={14} />
+                </button>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
 
-      {/* Quest list */}
-      {quests.length === 0 ? (
-        <p className="text-pip-dim text-xs text-center py-4">No quests active. Add one above.</p>
-      ) : (
-        <div className="space-y-2">
-          {quests.map(q => (
-            <div
-              key={q.id}
-              className={`flex items-center gap-3 border rounded px-3 py-2 transition-colors ${
-                q.status === 'Complete' ? 'border-pip-dim/20 bg-panel-alt opacity-60' : 'border-pip-dim/40 bg-panel'
-              }`}
-            >
-              <div className="flex-1 min-w-0">
-                <div className="flex items-center gap-2 flex-wrap">
-                  <span className={`text-sm ${q.status === 'Complete' ? 'text-pip-dim line-through' : 'text-pip'}`}>{q.name}</span>
-                  <span className={`text-xs px-2 py-0.5 rounded border ${
-                    q.part === 2 ? 'border-amber/50 text-amber' : 'border-pip-dim/40 text-pip-dim'
-                  }`}>
-                    Part {q.part}
-                  </span>
-                  <span className="text-pip-dim text-xs">R{q.startedRound ?? 0}</span>
-                </div>
-              </div>
+      {/* Manual Add */}
+      <div>
+        <h3 className="text-pip text-xs tracking-wider mb-2 border-b border-pip-dim/30 pb-1">ADD MANUALLY</h3>
+        <div className="flex gap-2 flex-wrap">
+          <input
+            type="text"
+            value={newName}
+            onChange={(e) => setNewName(e.target.value)}
+            onKeyDown={(e) => { if (e.key === 'Enter') handleAddManual() }}
+            placeholder="Quest name..."
+            className="flex-1 text-xs"
+          />
+          <div className="flex gap-1">
+            {['1', '2', '3', '2A', '2B'].map(p => (
               <button
-                onClick={() => handleToggleStatus(q.id)}
-                className={`p-1.5 border rounded text-xs transition-colors ${
-                  q.status === 'Complete' ? 'border-pip text-pip' : 'border-pip-dim/30 text-pip-dim hover:text-pip'
+                key={p}
+                onClick={() => setNewPart(p)}
+                className={`px-2 py-1 text-xs border rounded transition-colors ${
+                  newPart === p ? 'border-pip text-pip bg-pip-dim/20' : 'border-pip-dim/30 text-pip-dim hover:text-pip'
                 }`}
-                title={q.status === 'Complete' ? 'Mark Active' : 'Mark Complete'}
               >
-                <Check size={12} />
+                {p}
               </button>
-              <button onClick={() => handleRemove(q.id)} className="text-pip-dim hover:text-danger p-1">
-                <X size={14} />
-              </button>
-            </div>
-          ))}
+            ))}
+          </div>
+          <button
+            onClick={handleAddManual}
+            disabled={activeCount >= 3}
+            className="px-3 py-1 border border-pip-dim text-pip text-sm rounded hover:bg-pip-dim/30 disabled:opacity-30 disabled:cursor-not-allowed"
+          >
+            <Plus size={14} />
+          </button>
         </div>
-      )}
+      </div>
     </div>
   )
 }
