@@ -210,8 +210,18 @@ export default function OverviewPage({ onTabChange }) {
           </div>
           <StatCard label="UNITS" value={`${activeUnits}/${roster.length}`} icon={Users} />
           <StatCard label="STRUCTURES" value={structures.length} icon={Building2} />
-          <StatCard label="POWER" value={`${pwrGen - pwrUsed}`} icon={Zap} color={pwrGen - pwrUsed < 0 ? 'danger' : 'pip'} />
-          <StatCard label="WATER" value={`${waterGen - waterUsed}`} icon={Droplets} color={waterGen - waterUsed < 0 ? 'danger' : 'pip'} />
+          <div className={`border ${pwrGen - pwrUsed < 0 ? 'text-danger border-danger-dim' : 'text-pip border-pip-dim'} bg-panel rounded-lg p-3 flex flex-col items-center gap-1`}>
+            <Zap size={18} className="opacity-70" />
+            <span className="text-2xl font-bold">{pwrGen - pwrUsed}</span>
+            <span className="text-xs opacity-60 text-center leading-tight">POWER</span>
+            <span className="text-xs opacity-40">{pwrGen}gen / {pwrUsed}used</span>
+          </div>
+          <div className={`border ${waterGen - waterUsed < 0 ? 'text-danger border-danger-dim' : 'text-pip border-pip-dim'} bg-panel rounded-lg p-3 flex flex-col items-center gap-1`}>
+            <Droplets size={18} className="opacity-70" />
+            <span className="text-2xl font-bold">{waterGen - waterUsed}</span>
+            <span className="text-xs opacity-60 text-center leading-tight">WATER</span>
+            <span className="text-xs opacity-40">{waterGen}gen / {waterUsed}used</span>
+          </div>
           <StatCard label="STORED" value={poolCounts.stored} icon={Archive} small />
           <StatCard label="LOCKERS" value={poolCounts.locker} icon={Archive} small />
           <StatCard label="STORES" value={poolCounts.stores} icon={Archive} small />

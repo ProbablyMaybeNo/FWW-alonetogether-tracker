@@ -151,22 +151,25 @@ export default function EventsPage() {
                     <div className="flex gap-1 shrink-0">
                       <button
                         onClick={() => handleToggle(card.id, 'drawn')}
+                        title="Mark as drawn"
                         className={`px-2 py-1 text-xs rounded border transition-colors ${
                           cardState.drawn ? 'border-pip text-pip bg-pip-dim/20' : 'border-pip-dim/30 text-pip-dim hover:text-pip'
                         }`}
-                      >D</button>
+                      >DRAWN</button>
                       <button
                         onClick={() => handleToggle(card.id, 'inPlay')}
+                        title="Mark as in play"
                         className={`px-2 py-1 text-xs rounded border transition-colors ${
                           cardState.inPlay ? 'border-amber text-amber bg-amber-dim/20' : 'border-pip-dim/30 text-pip-dim hover:text-amber'
                         }`}
-                      >P</button>
+                      >IN PLAY</button>
                       <button
                         onClick={() => handleToggle(card.id, 'complete')}
+                        title="Mark as complete"
                         className={`px-2 py-1 text-xs rounded border transition-colors ${
                           cardState.complete ? 'border-pip text-pip bg-pip/20' : 'border-pip-dim/30 text-pip-dim hover:text-pip'
                         }`}
-                      >C</button>
+                      >DONE</button>
                     </div>
                   </div>
                 </div>

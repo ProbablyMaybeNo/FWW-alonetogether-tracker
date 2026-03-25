@@ -93,7 +93,7 @@ function migrateState(stored) {
         id: q.id ?? Date.now() + Math.random(),
         name: q.name ?? '',
         part: q.part ?? 1,
-        status: q.status ?? (q.active ? 'Active' : 'Active'),
+        status: q.status ?? (q.active !== false ? 'Active' : 'Complete'),
         startedRound: q.startedRound ?? 0,
       })),
       roster: (stored.roster || []).map(migrateUnit),
