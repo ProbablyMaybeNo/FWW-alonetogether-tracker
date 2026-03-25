@@ -1,0 +1,8 @@
+{
+  "rewrites": [
+    {
+      "source": "/card-proxy/:path*",
+      "destination": "https://fallout.maloric.com/assets/images/cards/quest/:path*"
+    }
+  ]
+}

@@ -5,7 +5,7 @@ import { SCAVENGER_OBJECTIVES } from '../../data/scavengerObjectives'
 import questCardDeck from '../../data/questCardDeck.json'
 import { Plus, X, Check, Shuffle, ChevronDown, ChevronRight, Eye } from 'lucide-react'
 
-const CARD_BASE_URL = 'https://fallout.maloric.com/assets/images/cards/quest/'
+const CARD_BASE_URL = '/card-proxy/'
 
 function toImageKey(name) {
   return name
