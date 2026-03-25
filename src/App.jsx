@@ -5,6 +5,7 @@ import OverviewPage from './components/overview/OverviewPage'
 import RosterPage from './components/roster/RosterPage'
 import SettlementPage from './components/settlement/SettlementPage'
 import EventsPage from './components/events/EventsPage'
+import ObjectivesPage from './components/objectives/ObjectivesPage'
 import { Download, Upload } from 'lucide-react'
 
 function AppContent() {
@@ -46,10 +47,11 @@ function AppContent() {
       <TabShell activeTab={activeTab} onTabChange={setActiveTab} />
 
       <main className="flex-1 overflow-y-auto">
-        {activeTab === 'overview' && <OverviewPage />}
-        {activeTab === 'roster' && <RosterPage />}
-        {activeTab === 'settlement' && <SettlementPage />}
-        {activeTab === 'events' && <EventsPage />}
+        {activeTab === 'overview'    && <OverviewPage onTabChange={setActiveTab} />}
+        {activeTab === 'roster'      && <RosterPage />}
+        {activeTab === 'settlement'  && <SettlementPage />}
+        {activeTab === 'objectives'  && <ObjectivesPage />}
+        {activeTab === 'events'      && <EventsPage />}
       </main>
     </div>
   )

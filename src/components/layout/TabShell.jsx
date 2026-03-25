@@ -1,10 +1,11 @@
-import { LayoutDashboard, Users, Building2, BookOpen } from 'lucide-react'
+import { LayoutDashboard, Users, Building2, Target, Map } from 'lucide-react'
 
 const TABS = [
-  { id: 'overview', label: 'OVERVIEW', icon: LayoutDashboard },
-  { id: 'roster', label: 'ROSTER', icon: Users },
-  { id: 'settlement', label: 'SETTLEMENT', icon: Building2 },
-  { id: 'events', label: 'EVENTS', icon: BookOpen },
+  { id: 'overview',    label: 'OVERVIEW',     icon: LayoutDashboard },
+  { id: 'roster',      label: 'ROSTER',       icon: Users },
+  { id: 'settlement',  label: 'SETTLEMENT',   icon: Building2 },
+  { id: 'objectives',  label: 'OBJECTIVES',   icon: Target },
+  { id: 'events',      label: 'EXPLORE CARDS', icon: Map },
 ]
 
 export default function TabShell({ activeTab, onTabChange }) {
@@ -17,13 +18,13 @@ export default function TabShell({ activeTab, onTabChange }) {
           <button
             key={tab.id}
             onClick={() => onTabChange(tab.id)}
-            className={`flex-1 flex items-center justify-center gap-2 py-3 px-4 text-sm transition-colors
+            className={`flex-1 flex items-center justify-center gap-2 py-3 px-2 text-xs transition-colors
               ${active
                 ? 'text-pip border-b-2 border-pip bg-panel-light'
                 : 'text-pip-dim hover:text-pip hover:bg-panel-alt'
               }`}
           >
-            <Icon size={16} />
+            <Icon size={14} />
             <span className="hidden sm:inline">{tab.label}</span>
           </button>
         )

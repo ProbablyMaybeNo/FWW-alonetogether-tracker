@@ -36,6 +36,11 @@ export default function AddUnitModal({ isOpen, onClose, onAdd, existingUnitIds }
       conditions: '',
       notes: '',
       equippedItems: [],
+      lucScore: 3,
+      perks: [],
+      addiction: '',
+      capturedBy: '',
+      captureRound: null,
     })
     onClose()
   }

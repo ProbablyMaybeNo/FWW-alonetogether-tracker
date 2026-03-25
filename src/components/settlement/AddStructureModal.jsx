@@ -2,22 +2,24 @@ import { useState, useMemo } from 'react'
 import Modal from '../layout/Modal'
 import structuresData from '../../data/structures.json'
 
-export default function AddStructureModal({ isOpen, onClose, onAdd }) {
+export default function AddStructureModal({ isOpen, onClose, onAdd, atValidOnly = false }) {
   const [search, setSearch] = useState('')
   const [categoryFilter, setCategoryFilter] = useState('')
 
+  const baseData = useMemo(() => atValidOnly ? structuresData.filter(s => s.atValid) : structuresData, [atValidOnly])
+
   const categories = useMemo(() => {
-    const set = new Set(structuresData.map(s => s.category))
+    const set = new Set(baseData.map(s => s.category))
     return Array.from(set).sort()
-  }, [])
+  }, [baseData])
 
   const filtered = useMemo(() => {
-    return structuresData.filter(s => {
+    return baseData.filter(s => {
       if (categoryFilter && s.category !== categoryFilter) return false
       if (search && !s.name.toLowerCase().includes(search.toLowerCase())) return false
       return true
     })
-  }, [search, categoryFilter])
+  }, [baseData, search, categoryFilter])
 
   function handleAdd(structure) {
     onAdd({
