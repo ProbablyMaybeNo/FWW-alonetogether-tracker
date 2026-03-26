@@ -27,10 +27,10 @@ export default function Modal({ isOpen, onClose, title, children, wide = false }
       className="fixed inset-0 z-50 flex items-start justify-center pt-8 px-4 bg-black/70"
       onClick={(e) => { if (e.target === overlayRef.current) onClose() }}
     >
-      <div className={`bg-panel border border-pip-dim rounded-lg shadow-lg shadow-pip-glow ${wide ? 'w-full max-w-4xl' : 'w-full max-w-2xl'} max-h-[85vh] flex flex-col`}>
+      <div className={`bg-panel border border-pip-mid/60 rounded-lg shadow-lg shadow-pip-glow ${wide ? 'w-full max-w-4xl' : 'w-full max-w-2xl'} max-h-[85vh] flex flex-col`}>
         <div className="flex items-center justify-between p-4 border-b border-pip-dim">
-          <h2 className="text-pip text-lg">{title}</h2>
-          <button onClick={onClose} className="text-pip-dim hover:text-pip p-1">
+          <h2 className="text-pip text-lg tracking-wider font-bold">{title}</h2>
+          <button onClick={onClose} className="text-muted hover:text-danger transition-colors p-1">
             <X size={20} />
           </button>
         </div>

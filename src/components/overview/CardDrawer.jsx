@@ -46,18 +46,18 @@ export default function CardDrawer({ deckType, title }) {
   }
 
   return (
-    <div className="border border-pip-dim rounded-lg bg-panel p-4">
+    <div className="border border-pip-mid/50 rounded-lg bg-panel p-4">
       <div className="flex items-center justify-between mb-3">
-        <h3 className="text-pip text-sm uppercase tracking-wider">{title}</h3>
-        <span className="text-xs text-pip-dim">{available} remaining</span>
+        <h3 className="text-pip text-sm uppercase tracking-widest font-bold">{title}</h3>
+        <span className="text-xs text-muted">{available} remaining</span>
       </div>
 
       <div className="flex gap-2 mb-3">
         <button
           onClick={handleDraw}
           disabled={locked || available === 0}
-          className="flex-1 flex items-center justify-center gap-2 py-2 px-3 bg-pip-dim/30 border border-pip-dim rounded text-pip text-sm
-            hover:bg-pip-dim/50 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+          className="flex-1 flex items-center justify-center gap-2 py-2 px-3 bg-pip-dim/30 border border-pip-mid/50 rounded text-pip text-sm font-bold
+            hover:bg-pip-dim hover:border-pip disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
         >
           <Shuffle size={14} />
           DRAW
@@ -65,7 +65,7 @@ export default function CardDrawer({ deckType, title }) {
         <button
           onClick={handleLock}
           className={`py-2 px-3 border rounded text-sm transition-colors ${
-            locked ? 'border-amber text-amber bg-amber-dim/30' : 'border-pip-dim text-pip-dim hover:text-pip'
+            locked ? 'border-amber text-amber bg-amber-dim/30' : 'border-muted text-muted hover:text-pip hover:border-pip'
           }`}
         >
           {locked ? <Lock size={14} /> : <Unlock size={14} />}
@@ -73,7 +73,7 @@ export default function CardDrawer({ deckType, title }) {
         {currentCard && (
           <button
             onClick={handleAddToPlay}
-            className="py-2 px-3 border border-pip-dim rounded text-pip text-sm hover:bg-pip-dim/30 transition-colors"
+            className="py-2 px-3 border border-pip-mid/50 text-pip rounded text-sm hover:bg-pip-dim hover:border-pip transition-colors"
             title="Add to Active Events"
           >
             <Plus size={14} />
@@ -82,24 +82,24 @@ export default function CardDrawer({ deckType, title }) {
       </div>
 
       {currentCard ? (
-        <div className="border border-pip-dim/50 rounded p-3 bg-panel-alt">
+        <div className="border border-pip-mid/40 rounded p-3 bg-panel-alt">
           <div className="flex items-start justify-between mb-1">
             <span className="text-amber text-sm font-bold">#{currentCard.id}</span>
-            <span className={`text-xs px-2 py-0.5 rounded ${
-              currentCard.type.includes('★') ? 'bg-amber-dim/50 text-amber' : 'bg-pip-dim/30 text-pip-dim'
+            <span className={`text-xs px-2 py-0.5 rounded font-bold ${
+              currentCard.type.includes('★') ? 'bg-amber-dim/50 text-amber' : 'bg-pip-dim/30 text-muted'
             }`}>
               {currentCard.type}
             </span>
           </div>
-          <h4 className="text-pip text-sm mb-2">{currentCard.name}</h4>
-          <p className="text-pip-dim text-xs leading-relaxed">{currentCard.text}</p>
+          <h4 className="text-pip text-sm mb-2 font-bold">{currentCard.name}</h4>
+          <p className="text-muted text-xs leading-relaxed">{currentCard.text}</p>
           {currentCard.consequence && (
             <p className="text-amber text-xs leading-relaxed mt-1 italic">{currentCard.consequence}</p>
           )}
         </div>
       ) : (
-        <div className="border border-pip-dim/30 border-dashed rounded p-6 text-center">
-          <p className="text-pip-dim text-xs">Draw a card to see its effect</p>
+        <div className="border border-pip-dim/40 border-dashed rounded p-6 text-center">
+          <p className="text-muted text-xs">Draw a card to see its effect</p>
         </div>
       )}
     </div>

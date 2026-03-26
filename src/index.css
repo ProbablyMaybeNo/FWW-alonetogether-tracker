@@ -1,17 +1,35 @@
 @import "tailwindcss";
 
 @theme {
-  --color-pip: #14b814;
-  --color-pip-dim: #0a5c0a;
-  --color-pip-glow: #14b81440;
-  --color-amber: #ff9900;
-  --color-amber-dim: #805000;
-  --color-terminal: #0a0a0a;
-  --color-panel: #111411;
-  --color-panel-light: #1a1e1a;
-  --color-panel-alt: #151915;
-  --color-danger: #cc3333;
-  --color-danger-dim: #661a1a;
+  /* Primary neon green — brighter, more vibrant */
+  --color-pip: #00e676;
+  --color-pip-dim: #1a4d2e;
+  --color-pip-glow: #00e67640;
+  --color-pip-mid: #00b85a;
+
+  /* Neon orange replaces amber — highlight/important */
+  --color-amber: #ff8c00;
+  --color-amber-dim: #4a2800;
+  --color-amber-glow: #ff8c0030;
+
+  /* Neon red — danger/warning */
+  --color-danger: #ff3c3c;
+  --color-danger-dim: #4a0f0f;
+  --color-danger-glow: #ff3c3c30;
+
+  /* Neon blue — info/links */
+  --color-info: #00b4ff;
+  --color-info-dim: #00334d;
+
+  /* Backgrounds — dark terminal aesthetic preserved */
+  --color-terminal: #080c08;
+  --color-panel: #0e130e;
+  --color-panel-light: #141a14;
+  --color-panel-alt: #121712;
+
+  /* Muted text — more readable than before */
+  --color-muted: #4a7a5a;
+
   --font-family-mono: 'Share Tech Mono', 'Courier New', monospace;
 }
 
@@ -40,6 +58,7 @@ body {
   min-height: 100vh;
 }
 
+/* Subtle scanline overlay — slightly reduced opacity for better readability */
 body::after {
   content: '';
   position: fixed;
@@ -50,14 +69,15 @@ body::after {
     0deg,
     transparent,
     transparent 2px,
-    rgba(0, 0, 0, 0.06) 2px,
-    rgba(0, 0, 0, 0.06) 4px
+    rgba(0, 0, 0, 0.04) 2px,
+    rgba(0, 0, 0, 0.04) 4px
   );
 }
 
+/* Input focus — bright neon green glow */
 input:focus, select:focus, textarea:focus, button:focus-visible {
   outline: 1px solid var(--color-pip);
-  box-shadow: 0 0 8px var(--color-pip-glow);
+  box-shadow: 0 0 10px var(--color-pip-glow), 0 0 2px var(--color-pip);
 }
 
 ::selection {
@@ -65,14 +85,20 @@ input:focus, select:focus, textarea:focus, button:focus-visible {
   color: var(--color-pip);
 }
 
+/* Inputs — better contrast borders, readable text */
 input, select, textarea {
   font-family: var(--font-family-mono);
   background-color: var(--color-panel);
   color: var(--color-pip);
-  border: 1px solid var(--color-pip-dim);
+  border: 1px solid var(--color-muted);
   border-radius: 4px;
   padding: 6px 10px;
   font-size: 14px;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+input:hover, select:hover, textarea:hover {
+  border-color: var(--color-pip-mid);
 }
 
 select option {

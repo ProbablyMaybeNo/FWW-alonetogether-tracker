@@ -25,8 +25,8 @@ export default function ActiveEvents() {
 
   if (events.length === 0) {
     return (
-      <div className="border border-pip-dim/30 border-dashed rounded-lg p-4 text-center">
-        <p className="text-pip-dim text-xs">No active events. Draw cards above to add events in play.</p>
+      <div className="border border-pip-dim/40 border-dashed rounded-lg p-4 text-center">
+        <p className="text-muted text-xs">No active events. Draw cards above to add events in play.</p>
       </div>
     )
   }
@@ -34,14 +34,14 @@ export default function ActiveEvents() {
   return (
     <div className="space-y-2">
       {events.map((event, i) => (
-        <div key={i} className="border border-pip-dim rounded bg-panel-alt p-3 flex gap-3">
+        <div key={i} className="border border-amber/40 rounded bg-panel-alt p-3 flex gap-3">
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-2 mb-1">
-              <span className="text-amber text-xs">#{event.cardId}</span>
+              <span className="text-amber text-xs font-bold">#{event.cardId}</span>
               <span className="text-pip text-sm font-bold truncate">{event.name}</span>
-              <span className="text-pip-dim text-xs">R{event.sinceRound}</span>
+              <span className="text-muted text-xs">R{event.sinceRound}</span>
             </div>
-            <p className="text-pip-dim text-xs leading-relaxed">{event.text}</p>
+            <p className="text-muted text-xs leading-relaxed">{event.text}</p>
             {event.consequence && (
               <p className="text-amber text-xs leading-relaxed mt-1 italic">{event.consequence}</p>
             )}
@@ -49,13 +49,13 @@ export default function ActiveEvents() {
           <div className="flex flex-col gap-1 shrink-0">
             <button
               onClick={() => handleComplete(i, event.cardId)}
-              className="text-pip-dim hover:text-pip p-1" title="Complete"
+              className="text-muted hover:text-pip p-1 transition-colors" title="Complete"
             >
               <CheckCircle size={16} />
             </button>
             <button
               onClick={() => handleRemove(i)}
-              className="text-pip-dim hover:text-danger p-1" title="Remove"
+              className="text-muted hover:text-danger p-1 transition-colors" title="Remove"
             >
               <X size={16} />
             </button>

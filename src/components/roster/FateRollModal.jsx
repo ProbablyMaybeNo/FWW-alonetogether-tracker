@@ -35,7 +35,7 @@ export default function FateRollModal({ isOpen, onClose, unit, onApply }) {
         {/* Stats */}
         <div className="grid grid-cols-3 gap-3">
           <div>
-            <label className="text-xs text-pip-dim block mb-1">LUC SCORE</label>
+            <label className="text-xs text-muted block mb-1">LUC SCORE</label>
             <input
               type="number" min="0" max="10"
               value={lucScore}
@@ -44,11 +44,11 @@ export default function FateRollModal({ isOpen, onClose, unit, onApply }) {
             />
           </div>
           <div>
-            <label className="text-xs text-pip-dim block mb-1">TIMES REMOVED</label>
+            <label className="text-xs text-muted block mb-1">TIMES REMOVED</label>
             <div className="text-pip text-sm py-1">{timesRemoved}</div>
           </div>
           <div>
-            <label className="text-xs text-pip-dim block mb-1">THRESHOLD</label>
+            <label className="text-xs text-muted block mb-1">THRESHOLD</label>
             <div className="text-amber text-sm py-1">
               {lucScore} + 5 − {timesRemoved} = <span className="font-bold">{threshold}</span>
             </div>
@@ -58,24 +58,25 @@ export default function FateRollModal({ isOpen, onClose, unit, onApply }) {
         {/* Roll Button */}
         <button
           onClick={handleRoll}
-          className="w-full flex items-center justify-center gap-2 py-3 border border-pip rounded text-pip text-sm hover:bg-pip-dim/30 transition-colors"
+          className="w-full flex items-center justify-center gap-2 py-3 border border-pip rounded text-pip text-sm font-bold hover:bg-pip-dim hover:border-pip-mid transition-colors"
+          style={{ boxShadow: '0 0 8px var(--color-pip-glow)' }}
         >
           <Dices size={18} /> ROLL FATE
         </button>
 
         {/* Result */}
         {result && (
-          <div className="border border-pip-dim rounded bg-panel-alt p-4 space-y-2 text-center">
+          <div className="border border-muted/40 rounded bg-panel-alt p-4 space-y-2 text-center">
             <div className="text-amber text-2xl font-bold tracking-wider">{result.diceResult}</div>
             <div className={`text-lg font-bold tracking-wide ${
               result.fate === 'Dead' ? 'text-danger' :
               result.fate === 'Fine' ? 'text-pip' : 'text-amber'
             }`}>{result.fate.toUpperCase()}</div>
-            <p className="text-pip-dim text-xs">{result.description}</p>
+            <p className="text-muted text-xs">{result.description}</p>
 
             {result.fate === 'Dead' && (
-              <div className="border border-danger rounded px-3 py-2 text-danger text-xs font-bold">
-                ⚠ PERMANENT — this cannot be undone
+              <div className="border border-danger rounded px-3 py-2 text-danger text-xs font-bold" style={{ boxShadow: '0 0 8px var(--color-danger-glow)' }}>
+                PERMANENT — this cannot be undone
               </div>
             )}
 
@@ -92,7 +93,7 @@ export default function FateRollModal({ isOpen, onClose, unit, onApply }) {
               </button>
               <button
                 onClick={handleClose}
-                className="flex-1 py-2 border border-pip-dim text-pip-dim rounded text-sm hover:text-pip transition-colors"
+                className="flex-1 py-2 border border-muted/40 text-muted rounded text-sm hover:text-pip transition-colors"
               >
                 DISMISS
               </button>

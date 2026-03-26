@@ -87,18 +87,18 @@ export default function OverviewPage({ onTabChange }) {
   return (
     <div className="p-4 space-y-6 max-w-5xl mx-auto">
       {/* Header */}
-      <div className="text-center border-b border-pip-dim pb-4">
-        <h1 className="text-pip text-xl tracking-widest mb-1">ALONE TOGETHER</h1>
-        <p className="text-pip-dim text-xs tracking-wider">FALLOUT: WASTELAND WARFARE CAMPAIGN TRACKER</p>
+      <div className="text-center border-b border-pip-mid/50 pb-4">
+        <h1 className="text-pip text-xl tracking-widest mb-1 font-bold" style={{ textShadow: '0 0 12px var(--color-pip-glow)' }}>ALONE TOGETHER</h1>
+        <p className="text-muted text-xs tracking-wider">FALLOUT: WASTELAND WARFARE CAMPAIGN TRACKER</p>
       </div>
 
       {/* Phase Banner */}
-      <div className="bg-[#0a0f1a] border border-pip-dim/50 rounded-lg px-5 py-3">
+      <div className="bg-panel-light border border-amber/40 rounded-lg px-5 py-3" style={{ boxShadow: '0 0 12px var(--color-amber-glow)' }}>
         <div className="flex items-center gap-2 mb-0.5">
           <span className="text-amber text-base font-bold tracking-widest">PHASE {phase}</span>
-          <span className="text-white text-base font-bold tracking-wider">— {phaseInfo.name}</span>
+          <span className="text-pip text-base font-bold tracking-wider">— {phaseInfo.name}</span>
         </div>
-        <p className="text-pip-dim text-xs italic">{phaseInfo.subtitle}</p>
+        <p className="text-muted text-xs italic">{phaseInfo.subtitle}</p>
       </div>
 
       {/* Phase Stepper + NEW ROUND */}
@@ -107,15 +107,15 @@ export default function OverviewPage({ onTabChange }) {
           <button
             onClick={() => handlePhaseChange(-1)}
             disabled={phase <= 1}
-            className="p-1.5 border border-pip-dim rounded text-pip-dim hover:text-pip disabled:opacity-30 transition-colors"
+            className="p-1.5 border border-muted rounded text-muted hover:text-pip hover:border-pip disabled:opacity-30 transition-colors"
           >
             <ChevronLeft size={14} />
           </button>
-          <span className="text-pip-dim text-xs tracking-wider">PHASE {phase} OF 4</span>
+          <span className="text-muted text-xs tracking-wider">PHASE {phase} OF 4</span>
           <button
             onClick={() => handlePhaseChange(1)}
             disabled={phase >= 4}
-            className="p-1.5 border border-pip-dim rounded text-pip-dim hover:text-pip disabled:opacity-30 transition-colors"
+            className="p-1.5 border border-muted rounded text-muted hover:text-pip hover:border-pip disabled:opacity-30 transition-colors"
           >
             <ChevronRight size={14} />
           </button>
@@ -123,13 +123,14 @@ export default function OverviewPage({ onTabChange }) {
 
         <div className="flex items-center gap-3">
           {exploreCards > 0 && (
-            <span className="text-pip-dim text-xs">
+            <span className="text-muted text-xs">
               Explore Cards This Round: <span className="text-pip font-bold">{exploreCards}</span>
             </span>
           )}
           <button
             onClick={() => setShowNewRound(true)}
-            className="px-4 py-2 border border-pip text-pip rounded text-sm tracking-wider hover:bg-pip-dim/30 transition-colors font-bold"
+            className="px-4 py-2 border border-pip text-pip rounded text-sm tracking-wider hover:bg-pip-dim hover:text-pip transition-colors font-bold"
+            style={{ boxShadow: '0 0 8px var(--color-pip-glow)' }}
           >
             NEW ROUND
           </button>
@@ -139,30 +140,30 @@ export default function OverviewPage({ onTabChange }) {
       {/* Player Info */}
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2">
         <div className="flex flex-col">
-          <label className="text-xs text-pip-dim mb-1">PLAYER</label>
+          <label className="text-xs text-muted mb-1 tracking-wider">PLAYER</label>
           <input type="text" value={player.name} onChange={(e) => handlePlayerChange('name', e.target.value)} className="text-xs py-1 px-2" />
         </div>
         <div className="flex flex-col">
-          <label className="text-xs text-pip-dim mb-1">SETTLEMENT</label>
+          <label className="text-xs text-muted mb-1 tracking-wider">SETTLEMENT</label>
           <input type="text" value={player.settlement} onChange={(e) => handlePlayerChange('settlement', e.target.value)} className="text-xs py-1 px-2" />
         </div>
         <div className="flex flex-col">
-          <label className="text-xs text-pip-dim mb-1">FACTION</label>
+          <label className="text-xs text-muted mb-1 tracking-wider">FACTION</label>
           <input type="text" value={player.faction} onChange={(e) => handlePlayerChange('faction', e.target.value)} className="text-xs py-1 px-2" />
         </div>
         <div className="flex flex-col">
-          <label className="text-xs text-pip-dim mb-1">LEADER</label>
+          <label className="text-xs text-muted mb-1 tracking-wider">LEADER</label>
           <input type="text" value={player.leader} onChange={(e) => handlePlayerChange('leader', e.target.value)} className="text-xs py-1 px-2" />
         </div>
         <div className="flex flex-col">
-          <label className="text-xs text-pip-dim mb-1">ROUND</label>
+          <label className="text-xs text-muted mb-1 tracking-wider">ROUND</label>
           <input type="number" min="0" value={round} onChange={(e) => handleRoundChange(e.target.value)} className="text-xs py-1 px-2" />
         </div>
       </div>
 
       {/* Caps Display */}
-      <div className="border border-amber/50 rounded-lg bg-panel p-4">
-        <div className="text-xs text-pip-dim mb-2 tracking-wider">SETTLEMENT CAPS</div>
+      <div className="border border-amber/60 rounded-lg bg-panel p-4" style={{ boxShadow: '0 0 10px var(--color-amber-glow)' }}>
+        <div className="text-xs text-muted mb-2 tracking-widest font-bold">SETTLEMENT CAPS</div>
         <div className="flex items-center gap-3 flex-wrap">
           {editingCaps ? (
             <input
@@ -175,15 +176,15 @@ export default function OverviewPage({ onTabChange }) {
               autoFocus
             />
           ) : (
-            <button onClick={handleCapsEdit} className="text-2xl text-amber font-bold hover:opacity-70 transition-opacity">
+            <button onClick={handleCapsEdit} className="text-2xl text-amber font-bold hover:text-pip transition-colors">
               {caps.toLocaleString()}c
             </button>
           )}
           <div className="flex items-center gap-2 flex-wrap">
-            <button onClick={() => handleCapsAdjust(50)} className="px-3 py-1.5 border border-pip-dim text-pip text-xs rounded hover:bg-pip-dim/30 transition-colors">+50</button>
-            <button onClick={() => handleCapsAdjust(200)} className="px-3 py-1.5 border border-pip-dim text-pip text-xs rounded hover:bg-pip-dim/30 transition-colors">+200</button>
+            <button onClick={() => handleCapsAdjust(50)} className="px-3 py-1.5 border border-pip-mid/60 text-pip text-xs rounded hover:bg-pip-dim hover:border-pip transition-colors">+50</button>
+            <button onClick={() => handleCapsAdjust(200)} className="px-3 py-1.5 border border-pip-mid/60 text-pip text-xs rounded hover:bg-pip-dim hover:border-pip transition-colors">+200</button>
             <div className="flex items-center gap-1">
-              <button onClick={() => handleManualAdjust(-1)} className="p-1.5 border border-pip-dim rounded text-pip-dim hover:text-danger transition-colors"><Minus size={12} /></button>
+              <button onClick={() => handleManualAdjust(-1)} className="p-1.5 border border-muted rounded text-muted hover:text-danger hover:border-danger transition-colors"><Minus size={12} /></button>
               <input
                 type="number" min="0"
                 value={capsAdjust}
@@ -192,7 +193,7 @@ export default function OverviewPage({ onTabChange }) {
                 placeholder="amt"
                 className="w-16 text-xs py-1 px-2 text-center"
               />
-              <button onClick={() => handleManualAdjust(1)} className="p-1.5 border border-pip-dim rounded text-pip-dim hover:text-pip transition-colors"><Plus size={12} /></button>
+              <button onClick={() => handleManualAdjust(1)} className="p-1.5 border border-muted rounded text-muted hover:text-pip hover:border-pip transition-colors"><Plus size={12} /></button>
             </div>
           </div>
         </div>
@@ -200,55 +201,55 @@ export default function OverviewPage({ onTabChange }) {
 
       {/* Stats Grid */}
       <div>
-        <h2 className="text-pip text-sm tracking-wider mb-3 border-b border-pip-dim/30 pb-1">CAMPAIGN SNAPSHOT</h2>
+        <h2 className="text-pip text-sm tracking-widest mb-3 border-b border-pip-mid/50 pb-1 font-bold">CAMPAIGN SNAPSHOT</h2>
         <div className="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-6 gap-2">
           <StatCard label="CAMPAIGN SCORE" value={campaignScore.toLocaleString()} icon={Coins} color="amber" />
-          <div className="border border-pip-dim rounded bg-panel p-2 text-center">
+          <div className="border border-pip-mid/60 rounded bg-panel p-2 text-center">
             <div className="text-sm font-bold text-pip">{state.battleCount ?? 0}</div>
-            <div className="text-xs text-pip-dim">BATTLES</div>
-            <button onClick={handleBattleCountInc} className="mt-1 text-xs text-pip-dim hover:text-pip border border-pip-dim/30 rounded px-2 py-0.5">+1</button>
+            <div className="text-xs text-muted">BATTLES</div>
+            <button onClick={handleBattleCountInc} className="mt-1 text-xs text-muted hover:text-pip border border-muted/40 hover:border-pip rounded px-2 py-0.5 transition-colors">+1</button>
           </div>
           <StatCard label="UNITS" value={`${activeUnits}/${roster.length}`} icon={Users} />
           <StatCard label="STRUCTURES" value={structures.length} icon={Building2} />
-          <div className={`border ${pwrGen - pwrUsed < 0 ? 'text-danger border-danger-dim' : 'text-pip border-pip-dim'} bg-panel rounded-lg p-3 flex flex-col items-center gap-1`}>
-            <Zap size={18} className="opacity-70" />
+          <div className={`border ${pwrGen - pwrUsed < 0 ? 'text-danger border-danger/60' : 'text-pip border-pip-mid/60'} bg-panel rounded-lg p-3 flex flex-col items-center gap-1`}>
+            <Zap size={18} />
             <span className="text-2xl font-bold">{pwrGen - pwrUsed}</span>
-            <span className="text-xs opacity-60 text-center leading-tight">POWER</span>
-            <span className="text-xs opacity-40">{pwrGen}gen / {pwrUsed}used</span>
+            <span className="text-xs text-muted text-center leading-tight">POWER</span>
+            <span className="text-xs text-muted/70">{pwrGen}gen / {pwrUsed}used</span>
           </div>
-          <div className={`border ${waterGen - waterUsed < 0 ? 'text-danger border-danger-dim' : 'text-pip border-pip-dim'} bg-panel rounded-lg p-3 flex flex-col items-center gap-1`}>
-            <Droplets size={18} className="opacity-70" />
+          <div className={`border ${waterGen - waterUsed < 0 ? 'text-danger border-danger/60' : 'text-pip border-pip-mid/60'} bg-panel rounded-lg p-3 flex flex-col items-center gap-1`}>
+            <Droplets size={18} />
             <span className="text-2xl font-bold">{waterGen - waterUsed}</span>
-            <span className="text-xs opacity-60 text-center leading-tight">WATER</span>
-            <span className="text-xs opacity-40">{waterGen}gen / {waterUsed}used</span>
+            <span className="text-xs text-muted text-center leading-tight">WATER</span>
+            <span className="text-xs text-muted/70">{waterGen}gen / {waterUsed}used</span>
           </div>
           <StatCard label="STORED" value={poolCounts.stored} icon={Archive} small />
           <StatCard label="LOCKERS" value={poolCounts.locker} icon={Archive} small />
           <StatCard label="STORES" value={poolCounts.stores} icon={Archive} small />
           <StatCard label="EVENTS" value={(state.activeEvents || []).length} icon={ScrollText} color={state.activeEvents?.length > 0 ? 'amber' : 'pip'} />
           <div
-            className="border border-pip-dim/40 rounded bg-panel p-2 text-center cursor-pointer hover:bg-panel-alt transition-colors"
+            className="border border-pip-mid/50 rounded bg-panel p-2 text-center cursor-pointer hover:bg-panel-light hover:border-pip transition-colors"
             onClick={() => onTabChange?.('objectives')}
           >
-            <Target size={14} className="mx-auto mb-1 text-pip-dim" />
+            <Target size={14} className="mx-auto mb-1 text-pip" />
             <div className="text-sm font-bold text-pip">{activeQuestCount}</div>
-            <div className="text-xs text-pip-dim">QUESTS ACTIVE</div>
+            <div className="text-xs text-muted">QUESTS ACTIVE</div>
           </div>
         </div>
       </div>
 
       {/* Scavenger Objective */}
-      <div className="border border-pip-dim/30 rounded bg-panel p-3">
-        <div className="text-xs text-pip-dim mb-1 tracking-wider">ACTIVE SCAVENGER OBJECTIVE</div>
+      <div className="border border-pip-mid/40 rounded bg-panel p-3">
+        <div className="text-xs text-muted mb-1 tracking-widest font-bold">ACTIVE SCAVENGER OBJECTIVE</div>
         {activeObjective
           ? <span className="text-amber text-sm font-bold">{activeObjective.name}</span>
-          : <span className="text-pip-dim text-xs">None active</span>
+          : <span className="text-muted text-xs">None active</span>
         }
       </div>
 
       {/* Active Explore Consequences + Explore Card Draw */}
       <div>
-        <h2 className="text-pip text-sm tracking-wider mb-3 border-b border-pip-dim/30 pb-1">
+        <h2 className="text-pip text-sm tracking-widest mb-3 border-b border-pip-mid/50 pb-1 font-bold">
           ACTIVE EXPLORE CONSEQUENCES ({(state.activeEvents || []).length})
         </h2>
         <div className="mb-4">

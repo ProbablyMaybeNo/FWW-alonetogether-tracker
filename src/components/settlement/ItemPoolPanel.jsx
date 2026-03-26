@@ -54,13 +54,13 @@ function AddItemToPoolModal({ isOpen, onClose, onAdd }) {
         <div className="flex gap-2">
           <button
             onClick={() => setCustomMode(false)}
-            className={`flex-1 py-1.5 text-xs border rounded ${!customMode ? 'border-pip text-pip' : 'border-pip-dim text-pip-dim hover:text-pip'}`}
+            className={`flex-1 py-1.5 text-xs border rounded ${!customMode ? 'border-pip text-pip' : 'border-muted text-muted hover:text-pip'}`}
           >
             SEARCH ITEMS
           </button>
           <button
             onClick={() => setCustomMode(true)}
-            className={`flex-1 py-1.5 text-xs border rounded ${customMode ? 'border-pip text-pip' : 'border-pip-dim text-pip-dim hover:text-pip'}`}
+            className={`flex-1 py-1.5 text-xs border rounded ${customMode ? 'border-pip text-pip' : 'border-muted text-muted hover:text-pip'}`}
           >
             CUSTOM ITEM
           </button>
@@ -78,17 +78,17 @@ function AddItemToPoolModal({ isOpen, onClose, onAdd }) {
             />
             <div className="max-h-64 overflow-y-auto space-y-1">
               {searchResults.length === 0 && search.trim() && (
-                <p className="text-pip-dim text-xs">No results. Try custom item.</p>
+                <p className="text-muted text-xs">No results. Try custom item.</p>
               )}
               {searchResults.map(item => (
                 <div
                   key={item.id}
                   onClick={() => handleAddFromSearch(item)}
-                  className="flex items-center justify-between border border-pip-dim/30 rounded px-3 py-2 hover:bg-panel-alt cursor-pointer"
+                  className="flex items-center justify-between border border-muted/40 rounded px-3 py-2 hover:bg-panel-alt cursor-pointer"
                 >
                   <span className="text-pip text-xs">{item.name}</span>
                   <div className="flex items-center gap-2">
-                    <span className="text-pip-dim text-xs">{item.subType}</span>
+                    <span className="text-muted text-xs">{item.subType}</span>
                     <span className="text-amber text-xs font-bold">{item.caps}c</span>
                   </div>
                 </div>
@@ -98,16 +98,16 @@ function AddItemToPoolModal({ isOpen, onClose, onAdd }) {
         ) : (
           <div className="space-y-3">
             <div>
-              <label className="text-xs text-pip-dim block mb-1">ITEM NAME</label>
+              <label className="text-xs text-muted block mb-1">ITEM NAME</label>
               <input type="text" value={customName} onChange={(e) => setCustomName(e.target.value)} className="w-full text-xs py-1 px-2" placeholder="Item name..." autoFocus />
             </div>
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="text-xs text-pip-dim block mb-1">CAPS VALUE</label>
+                <label className="text-xs text-muted block mb-1">CAPS VALUE</label>
                 <input type="number" min="0" value={customCaps} onChange={(e) => setCustomCaps(e.target.value)} className="w-full text-xs py-1 px-2" />
               </div>
               <div>
-                <label className="text-xs text-pip-dim block mb-1">SUB TYPE</label>
+                <label className="text-xs text-muted block mb-1">SUB TYPE</label>
                 <select value={customSubType} onChange={(e) => setCustomSubType(e.target.value)} className="w-full text-xs py-1 px-2">
                   {SUBTYPES.map(t => <option key={t} value={t}>{t}</option>)}
                 </select>
@@ -115,7 +115,7 @@ function AddItemToPoolModal({ isOpen, onClose, onAdd }) {
             </div>
             <label className="flex items-center gap-2 cursor-pointer">
               <input type="checkbox" checked={customIsBoost} onChange={(e) => setCustomIsBoost(e.target.checked)} className="accent-pip" />
-              <span className="text-xs text-pip-dim">IS BOOST (takes 0.5 slots)</span>
+              <span className="text-xs text-muted">IS BOOST (takes 0.5 slots)</span>
             </label>
             <button
               onClick={handleAddCustom}
@@ -265,7 +265,7 @@ export default function ItemPoolPanel({ structures }) {
   ]
 
   return (
-    <div className="border border-pip-dim/50 rounded bg-panel mt-4">
+    <div className="border border-muted/50 rounded bg-panel mt-4">
       {/* Header */}
       <div
         className="flex items-center justify-between px-4 py-3 cursor-pointer hover:bg-panel-alt transition-colors"
@@ -273,15 +273,15 @@ export default function ItemPoolPanel({ structures }) {
       >
         <span className="text-pip text-sm font-bold tracking-wider">ITEM POOL</span>
         <div className="flex items-center gap-2">
-          <span className="text-pip-dim text-xs">{items.length} items</span>
-          {collapsed ? <ChevronRight size={14} className="text-pip-dim" /> : <ChevronDown size={14} className="text-pip-dim" />}
+          <span className="text-muted text-xs">{items.length} items</span>
+          {collapsed ? <ChevronRight size={14} className="text-muted" /> : <ChevronDown size={14} className="text-muted" />}
         </div>
       </div>
 
       {!collapsed && (
-        <div className="border-t border-pip-dim/30 p-4">
+        <div className="border-t border-muted/40 p-4">
           {/* Slot overview */}
-          <div className="flex gap-3 text-xs text-pip-dim mb-3 flex-wrap">
+          <div className="flex gap-3 text-xs text-muted mb-3 flex-wrap">
             <span>Sheds: <span className="text-pip">{shedSlots}</span> slots</span>
             <span>Lockers: <span className="text-pip">{lockerSlots}</span> slots</span>
             <span>Stores: <span className="text-pip">{storesSlots}</span> slots</span>
@@ -296,7 +296,7 @@ export default function ItemPoolPanel({ structures }) {
                 className={`text-xs px-3 py-1.5 border rounded transition-colors ${
                   activeTab === tab.key
                     ? 'border-pip text-pip bg-pip-dim/20'
-                    : 'border-pip-dim/40 text-pip-dim hover:text-pip'
+                    : 'border-muted/50 text-muted hover:text-pip'
                 }`}
               >
                 {tab.label}
@@ -308,28 +308,28 @@ export default function ItemPoolPanel({ structures }) {
           {activeTab === 'recovery' && (
             <div>
               <div className="flex items-center justify-between mb-3">
-                <span className="text-pip-dim text-xs">Items from last battle pending decisions</span>
+                <span className="text-muted text-xs">Items from last battle pending decisions</span>
                 <button
                   onClick={() => setShowAddItem(true)}
-                  className="flex items-center gap-1 text-xs px-3 py-1 border border-pip-dim rounded text-pip-dim hover:text-pip"
+                  className="flex items-center gap-1 text-xs px-3 py-1 border border-muted rounded text-muted hover:text-pip hover:border-pip"
                 >
                   <Plus size={12} /> ADD ITEM
                 </button>
               </div>
               {recoveryItems.length === 0 ? (
-                <p className="text-pip-dim text-xs">No items in recovery pool.</p>
+                <p className="text-muted text-xs">No items in recovery pool.</p>
               ) : (
                 <div className="space-y-1">
                   {recoveryItems.map(item => (
-                    <div key={item.id} className="flex items-center gap-2 border border-pip-dim/20 rounded px-3 py-2 bg-panel-light flex-wrap">
+                    <div key={item.id} className="flex items-center gap-2 border border-pip-mid/30 rounded px-3 py-2 bg-panel-light flex-wrap">
                       <span className="text-pip text-xs flex-1 min-w-0">{item.name}</span>
-                      <span className="text-pip-dim text-xs px-1.5 py-0.5 border border-pip-dim/30 rounded">{item.subType}</span>
+                      <span className="text-muted text-xs px-1.5 py-0.5 border border-muted/40 rounded">{item.subType}</span>
                       <span className="text-amber text-xs font-bold">{item.caps}c</span>
                       <div className="flex gap-1 flex-wrap">
                         <button
                           onClick={() => keepToShed(item)}
                           disabled={!item.isBoost && storedItems.filter(i => !i.isBoost).length >= shedSlots && shedSlots > 0}
-                          className="text-xs px-2 py-0.5 border border-pip-dim rounded text-pip-dim hover:text-pip disabled:opacity-40 disabled:cursor-not-allowed"
+                          className="text-xs px-2 py-0.5 border border-muted rounded text-muted hover:text-pip hover:border-pip disabled:opacity-40 disabled:cursor-not-allowed"
                           title={`Keep in Maintenance Shed (${storedItems.filter(i => !i.isBoost).length}/${shedSlots} used)`}
                         >
                           Keep ({shedSlots - storedItems.filter(i => !i.isBoost).length} left)
@@ -337,7 +337,7 @@ export default function ItemPoolPanel({ structures }) {
                         <button
                           onClick={() => moveToLocker(item)}
                           disabled={lockerItems.length >= lockerSlots && lockerSlots > 0}
-                          className="text-xs px-2 py-0.5 border border-pip-dim rounded text-pip-dim hover:text-pip disabled:opacity-40 disabled:cursor-not-allowed"
+                          className="text-xs px-2 py-0.5 border border-muted rounded text-muted hover:text-pip hover:border-pip disabled:opacity-40 disabled:cursor-not-allowed"
                           title={`Move to Locker (${lockerItems.length}/${lockerSlots} used)`}
                         >
                           Locker ({lockerSlots - lockerItems.length} left)
@@ -367,15 +367,15 @@ export default function ItemPoolPanel({ structures }) {
           {/* STORED TAB */}
           {activeTab === 'stored' && (
             <div>
-              <p className="text-pip-dim text-xs mb-3">Retained via Maintenance Shed — permanent item pool</p>
+              <p className="text-muted text-xs mb-3">Retained via Maintenance Shed — permanent item pool</p>
               {storedItems.length === 0 ? (
-                <p className="text-pip-dim text-xs">No stored items.</p>
+                <p className="text-muted text-xs">No stored items.</p>
               ) : (
                 <div className="space-y-1">
                   {storedItems.map(item => (
-                    <div key={item.id} className="flex items-center gap-2 border border-pip-dim/20 rounded px-3 py-2 bg-panel-light flex-wrap">
+                    <div key={item.id} className="flex items-center gap-2 border border-pip-mid/30 rounded px-3 py-2 bg-panel-light flex-wrap">
                       <span className="text-pip text-xs flex-1 min-w-0">{item.name}</span>
-                      <span className="text-pip-dim text-xs px-1.5 py-0.5 border border-pip-dim/30 rounded">{item.subType}</span>
+                      <span className="text-muted text-xs px-1.5 py-0.5 border border-muted/40 rounded">{item.subType}</span>
                       <span className="text-amber text-xs font-bold">{item.caps}c</span>
                       <div className="flex gap-1 flex-wrap">
                         <AssignUnitButton item={item} roster={roster} onAssign={(unitSlotId) => {
@@ -399,29 +399,29 @@ export default function ItemPoolPanel({ structures }) {
           {activeTab === 'locker' && (
             <div>
               <div className="flex items-center justify-between mb-3 flex-wrap gap-2">
-                <p className="text-pip-dim text-xs">{lockerItems.length}/{lockerSlots} slots used</p>
+                <p className="text-muted text-xs">{lockerItems.length}/{lockerSlots} slots used</p>
                 {lockerItems.length > 0 && (
                   <button
                     onClick={returnLockerToPool}
-                    className="text-xs px-3 py-1 border border-pip-dim rounded text-pip-dim hover:text-pip"
+                    className="text-xs px-3 py-1 border border-muted rounded text-muted hover:text-pip hover:border-pip"
                   >
                     RETURN LOCKER ITEMS TO POOL
                   </button>
                 )}
               </div>
               {lockerItems.length === 0 ? (
-                <p className="text-pip-dim text-xs">No items in lockers.</p>
+                <p className="text-muted text-xs">No items in lockers.</p>
               ) : (
                 <div className="space-y-1">
                   {lockerItems.map(item => (
-                    <div key={item.id} className="flex items-center gap-2 border border-pip-dim/20 rounded px-3 py-2 bg-panel-light flex-wrap">
+                    <div key={item.id} className="flex items-center gap-2 border border-pip-mid/30 rounded px-3 py-2 bg-panel-light flex-wrap">
                       <span className="text-pip text-xs flex-1 min-w-0">{item.name}</span>
-                      <span className="text-pip-dim text-xs px-1.5 py-0.5 border border-pip-dim/30 rounded">{item.subType}</span>
+                      <span className="text-muted text-xs px-1.5 py-0.5 border border-muted/40 rounded">{item.subType}</span>
                       <span className="text-amber text-xs font-bold">{item.caps}c</span>
                       <div className="flex gap-1">
                         <button
                           onClick={() => updateItem(item.id, { location: 'stored' })}
-                          className="text-xs px-2 py-0.5 border border-pip-dim rounded text-pip-dim hover:text-pip"
+                          className="text-xs px-2 py-0.5 border border-muted rounded text-muted hover:text-pip hover:border-pip"
                         >
                           Move to Pool
                         </button>
@@ -443,18 +443,18 @@ export default function ItemPoolPanel({ structures }) {
           {activeTab === 'stores' && (
             <div>
               <div className="flex items-center justify-between mb-3">
-                <p className="text-pip-dim text-xs">Items assigned to units for next battle</p>
+                <p className="text-muted text-xs">Items assigned to units for next battle</p>
                 {storesItems.length > 0 && (
                   <button
                     onClick={clearAllStores}
-                    className="text-xs px-3 py-1 border border-pip-dim rounded text-pip-dim hover:text-pip"
+                    className="text-xs px-3 py-1 border border-muted rounded text-muted hover:text-pip hover:border-pip"
                   >
                     CLEAR ALL STORES
                   </button>
                 )}
               </div>
               {storesItems.length === 0 ? (
-                <p className="text-pip-dim text-xs">No items in stores assignments.</p>
+                <p className="text-muted text-xs">No items in stores assignments.</p>
               ) : (
                 <div className="space-y-3">
                   {/* Group by assigned unit */}
@@ -469,18 +469,18 @@ export default function ItemPoolPanel({ structures }) {
                       const unit = roster.find(u => String(u.slotId) === String(unitKey))
                       return (
                         <div key={unitKey}>
-                          <div className="text-pip-dim text-xs mb-1 font-bold">
+                          <div className="text-muted text-xs mb-1 font-bold">
                             {unit ? unit.unitName : 'Unassigned'}
                           </div>
                           <div className="space-y-1 ml-2">
                             {groupItems.map(item => (
-                              <div key={item.id} className="flex items-center gap-2 border border-pip-dim/20 rounded px-3 py-2 bg-panel-light flex-wrap">
+                              <div key={item.id} className="flex items-center gap-2 border border-pip-mid/30 rounded px-3 py-2 bg-panel-light flex-wrap">
                                 <span className="text-pip text-xs flex-1 min-w-0">{item.name}</span>
-                                <span className="text-pip-dim text-xs">{item.subType}</span>
+                                <span className="text-muted text-xs">{item.subType}</span>
                                 <span className="text-amber text-xs font-bold">{item.caps}c</span>
                                 <button
                                   onClick={() => updateItem(item.id, { location: 'stored', assignedUnit: null })}
-                                  className="text-xs px-2 py-0.5 border border-pip-dim rounded text-pip-dim hover:text-pip"
+                                  className="text-xs px-2 py-0.5 border border-muted rounded text-muted hover:text-pip hover:border-pip"
                                 >
                                   Unassign
                                 </button>
@@ -493,7 +493,7 @@ export default function ItemPoolPanel({ structures }) {
                   })()}
                 </div>
               )}
-              <p className="text-pip-dim text-xs mt-3 italic">These items count toward your battle force caps</p>
+              <p className="text-muted text-xs mt-3 italic">These items count toward your battle force caps</p>
             </div>
           )}
         </div>
@@ -511,7 +511,7 @@ function AssignUnitButton({ item, roster, onAssign }) {
     return (
       <button
         onClick={() => setOpen(true)}
-        className="text-xs px-2 py-0.5 border border-pip-dim rounded text-pip-dim hover:text-pip"
+        className="text-xs px-2 py-0.5 border border-muted rounded text-muted hover:text-pip hover:border-pip"
       >
         Assign to Unit
       </button>
@@ -536,7 +536,7 @@ function AssignUnitButton({ item, roster, onAssign }) {
           <option key={u.slotId} value={u.slotId}>{u.unitName}</option>
         ))}
       </select>
-      <button onClick={() => setOpen(false)} className="text-pip-dim hover:text-danger">
+      <button onClick={() => setOpen(false)} className="text-muted hover:text-danger">
         <X size={12} />
       </button>
     </div>

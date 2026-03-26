@@ -73,21 +73,21 @@ export default function AddUnitModal({ isOpen, onClose, onAdd, existingUnitIds }
         </select>
       </div>
 
-      <div className="text-xs text-pip-dim mb-2">{filtered.length} units</div>
+      <div className="text-xs text-muted mb-2">{filtered.length} units</div>
 
       <div className="max-h-96 overflow-y-auto space-y-1">
         {filtered.map(unit => (
           <div
             key={unit.id}
-            className="flex items-center justify-between border border-pip-dim/30 rounded px-3 py-2 hover:bg-panel-alt cursor-pointer transition-colors"
+            className="flex items-center justify-between border border-muted/40 rounded px-3 py-2 hover:bg-panel-alt cursor-pointer transition-colors"
             onClick={() => handleAdd(unit)}
           >
             <div className="flex-1 min-w-0">
               <span className="text-pip text-sm">{unit.name}</span>
-              <span className="text-pip-dim text-xs ml-2">{unit.faction}</span>
+              <span className="text-muted text-xs ml-2">{unit.faction}</span>
             </div>
             <div className="flex items-center gap-3 shrink-0">
-              <span className="text-xs text-pip-dim">{unit.type}</span>
+              <span className="text-xs text-muted">{unit.type}</span>
               <span className="text-amber text-sm font-bold">{unit.caps}c</span>
             </div>
           </div>

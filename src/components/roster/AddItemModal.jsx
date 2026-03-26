@@ -40,20 +40,20 @@ export default function AddItemModal({ isOpen, onClose, onAdd }) {
         </select>
       </div>
 
-      <div className="text-xs text-pip-dim mb-2">{filtered.length} items</div>
+      <div className="text-xs text-muted mb-2">{filtered.length} items</div>
 
       <div className="max-h-96 overflow-y-auto space-y-1">
         {filtered.map(item => (
           <div
             key={item.id}
-            className="flex items-center justify-between border border-pip-dim/30 rounded px-3 py-2 hover:bg-panel-alt cursor-pointer transition-colors"
+            className="flex items-center justify-between border border-muted/40 rounded px-3 py-2 hover:bg-panel-alt cursor-pointer transition-colors"
             onClick={() => { onAdd(item.id); onClose() }}
           >
             <div className="flex-1 min-w-0">
               <span className="text-pip text-sm">{item.name}</span>
             </div>
             <div className="flex items-center gap-3 shrink-0">
-              <span className="text-xs text-pip-dim">{item.subType}</span>
+              <span className="text-xs text-muted">{item.subType}</span>
               <span className="text-amber text-sm font-bold">{item.caps}c</span>
             </div>
           </div>

@@ -113,7 +113,7 @@ export default function ObjectivesPage() {
 
   return (
     <div className="p-4 max-w-5xl mx-auto">
-      <h2 className="text-pip text-sm tracking-wider mb-4 border-b border-pip-dim/30 pb-2">OBJECTIVES</h2>
+      <h2 className="text-pip text-sm tracking-widest mb-4 border-b border-pip-mid/50 pb-2 font-bold">OBJECTIVES</h2>
 
       {/* Sub-tabs */}
       <div className="flex gap-1 mb-6">
@@ -121,8 +121,8 @@ export default function ObjectivesPage() {
           <button
             key={t.id}
             onClick={() => setSubTab(t.id)}
-            className={`flex-1 py-2 text-xs rounded border transition-colors ${
-              subTab === t.id ? 'border-pip bg-panel-light text-pip' : 'border-pip-dim/30 text-pip-dim hover:text-pip'
+            className={`flex-1 py-2 text-xs rounded border transition-colors font-bold tracking-wider ${
+              subTab === t.id ? 'border-pip bg-panel-light text-pip' : 'border-muted/30 text-muted hover:text-pip hover:border-pip'
             }`}
           >
             {t.label}
@@ -198,8 +198,8 @@ function SecretPurposes() {
                   </span>
                 )}
               </div>
-              <p className="text-pip-dim text-xs leading-relaxed mb-1">{purpose.objective}</p>
-              <p className="text-pip-dim/70 text-xs italic">When: {purpose.completedWhen}</p>
+              <p className="text-muted text-xs leading-relaxed mb-1">{purpose.objective}</p>
+              <p className="text-muted/80 text-xs italic">When: {purpose.completedWhen}</p>
 
               {isCurrent && (
                 <button
@@ -254,7 +254,7 @@ function ScavengerObjectives() {
     <div className="space-y-4">
       {/* Player count */}
       <div className="flex items-center gap-3">
-        <span className="text-xs text-pip-dim">PLAYERS AT TABLE:</span>
+        <span className="text-xs text-muted">PLAYERS AT TABLE:</span>
         {[2, 3, 4].map(n => (
           <button
             key={n}
@@ -295,16 +295,16 @@ function ScavengerObjectives() {
                 </div>
                 <span className="text-xs text-amber">{obj.reward}</span>
               </div>
-              <p className="text-pip-dim/70 text-xs italic mb-1">{obj.narrative}</p>
-              <p className="text-pip-dim text-xs leading-relaxed mb-2">{obj.objective}</p>
+              <p className="text-muted/80 text-xs italic mb-1">{obj.narrative}</p>
+              <p className="text-muted text-xs leading-relaxed mb-2">{obj.objective}</p>
 
               {obj.hasProgress && !isComplete && (
                 <div className="flex items-center gap-2 mb-2">
-                  <span className="text-xs text-pip-dim">{obj.progressLabel}:</span>
-                  <button onClick={() => handleProgressChange(obj.id, -1)} className="px-2 py-0.5 border border-pip-dim/30 rounded text-pip-dim hover:text-pip text-xs">−</button>
+                  <span className="text-xs text-muted">{obj.progressLabel}:</span>
+                  <button onClick={() => handleProgressChange(obj.id, -1)} className="px-2 py-0.5 border border-muted/30 rounded text-muted hover:text-pip hover:border-pip text-xs transition-colors">−</button>
                   <span className="text-pip text-sm font-bold w-8 text-center">{cur}</span>
-                  <span className="text-pip-dim text-xs">/ {scaledMax}</span>
-                  <button onClick={() => handleProgressChange(obj.id, 1)} className="px-2 py-0.5 border border-pip-dim/30 rounded text-pip-dim hover:text-pip text-xs">+</button>
+                  <span className="text-muted text-xs">/ {scaledMax}</span>
+                  <button onClick={() => handleProgressChange(obj.id, 1)} className="px-2 py-0.5 border border-muted/30 rounded text-muted hover:text-pip hover:border-pip text-xs transition-colors">+</button>
                 </div>
               )}
 

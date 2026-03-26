@@ -134,11 +134,11 @@ export default function NewRoundModal({ isOpen, onClose }) {
 
         {/* Section 1: Rest Effects Preview */}
         <div>
-          <h3 className="text-pip text-sm tracking-wider mb-3 border-b border-pip-dim/30 pb-1">
+          <h3 className="text-pip text-sm tracking-widest mb-3 border-b border-pip-mid/50 pb-1 font-bold">
             REST EFFECTS PREVIEW
           </h3>
           {roster.length === 0 ? (
-            <p className="text-pip-dim text-xs">No units on roster.</p>
+            <p className="text-muted text-xs">No units on roster.</p>
           ) : (
             <div className="space-y-1">
               {roster.map(unit => {
@@ -149,19 +149,19 @@ export default function NewRoundModal({ isOpen, onClose }) {
 
                 return (
                   <div key={unit.slotId} className={`border rounded px-3 py-2 text-xs ${
-                    skipped ? 'border-pip-dim/20 bg-panel-alt opacity-60' : 'border-pip-dim/40 bg-panel'
+                    skipped ? 'border-muted/20 bg-panel-alt opacity-60' : 'border-pip-mid/40 bg-panel'
                   }`}>
                     <div className="flex items-center gap-2 flex-wrap">
                       <span className="text-pip font-bold">{unit.unitName}</span>
-                      <span className={`px-1.5 py-0.5 rounded text-xs ${
-                        unit.fate === 'Active' ? 'bg-pip-dim/30 text-pip' :
-                        unit.fate === 'Pending' ? 'bg-amber-dim/30 text-amber' :
-                        unit.fate === 'Dead' ? 'bg-danger-dim/50 text-danger' :
-                        'bg-amber-dim/30 text-amber'
+                      <span className={`px-1.5 py-0.5 rounded text-xs font-bold border ${
+                        unit.fate === 'Active' ? 'bg-pip-dim/30 text-pip border-pip/40' :
+                        unit.fate === 'Pending' ? 'bg-amber-dim/30 text-amber border-amber/30' :
+                        unit.fate === 'Dead' ? 'bg-danger-dim/50 text-danger border-danger/40' :
+                        'bg-amber-dim/30 text-amber border-amber/30'
                       }`}>{unit.fate}</span>
 
                       {skipped && !willReturn && (
-                        <span className="text-pip-dim">(skipped — not present)</span>
+                        <span className="text-muted">(skipped — not present)</span>
                       )}
                       {willReturn && (
                         <span className="text-pip">Returns to Active</span>
@@ -175,22 +175,22 @@ export default function NewRoundModal({ isOpen, onClose }) {
                     </div>
 
                     {preview && (preview.radDamage > 0 || preview.regDamage > 0) && (
-                      <div className="mt-1 text-pip-dim">
+                      <div className="mt-1 text-muted">
                         Damage rest:{' '}
                         {preview.radDamage > 0 && (
                           <span>Rad: <span className="text-amber">{preview.radDamage}</span>→<span className="text-pip">{preview.newRad}</span>{' '}</span>
                         )}
                         <span>Reg: <span className="text-amber">{preview.regDamage}</span>→<span className="text-pip">{preview.newReg}</span>
-                          {preview.halfRad > 0 && <span className="text-pip-dim"> (was {preview.regDamage} + {preview.halfRad} from rad)</span>}
+                          {preview.halfRad > 0 && <span className="text-muted"> (was {preview.regDamage} + {preview.halfRad} from rad)</span>}
                         </span>
                       </div>
                     )}
                     {preview && preview.radDamage === 0 && preview.regDamage === 0 && (
-                      <div className="mt-1 text-pip-dim">No damage to rest off</div>
+                      <div className="mt-1 text-muted">No damage to rest off</div>
                     )}
 
                     {!skipped && (unit.condPoisoned || unit.condInjuredLeg) && (
-                      <div className="mt-1 text-pip-dim">
+                      <div className="mt-1 text-muted">
                         Condition cleared:{' '}
                         <span className="text-pip">
                           {unit.condPoisoned ? 'Poisoned' : 'Injured Leg'}
@@ -207,10 +207,10 @@ export default function NewRoundModal({ isOpen, onClose }) {
         {/* Section 2: Pending Fate Rolls */}
         {pendingUnits.length > 0 && (
           <div>
-            <h3 className="text-pip text-sm tracking-wider mb-3 border-b border-pip-dim/30 pb-1">
+            <h3 className="text-pip text-sm tracking-widest mb-3 border-b border-pip-mid/50 pb-1 font-bold">
               PENDING FATE ROLLS ({pendingUnits.length})
             </h3>
-            <p className="text-pip-dim text-xs mb-3">
+            <p className="text-muted text-xs mb-3">
               These units were removed in battle with fate not yet determined. Roll their fate now or proceed without rolling.
             </p>
             <div className="space-y-2">
@@ -243,8 +243,8 @@ export default function NewRoundModal({ isOpen, onClose }) {
 
                     {/* Inline roll UI */}
                     {isRollingThis && (
-                      <div className="mt-2 border-t border-pip-dim/30 pt-2 space-y-2">
-                        <div className="text-xs text-pip-dim">
+                      <div className="mt-2 border-t border-muted/40 pt-2 space-y-2">
+                        <div className="text-xs text-muted">
                           Luc: {unit.lucScore ?? 3} | Removed: {unit.removed ?? 0} | Threshold: {(unit.lucScore ?? 3) + 5 - (unit.removed ?? 0)}
                         </div>
                         <button
@@ -260,7 +260,7 @@ export default function NewRoundModal({ isOpen, onClose }) {
                               rollResult.fate === 'Dead' ? 'text-danger' :
                               rollResult.fate === 'Fine' ? 'text-pip' : 'text-amber'
                             }`}>{rollResult.fate.toUpperCase()}</div>
-                            <p className="text-pip-dim text-xs">{rollResult.description}</p>
+                            <p className="text-muted text-xs">{rollResult.description}</p>
                             <div className="flex gap-2 pt-1">
                               <button
                                 onClick={() => handleApplyPendingFate(unit)}
@@ -270,7 +270,7 @@ export default function NewRoundModal({ isOpen, onClose }) {
                               </button>
                               <button
                                 onClick={handleCancelRoll}
-                                className="flex-1 py-1.5 border border-pip-dim text-pip-dim rounded text-xs hover:text-pip"
+                                className="flex-1 py-1.5 border border-muted text-muted rounded text-xs hover:text-pip"
                               >
                                 CANCEL
                               </button>
@@ -292,7 +292,7 @@ export default function NewRoundModal({ isOpen, onClose }) {
         )}
 
         {/* Confirmation note */}
-        <div className="border border-pip-dim/30 rounded bg-panel-alt px-3 py-2 text-xs text-pip-dim space-y-1">
+        <div className="border border-muted/40 rounded bg-panel-alt px-3 py-2 text-xs text-muted space-y-1">
           <p>When you click APPLY REST AND START ROUND:</p>
           <ul className="list-disc list-inside space-y-0.5 ml-2">
             <li>Round counter increments by 1</li>
@@ -306,7 +306,8 @@ export default function NewRoundModal({ isOpen, onClose }) {
 
         <button
           onClick={handleCompleteRound}
-          className="w-full py-3 border border-pip text-pip rounded text-sm font-bold tracking-wider hover:bg-pip-dim/30 transition-colors"
+          className="w-full py-3 border border-pip text-pip rounded text-sm font-bold tracking-wider hover:bg-pip-dim transition-colors"
+          style={{ boxShadow: '0 0 10px var(--color-pip-glow)' }}
         >
           APPLY REST &amp; START ROUND {(state.round || 0) + 1}
         </button>

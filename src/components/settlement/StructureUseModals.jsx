@@ -35,14 +35,14 @@ export function BarracksModal({ isOpen, onClose, roster, onApply }) {
   return (
     <Modal isOpen={isOpen} onClose={handleClose} title="BARRACKS — Discard 1 Condition">
       <div className="space-y-4">
-        <p className="text-pip-dim text-xs">Requires 2 Power and 1 Water. Remove one condition from a unit.</p>
+        <p className="text-muted text-xs">Requires 2 Power and 1 Water. Remove one condition from a unit.</p>
 
         {eligibleUnits.length === 0 ? (
-          <p className="text-pip-dim text-xs">No units with active conditions.</p>
+          <p className="text-muted text-xs">No units with active conditions.</p>
         ) : (
           <>
             <div>
-              <label className="text-xs text-pip-dim block mb-2">SELECT UNIT</label>
+              <label className="text-xs text-muted block mb-2">SELECT UNIT</label>
               <div className="space-y-1">
                 {eligibleUnits.map(unit => (
                   <button
@@ -51,11 +51,11 @@ export function BarracksModal({ isOpen, onClose, roster, onApply }) {
                     className={`w-full text-left px-3 py-2 border rounded text-xs transition-colors ${
                       selectedUnit?.slotId === unit.slotId
                         ? 'border-pip text-pip bg-pip-dim/20'
-                        : 'border-pip-dim/40 text-pip-dim hover:text-pip'
+                        : 'border-muted/40 text-muted hover:text-pip'
                     }`}
                   >
                     {unit.unitName}
-                    <span className="ml-2 text-pip-dim">
+                    <span className="ml-2 text-muted">
                       ({getConditions(unit).map(c => c.label).join(', ')})
                     </span>
                   </button>
@@ -65,7 +65,7 @@ export function BarracksModal({ isOpen, onClose, roster, onApply }) {
 
             {selectedUnit && (
               <div>
-                <label className="text-xs text-pip-dim block mb-2">SELECT CONDITION TO CLEAR</label>
+                <label className="text-xs text-muted block mb-2">SELECT CONDITION TO CLEAR</label>
                 <div className="flex gap-2 flex-wrap">
                   {getConditions(selectedUnit).map(cond => (
                     <button
@@ -92,7 +92,7 @@ export function BarracksModal({ isOpen, onClose, roster, onApply }) {
               >
                 APPLY
               </button>
-              <button onClick={handleClose} className="flex-1 py-2 border border-pip-dim text-pip-dim rounded text-xs hover:text-pip">
+              <button onClick={handleClose} className="flex-1 py-2 border border-muted text-muted rounded text-xs hover:text-pip">
                 CANCEL
               </button>
             </div>
@@ -127,10 +127,10 @@ export function MedicalCenterModal({ isOpen, onClose, roster, onApply }) {
   return (
     <Modal isOpen={isOpen} onClose={handleClose} title="MEDICAL CENTER — Heal or Cure">
       <div className="space-y-4">
-        <p className="text-pip-dim text-xs">Requires 2 Power and 1 Water.</p>
+        <p className="text-muted text-xs">Requires 2 Power and 1 Water.</p>
 
         <div>
-          <label className="text-xs text-pip-dim block mb-2">SELECT UNIT</label>
+          <label className="text-xs text-muted block mb-2">SELECT UNIT</label>
           <div className="space-y-1 max-h-48 overflow-y-auto">
             {activeRoster.map(unit => (
               <button
@@ -139,11 +139,11 @@ export function MedicalCenterModal({ isOpen, onClose, roster, onApply }) {
                 className={`w-full text-left px-3 py-2 border rounded text-xs transition-colors ${
                   selectedUnit?.slotId === unit.slotId
                     ? 'border-pip text-pip bg-pip-dim/20'
-                    : 'border-pip-dim/40 text-pip-dim hover:text-pip'
+                    : 'border-muted/40 text-muted hover:text-pip'
                 }`}
               >
                 {unit.unitName}
-                <span className="ml-2 text-pip-dim">
+                <span className="ml-2 text-muted">
                   Reg: {unit.regDamage || 0} | Rad: {unit.radDamage || 0}
                   {unit.addiction ? ` | Addiction: ${unit.addiction}` : ''}
                 </span>
@@ -154,12 +154,12 @@ export function MedicalCenterModal({ isOpen, onClose, roster, onApply }) {
 
         {selectedUnit && (
           <div>
-            <label className="text-xs text-pip-dim block mb-2">SELECT ACTION</label>
+            <label className="text-xs text-muted block mb-2">SELECT ACTION</label>
             <div className="flex gap-2 flex-wrap">
               <button
                 onClick={() => setAction('heal')}
                 className={`text-xs px-3 py-1.5 border rounded transition-colors ${
-                  action === 'heal' ? 'border-pip text-pip bg-pip-dim/20' : 'border-pip-dim/40 text-pip-dim hover:text-pip'
+                  action === 'heal' ? 'border-pip text-pip bg-pip-dim/20' : 'border-muted/40 text-muted hover:text-pip'
                 }`}
               >
                 Heal 2 Damage (Reg: {selectedUnit.regDamage || 0} → {Math.max(0, (selectedUnit.regDamage || 0) - 2)})
@@ -168,7 +168,7 @@ export function MedicalCenterModal({ isOpen, onClose, roster, onApply }) {
                 <button
                   onClick={() => setAction('addiction')}
                   className={`text-xs px-3 py-1.5 border rounded transition-colors ${
-                    action === 'addiction' ? 'border-pip text-pip bg-pip-dim/20' : 'border-pip-dim/40 text-pip-dim hover:text-pip'
+                    action === 'addiction' ? 'border-pip text-pip bg-pip-dim/20' : 'border-muted/40 text-muted hover:text-pip'
                   }`}
                 >
                   Remove Addiction ({selectedUnit.addiction})
@@ -186,7 +186,7 @@ export function MedicalCenterModal({ isOpen, onClose, roster, onApply }) {
           >
             APPLY
           </button>
-          <button onClick={handleClose} className="flex-1 py-2 border border-pip-dim text-pip-dim rounded text-xs hover:text-pip">
+          <button onClick={handleClose} className="flex-1 py-2 border border-muted text-muted rounded text-xs hover:text-pip">
             CANCEL
           </button>
         </div>
