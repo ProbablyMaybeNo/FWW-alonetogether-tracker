@@ -1,11 +1,14 @@
 import { useState, useRef } from 'react'
 import { CampaignProvider, useCampaign } from './context/CampaignContext'
+import { useAuth } from './context/AuthContext'
 import TabShell from './components/layout/TabShell'
 import OverviewPage from './components/overview/OverviewPage'
 import RosterPage from './components/roster/RosterPage'
 import SettlementPage from './components/settlement/SettlementPage'
 import EventsPage from './components/events/EventsPage'
 import ObjectivesPage from './components/objectives/ObjectivesPage'
+import LoginPage from './components/auth/LoginPage'
+import CampaignLobby from './components/auth/CampaignLobby'
 import { Download, Upload } from 'lucide-react'
 
 function AppContent() {
@@ -57,10 +60,76 @@ function AppContent() {
   )
 }
 
-export default function App() {
+/**
+ * AuthGate handles the three-state routing:
+ *  1. Supabase not configured OR soloMode → render the main app directly
+ *  2. Supabase configured AND no user → LoginPage
+ *  3. Supabase configured AND user AND no campaignId → CampaignLobby
+ *  4. Supabase configured AND user AND campaignId → main app
+ */
+function AuthGate() {
+  const { user, loading, isSupabaseConfigured } = useAuth()
+  const [soloMode, setSoloMode] = useState(false)
+  const [campaignId, setCampaignId] = useState(() => {
+    // Restore last campaign from localStorage on load
+    try {
+      const stored = localStorage.getItem('fww-last-campaign')
+      if (stored) return JSON.parse(stored).id ?? null
+    } catch { /* ignore */ }
+    return null
+  })
+
+  // Not configured or user chose solo → straight to app
+  if (!isSupabaseConfigured || soloMode) {
+    return (
+      <CampaignProvider>
+        <AppContent />
+      </CampaignProvider>
+    )
+  }
+
+  // Supabase configured but still loading session
+  if (loading) {
+    return (
+      <div style={{
+        minHeight: '100vh',
+        background: 'var(--color-terminal)',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        fontFamily: 'var(--font-family-mono)',
+        color: 'var(--color-pip)',
+        fontSize: '0.75rem',
+        letterSpacing: '0.2em',
+      }}>
+        INITIALIZING...
+      </div>
+    )
+  }
+
+  // No user → login screen
+  if (!user) {
+    return <LoginPage onSolo={() => setSoloMode(true)} />
+  }
+
+  // User logged in but no campaign selected → lobby
+  if (!campaignId) {
+    return (
+      <CampaignLobby
+        onEnterCampaign={(id) => setCampaignId(id)}
+        onSolo={() => setSoloMode(true)}
+      />
+    )
+  }
+
+  // Fully authenticated with a campaign selected → main app
   return (
     <CampaignProvider>
       <AppContent />
     </CampaignProvider>
   )
+}
+
+export default function App() {
+  return <AuthGate />
 }
