@@ -120,12 +120,13 @@ export function useCampaignSync({ campaignId, userId } = {}) {
     load()
   }, [campaignId, userId])
 
-  // Subscribe to realtime campaign changes (phase, round, etc.)
+  // Subscribe to realtime changes across all campaign tables
   useEffect(() => {
     if (!isOnline || !supabase) return
 
     const channel = supabase
-      .channel(`campaign:${campaignId}`)
+      .channel(`campaign:${campaignId}:all`)
+      // Shared campaign state (phase, round, etc.)
       .on('postgres_changes', {
         event: 'UPDATE',
         schema: 'public',
@@ -134,12 +135,34 @@ export function useCampaignSync({ campaignId, userId } = {}) {
       }, (payload) => {
         setSharedState(campaignDbToState(payload.new))
       })
+      // Another player's data updated
+      .on('postgres_changes', {
+        event: '*',
+        schema: 'public',
+        table: 'player_data',
+        filter: `campaign_id=eq.${campaignId}`,
+      }, (payload) => {
+        // Only update our own local state if it's our row coming back
+        if (payload.new?.user_id === userId && payload.eventType === 'UPDATE') {
+          // Ignore — we wrote this ourselves, avoid feedback loop
+        }
+      })
+      // Someone joined or left
+      .on('postgres_changes', {
+        event: '*',
+        schema: 'public',
+        table: 'campaign_players',
+        filter: `campaign_id=eq.${campaignId}`,
+      }, () => {
+        // Trigger a re-fetch of the player list (consumers can listen to sharedState)
+        setSharedState(prev => ({ ...prev, _playerListVersion: Date.now() }))
+      })
       .subscribe()
 
     return () => {
       supabase.removeChannel(channel)
     }
-  }, [campaignId, isOnline])
+  }, [campaignId, userId, isOnline])
 
   // Debounced save to Supabase
   const saveToSupabase = useCallback(async (newState) => {
