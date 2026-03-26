@@ -52,10 +52,18 @@ export function AuthProvider({ children }) {
     }
   }
 
+  function toEmail(input) {
+    const trimmed = input.toLowerCase().trim()
+    // If it already looks like an email, use it as-is
+    return trimmed.includes('@') ? trimmed : `${trimmed}@fww-tracker.local`
+  }
+
   async function signUp(username, password) {
     if (!isSupabaseConfigured) throw new Error('Supabase not configured')
 
-    const email = `${username.toLowerCase().trim()}@fww-tracker.local`
+    const email = toEmail(username)
+    // Use the part before @ as the display username
+    const displayName = username.trim().includes('@') ? username.trim().split('@')[0] : username.trim()
 
     const { data, error } = await supabase.auth.signUp({ email, password })
     if (error) throw error
@@ -64,7 +72,7 @@ export function AuthProvider({ children }) {
       // Create profile row
       const { error: profileError } = await supabase
         .from('profiles')
-        .insert({ id: data.user.id, username: username.trim() })
+        .insert({ id: data.user.id, username: displayName })
       if (profileError) throw profileError
 
       await fetchProfile(data.user.id)
@@ -76,7 +84,7 @@ export function AuthProvider({ children }) {
   async function signIn(username, password) {
     if (!isSupabaseConfigured) throw new Error('Supabase not configured')
 
-    const email = `${username.toLowerCase().trim()}@fww-tracker.local`
+    const email = toEmail(username)
 
     const { data, error } = await supabase.auth.signInWithPassword({ email, password })
     if (error) throw error

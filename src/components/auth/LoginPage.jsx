@@ -69,13 +69,13 @@ export default function LoginPage({ onSolo }) {
 
         {/* Form */}
         <form onSubmit={handleSubmit} style={styles.form}>
-          <label style={styles.label}>USERNAME</label>
+          <label style={styles.label}>USERNAME OR EMAIL</label>
           <input
             style={styles.input}
             type="text"
             value={username}
             onChange={e => setUsername(e.target.value)}
-            placeholder="vault_dweller_77"
+            placeholder="vault_dweller_77 or you@gmail.com"
             autoComplete="username"
             spellCheck={false}
             disabled={loading}
