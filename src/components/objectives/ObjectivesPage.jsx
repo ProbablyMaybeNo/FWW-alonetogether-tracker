@@ -3,31 +3,29 @@ import { useCampaign } from '../../context/CampaignContext'
 import { SECRET_PURPOSES } from '../../data/secretPurposes'
 import { SCAVENGER_OBJECTIVES } from '../../data/scavengerObjectives'
 import questCardDeck from '../../data/questCardDeck.json'
-import { Plus, X, Check, Shuffle, ChevronDown, ChevronRight, Eye } from 'lucide-react'
+import { Plus, X, Check, Shuffle, ChevronDown, ChevronRight, BookOpen } from 'lucide-react'
+import questCardContent from '../../data/questCardContent.json'
 
-const CARD_BASE_URL = '/card-proxy/'
-
-function toImageKey(name) {
-  return name
-    .toUpperCase()
-    .replace(/'/g, '')
-    .replace(/-/g, ' ')
-    .replace(/[^A-Z0-9\s]/g, '')
-    .replace(/\s+/g, '_')
-    .trim()
+function useCardContent(cardName, cardId) {
+  if (!cardName || questCardContent.length === 0) return null
+  const normalise = s => s.toUpperCase().replace(/[^A-Z0-9]/g, '')
+  const byName = name => {
+    const target = normalise(name)
+    return questCardContent.find(c => normalise(c.name) === target) ?? null
+  }
+  const direct = byName(cardName)
+  if (direct) return direct
+  if (cardId != null) {
+    const deckCard = questCardDeck.find(c => c.id === cardId)
+    if (deckCard) return byName(deckCard.name)
+  }
+  return null
 }
 
-function QuestCardViewer({ cardName, onClose }) {
+/* ── Text-based card viewer modal ── */
+function QuestCardViewer({ cardName, cardId, onClose }) {
   const [showBack, setShowBack] = useState(false)
-  const [frontError, setFrontError] = useState(false)
-  const [backError, setBackError] = useState(false)
-  const key = toImageKey(cardName)
-  const frontSrc = `${CARD_BASE_URL}${key}.jpg`
-  const backSrc = `${CARD_BASE_URL}${key}_DESCRIPTION.jpg`
-
-  function handleFlip() {
-    setShowBack(b => !b)
-  }
+  const content = useCardContent(cardName, cardId)
 
   return (
     <div
@@ -35,36 +33,71 @@ function QuestCardViewer({ cardName, onClose }) {
       onClick={onClose}
     >
       <div className="max-w-xl w-full" onClick={e => e.stopPropagation()}>
-        <div className="bg-panel border border-pip rounded p-3 space-y-2">
+        <div className="bg-panel border border-pip rounded p-4 space-y-3">
+          {/* Header */}
           <div className="flex items-center justify-between">
             <span className="text-pip text-xs font-bold tracking-wider uppercase">{cardName}</span>
             <button onClick={onClose} className="text-pip-dim hover:text-danger p-1"><X size={14} /></button>
           </div>
 
-          {/* Front */}
-          {!showBack && (
-            frontError
-              ? <p className="text-center py-8 text-pip-dim text-xs">Card image not in library yet.</p>
-              : <img src={frontSrc} alt={cardName} onError={() => setFrontError(true)} className="w-full rounded border border-pip-dim/20" />
-          )}
+          {content ? (
+            <>
+              {!showBack ? (
+                <div className="bg-panel-alt border border-pip-dim/20 rounded p-4 min-h-24">
+                  <p className="text-pip text-sm leading-relaxed italic">{content.frontText || '—'}</p>
+                </div>
+              ) : (
+                <div className="bg-panel-alt border border-amber/30 rounded p-4 min-h-24 space-y-2">
+                  {content.backTitle && (
+                    <p className="text-amber text-xs font-bold tracking-wider uppercase">{content.backTitle}</p>
+                  )}
+                  <p className="text-pip text-sm leading-relaxed">{content.backText || '—'}</p>
+                </div>
+              )}
 
-          {/* Back */}
-          {showBack && (
-            backError
-              ? <p className="text-center py-8 text-pip-dim text-xs">Back image not in library yet.</p>
-              : <img src={backSrc} alt={`${cardName} — back`} onError={() => setBackError(true)} className="w-full rounded border border-pip-dim/20" />
-          )}
-
-          {!frontError && (
-            <button
-              onClick={handleFlip}
-              className="w-full py-1.5 border border-pip-dim/40 text-pip-dim text-xs rounded hover:text-pip hover:border-pip transition-colors"
-            >
-              {showBack ? '◀ SHOW FRONT' : 'SHOW BACK ▶'}
-            </button>
+              <button
+                onClick={() => setShowBack(b => !b)}
+                className="w-full py-2 border border-pip text-pip text-xs rounded font-bold tracking-wider hover:bg-pip-dim/20 transition-colors"
+              >
+                {showBack ? '◀ FRONT' : 'FLIP ▶'}
+              </button>
+            </>
+          ) : (
+            <p className="text-center py-8 text-pip-dim text-xs">Card content not in library yet.</p>
           )}
         </div>
       </div>
+    </div>
+  )
+}
+
+/* ── Inline drawn card display with flip ── */
+function DrawnCardContent({ cardName, cardId }) {
+  const [showBack, setShowBack] = useState(false)
+  const content = useCardContent(cardName, cardId)
+
+  if (!content) return null
+
+  return (
+    <div className="space-y-2">
+      {!showBack ? (
+        <div className="bg-panel-alt border border-pip-dim/20 rounded p-3">
+          <p className="text-pip text-xs leading-relaxed italic">{content.frontText || '—'}</p>
+        </div>
+      ) : (
+        <div className="bg-panel-alt border border-amber/30 rounded p-3 space-y-1">
+          {content.backTitle && (
+            <p className="text-amber text-xs font-bold tracking-wider uppercase">{content.backTitle}</p>
+          )}
+          <p className="text-pip text-xs leading-relaxed">{content.backText || '—'}</p>
+        </div>
+      )}
+      <button
+        onClick={() => setShowBack(b => !b)}
+        className="w-full py-1.5 border border-pip text-pip text-xs rounded font-bold tracking-wider hover:bg-pip-dim/20 transition-colors"
+      >
+        {showBack ? '◀ FRONT' : 'FLIP ▶'}
+      </button>
     </div>
   )
 }
@@ -304,35 +337,6 @@ function ScavengerObjectives() {
   )
 }
 
-/* ── Inline card image with flip (used in drawn card area) ── */
-function DrawnCardImage({ cardName }) {
-  const [showBack, setShowBack] = useState(false)
-  const [frontError, setFrontError] = useState(false)
-  const [backError, setBackError] = useState(false)
-  const key = toImageKey(cardName)
-
-  if (frontError) return null
-
-  return (
-    <div className="space-y-1">
-      {!showBack
-        ? <img src={`${CARD_BASE_URL}${key}.jpg`} alt={cardName} onError={() => setFrontError(true)} className="w-full rounded border border-pip-dim/20" />
-        : backError
-          ? <p className="text-pip-dim text-xs text-center py-2">Back image unavailable.</p>
-          : <img src={`${CARD_BASE_URL}${key}_DESCRIPTION.jpg`} alt={`${cardName} back`} onError={() => setBackError(true)} className="w-full rounded border border-pip-dim/20" />
-      }
-      {!frontError && (
-        <button
-          onClick={() => setShowBack(b => !b)}
-          className="w-full py-1 border border-pip-dim/30 text-pip-dim/70 text-xs rounded hover:text-pip hover:border-pip transition-colors"
-        >
-          {showBack ? '◀ FRONT' : 'BACK ▶'}
-        </button>
-      )}
-    </div>
-  )
-}
-
 /* ── Quest Cards ── */
 function QuestCardsPanel() {
   const { state, setState } = useCampaign()
@@ -341,14 +345,13 @@ function QuestCardsPanel() {
   const [drawnCard, setDrawnCard] = useState(null)
   const [showDeckBrowser, setShowDeckBrowser] = useState(false)
   const [deckSearch, setDeckSearch] = useState('')
-  const [viewingCardName, setViewingCardName] = useState(null)
+  const [viewingCard, setViewingCard] = useState(null)
 
   const quests = state.questCards || []
   const drawnQuestIds = state.drawnQuestIds || []
   const discardedQuestIds = state.discardedQuestIds || []
   const activeCount = quests.filter(q => q.status === 'Active').length
 
-  // Remaining in deck = not yet drawn or discarded
   const usedIds = new Set([...drawnQuestIds, ...discardedQuestIds])
   const remainingDeck = questCardDeck.filter(c => !usedIds.has(c.id))
 
@@ -365,13 +368,12 @@ function QuestCardsPanel() {
 
   function handleAddDrawnToQuests() {
     if (!drawnCard || activeCount >= 3) return
-    const partLabel = drawnCard.part ? `Part ${drawnCard.part}` : null
     setState(prev => ({
       ...prev,
       questCards: [...(prev.questCards || []), {
         id: Date.now(),
         cardId: drawnCard.id,
-        name: drawnCard.series || drawnCard.name,
+        name: drawnCard.name,
         part: drawnCard.part || '1',
         status: 'Active',
         startedRound: prev.round ?? 0,
@@ -442,8 +444,13 @@ function QuestCardsPanel() {
   return (
     <div className="space-y-5">
 
-      {viewingCardName && (
-        <QuestCardViewer cardName={viewingCardName} onClose={() => setViewingCardName(null)} />
+      {viewingCard && (
+        <QuestCardViewer
+          key={`${viewingCard.name}-${String(viewingCard.cardId ?? '')}`}
+          cardName={viewingCard.name}
+          cardId={viewingCard.cardId}
+          onClose={() => setViewingCard(null)}
+        />
       )}
 
       {/* Deck Status */}
@@ -508,11 +515,11 @@ function QuestCardsPanel() {
                       )}
                     </button>
                     <button
-                      onClick={() => setViewingCardName(card.name)}
+                      onClick={() => setViewingCard({ name: card.name, cardId: card.id })}
                       className="p-1 text-pip-dim/50 hover:text-pip transition-colors flex-shrink-0"
-                      title="Preview card"
+                      title="Read card"
                     >
-                      <Eye size={10} />
+                      <BookOpen size={10} />
                     </button>
                   </div>
                 )
@@ -525,7 +532,6 @@ function QuestCardsPanel() {
         {drawnCard && (
           <div className="border border-amber rounded p-3 bg-amber-dim/5 space-y-2">
             <div className="text-xs text-amber font-bold tracking-wider">DRAWN CARD</div>
-            <DrawnCardImage cardName={drawnCard.name} />
             <div className="text-pip font-bold text-sm">{drawnCard.name}</div>
             {drawnCard.isMultiPart && (
               <div className="text-pip-dim text-xs">
@@ -533,7 +539,8 @@ function QuestCardsPanel() {
                 {' — '}<span className="text-amber">Part {drawnCard.part}</span>
               </div>
             )}
-            <div className="flex gap-2">
+            <DrawnCardContent key={drawnCard.id} cardName={drawnCard.name} cardId={drawnCard.id} />
+            <div className="flex gap-2 pt-1">
               <button
                 onClick={handleAddDrawnToQuests}
                 disabled={activeCount >= 3}
@@ -585,11 +592,11 @@ function QuestCardsPanel() {
                   </div>
                 </div>
                 <button
-                  onClick={() => setViewingCardName(q.name)}
+                  onClick={() => setViewingCard({ name: q.name, cardId: q.cardId })}
                   className="p-1.5 border border-pip-dim/30 rounded text-pip-dim hover:text-pip transition-colors"
-                  title="View card"
+                  title="Read card"
                 >
-                  <Eye size={12} />
+                  <BookOpen size={12} />
                 </button>
                 <button
                   onClick={() => handleToggleStatus(q.id)}
