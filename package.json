@@ -7,6 +7,7 @@
     "dev": "vite",
     "build": "vite build",
     "build:quest-content": "node scripts/build-quest-card-content.mjs",
+    "export:quest-text-review": "node scripts/export-quest-card-text-review.mjs",
     "lint": "eslint .",
     "preview": "vite preview"
   },

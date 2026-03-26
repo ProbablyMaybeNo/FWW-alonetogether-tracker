@@ -1,0 +1,3124 @@
+================================================================================
+CARD: Guerilla In The Midst Part 2
+================================================================================
+--- FRONT ---
+Fo Zn
+1) GUERILLA IN THE MIDST: Part 2
+)
+SS
+The tool to open the generator building is to be hidden at
+one of several pre-agreed locations. The risk of leaks is foo
+great so it must be hidden without anyone seeing, even
+your own people. Lucrecia will collect the tool later.
+
+--- BACK TITLE ---
+GR RBA :
+
+--- BACK BODY ---
+Tz, Le(Z2 2,207 Ts
+= Plo F 6) H)
+face-up next to Hing an up to Black from
+battlefield centre and af least Yellow from each other.
+~~ Nominate one of your models fo carry the tool. If out of LoS
+of every model, the model can <== with a token fo hide
+the tool. If model removed, fool is lost — Repeat Part 1.
+~~ </ Start of next battle, draw 3 Boosts and log
+
+
+================================================================================
+CARD: Double Locked
+================================================================================
+--- FRONT ---
+=
+$0N  oousesiockse
+=
+=)
+Typical. The safe built into the desk is one of the most secure
+ever made. Not only near impregnable, it can only be opened
+by entering a different password into two terminals at once.
+You reckon one person could do if alone but multiple people
+would be better.
+
+--- BACK TITLE ---
+Gi) \ z ’ cg) - Vy 7 p) 1/ Ad
+
+--- BACK BODY ---
+(Fe OZOKCIIVAT EOIN G; “v
+Ys 2
+? ser-up: Add the desk and 2 terminals fo the battlefield
+Yellow from each other and at least Blue from any edge.
+: Use (C3) while === with terminal: ;
+: + One lock deactivated until end of next round.
+If both locks are deactivated at same time, the safe in the desk
+opens and stays open. <= with desk to gain 2 weapons.
+
+
+================================================================================
+CARD: Plague Of Radroaches
+================================================================================
+--- FRONT ---
+AN)
+$EN 2Lacve oF RavROACHES
+=
+N=)
+Rachel needs your help exterminating the radroaches.
+It's one of their many breeding seasons when they are more
+docile than usual.
+“If you don’t get them all at once, mind, they'll re-populate like
+you were never here. So, I can’t pay you full price if you don’t
+get all of them in an area. And killin’ only a few is no use.”
+
+--- BACK TITLE ---
+EHTERAINATIONE =
+
+--- BACK BODY ---
+g opps places 3 Radroach Swarms at least Yellow
+: from battlefield edges and each other.
+~~ Any attack doing 2 or more damage, removes a Swarm. ~~
+: 2 swarms removed: Gain 12 C}
+y 3 swarms removed: Gain 36 (C]
+~~ Quest can be repeated until 20 swarms are removed.
+§ VE HA AT TR ET eA grees
+
+
+================================================================================
+CARD: Sending A Message
+================================================================================
+--- FRONT ---
+=
+$0 sswvoue amsssace
+=
+=)
+George Ginger had had enough. “The impact on my farm
+from the water they use is too great now. | can’t make
+a living. Tried scaring them away, but they didn’t take if
+serious. Make them understand for me?”
+
+--- BACK TITLE ---
+Ing, srzsszzll op
+
+--- BACK BODY ---
+Eel
+~ To succeed, remove all your opponent's models except one.
+If successful: As they crawl away, you tell them George sent you
+and the farm is now under your protection.
+Then, George gives you a gift. At start of next battle,
+: 5 :
+~~ your opponent draws 2 as Items, discards one and
+% gives you the other. F:
+
+
+================================================================================
+CARD: The Raised Bridge
+================================================================================
+--- FRONT ---
+ay
+$2N we Ravssp sRiDGE
+i
+[=
+The bridge near your settlement had been raised when the
+control hut was destroyed during fighting decades ago.
+The old, municipal facility that used to be here held an override.
+If the circuits can be re-connected, the bridge will lower and a
+new route fo and from your settlement can be opened.
+
+--- BACK TITLE ---
+GR) 7) UNE? T 72d z, 7
+
+--- BACK BODY ---
+Ta CONNECTTHECRCIITS, >
+go.
+« ser-up: Add 4 heavy consoles at least Blue apart
+: and Blue from any edges.
+; “= Test INT (or add [x] to auto succeed):
+© Reconnect 1 ircuit. oll @ 10 determine which circuit :
+~~ number. Can only succeed once at each console.
+If 3 different circuit numbers reconnected: Bridge is lowered.
+When using your Setflement, use Listening Post once for free.
+
+
+================================================================================
+CARD: Edens Project
+================================================================================
+--- FRONT ---
+$2  coew'srroscT
+
+Eden jet black deathhawk haircut is easy to recognise.
+
+Whilst often mistaken for a Raider by looks, or the Enclave
+President by name, she actually keeps the various local
+
+factions in balance.
+
+“The two fraders say they ll stick fo the deal if they know
+you're in foo. You just need fo convince them you are.”
+©2020 Bethesda Softworks LLC, a ZeniMax Media company. All Rights Reserved.
+
+--- BACK TITLE ---
+GIT NSS . UI PTT D7 7) lem
+
+--- BACK BODY ---
+(CLONE Viz 15122280
+Add 2 tokens each representing a Stranger, and place Black
+from 2 edges. Nominate a model o carry out this Quest.
+«= with the 2 Strangers (before resolving their card) fo
+Test Chia (once per activation max.).
+If successful with both: They agree fo be part of Eden's deal.
+Your Settlement gains 1 Item Structure worth 150 C]
+
+
+================================================================================
+CARD: A Legend Returns Part 2
+================================================================================
+--- FRONT ---
+AN)
+$EN aczozho RETURNS: Part2
+S Alex has heard it wasn't grave robbers
+but the Brotherhood of Steel.
+“I heard the weapon was in a crate being sent to Cambridge
+Police Station, but the Brotherhood squad escorting if never
+arrived so the crate must still be out there.”
+All Alex can give you is the route along which they were
+travelling — maybe check along there.
+
+--- BACK TITLE ---
+Gort) FIAT TIE POAT
+
+--- BACK BODY ---
+NY ON CUKATE “r
+Place a marker Black from battlefield edge furthest from your
+: deployment. This is a crate. To open the crate, cause 2 damage
+: total - it has 2. When open: Roll @& !
+"If result equal to or less than total number of crates opened
+: so far: Go fo Part 3.
+Otherwise: Gain 47 @. Repeat Part 2 fo open another crate.
+
+
+================================================================================
+CARD: Getting Technical
+================================================================================
+--- FRONT ---
+7A)
+$EN csrrene rechmicat
+S
+Quinlan says he needs technical documents. He doesn’t
+elaborate why the Brotherhood of Steel need them.
+Just whether you want the task or not.
+
+--- BACK TITLE ---
+Ga) ; 7) = 7 y's >Y
+
+--- BACK BODY ---
+REZORTINEIVE =
+1 During set-up, place 1 additional blank (=
+next to each of the first four (= placed. i
+¢ The first time you sucessfully (©) each blank Searchable, you x
+~ find Technical Documents and gain 10 (C] athattleend.
+: Quest can be repeated. :
+: . RE se
+
+
+================================================================================
+CARD: Grognak The Barbarian #10
+================================================================================
+--- FRONT ---
+#8 GROGHAK:
+iE) THE BARBARIAN £70
+“ENS
+=
+SS
+I'm not sure | ever read this issue. #10 What Sorcery This?"
+Gives me some ideas for next time we enter combat.
+| bet a collector may buy it — once I've perfected
+Grognak's feat.
+
+--- BACK TITLE ---
+2 CA PEREIRIED
+
+--- BACK BODY ---
+ok A
+3 As Grognak: #1 Performed above. a
+i Nem ade ae oo oh SRE daamse ue RE a 1 E
+
+
+================================================================================
+CARD: Sleeper Virus
+================================================================================
+--- FRONT ---
+=
+$0N  seeepsr vmos
+=
+=)
+“Don’t worry, the virus can’t harm you. It's targeted only af the
+Feral Ghouls. You don't have any Feral friends, right?!
+Needs to spread fo be effective though. Seeing as you travel
+- will you be my vector?” Victor seemed a bit crazy, but then
+which scientists didn't these days?
+
+--- BACK TITLE ---
+Gary) pry IVY »~ ay wy i/,
+
+--- BACK BODY ---
+GERI OHIO I
+~ Choose one model fo start as infected — must start Blue from all
+friendly models. An infected model infects all models with which
+: they are base-to-base when they perform any action. : ;
+~ If 2/3 of the enemy models (rounded-up) are infected by the
+~ end of the battle, Victor gives you a special pill. Next batile,
+when Readying a model, Ready 1 additional model (once only).
+
+
+================================================================================
+CARD: Adams Menagerie Part 2
+================================================================================
+--- FRONT ---
+& \
+FN aoan's menaserte: Part2
+——.
+“Do a couple more jobs for me and I'l reward you.
+The rare Black Bloatfly are about fo hatch. Blink and you'll
+miss if, so grab them before they fly away.
+
+Don't worry, they're finy - and I'm pretiy sure they're
+harmless when hatched, or is that Blood Bugs...
+Anyway, here are some specimen traps. Off you go.”
+©2020 Bethesda Softworks LLC, a ZeniMax Media company. All Rights Reserved.
+
+--- BACK TITLE ---
+[re # NS FLL 7) [Fis
+
+--- BACK BODY ---
+FLY TRAP
+sT-Up; Roll @
+~~ During the round number shown on the dice and the round
+afterwards, unengaged models wep (7) may spend
+~uctions to Test Aet, which count as a Use Expertise Action for
+Triggers. For each Success, gain 1 {2
+If you possess 5 {2 at game end: Go fo Part 3.
+
+
+================================================================================
+CARD: Tools Of War Part 1
+================================================================================
+--- FRONT ---
+AN)
+$2N  ro0es0F WAR: Part
+S
+It was rumoured to be too good, too efficient, and foo
+unreasonable. Still, someone would probably buy it.
+The Assaultron prototype had been disassembled and
+supposedly melted down, but the record in the Robotics
+Disposal Grounds terminal shows the parts were sent to be
+dumped elsewhere.
+
+--- BACK TITLE ---
+Git ; f.2 4% © 117 ph W/V
+
+--- BACK BODY ---
+(Fe WIiTAT OI WAIVT A I
+~ Spread the 3 Assaultron models on the battlefield at least
+~ Bluefrom the edges. These models represent where parts
+: may be. Spend an action to test ST while === with an 4
+: Assauliron model: “3
+A Flip 9. 1f Bo shows you have found one :
+5 Assaultron part. Repeat part 1, or go to Part 2. :
+ae a I EE a x am
+
+
+================================================================================
+CARD: Calling All Stations
+================================================================================
+--- FRONT ---
+$EN cacums awe stanous
+RS. or years, Richard Clark tended
+> the small satellite array in this area.
+Whilst nof as large as some arrays, if was still in decent
+condition. Richard thinks he's found the original signal
+boosters which could double the array’s comms range.
+They're a bit temperamental and must be switched on
+in unison fo be synchronized.
+He's got loads of spare junk for you if you can,
+©2020 Bethesda Softworks LLC, a ZeniMax Media company. All Rights Reserved.
+
+--- BACK TITLE ---
+(eTART) TN , Py yyy 7) J 1) = 7 i
+
+--- BACK BODY ---
+(Che BOOSTIHEPOWER
+PAY, 2 |
+set-up: Place 3 (3 around one piece of ferrain
+which blocks LoS, at least Black from your deployed models,
+and at least Green rom each other. These are the devices.
+== with all 3 motors in the same turn to switch them ON.
+If ON and a Flip Event is resolved, all motors switch off.
+If all are ON at end of the battle: it comes to life.
+Gain 3 Junk.
+
+
+================================================================================
+CARD: Capturing Memories
+================================================================================
+--- FRONT ---
+Po
+$I carrumine memories
+—
+Ss)
+
+Turns out that the camera you found recently actually
+still works. A photo of the team in action would really
+boost team spirit.
+©2019 Bethesda Softworks LLC, a ZeniMax Media company. All Rights Reserved.
+
+--- BACK TITLE ---
+Gm) LR) A972) 4) ry rir nr m
+
+--- BACK BODY ---
+(k= eA CRIVEEOTD), oe
+~ Equip 1 model with Undamaged Camera ltem (for free). From
+start of Round 3, an unengaged model may take a photo with
+~~ the camera (no action required) when at least half of your
+* starting models (exdude camera user) are all within Yellow of
+each other and in LoS up to Yellow from the camera user.
+Photo faken: Draw 2 Boosts for next battle (3 if Leader in photo)
+
+
+================================================================================
+CARD: Giddyup Buttercup Part 1
+================================================================================
+--- FRONT ---
+A
+AE GIDDY BUTTERCUP: Part
+
+\ Ne
+
+S
+“A complete Giddyup Buttercup is one thing, but a working
+one?! Now *that* is rare. Well, I say working — it snorfs, it
+ros, but it also seems to have gone a bit haywire and has
+galloped off. Could you track it down and bring it back?”
+
+--- BACK TITLE ---
+GIR oN NT ~ THNTE
+
+--- BACK BODY ---
+HESTYUKI SHE gr Te
+CVA. 24
+Place 4 face-up furthest from your models and Yellow
+: from battlefield edge. The token is the Giddyup
+: Buttercup. End of each round: Move it Blue in scatter
+: direction (and follow battlefield edge if needed).
+If one of your models ends an action within Orange of
+Giddyup Buttercup (not Quick Actions), test Al.
+% If successful, you grab it - Go to Part 2.
+
+
+================================================================================
+CARD: Gifts From Above
+================================================================================
+--- FRONT ---
+=
+$2N curre From asovE
+=
+SS
+The Brotherhood signal lights for their airborne supply drops were
+easy enough to set-up. They just needed laying out correctly and
+in a location along one of the days transport routes. A supply
+Vertibird should be overhead this area very soon.
+
+--- BACK TITLE ---
+Guar) i 0 WZ, / 4 » — Vs -~
+
+--- BACK BODY ---
+GPE THZ SUPPLIES BP
+< go.
+~ ser-upz Nominate one model in your force to place the
+signalling lights. Give that model 3 counting tokens.
+~~ After an action, model can place 1 token. At end of round, if
+~ 3 tokens have heen placed in a triangle (each at least Yellow,
+~ but not more than Red, from the others), place 3 crates within
+~ the triangle - you place two, your opponent places the other.
+x “= with a crate to draw 2 lems (once per crate).
+
+
+================================================================================
+CARD: A Bet's A Bet
+================================================================================
+--- FRONT ---
+AN)
+EN qzercaqser
+SO
+SS
+The bet was you couldn't take someone on your next
+outing who would only use a knife and not get killed.
+It was going fo be interesting — for them anyway. ..
+
+--- BACK TITLE ---
+GIL Oy ~-yv 4 -— - -
+
+--- BACK BODY ---
+(HoglD, 22232 (0 £52255 =
+=
+Equip one model with just the default improvised weapon.
+If the model survives the battle and landed at least one
+attack that caused damage to a non-friendly model,
+gain 80 {&) reward.
+
+
+================================================================================
+CARD: A Sting In The Tale
+================================================================================
+--- FRONT ---
+BN  smewmene
+Gi
+EN
+AN
+=
+SD
+Carefully extracted, Radscorpion venom can remain deadly.
+SET-UP: Place a Radscorpion model Red from battlefield centre. It is a
+dead Radscorpion. to test INT:
+After battle, flip ® #8 gain Venomous Mod 4; otherwise,
+sample is contaminated. Quest is repeatable.
+
+--- BACK TITLE ---
+£% VENOMOUS 8
+
+--- BACK BODY ---
+N)
+When weapon causes damage, adds he @® 6
+Adds (1 if weapon does not roll one already.
+Discard after first time it poisons a model.
+
+
+================================================================================
+CARD: Grognak The Barbarian #1
+================================================================================
+--- FRONT ---
+$5 EROGHAK:
+Vy THE BARBARIAN #7
+EN
+=
+=)
+Grognak. Issue 1. Blood on the Harp. | used to love these
+stories! | wonder if his moves are possible. | could try and
+imitate them. Maybe that move in which he grabs someone
+by the feet and throws them against another enemy?
+
+--- BACK TITLE ---
+Gang) GRU GIANT
+
+--- BACK BODY ---
+[| DDT) DIL) [Fis
+\ 9 ® VZEREUKIIED)
+Draw 1 Practiced Boost. Any model may use the Boost.
+To ssucceed, use the Boost within Yellow of opposing model.
+Then, after battle or later, you may sell this comic. Total ~~~
+~ value based on number of different issues you sell together. -
+cL@@ 20@ 10 406
+Ifyou do not succeed, draw a new Boost on next attempt.
+
+
+================================================================================
+CARD: Caravan Cheat
+================================================================================
+--- FRONT ---
+=)
+[1 ) CARAVAN CHEAT
+
+5S
+
+(XC
+-
+=
+
+“They cheated me. | swear they were using a concealed extra deck and
+
+they stashed it around here near where we played. | can't see it. I've got to
+know. Can you find it for me?”
+WEA TW TRO RE DP DOT PUR DR Ne AT Nl A NRE RET (SVR
+
+--- BACK TITLE ---
+A
+
+--- BACK BODY ---
+Ge) ACE THE APE
+(1 ogler, CHASETHEACE:
+SET-UP: Mix 4 Searchables (3 blank and 1letter) and scatter them Blue
+from center of the battlefield.
+=p re)
+<== with these (= to Test £2) and reveal only if successful. (Does
+not require an action.)
+At end of battle, if you revealed the token with the number: “I knew it!
+Here, why don't you have these. | won't be playing again.” Gain Caravan
+Card Deck Item.
+© 4
+
+
+================================================================================
+CARD: The Thief's Trail Part 2A
+================================================================================
+--- FRONT ---
+=
+42) THE THIEE'S TRAN: Part 2a
+=
+=)
+Your information leads you to a secluded location.
+The gas canisters must be here somewhere.
+Find and retrieve the cannisters.
+
+--- BACK TITLE ---
+GIN DL OME EDT
+
+--- BACK BODY ---
+(1 ot? 2 V/ASHERESONEW 7EKET T=
+.
+~ Add a lettered (= during set-up which is the gas cannisters.
+You succeed if one of your surviving models is carrying the
+: cannisters at the end of the battle.
+~ If successful, pick a structure in your settlement. If can now
+: be used twice each time you use your settlement.
+Otherwise, repeat Part 2a.
+a PT EY Sg rae TC =e =u
+
+
+================================================================================
+CARD: Robotics Engineer
+================================================================================
+--- FRONT ---
+ZA
+AER ROBOTICS ENGINEER
+SS
+“Test Synth J287 exploded around here somewhere.
+There's one part | need a photo of, but it’s under
+development so | can't tell you any details about it.
+Just take a photo of each piece you find, and hopefully
+you'll cover it. Be quick though, they'll be of no use if you
+or anyone else contaminates the scene beforehand.”
+
+--- BACK TITLE ---
+GIN 7) = z, NEVE VES LL? TT
+
+--- BACK BODY ---
+Mec ViEAZEE RP
+ae
+£5
+G During Set-up: Scatter 4 @) Green from center of
+~ hatilefield. If any model ends an action within Orange and
+LoS of atoken, discard it. If one of your models ends an ~~
+~ adion within Yellow and LoS of a token, place it on this card.
+After battle: Roll ER. If result equal to or less than total
+@ collected, draw 2 Robot Mods.
+
+
+================================================================================
+CARD: Escort The Witness Part 1
+================================================================================
+--- FRONT ---
+[ ESCORT THE WITHESS:
+WE, Part?
+ea
+i
+=)
+The Raider ambush that wiped out the Gunner's convoy was
+brutal and flawless, except for the accidental witness — Lowe,
+who had been researching mirelurk colonies nearby. The
+Gunner's boss wants a word with Lowe to discover who needs
+a ‘visit’ from the Gunners. You are fo escort Lowe fo camp.
+
+--- BACK TITLE ---
+GINS - —7) pr) =- YN EC
+
+--- BACK BODY ---
+15: @s DELIVERIIEWIIN ESS TD
+9 al
+f  @6 ®i1 53
+Deploy Lowe (model or token) with your force.
+Lowe activates immediately after your Leader (no ©
+~ required). Actions only Move to where friendly is within Red
+~~ and LoS (or off battlefield). If Lowe exits side opposite to
+: deployment, go to Part 2a; otherwise, Part 2b.
+
+
+================================================================================
+CARD: Tactical Analysis
+================================================================================
+--- FRONT ---
+==
+$IN  mcricae anaerses
+wl
+=)
+
+New tactics and knowledge about others is a valuable
+commodity in the Wasteland. The quarry workers asked
+you for combat training only yesterday. Observing this
+
+group's tactics could prove a useful source of information.
+
+--- BACK TITLE ---
+Grn) Y OI pA) a pam) 4
+
+--- BACK BODY ---
+HIVALY SVG I 1TCEYEVTV 4 “
+~ Each activation, an Elevated model with LoS to an opponent's
+1 model may test Per once to study their facics:
+~~ umheR Keep the insight and gain 1 Boost card for next
+~~ baile or Sell the info and gain 38 (C]
+Each model can succeed a maximum of once each during
+the battle. Multiple models may succeed during the battle.
+
+
+================================================================================
+CARD: USS Constitution Part 2
+================================================================================
+--- FRONT ---
+1) USS CONSTITUTION: Part 2
+SS
+“You have our thanks. Accept this in return for your
+dedication to duty. Prepare to disembark.” - Captain Ironsides
+Gain Broadsider
+
+--- BACK TITLE ---
+BROADSIDER ®
+
+--- BACK BODY ---
+eo 0 HEE
+eaox BE
+® BE | J
+-. ER ETT Ce aa
+
+
+================================================================================
+CARD: Revenge Part 1
+================================================================================
+--- FRONT ---
+=
+$0N  rsvewee: Part
+S
+The empty mutfruit fields signalled trouble even before you
+reached your settlement. A rival gang attacked and
+your brother was killed. Now they will pay.
+
+--- BACK TITLE ---
+GTaRT) 07) THE ro
+
+--- BACK BODY ---
+(FoR WASTER
+’ :
+~ First, you need names. Test Cha when enemy leader is
+~ within (@®) of any of your models. You can only make this
+test once per hatile. 3
+¢ + Goto Part 2
+~ XX (Can not fry again this battle. Repeat Part 1 :
+i I RE ae am
+
+
+================================================================================
+CARD: Dead Drop
+================================================================================
+--- FRONT ---
+oy
+9) DEAD DROP
+&S
+Your contact has been providing excellent information.
+You still have no idea who they are but they certainly seem
+on your side and keep placing information for you in a dead
+drop hidden amongst these barricades.
+©2019 Bethesda Softworks LLC, a ZeniMax Media company. All Rights Reserved.
+
+--- BACK TITLE ---
+Gngr] TED TUL INTL)
+
+--- BACK BODY ---
+CATER EA
+~~ sr up: Place Military Barricades on the battlefield and
+: place 1 @ next to each.
+~~ When == vith Military Barricade, remove (& nextto
+; the barricade to test Pe. ~~
+~~ +/ Draw 1 Boost for next battle for each piece of
+information found (max. 3).
+
+
+================================================================================
+CARD: Elusive Pet
+================================================================================
+--- FRONT ---
+oy
+9) ELUSIVE PET
+&S
+“My son's pet mole rat ran off and now he can’t catch it in
+the tunnels it's made. | know it may not be everyones first
+choice of pet but they really do have a connection, especially
+since his mother... well, y'know. Help catch him, will ya?”
+©2019 Bethesda Softworks LLC, a ZeniMax Media company. All Rights Reserved.
+
+--- BACK TITLE ---
+GIT DAL NN) DD
+
+--- BACK BODY ---
+GRIEF IIE Ta
+~ ser up: Place Investigation Markers face-up showing numbers
+1-4 on the battlefield, each one Green from two others and at
+$ least Black from all edges.
+~~ End of each round: Roll @. If one of your models is
+~ unengaged and with Orange of the marker dil
+: number rolled, they grab the Mole Rat. Gain 1 ¢¢
+§ or 28 2 3
+
+
+================================================================================
+CARD: Buried Treasure Part 1
+================================================================================
+--- FRONT ---
+AN)
+[12 BURIED TREASURES: Part 1
+SS
+These lands, now covered by a thick layer of rubble, dust
+and radioactive waste, hide the remnants of a fifty-years old
+settlement that ran for a long time, welcoming merchants
+and fravellers from all across the Wasteland.
+
+--- BACK TITLE ---
+GINS Pr NT Ti5E- PY KL
+
+--- BACK BODY ---
+Tapers VICOUSI SEHR) Te
+YY 2
+~ Ayo “your models can spend an action to Use CO) while
+interacting with any piece of terrain at least Red from all
+3 battlefield edges. :
+© / Flip 98 then ener Draw 1) Item and you may
+: repeat this Quest or if 858 showing, you may discard
+| Item and go to Part 2 instead.
+§ VR PT EY Sg rae TC i =u
+
+
+================================================================================
+CARD: The Secret Elixir Part 1
+================================================================================
+--- FRONT ---
+AN)
+Ah THE SECRET ELIXIR: Part 1
+=
+=)
+
+“A Nuka-Cola Corporation field office used to be located
+around here. | believe a cooler in there has ingredients that
+could help me figure out how to make my own Nuka-Cola, but
+some creatures have nested on top of it.”
+
+Make your own Nuka-Cola? Harris didn’t seem crazy so
+maybe there was something to her idea.
+
+--- BACK TITLE ---
+NDILIELODLERS =
+
+--- BACK BODY ---
+$ SE1-105 Boch a Searchable Black from two battlefield
+edges — this is the expected location of the cooler.
+; “— Draw a Creature card and Test Luc: -
+} + Gain Cooler and add (7: 1% the time if fakes. pe
+~ X Move the marker Yellowin a random direction.
+If cooler gained, got to Part 2. :
+Cl RCT Tees ey aah a -
+
+
+================================================================================
+CARD: Bounty
+================================================================================
+--- FRONT ---
+=
+AN sour
+-
+SS
+See that one over there? Hard to believe
+they're a synth, right? There's a reward on their head.
+
+--- BACK TITLE ---
+COLLET RT HESEDUNTV 2 T
+
+--- BACK BODY ---
+~The model that costs the most points on the opposing side is ;
+3 the synth. If you deal the damage that removes the model,
+k gaina75 C] reward.
+OTR Le SR ST EL RAN
+
+
+================================================================================
+CARD: The Insider
+================================================================================
+--- FRONT ---
+ZW
+[3 THE INSIDER
+&S
+See that one? That's our contact on the inside.
+
+They've been leaking this gang's information to us about
+
+another rival group in the area. Try not fo kill them.
+It gives us an edge fo exploit.
+©2019 Bethesda Softworks LLC, a ZeniMax Media company. All Rights Reserved.
+
+--- BACK TITLE ---
+TTR NE ETH EEE
+
+--- BACK BODY ---
+oer, 22472 7/20] 22 Ts
+2 =
+~ ser up: Write down name (and pose if not unique) of an
+| opponent's model. This is the Insider.
+~~ eno of BammiE: If Insider is not removed due fo zero health, add
+- (Consequence next battle (Quest can be repeated).If Insider is
+removed due fo zero health, Quest can never be repeated.
+conszavence May immediately Ready 1 of your models.
+
+
+================================================================================
+CARD: Adams Menagerie Part 1
+================================================================================
+--- FRONT ---
+FEN won 's emaGEREE: Part
+(=)
+~~ &, Youapproach the wagons of a travelling
+creature show. “When will | remember?! Lock the gate *before™
+removing the Domestication Unit for repairs! Hey, you!
+My Deathdaw ran off before | could stort controlling it.
+Don't make that face, it's quite passive. Could you herd it back?
+The show starts at 61”
+Do not fell your opponent this Quest's details until complete.
+©2020 Bethesda Softworks LLC, a ZeniMax Media company. All Rights Reserved.
+
+--- BACK TITLE ---
+6 DEATHEAWROIND=OP ==
+
+--- BACK BODY ---
+WL
+set-up: Place Deathclaw in center of battlefield, and {2
+on the batilefield edge in your deployment zone.
+Each attack by any model within Yellow of the Deathclaw
+moves the Deathclaw Yellow directly away from that model.
+End of round, scatter Deathdaw Yellow. If it suffers 4 damage,
+it runs off - Repeat Part 1. If Deathclaw within Yellow of
+{8 ) at any time, remove Deathelaw. Go to Part 2
+
+
+================================================================================
+CARD: The Collector
+================================================================================
+--- FRONT ---
+AN)
+$0N  mecowecror
+a
+&D i:
+After years poring over reams of paperwork and computer
+logs across the Commonwealth, Winifred believes the
+ultimate collectible — the one unaccounted-for, gold-labelled
+Nuka-cola Quantum that was part of Nuka-cola’s 25-year
+celebration — was delivered to a machine in this area. It must
+have got stuck inside.
+
+--- BACK TITLE ---
+WSL
+
+--- BACK BODY ---
+ja <j; B
+go.
+~ ser-up: Include 4 Nuka-cola machines in the terrain and
+set aside 1 Nuka-cola Quantum Item card.
+: Use ® while === with a Nuka-cola machine:
+~/ Machine can not be Searched again. Rol If result
+~~ equal to or less than total machines successfully Searched,
+: you find the collectible. Gain 1 Nuka-cola Quantum. If you
+do not use it, Winifred rewards you with 230 C]
+
+
+================================================================================
+CARD: Revenge Part 3
+================================================================================
+--- FRONT ---
+=
+$EN  rsvENGE: Parts
+SS There they are. ..
+The enemy model worth the most caps is the killer.
+If you cause the damage that removes the killer model,
+you reclaim your brother's pistol.
+Gain Indy's Freezing .44 S]
+
+--- BACK TITLE ---
+bo ; INDY'S FREEZING 44
+
+--- BACK BODY ---
+a_i ie oA
+Noo EEE
+x a fed
+RE | oR
+i - - at ae dL oa cand HR ok im “ eed
+
+
+================================================================================
+CARD: Nick Valentine Part 3
+================================================================================
+--- FRONT ---
+oy
+9) NICK VALENTINE: Part 3
+&)
+
+A search of the camp in the storm drain reveals a scuffle.
+
+The camp was for one person and the gang members’ wounds
+from close-up gunshots — Hal was jumped but got lucky.
+Tracks lead toward the ruins of a building. Hal is inside
+clutching a pistol — in shock, nervous like a frightened
+
+animal, and unpredictable. You need to win his frust.
+
+--- BACK TITLE ---
+Gram) 7) - 2) 2,0 z y
+
+--- BACK BODY ---
+yuaica KEASSUKAIN ES I
+2 (Yh 2)
+Place H )face-up by wall nearest battlefield center. A friendly
+~~ model ending ifs activation without attacking between Red and
+: Yellow and in LoS of the token may test CHa:
+~/ Your Settlement gains a Brahmin Ranch,
+~~ X Hal fires wildly and runs off. Resolve ") 2
+Remove token after CHA test. Repeat Quest if failed.
+_ Auto-fail if friendly model moves within Yellow of token. :
+
+
+================================================================================
+CARD: A Legend Returns Part 1
+================================================================================
+--- FRONT ---
+AN)
+$EN aczezho RETURNS: Part 1
+S Rock was a legendary
+Super Mutant Overlord who went on a journey of discovery
+and found enlightenment. Enlightenment being the name
+he gave to a big shotgun he gained in the Glowing Sea.
+It was buried with him but rumors are circulating that it has
+been seen in the wasteland. You've heard a local may have
+information about it.
+
+--- BACK TITLE ---
+GrART] VAIL) ) 7,
+
+--- BACK BODY ---
+ee:  USLY IER JAZ UAV
+<
+ser-up: Add marker Red from centre of battlefield.
+This is a Local. Only you can interact with the local.
+“= with Local and Use @®)
++ Goto Part 2.
+
+
+================================================================================
+CARD: Karma Incoming
+================================================================================
+--- FRONT ---
+>
+FEN warma mcomne
+>
+0h no. Why them? Here. A few days ago, you were
+‘borrowing’ supplies from a camp when the owner came
+back. You managed to get away but they swore they'd
+have their revenge if they ever saw you again.
+If you can avoid them now — hopefully — they ll forget
+your face over fime.
+©2020 Bethesda Softworks LLC, a ZeniMax Media company. All Rights Reserved
+
+--- BACK TITLE ---
+GIT pi - 1 ATI =
+
+--- BACK BODY ---
+(C6 HIPDENIDENTITY,
+ser-up: Have your opponent nominate one of your models
+{not %) / 2) @) )— do not explain why.
+If the nominated model starts or ends any action within Black
+~ and LoS of the unengaged opposing Leader, the Quest fails.
+If not foiled by battle end: Gain 120 C} from selling
+what you took. If failed, destroy your settlements largest
+generator. Quest cannot be re-atfempted.
+
+
+================================================================================
+CARD: Tools Of War Part 2
+================================================================================
+--- FRONT ---
+= :
+$0N mower nak: Part 2
+i
+S
+“I know it needs testing before selling it, but really?
+You think it'll work... like that? You sure we don't need
+more parts? And | mean a lof more parts.”
+
+--- BACK TITLE ---
+Gang) 2170 IATL ~—
+
+--- BACK BODY ---
+(allt £3 LUE 100 34
+< go.
+~~ ser-up: Include 1 Assaultron model in your force at no cost.
+Assaultron not usable until == to begin test: Roll @
+Result equal fo or less than total number of Assauliron paris
+~ collected so far: It fits and sparks but will run for 2 rounds only. -
+; You choose which rounds. After, sell it for 397 C]
+Otherwise: Catastrophic failure.
+Prototype is now junk — sell for 206 (C}
+
+
+================================================================================
+CARD: The Lost Station Part 2
+================================================================================
+--- FRONT ---
+$2N rvecosT sramon: Part 2
+&S
+Now you know the frequency, you can adjust a radio
+: beacon to transmit the radio station locally.
+
+--- BACK TITLE ---
+RN BRINE TUE CIENT DIATE
+
+--- BACK BODY ---
+(FSR V17CSVIVA CH UME “v
+~ Have your opponent place a (=) within Yellow of the centre
+of the battlefield — they are not told why. After placing, tell your
+: opponent this is a radio beacon and counts as cover. !
+% Test INT while === with the beacon:
+Yo Relay installed. The music energises your team. Add (a
+: to 2 different models at start of next hattle.
+
+
+================================================================================
+CARD: Artificial Insanity Part 2
+================================================================================
+--- FRONT ---
+Fo Zn
+FON armrrcaae ansanery: part 2
+)
+=)
+
+Combining the message fragments reveals a hidden entry:
+From: Steed. | discovered an experimental A.I. from before the
+bombs fell. Cut-off from contact all this time, it's gone crazy.
+My tinkering set if free and it's trying to take over any systems
+it can whilst blocking my attempts fo shut it down. That's why |
+had to conceal my message. Find my hardware engineer.
+©2019 Bethesda Softworks LLC, a ZeniMax Media company. All Rights Reserved.
+
+--- BACK TITLE ---
+GR No YL TN?) - male) 7 7 Pr
+
+--- BACK BODY ---
+VICE HAVECKSIZLAIV re
+ae
+SE.
+; ser up: Add marker Red from centre of battlefield to
+represent the Engineer. Only your models can interact with it.
+q = Use (@®)
+“The A.’ facility is long-since buried. A single air vent
+above ground is the only access. Here — use this modified
+electro-magnetic, remotely-detonafed grenade.” Go to Part 3.
+
+
+================================================================================
+CARD: Nick Valentine Part 2
+================================================================================
+--- FRONT ---
+ZN
+9) NICK VALENTINE: Part 2
+SS
+
+“Not in that gang, huh? Sounds like Hal didn’t make it as
+far as their settlement. There are a lof of storm drains en
+route there. Maybe he’s down one of those? His parents
+
+have often had to tell him off for playing there in the past.
+
+Heavy rains are coming so, if he is down there, we've got to
+
+get him out before they flood.”
+
+--- BACK TITLE ---
+=~
+
+--- BACK BODY ---
+DOWTIEDRIVE =
+~ Have opponent place ¥ ) ) # ) fuce-up at least
+Go pe Hy $ oe he
+= Test (O) (once only each token):
+~/ Amongst the remains of a small camp are two dead
+~ gang members. Tracks lead off to the east. Go to Part 3
+~~ XGain18 C] from the drain.
+
+
+================================================================================
+CARD: Revenge Part 2
+================================================================================
+--- FRONT ---
+=)
+BN revense: part2
+=
+=)
+The Leader taunts you that you couldn't protect your own
+brother from a mercenary who they easily raided just a few
+months ago. You know who he means.
+
+--- BACK TITLE ---
+Un per 10 THE WI) ER?
+
+--- BACK BODY ---
+WITTER STII CRILEER ZS Te
+¢ Next, you need to find the mercenary.
+~~ Alocal trader's computer may hold their details. Add ga
+; in building closest fo center of battlefield and Use ;
+: ©)on it. Models with n(@), gain) for this test.
+© GotoPart3
+ER oan
+
+
+================================================================================
+CARD: Pest Removal
+================================================================================
+--- FRONT ---
+Fo Zn
+NN  resTrREMOVAL
+
+So
+Ss
+
+“If its not one critter eating the crop, it's another damaging
+
+the fences. Never ends.” Ross will pay you if you help keep
+
+the creatures off his farm.
+©2019 Bethesda Softworks LLC, a ZeniMax Media company. All Rights Reserved.
+
+--- BACK TITLE ---
+Gary) LAR) -7)4 , 7) y pm
+
+--- BACK BODY ---
+(oy,  Zcizizitid  &p
+~ sere: Place a token Black from two battlefield edges furthest
+| from your models. This is a creature fo be removed.
+~ emeR Shoot it: Any damage kills it. After any attempt fo
+~ attack it, remove token - it runs off if not killed.
+or Catch it: <= Resolve Creature card then remove token.
+If killed or caught: Gain 53 C] Quest can be repeated.
+
+
+================================================================================
+CARD: One-Armed Bandit
+================================================================================
+--- FRONT ---
+AN)
+$I ons-armso saneir
+S
+The old gambling machine was said to be
+around here - loaded with caps and broken logic
+so it’s a sure thing. It needs feeding fo get it to pay,
+but it's worth it.
+
+--- BACK TITLE ---
+Ger) wr
+
+--- BACK BODY ---
+AZO
+© Placea (=) marker (the slot machine) in a corner of the
+~ hattlefield Blue from edges. Only you can interact with it. ~~
+~ = after any action to pull handle and add counting token fo
+: this card. When token added, if 5+ tokens on this card,
+flip ge). If 858 shows, machine pays out 188 for each
+: token, then remove tokens.
+
+
+================================================================================
+CARD: Escort The Witness Part 2A
+================================================================================
+--- FRONT ---
+(By  scorr THe mimes:
+Da Part Za
+©
+a
+N=)
+The hoss’s I-51 armour strikes a daunting figure for the
+uniravelled. She is incensed by the impudence of the Raider
+warlord. She gives you junk worth 92 {&% as reward.
+The Raider warlord that ordered the ambush is less impressed
+with the service you provided the Gunners, however.
+You must offer this Quest fo each opponent unfil one accepts.
+
+--- BACK TITLE ---
+GIT 2 y 7) ipl) =
+
+--- BACK BODY ---
+WPREEENDR =
+\ BEY, (2
+© Raider warlord, Tower Tom, has hired you to deliver payback
+~~ on your opponent. You will gain 20 C] for every opponent
+~~ model you remove and 30 (C] for every & oS
+© lfatleast] opponent's model survives, they get 137 {2
+VN PT EY Sg Eres TC ey i =u
+
+
+================================================================================
+CARD: The Secret Elixir Part 2
+================================================================================
+--- FRONT ---
+AN)
+$ON ze sscrer sar: Part 2
+=
+[=
+"Amazing. Well done. This is it. Easy Street with my range
+of Nuka-Colas.” Her excitement is only matched by her
+disappointment when the cooler is opened revealing only the
+aged and withered remnants of someone's uneaten lunch.
+“I knew I shouldn't have believed him. Well, two can play at
+that game. Hey, want another job?”
+
+--- BACK TITLE ---
+GRY) Ny po) fe YUL IV OOP)
+
+--- BACK BODY ---
+(Toor (Zl lel £ef2 2253001 “P
+Have your opponent nominate one of their models. Do not
+tell them why. This is who sold the information to Harris. She
+; wants them taught a lesson.
+~ Ifyou deal damage using N) that removes the nominated
+> model from the batilefield, gain 78 C} plus,
+~ at start of next battle, your opponent draws 2 weapon Items,
+d discards one and gives you the other.
+
+
+================================================================================
+CARD: Makeshift Armor
+================================================================================
+--- FRONT ---
+[1 ) MAKESHIFT ARMOR
+5S
+(XC
+a
+=
+The metal in the building debris here could be utilised and turned into
+armor. Ripping usable pieces off requires a lot of strength, even for Super
+Mutants.
+If they are not torn off just right, the pieces will be mangled and become
+unworkable.
+
+--- BACK TITLE ---
+Garr) , ,
+
+--- BACK BODY ---
+Ton, TEARTT UP:
+SET-UP: Place 4 blank Searchables markers (metallic debris) face-up
+diagonally Blue from each corner of the battlefield.
+-— to test STR with -4 penalty to the attribute. Each additional model
+interacting with the debris when STR is tested adds 2 to the tester's STR
+for the test.
++ Gain 1for next battle. Discard token.
+xX Discard token.
+
+
+================================================================================
+CARD: The Lost Watch
+================================================================================
+--- FRONT ---
+&® r
+ON  mecosT waren
+=
+=)
+
+A traveller says they are an armorer and will help you out
+if you find the pocket watch they lost when they ran for
+cover during a fierce storm. They would go but the area
+
+does not seem safe.
+
+--- BACK TITLE ---
+Gait) CONT TIE
+
+--- BACK BODY ---
+EINOTHENATH =
+; During set-up, add a (= with a letter to the pool.
+~~ Ifyou pick-up this token during the battle, the traveller ~~
+% adjusts and fixes your armor for free. 5
+: Add 2 cd next battle fo separate models.
+If not, there is no sign of the watch yet. ;
+: . A Ta TT SR RE NC
+
+
+================================================================================
+CARD: Misplaced Secrets
+================================================================================
+--- FRONT ---
+oy
+$0 ausreacep sscrers
+>The Brotherhood messenger went missing
+around here. The recovery team had given up trying to find
+the tactical survey notes the messenger was carrying.
+Now they've left, maybe you can find them?
+Could contain some useful insights.
+The notes are in the messenger’s attaché case. Only problem?
+Those attaché cases are notoriously booby-trapped.
+©2019 Bethesda Softworks LLC, a ZeniMax Media company. All Rights Reserved.
+
+--- BACK TITLE ---
+Gg) | FAA TIL PA OL
+
+--- BACK BODY ---
+AL THE GA5E BP
+~ ser up: If not already present, add these =) Green from
+: the center and af least Yellow from each other:
+QD)
+~~ If one of your models resolves the Danger card for wr
+~ you found the attaché case: Draw 2 Boosts for next batile
+: (3 if you suffer no damage from the Danger card).
+
+
+================================================================================
+CARD: Potential Witness
+================================================================================
+--- FRONT ---
+oy
+9) POTENTIAL WITIESS
+S
+“I swear | saw some synths by the downtown church
+yesterday. No, | didn’t think they were real either. | think
+they saw me too so | just ran and didn’t look back.
+What if they're after me...?”
+
+--- BACK TITLE ---
+proper CIN TEDL EO;
+
+--- BACK BODY ---
+(Fe SON OLIVER
+\ 2A
+Have opponent nominate one of your models without
+knowing why. Start of each round: Scatter 1 Battered Gen 1
+~ Synth Blue from selected model. End of round: Synth shoots
+4 once with Institute Laser Pistol at nominated model,
+then remove Synth.
+3 If model survives batile: Next battle, give 1 model
+2 fe) and it can use them as if they have S38 ability.
+
+
+================================================================================
+CARD: The Missing Trooper Part 1
+================================================================================
+--- FRONT ---
+JB) Tessie TrooeeR:
+al Part?
+EN
+~~ &S, The Enclave Outpost agreed fo let you go
+if you searched for Fabrizi, a Hellfire Trooper missing since
+yesterday. Mid-30s, though looks 50.
+Life in the Enclave can be fough.
+A couple of hours down the track, you notice recent scorch
+marks on an area of churned ground. A fight? Maybe a
+flamer? Surely it was Fabrizi. A faint frail of blood leads away.
+©2020 Bethesda Softworks LLC, a ZeniMax Media company. All Rights Reserved.
+
+--- BACK TITLE ---
+ELODDTRANL
+
+--- BACK BODY ---
+\BE = |
+sr-up: Place {@) Yellow from battlefield center.
+~~ When any of your unengaced models are within Orange
+: ofthe @ move (3 Red (scatter direction).
+When (2 has moved 3 fimes, you can === fo Use (©)
+If successful, go fo Part 2.
+
+
+================================================================================
+CARD: The Armor Fanatic Part 1
+================================================================================
+--- FRONT ---
+AN)
+FEN mz anor FanATIC: Part
+i
+N=)
+
+Rumor has it that a guy that used fo live in this area a long
+time ago was obsessed with everything power armor, but had
+disappeared one day. He said he had treasure in his safe.
+Maybe if was nothing, but worth checking.
+
+You're fairly certain the apartment must be somewhere
+near here. Probably rubble now.
+
+--- BACK TITLE ---
+GR 3 "oA, ir. & -
+
+--- BACK BODY ---
+FI ONIESHEE “P
+; Place a token on the building nearest the centre of the
+| battlefield in an elevated position — this is a safe.
+“=> Draw 1 Creature card, then Use ® :
+Rll LB If result equal to or less than total number of
+: safes opened so far: Go to Part 2.
+~~ X Wrong apartment. Draw 1 Junk Item and repeat Quest.
+
+
+================================================================================
+CARD: Treasure Hunt
+================================================================================
+--- FRONT ---
+=
+$0N  7Reasvrs unr
+=
+=)
+The map shows a grid overlaid on a sketch of the area and
+a single X in grid squares B2. Not much of a treasure map,
+but it was a start. Digging at the first X uncovered a small
+box containing some caps and the grid co-ordinates of
+another X - the location of the next treasure.
+
+--- BACK TITLE ---
+Grr) Vp, Vg or) a=, ) for N,!
+
+--- BACK BODY ---
+ATATIV KER GTTUIV I
+~ Place a Searchable Black from two battlefield edges — this is
+: the X. Use ® at +2 skill while == with the X:
+Gain 52 (@ then move the X Yellow in a random 3
+direction. The found cache says the next X is located there.
+~ % Draw and resolve Creature.
+Quest complete after 4 successes. Can split over several battles.
+ON A A A Si ta
+
+
+================================================================================
+CARD: USS Constitution Part 1
+================================================================================
+--- FRONT ---
+AN)
+[12 USS CONSTITUTION: Part 1
+-
+S
+“You visit this fine vessel in trying times. We appear to
+be running low on cannonballs. While we fix our mobility
+issues, how about you fetch some ammunition for us?
+There are stocks nearby.” — Captain Ironsides
+
+--- BACK TITLE ---
+Grn) 3 > 2A pr) gr l 7
+
+--- BACK BODY ---
+Ta ING 17EORONAN GE: I
+y Place a (= Green from two battlefield edges.
+: = Test STR:
+~/ Model can take up to 3 cannonballs. Model's Sis -1 for ~~
+: each cannonball until end of battle. =
+~ Atend of hattle, each cannonball is worth 13 C]
+Quest can be repeated until 20 cannonballs total - at 20,
+% go fo Part 2. g
+ae Ey me CCS Ta Ce ae
+
+
+================================================================================
+CARD: Food Hunt
+================================================================================
+--- FRONT ---
+=
+EN  Focouwonr
+=
+=)
+Meat and plenty of it. The Super Mutant diet is simple but
+requires gathering lots of meat.
+
+--- BACK TITLE ---
+GRY) Ny INTL TZ A 3
+
+--- BACK BODY ---
+(Toga, GHITERIITCTI ES V4 “P
+REE
+Se
+~ Assign this Quest to a specific model in your force. Each time it
+removes a non-robot model with close combat, test Str:
+~~ EmheR Trade it with Super Mutants: Start of next battle, ]
+gain 1 Boost card per model removed (maximum 3).
+~~ or (Super Mutants only) Eat it: Gain 1 additional Meat Bag
+structure in your Settlement (water still required) just for the
+Settlement use after this battle. Quest can be repeated.
+
+
+================================================================================
+CARD: The Armor Fanatic Part 2
+================================================================================
+--- FRONT ---
+AN)
+FN re armor EanaTIC: Part 2
+& The safe is full of various official
+paperwork about the T-45 armor. Seems worthless fo anyone
+but a fan. One document does catch your eye — a report on
+the first manufacturing runs.
+
+“As per process, a reference suit of T-45 will be set aside for
+20 years.” The Great War hit before that time was up so the
+armor may still be there. Wherever ‘there’ is.
+
+Time fo ask around.
+
+--- BACK TITLE ---
+Ga) : y J) = -— 2) y=
+
+--- BACK BODY ---
+(FEZ UHI EW HEWAKEH VISE Te
+4 set-up: Add marker Green from centre of battlefield. }
+This is a Stranger. Either player can interact with
+3 Stranger as normal (inform your opponent). .
+© ith Stranger and Use () (instead of usual effect).
+~/ Goto Part 3,
+i a I EE a x am
+
+
+================================================================================
+CARD: Enemy Of My Enemy
+================================================================================
+--- FRONT ---
+Po
+$2N cacmr or uy enemy
+De
+Ss
+“You don’t need to know my name, but we have a
+common foe. You give me information about their
+weaknesses, and I'll see you right. What do you say?”
+©2019 Bethesda Softworks LLC, a ZeniMax Media company. All Rights Reserved.
+
+--- BACK TITLE ---
+LG Pe 255
+
+--- BACK BODY ---
+~ During the battle, each time one of your unengaged models
+- is within Yellow of your opponent's Leader and that Leader
+rolls an X, you may choose fo place 1 {& Jon this card.
+: After the battle, gain 50 C] per counter, then
+~ roll @: If equal or more than the number of counters,
+discard the counters and this quest can be attempted again.
+
+
+================================================================================
+CARD: The Crimson Caravan
+================================================================================
+--- FRONT ---
+=)
+[1 ) THE CRIMSON CARAVAN
+Ve
+(XC
+-
+=
+“One of our caravans forgot to pick-up a crate. It needs to remain secret
+too so no unauthorised personnel can go near it or the recipient won't
+want it.”
+
+--- BACK TITLE ---
+Gort) Op Lr OLDEN
+
+--- BACK BODY ---
+LC. Gn) CROTECTIHESHIPNEN 72
+SET-UP: Pick one corner of the battlefield and place a (= Black from
+two battlefield edges.
+If any model is within Yellow of the (= when the model is activated,
+remove the (]
+AT THE END OF BATTLE: If the (= is on the battlefield, gain 3 (a} at
+the start of next Battle allocating each to a different model.
+
+
+================================================================================
+CARD: The Thief's Trail Part 1
+================================================================================
+--- FRONT ---
+ay
+[12 THE THIEE'S TRAIL: Part 1
+
+25 S
+
+S
+The gas canisters were there last night, and now nothing
+but feint tracks leading towards the hills.
+Gaining on the thief, the tracks start to fade — you need a
+visual on the culprit.
+
+--- BACK TITLE ---
+GIT \ Fr) = -— YZ <, Z)/,
+
+--- BACK BODY ---
+(1220 Lill 3 LEAL
+If one of your models ends any action during the battle at
+~~ the highest reachable point of the terrain on the battlefield,
+~ they can see where the thief is headed - Go fo Part 20.
+: If not, Go to Part 2b.
+Ee Le
+
+
+================================================================================
+CARD: Nick Valentine Part 1
+================================================================================
+--- FRONT ---
+oy
+9) NICK VALENTINE: Part 1
+=
+=> In the dim light of Nick's office, he tells you
+the details of the case. “Hal's parents were delayed returning
+from selling their livestock at the Brahmin market due fo a
+rad storm. After recent local Raider activity, Hal headed north
+to find them but hasn't been seen since.
+They're worried he’s been coerced info a gang out that way.
+Could you check if he’s among them?”
+
+--- BACK TITLE ---
+Gram) ESV TIE TA
+
+--- BACK BODY ---
+HIER IEA ie
+~ Nominate 1 model to complete this Quest: At the end of each
+action, add a @) to this card for each opposing model
+within Yellow and LoS. Each opposing model can only be used
+: once to gain a token during a battle.
+If 4 or more CJ) are on this card, go fo Part 2; otherwise,
+repeat Part 1 starfing with zero tokens.
+
+
+================================================================================
+CARD: Cease Fire
+================================================================================
+--- FRONT ---
+>
+$0N  ceussriee
+&
+Most of the independent turrets left by the Brotherhood
+in this area have been disabled. The recent flooding has
+corroded the combat inhibitors of the remaining ones
+making them erratic as they seem to ignore some groups,
+and nof others (especially you). The locals just can’t get
+near this one. Could you do remove it for them?
+©2020 Bethesda Softworks LLC, a ZeniMax Media company. All Rights Reserved
+
+--- BACK TITLE ---
+(Toy DESTROY THE TURRET. =
+
+--- BACK BODY ---
+ser-up: Have opponentadd a {2 ot least Green from
+battlefield edges and Orange from terrain — do not tell them
+why until placed. This is a Machinegun Turret Mk III.
+~ twill only attack your models — do not tell opponent that.
+Give it 1 fewer 4&3 than usual. A successful Use (©)
+will disable it.
+If disabled or destroyed at end of battle: Gain 76 {23
+
+
+================================================================================
+CARD: The Missing Trooper Part 3
+================================================================================
+--- FRONT ---
+A broken wagon. Slaughtered Brahmin. The body of a farmer.
+It's a mess. Surely the work of Super Mutants. No Fabrizi
+though. Nearby are some residential ruins — the houses blown
+from existence long ago but their cellars stil intact — the signs
+of a Super Mutant camp are clear. You hear yelling from the
+cellars. Is it Fabrizi or are there other captives?
+©2020 Bethesda Softworks LLC, a ZeniMax Media company. All Rights Reserved.
+
+--- BACK TITLE ---
+GARI) § - 14s = 5) 7 7) )”. i
+
+--- BACK BODY ---
+Toy2, ALULLLULG Fl 22
+SY sme: Scatter 3 blank and 1
+numbered Investigation Marker Blue from battlefield center:
+~ Use Expertise to perform (D)Test
+Success frees the occupant.
+BLANK TOKEN; It's not Fabrizi — gain 2 Boosts.
+NUMBERED ToKeN: You release Fabrizi — The Enclave give
+you Enclave Power Armor, plus you may draw 2 Legendary
+weapons and keep 1.
+
+
+================================================================================
+CARD: Horner Herder
+================================================================================
+--- FRONT ---
+[1 ) HORNER HERDER
+5S
+(XC
+Ch
+=
+“Those dumb Bighorners. Always coming back to eat my craps. | need
+them to eat the weeds around the area, not my crops! | tried shouting at
+them but, well, that’s how | got the broken arm. They need a proper scare.
+Do me a favour and shoo them away from my seedlings, will you?”
+
+--- BACK TITLE ---
+Gr) COD THE RICHINS
+
+--- BACK BODY ---
+oir (ED LZ2Edd us
+SET-UP: Place 5 > scattered Green from center of battlefield. Each is a
+Bighorner.
+After any attack made, or attack effect, within Yellow of a Bighorner, move
+it Yellow directly away from source of the attack.
+If 3+ are within Red of any battlefield edges (and/or have left the
+battlefield) at Battle end: Gain 2 Incendiary Ammo Items.
+
+
+================================================================================
+CARD: Weapons Engineer
+================================================================================
+--- FRONT ---
+oy
+$2 wearons encuveer
+ON
+S
+“I've tried calibrating this rifle but I'm not sure if works in
+the field. Could you fry it out and adjust it? It should be
+more accurate than the regular rifle.”
+
+--- BACK TITLE ---
+Gram) DATE TUE EAPON,
+
+--- BACK BODY ---
+geen EVIE Yeh Er
+~ Select 1 model with an Institute Laser Rifle. When using the
+~~ weapon, roll 1 ® fewer. Each time you hit an opposing
+) model (regardless of damage), add {to this card. §
+x If3 @)on this card: Next battle, add @)to 1 Institute
+~ Loser Rifle — it rolls 1 extra @ for entirety of battle,
+then the Engineer reclaims the weapon.
+
+
+================================================================================
+CARD: The Missing Trooper Part 2
+================================================================================
+--- FRONT ---
+(4) Part 2
+S
+The drops of blood cease. The irail appears fo have gone
+cold but your search near the final drops reveals Brahmin
+prints — two sels, side-by-side. And there — faint wheel
+fracks and several squashed Mutfruit. Probably a farmer
+with a wagon. Injured, Fabrizi must have grabbed a
+ride with them.
+©2020 Bethesda Softworks LLC, a ZeniMax Media company. All Rights Reserved.
+
+--- BACK TITLE ---
+GR) -r > Tr40 4 TI
+
+--- BACK BODY ---
+es RUITONGH,
+<E EE EERE TE
+When one of your models is engaged with an opposing
+model, it may make a Per Test. {Each opposing model may
+only be tested once during a battle.)
++ You see yellow leaves caught in their apparel —Mutfruit
+tree leaves. Maybe they came through a Mutfruit orchard en
+route here — it's a lead of least. Go fo Part 3.
+
+
+================================================================================
+CARD: Radiation Ideation
+================================================================================
+--- FRONT ---
+AN)
+FEN  =aviarion togaTIon
+=
+=)
+
+The farmer raved about the uses of radioactive waste in crop
+farming — it could be develop better craps, light the barn at night,
+or keep you warm — what couldn't if do? Maybe Children of Atom
+
+had swayed the farmer's mind. He needs more waste though.
+Turning down his offer of craps as compensation, he says he has
+some information you'll find useful if you'll help.
+
+--- BACK TITLE ---
+GarT) 1/40 JAZ) =
+
+--- BACK BODY ---
+CLOWNS PHELES =
+~ ser-up: Add 3 radioactive containers Green from battlefield
+| centre. These do not emit radiation.
+; “ Test END (max. once at each barrel): 3
+~/ Gain sample. =
+~ % Gain sample. Add a
+Start of next battle, gain 1 Boost card per sample gained. :
+ae ite ake a ee Ce ae
+
+
+================================================================================
+CARD: The Stand In
+================================================================================
+--- FRONT ---
+Fo Zn
+AN  mesmano-m
+)
+Ss
+“I injured my leg and now can’t meet my contact.
+It's important. Could you meet them for me? Just fake care of
+what they need. Tell ‘em Blanco sent you.”
+©2019 Bethesda Softworks LLC, a ZeniMax Media company. All Rights Reserved.
+
+--- BACK TITLE ---
+GraRT) MELT TLE TAL]
+
+--- BACK BODY ---
+UZZLLefZ SULLA EP
+; set up: Add marker Green from center of battlefield.
+~~ Thisis a Stranger with which only your models can inferact
+: (inform your opponent). 3
+: When Stranger is removed,
+: eimHer Gain 73 cL Draw 3 [) and keep 2.
+
+
+================================================================================
+CARD: Know Your Enemy
+================================================================================
+--- FRONT ---
+Si
+AER KNOW YOUR ENEMY
+\ =
+> (ccasional pieces of information
+about an enemy are good, but true insight is often derived
+from combining data. The group you are soon fo face has
+been active in this area for some time. Scrape together
+whatever information you can find on terminals in the area
+and you may be able fo glean some data that can give you
+an advantage against them.
+
+--- BACK TITLE ---
+aE
+
+--- BACK BODY ---
+Tee Ye LefZ 242 “Ts
+g Scatter 2 Blue from batilefield center.
+: = Test (=)
+v Roll @ and add that many Go this card.
+er @) Gain Chor 3 separate models; else,
+repeat Quest starting with half total (@ rounded down.
+Ske - — Een ens ame Rl SA eT Su
+
+
+================================================================================
+CARD: Echoes Of Yesterday
+================================================================================
+--- FRONT ---
+NN  conoesorvesreroar
+5S
+(XC
+a
+=
+The sound of the TV had started a few days ago. Tomb of Amun-Ra'- great
+movie - but not on a loop and definitely not with its reverb travelling
+across the still air at 4am, making sleep nigh impossible. Given that you'll
+be nearby, you might as well turn it off.
+
+--- BACK TITLE ---
+GRR) | ELA
+
+--- BACK BODY ---
+(1 =o VIICEND)
+\ / 3
+Have your opponent place a counter on the battlefield to represent the TV
+- do not tell them what it is until placed.
+—
+«== with TV to switch it off. One model starts next battle with (a) due to
+better night's sleep.
+If you do not interact with the TV, one model starts every battle with S
+until Quest is completed.
+
+
+================================================================================
+CARD: Protectron Strike Team
+================================================================================
+--- FRONT ---
+=
+[12 PROTECTRON STRIKE TEAM
+a
+[=
+The promo video was old but the Protectrons were unused.
+“These special Protectrons are your perfect support feam.
+They learn as they go — probably more than can be said for
+some of your team, am I right? And easier fo feed too.
+Try these early models free. We're sure you'll want more.”
+
+--- BACK TITLE ---
+GR) GT Fo ih
+
+--- BACK BODY ---
+Tae UID ZUG ZS “Tr
+~ Include 2 Protectron models in your force with Hand Lasers.
+Judged individually, each model a Protectron removes gives it
+Per +1 (which accumulates). If either/oth survive the batile,
+* use this Quest again to field the remaining Protectrons with
+2 same Per bonus and CO when they finished their
+previous hattle. They can not be repaired.
+
+
+================================================================================
+CARD: Grognak The Barbarian #3
+================================================================================
+--- FRONT ---
+#8 GROGHAK:
+Vay THE BARBARIAN #3
+EN
+=
+SS
+| remember this issue. There's this move from
+“Jungle of the Bat-Babies’ in which Grognak does this special
+twist that outwits one of the main antagonists.
+It'd be awesome to see that on the battlefield!
+
+--- BACK TITLE ---
+RP : PEREOKMED
+
+--- BACK BODY ---
+Ee :
+3 As Grognak: #1 Performed above. a
+i Nem ade ae oo oh SRE daamse ue RE a 1 E
+
+
+================================================================================
+CARD: Artificial Insanity Part 1
+================================================================================
+--- FRONT ---
+oy
+FEN armFrcaae ansanary: part
+=
+“=> Hacking the old computer records af the
+train yard 3 leads on supplies was easy enough,
+but the last entry stood out. Too quirky fo be by the workers,
+and foo recent to be part of the old records.
+
+Steed. It had to be Steed. The only hacker in the region with
+the ability to insert such messages. The message is incomplete
+and there are directions fo find the other parts.
+©2019 Bethesda Softworks LLC, a ZeniMax Media company. All Rights Reserved.
+
+--- BACK TITLE ---
+GraRT) -~ -—c gy bal Vl RIP Vw
+
+--- BACK BODY ---
+DECODETH NESTE ee
+smu Add 2 =) Blue diagonally from opposite comers of
+: the battlefield. |
+~ After a successful Use @, discard the = used then roll -
+~~: fresult equal 10 or less than total number of these
+: computers successfully hacked so far: Go to Part 2.
+
+
+================================================================================
+CARD: Handy Delivery Part 2
+================================================================================
+--- FRONT ---
+AN)
+FEN wanorosLivery: Part2
+> The buyer Ernest told you about
+had been surprisingly hard to find - after all, how many
+Mr Handys can there be around here?
+Who would have guessed the buyer would be
+an actual Mr Handy anyway?
+Maybe the scarcity of parts made it cautious.
+Hopefully the parts you carry were no-one if used to know.
+
+--- BACK TITLE ---
+GagT) rr) TEC
+
+--- BACK BODY ---
+SELLTHEEDIDS c=
+« Add [oo] face-up during set-up within Yellow of ~~
+~ battlefield center. This is the buyer. Only you can interact with him.
+- 2 About fo sell the parts, the rohot seems slightly unsure what
+: price was agreed. Do you try and increase the price? p
+woz Gain 150 {2 os agreed.
+© ves: Test CHA. :
+Gain 250 {8 X Gin50{@
+ae Ey me CCS Ta SS aw
+
+
+================================================================================
+CARD: Radio Interference
+================================================================================
+--- FRONT ---
+Po
+$EN revo inTERFERENCE
+Ee
+
+—
+
+SS)
+
+Someone keeps placing radio jammers in the area
+camouflaged as all sorts of ordinary objects. Carpenter asks
+you to destroy these as they're playing havoc with listening
+
+fo the few stations around. You can sell them for parts.
+©2019 Bethesda Softworks LLC, a ZeniMax Media company. All Rights Reserved.
+
+--- BACK TITLE ---
+GR No P77 4 rp fr -- 0.7 ry -rlg Pm
+
+--- BACK BODY ---
+PEST KTV ITE INT KS% Ts
+\REY #
+27
+~ sv up: Have your opponent place 2 @) on the battlefield at
+least Blue from any edge and each other. These are potential
+§ radio jammers. Any damage removes a foken. ;
+2 “== Test Luc to inspect a jammer to see if it's real.
+If destroyed, gain 40 (C] each af end of battle.
+XK Junk only. Draw 1 Junk card worth 20 be] or less.
+_ Quest can be repeated. ;
+
+
+================================================================================
+CARD: Agent Of Secrets
+================================================================================
+--- FRONT ---
+=
+$2 acswr or sscrers
+ESS ;
+She doesn't give her name. There are
+some documents in a car which must be retrieved and then
+the car destroyed. Were these documents from when the car
+was abandoned or placed there recently?
+Don't bother trying to get answers from her as she says she’s
+not officially here for you to be able to ask any questions.
+
+--- BACK TITLE ---
+GIT Dr IDI - Y=
+
+--- BACK BODY ---
+wh km J HED USSIEKS “P
+; set-up: Indude at least one car in the battlefield ferrain, ~~
+s “= with car to Use()
+If any other non-Searched cars remain, flip 98
+; it 3 this is the correct car. Gain the documents. If car
+: destroyed by game end, gain 96 C} - if not, you gain
+only 15 C} for a job half-complete. ;
+a. in EY SS Pet (CCl wa Sh =m
+
+
+================================================================================
+CARD: Escort The Witness Part 2B
+================================================================================
+--- FRONT ---
+(By  scorr THe mess:
+. Part 2
+ea
+=
+=)
+With Lowe out of the picture, the Gunner's boss demands
+you find out what happened. You need to examine the
+location where the attack took place and figure out who
+was responsible.
+
+--- BACK TITLE ---
+Gait) -
+
+--- BACK BODY ---
+FORENSIUSHEEPH =
+’
+~ During set-up of scenario not using & , mix and evenly
+distribute [] showing 4 8B
+3 Use (LO) while = with either letter token to discover the -
+ambusher’s identity. (Max. 1 fest per marker.)
+~/ It was Tower Tom's Raiders out of Beantown Brewery.
+Goto Part 2a. g
+ae a I EE a x am
+
+
+================================================================================
+CARD: Problems In Paradise
+================================================================================
+--- FRONT ---
+AN)
+FEN PROBLEMS ti PARADISE
+SS
+Why someone would hack the Eyebot to take compromising
+pictures of Davenport was another story, and one he wasn’t
+telling. Davenport wants you to find the Eyebot and wipe the
+images. The Eyebot must not be destroyed or they ll know
+he’s onto them - just delete them.
+
+--- BACK TITLE ---
+GRY) Ny =) Tr — 7) 4s 7) =
+
+--- BACK BODY ---
+Taper VHEVAUTUKESS “v
+PY B
+SETUP: After deployment, place token (or model) to represent
+the Eyebot, at least Black from all other models.
+End of each round: Eyebot moves Yellow away fromthe
+: nearest model. If will not engage or attack.
+~ “= with Eyehot to fest STR.
++ Capture Eyebot and delete images. Gain 47 C]
+a. in PT EY Sg Eres TC i =v
+
+
+================================================================================
+CARD: Robotic Secrets
+================================================================================
+--- FRONT ---
+~
+$2N rosome secrets
+wl
+[=
+“Most Sentry Bot processor chips get destroyed by the
+robot's self-destruct, but | know where you could extract
+one for me.” Whatever Anna wants the chip for, you know
+it's best not to ask and even better not to know.
+Finding the intact but defunct Sentry Bot was one thing,
+extracting ifs chip is another.
+
+--- BACK TITLE ---
+GRY) - z TY TL DY ~~)”
+
+--- BACK BODY ---
+(Fe JRAGI 4 HEALED
+~ ser-up: Place a Sentry Bot model Yellow from battlefield centre.
+: == Use (O) sucessfully to then fest (F ):
+~ «You prise open the head and gain the chip. A
+; Gain 187 Bun 2 Boost cards for next battle.
+: XK Security tripped: Initiate self-destruct. Tell opponent.
+ae a I EE a x am
+
+
+================================================================================
+CARD: Battle Codex Part 3
+================================================================================
+--- FRONT ---
+=
+$N zarres coven: part 3
+& “The Battle Tactics section of the
+Codex needs information on the bigger picture.
+Observe how aggressors interact.” - Beth
+
+One of your models must be elevated and spend 1 action whilst
+at least 3 engaged enemy models are within Black. This action
+
+counts as a Move but model does not move. Test INT:
+
+In recognition of your service, gain Draft Codex
+
+--- BACK TITLE ---
+{3 DRAFT CODEX &
+
+--- BACK BODY ---
+Per +1
+Enp +1
+After set-up, draw 2 Boost cards if the opposing force
+contains any units which you have observed during any
+part of the ‘Battle Codex’ Quest so far.
+
+
+================================================================================
+CARD: Tags Of The Fallen
+================================================================================
+--- FRONT ---
+FN mesormeraven
+5S
+Ea
+a
+SD
+Both NCR and Caesar's Legion have asked you to give them any NCR Dog
+Tags you find.
+Should you collect them for the NCR or Caesar's Legion?
+If NCR: "We must remember our fallen."
+If Caesar's Legion: "There is glory in the removal of our foes."
+(If your force is either of these, you must pick your own side.)
+
+--- BACK TITLE ---
+Gr CPT THE IARC
+
+--- BACK BODY ---
+(CG COLECTIHEIAGS:
+SET-UP: Have opponent place 4 ©) up to Black from center and at least
+Red from each other each representing a Dog Tag.
+AT END OF BATTLE:
+NCR: Gain 10 caps per Dog Tag, then discard all Dog Tags.
+CAESAR'S LEGION: For every 3 Dog Tags discarded, draw 2 Items and keep
+least valuable. Keep any remaining Dog Tags.
+Quest can be repeated.
+
+
+================================================================================
+CARD: Guerilla In The Midst Part 1
+================================================================================
+--- FRONT ---
+Fo Zn
+1) CUERILLA IN THE MIDST: Part 1
+
+)
+> If anyone will fight the good fight,
+
+it is Lucrecia. Too many have gone missing already, so she
+
+works tirelessly to prevent more. Some people are being
+
+held captive in a generator building. She needs a special
+
+tool which can be used to open the loading
+bay door — most people mistake it for a piece of junk.
+
+--- BACK TITLE ---
+ZEN
+
+--- BACK BODY ---
+~ Pickpocket the opposing Leader to gain the fool you need.
+~~ After an action when engaged with the opposing Leader,
+make an Opposed Skill Test: Your Aci v their Per.
+~~ No action is required. Add ® if Leader is outnumbered.
+~ «/ You gain the tool. Go fo Part 2.
+X You cannot attempt again this battle.
+
+
+================================================================================
+CARD: Adams Menagerie Part 3
+================================================================================
+--- FRONT ---
+FNanans: IENAGERIE: Part 3
+Dad 1, going where? Scorchbeasfs used
+D
+> fo roam there. Maybe | could clone one.
+Imagine the crowds that would come!”
+
+Set-up: Place 4 blank Searchables - each Black from a
+different corner. These are Scorchbeast bones. === to pick-up.
+End of battle: Roll 3 if result equal to or less than bones
+collected: Gain Hunter's Laser Musket; else, discard bones.
+©2020 Bethesda Softworks LLC, a ZeniMax Media company. All Rights Reserved.
+
+--- BACK TITLE ---
+on HONTER'S LASER MUSKET
+
+--- BACK BODY ---
+ral ol
+NOG © HEE
+F2 EEE
+Ca ny TE -. V = Ee
+
+
+================================================================================
+CARD: Recipes Of The Wasteland
+================================================================================
+--- FRONT ---
+#5) RECIPES OF THE WASTELAND
+S
+Some old Wasteland recipes require strange ingredients.
+One local has asked you to find the nest
+of some creatures.
+
+--- BACK TITLE ---
+Gait) 7 THEN ;
+
+--- BACK BODY ---
+PNDTHENES TE =
+5 |
+5 Add & face-up during set-up within Yellow of battlefield
+; center. “= Draw a Creature. Only you can interact with this. )
+q After resolving Creature, choose whether fo add £3 p-
+¢ to grab a specimen, then:
+* Ifinteracted only: Gain 65 C] reward for the info OR
+If grabbed specimen: Gain 100 2 reward. A
+ae a I EE a x am
+
+
+================================================================================
+CARD: The Lost Station Part 1
+================================================================================
+--- FRONT ---
+~
+42) THE LOST STATION: Part 1
+wl
+=)
+
+Ex-Vertibird pilot — Joe — describes an amazing music radio
+station he used to receive when flying over the Wasteland.
+Rumors say it travels the Wasteland hacking into radio
+beacons along the way to transmit the signal. Joe misses it.
+Would you find a way so it can be received here?
+
+--- BACK TITLE ---
+Gag) vr TIL 3
+
+--- BACK BODY ---
+Qi THESIGNAL
+ad Fy
+~~ When elevated, a model can spend an action to fest Per:
+: od
+_+/ You get a bearing on the signal. Go fo Part 2. oH
+Radiation. Emergency Beacons. Static. No music. =
+i he PE a ERY. a TTR a.) a
+
+
+================================================================================
+CARD: The Thief's Trail Part 2B
+================================================================================
+--- FRONT ---
+aN
+Ah THE THIEE'S TRAIL: Part 26
+S
+Without seeing the perpetrator, the trail goes cold. Asking
+around about anyone suddenly with gas to sell is probably
+the only way to find them now.
+
+--- BACK TITLE ---
+GTaRT) DIP VIL ID TIE TDA
+
+--- BACK BODY ---
+(Fe UZ Liz Lill
+Add [oo] face-up during set-up within Yellow of battlefield
+: center. “= Draw a Stranger. Only you can interact with this. ~~
+x Successfully interact with the Stranger: Go to Part 20.
+i I RE ae am
+
+
+================================================================================
+CARD: Wounded Glowing One
+================================================================================
+--- FRONT ---
+oy
+$2N wounvep sLomme one
+S
+
+Settlement Leader Lever needs help. A Bloated Glowing One
+escaped the cull. Almost dead, if was seen limping off this
+
+way somewhere. If it reaches a source of radiation, it'll heal
+and could strike again. Find it by following the trail of its
+blood and kill it. Lever has some local knowledge for you
+
+if you destroy it.
+
+©2019 Bethesda Softworks LLC, a ZeniMax Media company. All Rights Reserved.
+
+--- BACK TITLE ---
+TREKTTLOWVE
+
+--- BACK BODY ---
+§ ser uP: Place @) Yellow from the battlefield center.
+~~ When any of your models are within Orange of the @)
+resolve cd and move C)) Red in that direction.
+When @) has moved 3 fimes, replace it with a Bloated
+Glowing One model. Any damage removes it. If removed,
+: resolve 2 Explore cards for free next Settlement use.
+
+
+================================================================================
+CARD: Junk Collection
+================================================================================
+--- FRONT ---
+ay
+$0N vom covcecmon
+i
+(=)
+Junk is strewn across the Wasteland and all can be
+exchanged for caps. Over the years, the easy pickings have
+gone and it requires some digging through the rubble.
+Still, caps are caps no matter the source.
+
+--- BACK TITLE ---
+GIT PNTELILD TIL 147,
+
+--- BACK BODY ---
+ATHERTON =
+set-up: Place 6 counting tokens on the batilefield
+: at least Black apart and Green from edges.
+3 = Use ® successfully to then test STR: |
+: « Gain 1 Junk card. Discard token.
+~~ X It's too broken. Discard token. :
+Quest can be repeated. :
+VN Re ne
+
+
+================================================================================
+CARD: Battle Codex Part 2
+================================================================================
+--- FRONT ---
+=
+$2 zarres cover: Part 2
+a
+S=>The (odex’s Threat Identification Guide
+needs accurate behavioural intelligence from the field.
+Already impressed by your observations for the Codex,
+Senior Scribe Beth tasks you with creating annotated
+illustrations of some of the Wasteland’s inhabitants.
+“Our last illustrator got eaten by a Deathclaw,
+so you might want fo be careful.”
+
+--- BACK TITLE ---
+GIT J YI DOIN)? < 30
+
+--- BACK BODY ---
+(T ogo, CHICK GI S{517755 Te
+.
+~ To observe enough detail for an accurate report, one of your
+_ unengaged models must spend 1 action within Green of an
+~~ enemy model - This action counts as a Move hut the model does
+A not move. Each action can only observe 1 model.
+~~ Collectively observe 3 different unit types during one battle:
+x Go to Part 3.
+
+
+================================================================================
+CARD: Handy Delivery Part 1
+================================================================================
+--- FRONT ---
+ay
+$EN anor DELIVERY: Part
+
+-
+S
+Mr Handy parts have become hard to find recently.
+
+Local trader Ernest Watson wants you to pick some up from
+his brother; Alfred, and then deliver them fo one of
+
+Ernest's customers.
+
+--- BACK TITLE ---
+Gi) 2 7) 1487, DD TAIL <
+
+--- BACK BODY ---
+RIIKOETHECDODS
+Add & face-up during set-up within Yellow of battlefield ~~
+3 center. This is Alfred. Only you can interact with him. ~~~
+~ If one of your surviving models successfully interacted with
+Alfred, go to Part 2a.
+Re a Lage
+
+
+================================================================================
+CARD: Tales Of The Lurker
+================================================================================
+--- FRONT ---
+ZN)
+AER TALES OF THE LURKER
+uy Rumors are spreading that your
+settlement is haunted. People swear they are being followed
+by a presence and some have even % injured too.
+It's being called ‘The Lurker’.
+Nonsense, of course, but it's affecting morale.
+You set out to show it's people’s imaginations. Wait.
+Is that something following you? Hard fo see as it darfs
+between the des rubble piles.
+©2019 Bethesda Softworks LLC, a ZeniMax Media company. All Rights Reserved.
+
+--- BACK TITLE ---
+GIR ’ yr l »
+
+--- BACK BODY ---
+LUSUUSSLAZ ALL TP
+\ 2A
+~ ser up: Add marker to battlefield edge nearest enemy Leader.
+~~ Marker moves Red towards your Leader after their aivation. ~~
+~~ When marker engages your Leader, draw and resolve Creature.
+Ifyou do not suffer damage from the creature, you succeed
+~ and break the superstition: Add (a next battle fo 2
+separate models.
+
+
+================================================================================
+CARD: Giddyup Buttercup Part 2
+================================================================================
+--- FRONT ---
+47
+$ENcworup svrrERCYP: Part 2
+1S
+The Giddyup Buttercup has formed an attachment fo your
+
+Leader — following them everywhere, sleeping af their feet.
+If you didn’t know better, you'd swear it had feelings.
+The meeting to return it to its owner is only a few days
+
+away. If’ vital not to lose it before then.
+
+--- BACK TITLE ---
+GRR) & Bb -— i -~ 4 JR
+
+--- BACK BODY ---
+HELOVEVIOLDT54=
+; ser-up: Place @ ) in contact with your Leader.
+- End of each round: Move Giddyup Buttercup Yellow towards
+your Leader and then, if not within Yellow of your Leader,
+: it is lost, so discard the token - Repeat Part 1.
+~~ Giddyup Buttercup is also lost if it gains a total of 3 [x]
+If Giddyup Buttercup is present at battle end, gain 197 2
+
+
+================================================================================
+CARD: The Poisoned Deathclaw
+================================================================================
+--- FRONT ---
+AN)
+Ah THE POISONED DEATHCLAW
+>
+The trappers were now uncertain how much poison they had put
+in the Brahmin carcass used to lure the Deathclaw.
+They didn’t want to use too much in case it fainted the meat
+(and their profit), but had they given it too little? Rather than
+risk facing an angry (and unsubdued) Deathclaw, they ask if
+you would check on it for them, and finish it off if required?
+
+--- BACK TITLE ---
+GRY) : TUE NEATLY ’
+
+--- BACK BODY ---
+SUBLTUCTIICPEAT HW “v
+~ ser-up: Place a model or token representing the Deathclaw
+: Blue from center of battlefield.
+~ Deathclaw hes @9) 3 and does not move. End of each round,
+it uses Deathclaw Swipe with only 1 © to attack 1 random
+5 model within Orange (prioritising attackers).
+If the Deathclaw is removed, gain 3 Boost cards for next battle.
+
+
+================================================================================
+CARD: The Time Lock Safe
+================================================================================
+--- FRONT ---
+AN)
+$EN re mvs cock sare
+SS
+“Seriously. The old guy told me that’s how some of the
+small safes worked at Lexington Bank back then.
+They can be opened at a specific time just once a day.
+And that beeping sound people hear around there?
+That's it opening. How should I know when?! All | know is
+roughly where it is. Just give me my share if you get fo it.”
+
+--- BACK TITLE ---
+Grim) \ WE ay. 4 2 / Vp 40
+
+--- BACK BODY ---
+PEREEGTIIINES =
+PY 2
+; = The safe only opens at one moment each day.
+Add (=) at least Black from your deployment area — this is
+: the safe. Add Consequence fo Event deck. |
+. consequence
+~ You can interact with safe during this and the next round only.
+Hs Use(O)to find the open safe
++ The safe contains bundles of currency. Gain 68 ®
+a. in PT EY Sg rae To ep i =v
+
+
+================================================================================
+CARD: Artificial Insanity Part 3
+================================================================================
+--- FRONT ---
+ZN
+FON armFiciae avsanemy: part 3
+2, eT up: Have opponent place
+up to Black from the battlefield centre. This is the air vent.
+Assign the special EM grenade to one model. Model must
+use ® to hit air vent. If grenade scatters, model can pick
+grenade up from where it landed. Model may trigger grenade
+on its next activation after the successful )
+Triggering the grenade fries the AI. Steed sends you a reward.
+©2019 Bethesda Softworks LLC, a ZeniMax Media company. All Rights Reserved.
+
+--- BACK TITLE ---
+STACGERING PIPE PISTOL &
+
+--- BACK BODY ---
+Neee -
+| CANN
+
+
+================================================================================
+CARD: Photo Shoot
+================================================================================
+--- FRONT ---
+ZN
+[2 PHOTO SHOOT
+S
+“I need a subject for the cover of my magazine.
+Can | take a photo of you in combat? Needs to be
+something dramatic. Only problem is the clouds are
+making the light unpredictable.”
+
+--- BACK TITLE ---
+GR) 2 -r, y -_r
+
+--- BACK BODY ---
+PONCE
+5 Nominate one of your models as the photo's subject.
+~~ Add Consequence to Event deck after first Event is resolved.
+consequence The photographer will be able to fake the ~~
+~ photo during this and the next round. If nominated model
+~ removes any opposing model during this time, gain 89 C]
+
+
+================================================================================
+CARD: The Missing Sample
+================================================================================
+--- FRONT ---
+AN)
+$ON we muss sanpee
+ea
+=
+&))
+William's field trip had been a success — right up until he
+discovered the pheromone sample he had collected
+was no longer in his bag.
+A sample of what, the scientist would not say, or who he
+works for; but he tells you four of the possible locations
+where he stopped on his way back fo check.
+
+--- BACK TITLE ---
+Griz) PINT) THE DHE INN ET
+
+--- BACK BODY ---
+(Fee J1ICHITIEXDIH OVE I
+~ sirup: Mix 4 Investigation markers (3 blank and 1 letter)
+and add diagonally Blue from each corner of the battlefield.
+Pick-up the token with the letter (the sample) during the battle.
+If successful, William shares some of the pheromone that will
+© attract a creature. Once next hattle, have an enemy model up
+to Orange from one of yours resolve a Creature Card.
+
+
+================================================================================
+CARD: Battle Codex Part 1
+================================================================================
+--- FRONT ---
+AN)
+$EN carrie covsx: Part
+=
+N=)
+The Brotherhood is compiling a Codex fo assist in
+developing our skills through knowledge about the
+Wasteland and its inhabitants.
+You are to take note of the events of the coming battle.
+Senior Scribe Beth declares that recording history will lay a
+better foundation for the new times ahead.
+
+--- BACK TITLE ---
+Gragr) v7
+
+--- BACK BODY ---
+Qa rurnirivsre N=
+Select 1 Field Scribe in your force to perform this Quest.
+Each time the Field Scribe is within Red of a friendly model
+being removed, take 1 counting token.
+Take 2 tokens if within Blue of an enemy model being
+: removed. After battle, gain 15 C] for each token.
+Once a total of 45 (C] have been gained: Go fo Part 2.
+& This part may always be repeated.
+
+
+================================================================================
+CARD: Buried Treasure Part 2
+================================================================================
+--- FRONT ---
+AN)
+Ah BURIED TREASURES: Part 2
+
+=
+=)
+
+As you wipe off the dust, you realise this is more than just
+
+junk. A palm-sized family portrait, curiously ornamented,
+
+rests in your hands. You scour the faces in the picture until
+you stop fo look af the eyes of a little kid who looks
+
+very familiar. Could it be...
+
+--- BACK TITLE ---
+PHI MENORIES =
+
+--- BACK BODY ---
+~~ During Sop, assign the portrait fo one of your models. ~~
+~~ When this model = with another of your own models,
+: test PER (max. once with each model): :
+c It's them! From years ago. You give the portrait to its ¥
+: rightful owner. Both models gain 1 888) and conse ~~~
+& Luck during the remainder of this battle. :
+ae PE AT TA Ger 1 TTT TA Ce ae
+
+
+================================================================================
+CARD: Innocent Bystander
+================================================================================
+--- FRONT ---
+$2 wwocent BrsTanosR
+a
+ND)
+“screaming NOOO! PLEASE, NOOO! DON'T KILL ME!
+NOOO! HELP!
+
+--- BACK TITLE ---
+GINS 0 Fr) gr) - -p 7 ~~),
+
+--- BACK BODY ---
+HEU ITCH EU LES 4 “v
+5 = ser-u: Deploy model (Bystander)
+: within Yellow of one of your models.
+Start of each round: Bystander gains Ef not within Yellow
+4 of one of your models. Then, Flip of
+; iregs, you move them Yellow; otherwise, your opponent
+does (not off battlefield). Bystander has S) 2
+_ If Bystander survives 3 rounds: Gain 48 C} and 1£\lfem.
+
+
+================================================================================
+CARD: Target Practice
+================================================================================
+--- FRONT ---
+=
+$N  mweerpRacrice
+== S
+S
+
+“This used to be a combat training ground for some of the
+Brotherhood. The pop-up targets still work. Jumped out of my
+
+skin first time | went through here. Those mannequins are
+
+almost as creepy as the real things.”
+
+--- BACK TITLE ---
+Gur) i YN LL LJv v
+
+--- BACK BODY ---
+PREENOVE =
+3 During set-up, spread 6 Feral Ghoul models across the
+: battlefield. These are mannequins. Start of each round, :
+: flip os for each mannequin. 838 means sand the
+; mannequin up; otherwise, lay it down.
+Whilst upright, remove mannequin if hit by any attack. :
+_ Remove 4 by battle end to draw 2 Boosts for next battle. ~~
+: . A A A oe
+
+
+================================================================================
+CARD: The Stolen Key
+================================================================================
+--- FRONT ---
+=
+$0N  mesroswier
+
+=
+
+=)
+
+The limping settler approaches you.
+“| twisted my ankle and was resting when some creature
+grabbed a key from my bag and disappeared in that
+direction. | couldn't catch it. Could you help?
+| can tell you some information in return.”
+
+--- BACK TITLE ---
+GagT) rs) Fr’ -~)4 ’ rp) = ym)
+
+--- BACK BODY ---
+Ue crenic IITCREYV 4 “r
+~ Have opponent place token at least Black from all battlefield
+edges without knowing why. The creature was last seen here.
+; w Use ©): E
+~/ Draw creature card. Remove token. Key found. “3
+~ X Not here. Move token Yellow in random direction. :
+If key found, you refurn it. Start with 1 model (3) next battle.
+ae Ey me CCS Ta Ce ae
+
+
+================================================================================
+CARD: Deathclaw Statues Part 1
+================================================================================
+--- FRONT ---
+7A)
+[12 DEATHCLAW STATES: Part 1
+SS
+The Deathclaw statue had always been a weird choice. Why
+here? Had this been a kids’ park? If so, why such a realistic
+Deathclaw? No matter though. You're here for the secret
+compartment you saw in that book. Its one of the four
+statues near here. Which one though?
+
+--- BACK TITLE ---
+GR) ADL] WPAPTNCN
+
+--- BACK BODY ---
+Ta =r LATA ARINIEN 14 Te
+- Soh. 5
+~ ser-up: Place the Deathclaw model Blue from centre of
+: battlefield. Once per battle, you can = Use (O):
+Roll @. If result is equal to or less than total number
+of statues you have searched, you find the hidden
+: compartment. A book on Deathclaws. Go fo Part 2.
+~~ X Not here. Repeat Quest to try a different statue. :
+ON A A Pr A i ta
+
+
+================================================================================
+CARD: Grognak The Barbarian #2
+================================================================================
+--- FRONT ---
+a SROGHAK:
+ay THE BARBARIAN #2
+= Ne
+=)
+The second issue ‘Cometh the Trickster’ is a classic.
+Amazing battle moves. | reckon | could use that.
+Maybe not the somersault though.
+
+--- BACK TITLE ---
+Gm) GROGIVAK: #2,
+
+--- BACK BODY ---
+UB Ci PEREORMEDE
+3 As Grognak: #1 Performed above. | 3
+{a - i a ae od an ca a a RN =
+
+
+================================================================================
+CARD: The Armor Fanatic Part 3
+================================================================================
+--- FRONT ---
+Ty
+FEN 7z amo EaNATIC: Part 3
+CY
+_— “Could be that underground storage fy where
+> that feral ghoul nest got out of control. You know it?
+Group of settlers emptied a tanker of fuel in and set it alight.
+The stench!”
+Find a way into the chamber. Place token Yellow from centre of
+battlefield. == Use ® while no enemy model within Yellow.
+It's ill here - blackened hut not damaged. Gain 7-45 & <)
+
+--- BACK TITLE ---
+a T Ee®
+
+--- BACK BODY ---
+spol-N & §
+Bana 5%
+
+
+================================================================================
+CARD: Boomer Bomber
+================================================================================
+--- FRONT ---
+=)
+[1 ) BOOMER BOMBER
+5S
+% (Cd
+-
+=
+“The others say the bomber’s nowhere near here, but | just have a feeling...
+Call it a Boomers hunch. Could you help me and have a look out from these
+areas for me? If it is there, you won't be able to miss it.”
+
+--- BACK TITLE ---
+Guakt) CADE END THER) MBED
+
+--- BACK BODY ---
+LCG SEARCH FORTIIEEOMECA:
+If by the end of the battle, your models (combined) have been within Red
+of each battlefield corner and the center at any time: Add the
+Consequence next battle.
+CONSEQUENCE
+The artillery shell whistles down. Select a location, scatter Yellow and
+resolve the effects of a Long-Fuse Dynamite.
+
+
+================================================================================
+CARD: Big T's Task
+================================================================================
+--- FRONT ---
+>
+ON arom
+LSS
+Even for a Super Mutant, Big T is fall and powerful.
+He's also leader of the Super Mutants in this region and
+is willing to allow your passage through the area — if you
+complete a job for him... He wanis information on the
+significant members of local groups, but he demands a
+constant supply or the deal’s off.
+©2020 Bethesda Softworks LLC, a ZeniMax Media company. All Rights Reserved
+
+--- BACK TITLE ---
+INTELIENCERERORTS >
+
+--- BACK BODY ---
+When one of your models is within Orange of a
+Unique opposing model, Test IT. If successful, goin {2
+~ Each opposing model may only be tested once. At battle end:
+emheR Gain 10 (C] per {4 now and Quest Ends.
+or Confinue this Quest next battle: Gain 4 (8 now, but if
+you gain no new {2} during next battle, discard all (2
+and Quest ends.
+
+
+================================================================================
+CARD: Blessing Of Atom
+================================================================================
+--- FRONT ---
+AN)
+$IN  zeesome oF arom
+wl
+=)
+Blessing the bodies of the fallen in Atom’s name — giving
+them spiritual strength whether dead or just incapacitated.
+Spread the love of Atom and take a little for your trouble too.
+Who could have an issue with that for such
+a valuable service?
+
+--- BACK TITLE ---
+GRR) | i 7) = z, 7) 7,
+
+--- BACK BODY ---
+RENRDIVE WIRES =
+During set-up, specify which model can give blessings.
+When any non-creature model is removed, place a token
+; in its place to mark the body. A
+"=~ with a body to bless them and gain a ‘donation’ from
+3 their pockets, then discard token.
+: Each donation is 6-9 {8 (5+ one roll of EY). :
+& Quest can be repeated. :
+a A A rT A Si ta
+
+
+================================================================================
+CARD: Lost Plans
+================================================================================
+--- FRONT ---
+oy
+9) LOST PLANS
+S
+Few know the Vertibird that crashed carried important orders
+for the Brotherhood's next moves in the area. That holotape
+is likely to be valuable fo the Brotherhood, or maybe others
+may want if more.
+©2019 Bethesda Softworks LLC, a ZeniMax Media company. All Rights Reserved.
+
+--- BACK TITLE ---
+ULL LEZ LED
+
+--- BACK BODY ---
+ser up: Add all crashed Vertibird pieces to the battlefield,
+at least Red from each other and battlefield edges.
+~~ with any piece of crashed Vertibird and Use (©)
+4 (max. once for each piece). TENE
+~~ + You found the holotape.
+~ EmHeR Return it fo the Brotherhood. Gain 70 {@ reward.
+~~ or Sell fo highest bidder. Gain X EC)
+
+
+================================================================================
+CARD: Potential Partnership
+================================================================================
+--- FRONT ---
+Fo Zn
+9) POTENTIAL PARTNERSHIP
+De
+Ss
+One of your group says they are meeting a contact later who
+is a major clothing trader. Could be great for your settlement.
+“Thing is they won't trust anyone else. If I'm not there,
+deal’s off. What can | say? People like me.”
+©2019 Bethesda Softworks LLC, a ZeniMax Media company. All Rights Reserved.
+
+--- BACK TITLE ---
+GaRT) ) yr _— a am, ry
+
+--- BACK BODY ---
+AE LE UZ UE EP
+: set-up: Secretly select 1 model in your force
+: which is not a 3) 5 ®) or ®
+: Write down its name (and pose if not unique).
+~ Arend of battle: If the selected model was not removed
+: due to zero Health, gain 1 Clothing Shop in your
+: settlement for free.
+
+
+================================================================================
+CARD: Deathclaw Statues Part 2
+================================================================================
+--- FRONT ---
+=
+[12 DEATHOLAW STATUES: Part 2
+WHR. The book is a study of Deathclaws which
+S=>holds them in a reverence that is disturbing.
+Signing themselves as ‘Cult of Claw’, the writers final, hastily
+written entry describes the cult being raided — asking the
+book's finder to free the young one in the secret den by
+releasing the chain above ifs pit.
+Scatter a marker Red from battlefield centre. === to
+complete Quest and only then turn over this card.
+
+--- BACK TITLE ---
+GRY) Ny . -
+
+--- BACK BODY ---
+(Toys, GUL 097 5241 “v
+\BE =
+Gain 112 C] hidden with chain. Tell opponent a roar comes
+from below the hattlefield’s centre. At end of round, place
+~~ Deathclaw Orange (random direction) from battlefield centre ~~
+$ as it bursts out of a concealed pit.
+~ End of each round: Deathclaw moves Yellow directly away
+from battlefield centre (always breaking engagement) using
+x Deathclaw Swipe only on the first model it can.
+
+
+================================================================================
+CARD: Wasteland Health Survey
+================================================================================
+--- FRONT ---
+AN)
+[12 WASTELAND HEALTH SURVEY
+SS
+Doctor Powers is gathering blood samples from different
+parts of the Wasteland to study. She believes a cure could
+be found for common ailments, as well as giving her a
+possibility to adapt known drugs fo work with other species.
+
+--- BACK TITLE ---
+GigT) i [6 ) 7, 7%
+
+--- BACK BODY ---
+ELODDRIRVESTE =
+~ Assign this Quest fo a specific model in your force. Each time
+it deals ") damage in Close Combat to an opposing model
+~~ ithos not damaged already, place a {on this card. 3
+© Ifthereare 3or more {@ on this card at the end of the
+battle, gain 14 C} for each. Quest can be repeated.
+: . A Sh Te Ae oe
+
+
+================================================================================
+CARD: A Legend Returns Part 3
+================================================================================
+--- FRONT ---
+a
+$N aczesno ReTuRNS: Part 3
+a
+Ss)
+
+The crate does not contain Rock's shotgun but his bladed helmet
+instead. Make the legend's presence felt once more.
+ser-up: Equip one non-dog Super Mutant with the helmet on
+other side of this card.
+
+If ll opponents models are removed from the battlefield by
+end of round 4, gain Rock's Bladed Helm <5]
+and Local Leader perk.
+
+--- BACK TITLE ---
+{1 ROCK'S BLADED HEIM &
+
+--- BACK BODY ---
+Super Mutants only:
++18)
+Per +1
+(ha +2
+HEADS UP: Once per round, +1 to 1 model
+(not wearer) in addition to any other armor.
+Start of battle, wearer gains 2 Boost cards which can be
+shared like items.
+
