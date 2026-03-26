@@ -55,7 +55,7 @@ export function AuthProvider({ children }) {
   function toEmail(input) {
     const trimmed = input.toLowerCase().trim()
     // If it already looks like an email, use it as-is
-    return trimmed.includes('@') ? trimmed : `${trimmed}@fww-tracker.local`
+    return trimmed.includes('@') ? trimmed : `${trimmed}@fww-tracker.app`
   }
 
   async function signUp(username, password) {
