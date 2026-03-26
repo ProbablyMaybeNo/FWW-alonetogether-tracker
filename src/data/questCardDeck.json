@@ -789,5 +789,26 @@
     "series": "A Legend Returns",
     "part": "3",
     "isMultiPart": true
+  },
+  {
+    "id": 10600,
+    "name": "House Rules Part 1",
+    "series": "House Rules",
+    "part": "1",
+    "isMultiPart": true
+  },
+  {
+    "id": 10601,
+    "name": "House Rules Part 2",
+    "series": "House Rules",
+    "part": "2",
+    "isMultiPart": true
+  },
+  {
+    "id": 10602,
+    "name": "House Rules Part 3",
+    "series": "House Rules",
+    "part": "3",
+    "isMultiPart": true
   }
 ]

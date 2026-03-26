@@ -1,680 +1,698 @@
 [
   {
     "name": "Guerilla In The Midst Part 2",
-    "frontText": "Fo Zn\n1) GUERILLA IN THE MIDST: Part 2\n)\nSS\nThe tool to open the generator building is to be hidden at\none of several pre-agreed locations. The risk of leaks is foo\ngreat so it must be hidden without anyone seeing, even\nyour own people. Lucrecia will collect the tool later.",
-    "backTitle": "GR RBA :",
-    "backText": "Tz, Le(Z2 2,207 Ts\n= Plo F 6) H)\nface-up next to Hing an up to Black from\nbattlefield centre and af least Yellow from each other.\n~~ Nominate one of your models fo carry the tool. If out of LoS\nof every model, the model can <== with a token fo hide\nthe tool. If model removed, fool is lost — Repeat Part 1.\n~~ </ Start of next battle, draw 3 Boosts and log"
+    "frontText": "The tool to open the generator building is to be hidden at one of several pre-agreed locations. The risk of leaks is too great so it must be hidden without anyone seeing, even your own people. Lucrecia will collect the tool later.",
+    "backTitle": "THE DROP",
+    "backText": "Place F G H face-up next to LoS-blocking terrain up to Black from battlefield centre and at least Yellow from each other."
   },
   {
     "name": "Double Locked",
-    "frontText": "=\n$0N  oousesiockse\n=\n=)\nTypical. The safe built into the desk is one of the most secure\never made. Not only near impregnable, it can only be opened\nby entering a different password into two terminals at once.\nYou reckon one person could do if alone but multiple people\nwould be better.",
-    "backTitle": "Gi) \\ z ’ cg) - Vy 7 p) 1/ Ad",
-    "backText": "(Fe OZOKCIIVAT EOIN G; “v\nYs 2\n? ser-up: Add the desk and 2 terminals fo the battlefield\nYellow from each other and at least Blue from any edge.\n: Use (C3) while === with terminal: ;\n: + One lock deactivated until end of next round.\nIf both locks are deactivated at same time, the safe in the desk\nopens and stays open. <= with desk to gain 2 weapons."
+    "frontText": "Typical. The safe built into the desk is one of the most secure ever made. Not only near impregnable, it can only be opened by entering a different password into two terminals at once. You reckon one person could do it alone but multiple people would be better.",
+    "backTitle": "CO-ORDINATED HACKING",
+    "backText": "SET-UP: Add the desk and 2 terminals to the battlefield Yellow from each other and at least Blue from any edge. Use 💻 while ➡️ with terminal:"
   },
   {
     "name": "Plague Of Radroaches",
-    "frontText": "AN)\n$EN 2Lacve oF RavROACHES\n=\nN=)\nRachel needs your help exterminating the radroaches.\nIt's one of their many breeding seasons when they are more\ndocile than usual.\n“If you don’t get them all at once, mind, they'll re-populate like\nyou were never here. So, I can’t pay you full price if you don’t\nget all of them in an area. And killin’ only a few is no use.”",
-    "backTitle": "EHTERAINATIONE =",
-    "backText": "g opps places 3 Radroach Swarms at least Yellow\n: from battlefield edges and each other.\n~~ Any attack doing 2 or more damage, removes a Swarm. ~~\n: 2 swarms removed: Gain 12 C}\ny 3 swarms removed: Gain 36 (C]\n~~ Quest can be repeated until 20 swarms are removed.\n§ VE HA AT TR ET eA grees"
+    "frontText": "Rachel needs your help exterminating the radroaches. It's one of their many breeding seasons when they are more docile than usual.",
+    "backTitle": "EXTERMINATION",
+    "backText": "SET-UP: Opponent places 3 Radroach Swarms at least Yellow from battlefield edges and each other."
   },
   {
     "name": "Sending A Message",
-    "frontText": "=\n$0 sswvoue amsssace\n=\n=)\nGeorge Ginger had had enough. “The impact on my farm\nfrom the water they use is too great now. | can’t make\na living. Tried scaring them away, but they didn’t take if\nserious. Make them understand for me?”",
-    "backTitle": "Ing, srzsszzll op",
-    "backText": "Eel\n~ To succeed, remove all your opponent's models except one.\nIf successful: As they crawl away, you tell them George sent you\nand the farm is now under your protection.\nThen, George gives you a gift. At start of next battle,\n: 5 :\n~~ your opponent draws 2 as Items, discards one and\n% gives you the other. F:"
+    "frontText": "George Ginger had had enough. \"The impact on my farm from the water they use is too great now. I can't make a living. Tried scaring them away, but they didn't take it serious. Make them understand for me?\"",
+    "backTitle": "MESSAGE SENT",
+    "backText": "To succeed, remove all your opponent's models except one."
   },
   {
     "name": "The Raised Bridge",
-    "frontText": "ay\n$2N we Ravssp sRiDGE\ni\n[=\nThe bridge near your settlement had been raised when the\ncontrol hut was destroyed during fighting decades ago.\nThe old, municipal facility that used to be here held an override.\nIf the circuits can be re-connected, the bridge will lower and a\nnew route fo and from your settlement can be opened.",
-    "backTitle": "GR) 7) UNE? T 72d z, 7",
-    "backText": "Ta CONNECTTHECRCIITS, >\ngo.\n« ser-up: Add 4 heavy consoles at least Blue apart\n: and Blue from any edges.\n; “= Test INT (or add [x] to auto succeed):\n© Reconnect 1 ircuit. oll @ 10 determine which circuit :\n~~ number. Can only succeed once at each console.\nIf 3 different circuit numbers reconnected: Bridge is lowered.\nWhen using your Setflement, use Listening Post once for free."
+    "frontText": "The bridge near your settlement had been raised when the control hut was destroyed during fighting decades ago. The old, municipal facility that used to be here held an override. If the circuits can be re-connected, the bridge will lower and a new route to and from your settlement can be opened.",
+    "backTitle": "RECONNECT THE CIRCUITS",
+    "backText": "SET-UP: Add 4 heavy consoles at least Blue apart and Blue from any edges."
   },
   {
     "name": "Edens Project",
-    "frontText": "$2  coew'srroscT\n\nEden jet black deathhawk haircut is easy to recognise.\n\nWhilst often mistaken for a Raider by looks, or the Enclave\nPresident by name, she actually keeps the various local\n\nfactions in balance.\n\n“The two fraders say they ll stick fo the deal if they know\nyou're in foo. You just need fo convince them you are.”\n©2020 Bethesda Softworks LLC, a ZeniMax Media company. All Rights Reserved.",
-    "backTitle": "GIT NSS . UI PTT D7 7) lem",
-    "backText": "(CLONE Viz 15122280\nAdd 2 tokens each representing a Stranger, and place Black\nfrom 2 edges. Nominate a model o carry out this Quest.\n«= with the 2 Strangers (before resolving their card) fo\nTest Chia (once per activation max.).\nIf successful with both: They agree fo be part of Eden's deal.\nYour Settlement gains 1 Item Structure worth 150 C]"
+    "frontText": "Eden's jet black deathhawk haircut is easy to recognise. Whilst often mistaken for a Raider by looks, or the Enclave President by name, she actually keeps the various local factions in balance.",
+    "backTitle": "CONVINCE THE TRADERS",
+    "backText": "Add 2 tokens each representing a Stranger, and place Black from 2 edges. Nominate a model to carry out this Quest."
   },
   {
     "name": "A Legend Returns Part 2",
-    "frontText": "AN)\n$EN aczozho RETURNS: Part2\nS Alex has heard it wasn't grave robbers\nbut the Brotherhood of Steel.\n“I heard the weapon was in a crate being sent to Cambridge\nPolice Station, but the Brotherhood squad escorting if never\narrived so the crate must still be out there.”\nAll Alex can give you is the route along which they were\ntravelling — maybe check along there.",
-    "backTitle": "Gort) FIAT TIE POAT",
-    "backText": "NY ON CUKATE “r\nPlace a marker Black from battlefield edge furthest from your\n: deployment. This is a crate. To open the crate, cause 2 damage\n: total - it has 2. When open: Roll @& !\n\"If result equal to or less than total number of crates opened\n: so far: Go fo Part 3.\nOtherwise: Gain 47 @. Repeat Part 2 fo open another crate."
+    "frontText": "Alex has heard it wasn't grave robbers but the Brotherhood of Steel.",
+    "backTitle": "FIND THE CRATE",
+    "backText": "Place a marker Black from battlefield edge furthest from your deployment. This is a crate. To open the crate, cause 2 damage total - it has 2. When open: Roll a pentagon"
   },
   {
     "name": "Getting Technical",
-    "frontText": "7A)\n$EN csrrene rechmicat\nS\nQuinlan says he needs technical documents. He doesn’t\nelaborate why the Brotherhood of Steel need them.\nJust whether you want the task or not.",
-    "backTitle": "Ga) ; 7) = 7 y's >Y",
-    "backText": "REZORTINEIVE =\n1 During set-up, place 1 additional blank (=\nnext to each of the first four (= placed. i\n¢ The first time you sucessfully (©) each blank Searchable, you x\n~ find Technical Documents and gain 10 (C] athattleend.\n: Quest can be repeated. :\n: . RE se"
+    "frontText": "Quinlan says he needs technical documents. He doesn't elaborate why the Brotherhood of Steel need them. Just whether you want the task or not.",
+    "backTitle": "REPORTING IN",
+    "backText": "During set-up, place 1 additional blank next to each of the first four placed."
   },
   {
     "name": "Grognak The Barbarian #10",
-    "frontText": "#8 GROGHAK:\niE) THE BARBARIAN £70\n“ENS\n=\nSS\nI'm not sure | ever read this issue. #10 What Sorcery This?\"\nGives me some ideas for next time we enter combat.\n| bet a collector may buy it — once I've perfected\nGrognak's feat.",
-    "backTitle": "2 CA PEREIRIED",
-    "backText": "ok A\n3 As Grognak: #1 Performed above. a\ni Nem ade ae oo oh SRE daamse ue RE a 1 E"
+    "frontText": "I'm not sure I ever read this issue. '#10 What Sorcery This?'. Gives me some ideas for next time we enter combat. I bet a collector may buy it – once I've perfected Grognak's feat.",
+    "backTitle": "GROGNAK: #10 PERFORMED",
+    "backText": "As Grognak: #1 Performed above."
   },
   {
     "name": "Sleeper Virus",
-    "frontText": "=\n$0N  seeepsr vmos\n=\n=)\n“Don’t worry, the virus can’t harm you. It's targeted only af the\nFeral Ghouls. You don't have any Feral friends, right?!\nNeeds to spread fo be effective though. Seeing as you travel\n- will you be my vector?” Victor seemed a bit crazy, but then\nwhich scientists didn't these days?",
-    "backTitle": "Gary) pry IVY »~ ay wy i/,",
-    "backText": "GERI OHIO I\n~ Choose one model fo start as infected — must start Blue from all\nfriendly models. An infected model infects all models with which\n: they are base-to-base when they perform any action. : ;\n~ If 2/3 of the enemy models (rounded-up) are infected by the\n~ end of the battle, Victor gives you a special pill. Next batile,\nwhen Readying a model, Ready 1 additional model (once only)."
+    "frontText": "\"Don't worry, the virus can't harm you. It's targeted only at the Feral Ghouls. You don't have any Feral friends, right?! Needs to spread to be effective though. Seeing as you travel - will you be my vector?\" Victor seemed a bit crazy, but then which scientists didn't these days?",
+    "backTitle": "GERMIFICATION",
+    "backText": "Choose one model to start as infected — must start Blue from all friendly models. An infected model infects all models with which they are base-to-base when they perform any action."
   },
   {
     "name": "Adams Menagerie Part 2",
-    "frontText": "& \\\nFN aoan's menaserte: Part2\n——.\n“Do a couple more jobs for me and I'l reward you.\nThe rare Black Bloatfly are about fo hatch. Blink and you'll\nmiss if, so grab them before they fly away.\n\nDon't worry, they're finy - and I'm pretiy sure they're\nharmless when hatched, or is that Blood Bugs...\nAnyway, here are some specimen traps. Off you go.”\n©2020 Bethesda Softworks LLC, a ZeniMax Media company. All Rights Reserved.",
-    "backTitle": "[re # NS FLL 7) [Fis",
-    "backText": "FLY TRAP\nsT-Up; Roll @\n~~ During the round number shown on the dice and the round\nafterwards, unengaged models wep (7) may spend\n~uctions to Test Aet, which count as a Use Expertise Action for\nTriggers. For each Success, gain 1 {2\nIf you possess 5 {2 at game end: Go fo Part 3."
+    "frontText": "\"Do a couple more jobs for me and I'll reward you. The rare Black Bloatfly are about to hatch. Blink and you'll miss it, so grab them before they fly away.",
+    "backTitle": "FLY TRAP",
+    "backText": "SET-UP: Roll 5"
   },
   {
     "name": "Tools Of War Part 1",
-    "frontText": "AN)\n$2N  ro0es0F WAR: Part\nS\nIt was rumoured to be too good, too efficient, and foo\nunreasonable. Still, someone would probably buy it.\nThe Assaultron prototype had been disassembled and\nsupposedly melted down, but the record in the Robotics\nDisposal Grounds terminal shows the parts were sent to be\ndumped elsewhere.",
-    "backTitle": "Git ; f.2 4% © 117 ph W/V",
-    "backText": "(Fe WIiTAT OI WAIVT A I\n~ Spread the 3 Assaultron models on the battlefield at least\n~ Bluefrom the edges. These models represent where parts\n: may be. Spend an action to test ST while === with an 4\n: Assauliron model: “3\nA Flip 9. 1f Bo shows you have found one :\n5 Assaultron part. Repeat part 1, or go to Part 2. :\nae a I EE a x am"
+    "frontText": "It was rumoured to be too good, too efficient, and too unreasonable. Still, someone would probably buy it. The Assaultron prototype had been disassembled and supposedly melted down, but the record in the Robotics Disposal Grounds terminal shows the parts were sent to be dumped elsewhere.",
+    "backTitle": "THIS IS WHAT YOU WANT",
+    "backText": "Spread the 3 Assaultron models on the battlefield at least Blue from the edges. These models represent where parts may be. Spend an action to test STR while → with an Assaultron model:"
   },
   {
     "name": "Calling All Stations",
-    "frontText": "$EN cacums awe stanous\nRS. or years, Richard Clark tended\n> the small satellite array in this area.\nWhilst nof as large as some arrays, if was still in decent\ncondition. Richard thinks he's found the original signal\nboosters which could double the array’s comms range.\nThey're a bit temperamental and must be switched on\nin unison fo be synchronized.\nHe's got loads of spare junk for you if you can,\n©2020 Bethesda Softworks LLC, a ZeniMax Media company. All Rights Reserved.",
-    "backTitle": "(eTART) TN , Py yyy 7) J 1) = 7 i",
-    "backText": "(Che BOOSTIHEPOWER\nPAY, 2 |\nset-up: Place 3 (3 around one piece of ferrain\nwhich blocks LoS, at least Black from your deployed models,\nand at least Green rom each other. These are the devices.\n== with all 3 motors in the same turn to switch them ON.\nIf ON and a Flip Event is resolved, all motors switch off.\nIf all are ON at end of the battle: it comes to life.\nGain 3 Junk."
+    "frontText": "For years, Richard Clark tended the small satellite array in this area. Whilst not as large as some arrays, it was still in decent condition. Richard thinks he's found the original signal boosters which could double the array's comms range. They're a bit temperamental and must be switched on in unison to be synchronized.",
+    "backTitle": "BOOST THE POWER",
+    "backText": "SET-UP: Place 3 C around one piece of terrain which blocks LoS, at least Black from your deployed models, and at least Green from each other. These are the devices."
   },
   {
     "name": "Capturing Memories",
-    "frontText": "Po\n$I carrumine memories\n—\nSs)\n\nTurns out that the camera you found recently actually\nstill works. A photo of the team in action would really\nboost team spirit.\n©2019 Bethesda Softworks LLC, a ZeniMax Media company. All Rights Reserved.",
-    "backTitle": "Gm) LR) A972) 4) ry rir nr m",
-    "backText": "(k= eA CRIVEEOTD), oe\n~ Equip 1 model with Undamaged Camera ltem (for free). From\nstart of Round 3, an unengaged model may take a photo with\n~~ the camera (no action required) when at least half of your\n* starting models (exdude camera user) are all within Yellow of\neach other and in LoS up to Yellow from the camera user.\nPhoto faken: Draw 2 Boosts for next battle (3 if Leader in photo)"
+    "frontText": "Turns out that the camera you found recently actually still works. A photo of the team in action would really boost team spirit.",
+    "backTitle": "Group Photo",
+    "backText": "Equip 1 model with Undamaged Camera Item (for free). From start of Round 3, an unengaged model may take a photo with the camera (no action required) when at least half of your starting models (exclude camera user) are all within Yellow of each other and in LoS up to Yellow from the camera user."
   },
   {
     "name": "Giddyup Buttercup Part 1",
-    "frontText": "A\nAE GIDDY BUTTERCUP: Part\n\n\\ Ne\n\nS\n“A complete Giddyup Buttercup is one thing, but a working\none?! Now *that* is rare. Well, I say working — it snorfs, it\nros, but it also seems to have gone a bit haywire and has\ngalloped off. Could you track it down and bring it back?”",
-    "backTitle": "GIR oN NT ~ THNTE",
-    "backText": "HESTYUKI SHE gr Te\nCVA. 24\nPlace 4 face-up furthest from your models and Yellow\n: from battlefield edge. The token is the Giddyup\n: Buttercup. End of each round: Move it Blue in scatter\n: direction (and follow battlefield edge if needed).\nIf one of your models ends an action within Orange of\nGiddyup Buttercup (not Quick Actions), test Al.\n% If successful, you grab it - Go to Part 2."
+    "frontText": "\"A complete Giddyup Buttercup is one thing, but a working one?! Now *that* is rare. Well, I say working – it snorts, it trots, but it also seems to have gone a bit haywire and has galloped off. Could you track it down and bring it back?\"",
+    "backTitle": "HE SNORTS, HE TROTS",
+    "backText": "Place 6 face-up furthest from your models and Yellow from battlefield edge. The token is the Giddyup Buttercup. End of each round: Move it Blue in scatter direction (and follow battlefield edge if needed)."
   },
   {
     "name": "Gifts From Above",
-    "frontText": "=\n$2N curre From asovE\n=\nSS\nThe Brotherhood signal lights for their airborne supply drops were\neasy enough to set-up. They just needed laying out correctly and\nin a location along one of the days transport routes. A supply\nVertibird should be overhead this area very soon.",
-    "backTitle": "Guar) i 0 WZ, / 4 » — Vs -~",
-    "backText": "GPE THZ SUPPLIES BP\n< go.\n~ ser-upz Nominate one model in your force to place the\nsignalling lights. Give that model 3 counting tokens.\n~~ After an action, model can place 1 token. At end of round, if\n~ 3 tokens have heen placed in a triangle (each at least Yellow,\n~ but not more than Red, from the others), place 3 crates within\n~ the triangle - you place two, your opponent places the other.\nx “= with a crate to draw 2 lems (once per crate)."
+    "frontText": "The Brotherhood signal lights for their airborne supply drops were easy enough to set-up. They just needed laying out correctly and in a location along one of the day's transport routes. A supply Vertibird should be overhead this area very soon.",
+    "backTitle": "OPEN THE SUPPLIES",
+    "backText": "SET-UP: Nominate one model in your force to place the signalling lights. Give that model 3 counting tokens."
   },
   {
     "name": "A Bet's A Bet",
-    "frontText": "AN)\nEN qzercaqser\nSO\nSS\nThe bet was you couldn't take someone on your next\nouting who would only use a knife and not get killed.\nIt was going fo be interesting — for them anyway. ..",
-    "backTitle": "GIL Oy ~-yv 4 -— - -",
-    "backText": "(HoglD, 22232 (0 £52255 =\n=\nEquip one model with just the default improvised weapon.\nIf the model survives the battle and landed at least one\nattack that caused damage to a non-friendly model,\ngain 80 {&) reward."
+    "frontText": "The bet was you couldn't take someone on your next outing who would only use a knife and not get killed. It was going to be interesting — for them anyway. . .",
+    "backTitle": "CLOSE TO THE EDGE",
+    "backText": "Equip one model with just the default improvised weapon. If the model survives the battle and landed at least one attack that caused damage to a non-friendly model, gain 80 caps reward."
   },
   {
     "name": "A Sting In The Tale",
-    "frontText": "BN  smewmene\nGi\nEN\nAN\n=\nSD\nCarefully extracted, Radscorpion venom can remain deadly.\nSET-UP: Place a Radscorpion model Red from battlefield centre. It is a\ndead Radscorpion. to test INT:\nAfter battle, flip ® #8 gain Venomous Mod 4; otherwise,\nsample is contaminated. Quest is repeatable.",
-    "backTitle": "£% VENOMOUS 8",
-    "backText": "N)\nWhen weapon causes damage, adds he @® 6\nAdds (1 if weapon does not roll one already.\nDiscard after first time it poisons a model."
+    "frontText": "Carefully extracted, Radscorpion venom can remain deadly.",
+    "backTitle": "VENOMOUS",
+    "backText": "When weapon causes damage, adds 1"
   },
   {
     "name": "Grognak The Barbarian #1",
-    "frontText": "$5 EROGHAK:\nVy THE BARBARIAN #7\nEN\n=\n=)\nGrognak. Issue 1. Blood on the Harp. | used to love these\nstories! | wonder if his moves are possible. | could try and\nimitate them. Maybe that move in which he grabs someone\nby the feet and throws them against another enemy?",
-    "backTitle": "Gang) GRU GIANT",
-    "backText": "[| DDT) DIL) [Fis\n\\ 9 ® VZEREUKIIED)\nDraw 1 Practiced Boost. Any model may use the Boost.\nTo ssucceed, use the Boost within Yellow of opposing model.\nThen, after battle or later, you may sell this comic. Total ~~~\n~ value based on number of different issues you sell together. -\ncL@@ 20@ 10 406\nIfyou do not succeed, draw a new Boost on next attempt."
+    "frontText": "Grognak. Issue 1. Blood on the Harp. I used to love these stories! I wonder if his moves are possible. I could try and imitate them. Maybe that move in which he grabs someone by the feet and throws them against another enemy?",
+    "backTitle": "GROGNAK: #1 PERFORMED",
+    "backText": "Draw 1 Practiced Boost. Any model may use the Boost. To succeed, use the Boost within Yellow of opposing model. Then, after battle or later, you may sell this comic. Total value based on number of different issues you sell together."
   },
   {
     "name": "Caravan Cheat",
-    "frontText": "=)\n[1 ) CARAVAN CHEAT\n\n5S\n\n(XC\n-\n=\n\n“They cheated me. | swear they were using a concealed extra deck and\n\nthey stashed it around here near where we played. | can't see it. I've got to\nknow. Can you find it for me?”\nWEA TW TRO RE DP DOT PUR DR Ne AT Nl A NRE RET (SVR",
-    "backTitle": "A",
-    "backText": "Ge) ACE THE APE\n(1 ogler, CHASETHEACE:\nSET-UP: Mix 4 Searchables (3 blank and 1letter) and scatter them Blue\nfrom center of the battlefield.\n=p re)\n<== with these (= to Test £2) and reveal only if successful. (Does\nnot require an action.)\nAt end of battle, if you revealed the token with the number: “I knew it!\nHere, why don't you have these. | won't be playing again.” Gain Caravan\nCard Deck Item.\n© 4"
+    "frontText": "\"They cheated me. I swear they were using a concealed extra deck and they stashed it around here near where we played. I can't see it. I've got to know. Can you find it for me?\"",
+    "backTitle": "CHASE THE ACE",
+    "backText": "SET-UP: Mix 4 Searchables (3 blank and 1 letter) and scatter them Blue from center of the battlefield."
   },
   {
     "name": "The Thief's Trail Part 2A",
-    "frontText": "=\n42) THE THIEE'S TRAN: Part 2a\n=\n=)\nYour information leads you to a secluded location.\nThe gas canisters must be here somewhere.\nFind and retrieve the cannisters.",
-    "backTitle": "GIN DL OME EDT",
-    "backText": "(1 ot? 2 V/ASHERESONEW 7EKET T=\n.\n~ Add a lettered (= during set-up which is the gas cannisters.\nYou succeed if one of your surviving models is carrying the\n: cannisters at the end of the battle.\n~ If successful, pick a structure in your settlement. If can now\n: be used twice each time you use your settlement.\nOtherwise, repeat Part 2a.\na PT EY Sg rae TC =e =u"
+    "frontText": "Your information leads you to a secluded location. The gas canisters must be here somewhere. Find and retrieve the canisters.",
+    "backTitle": "IT'S HERE SOMEWHERE",
+    "backText": "Add a lettered briefcase during set-up which is the gas canisters. You succeed if one of your surviving models is carrying the canisters at the end of the battle."
   },
   {
     "name": "Robotics Engineer",
-    "frontText": "ZA\nAER ROBOTICS ENGINEER\nSS\n“Test Synth J287 exploded around here somewhere.\nThere's one part | need a photo of, but it’s under\ndevelopment so | can't tell you any details about it.\nJust take a photo of each piece you find, and hopefully\nyou'll cover it. Be quick though, they'll be of no use if you\nor anyone else contaminates the scene beforehand.”",
-    "backTitle": "GIN 7) = z, NEVE VES LL? TT",
-    "backText": "Mec ViEAZEE RP\nae\n£5\nG During Set-up: Scatter 4 @) Green from center of\n~ hatilefield. If any model ends an action within Orange and\nLoS of atoken, discard it. If one of your models ends an ~~\n~ adion within Yellow and LoS of a token, place it on this card.\nAfter battle: Roll ER. If result equal to or less than total\n@ collected, draw 2 Robot Mods."
+    "frontText": "\"Test Synth J287 exploded around here somewhere. There's one part I need a photo of, but it's under development so I can't tell you any details about it. Just take a photo of each piece you find, and hopefully you'll cover it. Be quick though, they'll be of no use if you or anyone else contaminates the scene beforehand.\"",
+    "backTitle": "RECORDING THE PIECES",
+    "backText": "During Set-up: Scatter 4 Green from center of battlefield. If any model ends an action within Orange and LoS of a token, discard it. If one of your models ends an action within Yellow and LoS of a token, place it on this card."
   },
   {
     "name": "Escort The Witness Part 1",
-    "frontText": "[ ESCORT THE WITHESS:\nWE, Part?\nea\ni\n=)\nThe Raider ambush that wiped out the Gunner's convoy was\nbrutal and flawless, except for the accidental witness — Lowe,\nwho had been researching mirelurk colonies nearby. The\nGunner's boss wants a word with Lowe to discover who needs\na ‘visit’ from the Gunners. You are fo escort Lowe fo camp.",
-    "backTitle": "GINS - —7) pr) =- YN EC",
-    "backText": "15: @s DELIVERIIEWIIN ESS TD\n9 al\nf  @6 ®i1 53\nDeploy Lowe (model or token) with your force.\nLowe activates immediately after your Leader (no ©\n~ required). Actions only Move to where friendly is within Red\n~~ and LoS (or off battlefield). If Lowe exits side opposite to\n: deployment, go to Part 2a; otherwise, Part 2b."
+    "frontText": "The Raider ambush that wiped out the Gunner's convoy was brutal and flawless, except for the accidental witness – Lowe, who had been researching mirelurk colonies nearby. The Gunner's boss wants a word with Lowe to discover who needs a 'visit' from the Gunners. You are to escort Lowe to camp.",
+    "backTitle": "DELIVER THE WITNESS",
+    "backText": "Deploy Lowe (model or token) with your force."
   },
   {
     "name": "Tactical Analysis",
-    "frontText": "==\n$IN  mcricae anaerses\nwl\n=)\n\nNew tactics and knowledge about others is a valuable\ncommodity in the Wasteland. The quarry workers asked\nyou for combat training only yesterday. Observing this\n\ngroup's tactics could prove a useful source of information.",
-    "backTitle": "Grn) Y OI pA) a pam) 4",
-    "backText": "HIVALY SVG I 1TCEYEVTV 4 “\n~ Each activation, an Elevated model with LoS to an opponent's\n1 model may test Per once to study their facics:\n~~ umheR Keep the insight and gain 1 Boost card for next\n~~ baile or Sell the info and gain 38 (C]\nEach model can succeed a maximum of once each during\nthe battle. Multiple models may succeed during the battle."
+    "frontText": "New tactics and knowledge about others is a valuable commodity in the Wasteland. The quarry workers asked you for combat training only yesterday. Observing this group's tactics could prove a useful source of information.",
+    "backTitle": "ANALYSING THE ENEMY",
+    "backText": "Each activation, an Elevated model with LoS to an opponent's model may test PER once to study their tactics:"
   },
   {
     "name": "USS Constitution Part 2",
-    "frontText": "1) USS CONSTITUTION: Part 2\nSS\n“You have our thanks. Accept this in return for your\ndedication to duty. Prepare to disembark.” - Captain Ironsides\nGain Broadsider",
-    "backTitle": "BROADSIDER ®",
-    "backText": "eo 0 HEE\neaox BE\n® BE | J\n-. ER ETT Ce aa"
+    "frontText": "\"You have our thanks. Accept this in return for your dedication to duty. Prepare to disembark.\" - Captain Ironsides",
+    "backTitle": "BROADSIDER",
+    "backText": "Gain Broadsider"
   },
   {
     "name": "Revenge Part 1",
-    "frontText": "=\n$0N  rsvewee: Part\nS\nThe empty mutfruit fields signalled trouble even before you\nreached your settlement. A rival gang attacked and\nyour brother was killed. Now they will pay.",
-    "backTitle": "GTaRT) 07) THE ro",
-    "backText": "(FoR WASTER\n’ :\n~ First, you need names. Test Cha when enemy leader is\n~ within (@®) of any of your models. You can only make this\ntest once per hatile. 3\n¢ + Goto Part 2\n~ XX (Can not fry again this battle. Repeat Part 1 :\ni I RE ae am"
+    "frontText": "The empty mutfruit fields signalled trouble even before you reached your settlement. A rival gang attacked and your brother was killed. Now they will pay.",
+    "backTitle": "WHO WAS THE KILLER?",
+    "backText": "First, you need names. Test CHA when enemy leader is within range of any of your models. You can only make this test once per battle."
   },
   {
     "name": "Dead Drop",
-    "frontText": "oy\n9) DEAD DROP\n&S\nYour contact has been providing excellent information.\nYou still have no idea who they are but they certainly seem\non your side and keep placing information for you in a dead\ndrop hidden amongst these barricades.\n©2019 Bethesda Softworks LLC, a ZeniMax Media company. All Rights Reserved.",
-    "backTitle": "Gngr] TED TUL INTL)",
-    "backText": "CATER EA\n~~ sr up: Place Military Barricades on the battlefield and\n: place 1 @ next to each.\n~~ When == vith Military Barricade, remove (& nextto\n; the barricade to test Pe. ~~\n~~ +/ Draw 1 Boost for next battle for each piece of\ninformation found (max. 3)."
+    "frontText": "Your contact has been providing excellent information. You still have no idea who they are but they certainly seem on your side and keep placing information for you in a dead drop hidden amongst these barricades.",
+    "backTitle": "GATHER THE INTEL",
+    "backText": "SET UP: Place Military Barricades on the battlefield and place 1 caps next to each."
   },
   {
     "name": "Elusive Pet",
-    "frontText": "oy\n9) ELUSIVE PET\n&S\n“My son's pet mole rat ran off and now he can’t catch it in\nthe tunnels it's made. | know it may not be everyones first\nchoice of pet but they really do have a connection, especially\nsince his mother... well, y'know. Help catch him, will ya?”\n©2019 Bethesda Softworks LLC, a ZeniMax Media company. All Rights Reserved.",
-    "backTitle": "GIT DAL NN) DD",
-    "backText": "GRIEF IIE Ta\n~ ser up: Place Investigation Markers face-up showing numbers\n1-4 on the battlefield, each one Green from two others and at\n$ least Black from all edges.\n~~ End of each round: Roll @. If one of your models is\n~ unengaged and with Orange of the marker dil\n: number rolled, they grab the Mole Rat. Gain 1 ¢¢\n§ or 28 2 3"
+    "frontText": "\"My son's pet mole rat ran off and now he can't catch it in the tunnels it's made. I know it may not be everyone's first choice of pet but they really do have a connection, especially since his mother... well, y'know. Help catch him, will ya?\"",
+    "backTitle": "GRAB-A-MOLE-RAT",
+    "backText": "SET UP: Place Investigation Markers face-up showing numbers 1-4 on the battlefield, each one Green from two others and at least Black from all edges."
   },
   {
     "name": "Buried Treasure Part 1",
-    "frontText": "AN)\n[12 BURIED TREASURES: Part 1\nSS\nThese lands, now covered by a thick layer of rubble, dust\nand radioactive waste, hide the remnants of a fifty-years old\nsettlement that ran for a long time, welcoming merchants\nand fravellers from all across the Wasteland.",
-    "backTitle": "GINS Pr NT Ti5E- PY KL",
-    "backText": "Tapers VICOUSI SEHR) Te\nYY 2\n~ Ayo “your models can spend an action to Use CO) while\ninteracting with any piece of terrain at least Red from all\n3 battlefield edges. :\n© / Flip 98 then ener Draw 1) Item and you may\n: repeat this Quest or if 858 showing, you may discard\n| Item and go to Part 2 instead.\n§ VR PT EY Sg rae TC i =u"
+    "frontText": "These lands, now covered by a thick layer of rubble, dust and radioactive waste, hide the remnants of a fifty-years old settlement that ran for a long time, welcoming merchants and travellers from all across the Wasteland.",
+    "backTitle": "BENEATH THE DUST SEA",
+    "backText": "Any of your models can spend an action to Use 🔍 while interacting with any piece of terrain at least Red from all battlefield edges."
   },
   {
     "name": "The Secret Elixir Part 1",
-    "frontText": "AN)\nAh THE SECRET ELIXIR: Part 1\n=\n=)\n\n“A Nuka-Cola Corporation field office used to be located\naround here. | believe a cooler in there has ingredients that\ncould help me figure out how to make my own Nuka-Cola, but\nsome creatures have nested on top of it.”\n\nMake your own Nuka-Cola? Harris didn’t seem crazy so\nmaybe there was something to her idea.",
-    "backTitle": "NDILIELODLERS =",
-    "backText": "$ SE1-105 Boch a Searchable Black from two battlefield\nedges — this is the expected location of the cooler.\n; “— Draw a Creature card and Test Luc: -\n} + Gain Cooler and add (7: 1% the time if fakes. pe\n~ X Move the marker Yellowin a random direction.\nIf cooler gained, got to Part 2. :\nCl RCT Tees ey aah a -"
+    "frontText": "\"A Nuka-Cola Corporation field office used to be located around here. I believe a cooler in there has ingredients that could help me figure out how to make my own Nuka-Cola, but some creatures have nested on top of it.\"",
+    "backTitle": "FIND THE COOLER",
+    "backText": "SET-UP: Place a Searchable Black from two battlefield edges — this is the expected location of the cooler."
   },
   {
     "name": "Bounty",
-    "frontText": "=\nAN sour\n-\nSS\nSee that one over there? Hard to believe\nthey're a synth, right? There's a reward on their head.",
-    "backTitle": "COLLET RT HESEDUNTV 2 T",
-    "backText": "~The model that costs the most points on the opposing side is ;\n3 the synth. If you deal the damage that removes the model,\nk gaina75 C] reward.\nOTR Le SR ST EL RAN"
+    "frontText": "See that one over there? Hard to believe they're a synth, right? There's a reward on their head.",
+    "backTitle": "COLLECT THE BOUNTY",
+    "backText": "The model that costs the most points on the opposing side is the synth. If you deal the damage that removes the model, gain a 75 caps reward."
   },
   {
     "name": "The Insider",
-    "frontText": "ZW\n[3 THE INSIDER\n&S\nSee that one? That's our contact on the inside.\n\nThey've been leaking this gang's information to us about\n\nanother rival group in the area. Try not fo kill them.\nIt gives us an edge fo exploit.\n©2019 Bethesda Softworks LLC, a ZeniMax Media company. All Rights Reserved.",
-    "backTitle": "TTR NE ETH EEE",
-    "backText": "oer, 22472 7/20] 22 Ts\n2 =\n~ ser up: Write down name (and pose if not unique) of an\n| opponent's model. This is the Insider.\n~~ eno of BammiE: If Insider is not removed due fo zero health, add\n- (Consequence next battle (Quest can be repeated).If Insider is\nremoved due fo zero health, Quest can never be repeated.\nconszavence May immediately Ready 1 of your models."
+    "frontText": "See that one? That's our contact on the inside. They've been leaking this gang's information to us about another rival group in the area. Try not to kill them. It gives us an edge to exploit.",
+    "backTitle": "Leave Them Be",
+    "backText": "SET UP: Write down name (and pose if not unique) of an opponent's model. This is the Insider."
   },
   {
     "name": "Adams Menagerie Part 1",
-    "frontText": "FEN won 's emaGEREE: Part\n(=)\n~~ &, Youapproach the wagons of a travelling\ncreature show. “When will | remember?! Lock the gate *before™\nremoving the Domestication Unit for repairs! Hey, you!\nMy Deathdaw ran off before | could stort controlling it.\nDon't make that face, it's quite passive. Could you herd it back?\nThe show starts at 61”\nDo not fell your opponent this Quest's details until complete.\n©2020 Bethesda Softworks LLC, a ZeniMax Media company. All Rights Reserved.",
-    "backTitle": "6 DEATHEAWROIND=OP ==",
-    "backText": "WL\nset-up: Place Deathclaw in center of battlefield, and {2\non the batilefield edge in your deployment zone.\nEach attack by any model within Yellow of the Deathclaw\nmoves the Deathclaw Yellow directly away from that model.\nEnd of round, scatter Deathdaw Yellow. If it suffers 4 damage,\nit runs off - Repeat Part 1. If Deathclaw within Yellow of\n{8 ) at any time, remove Deathelaw. Go to Part 2"
+    "frontText": "You approach the wagons of a travelling creature show. \"When will I remember?! Lock the gate *before* removing the Domestication Unit for repairs! Hey, you! My Deathclaw ran off before I could start controlling it. Don't make that face, it's quite passive. Could you herd it back? The show starts at 6!\"",
+    "backTitle": "DEATHCLAW ROUND-UP",
+    "backText": "SET-UP: Place Deathclaw in center of battlefield, and on the battlefield edge in your deployment zone."
   },
   {
     "name": "The Collector",
-    "frontText": "AN)\n$0N  mecowecror\na\n&D i:\nAfter years poring over reams of paperwork and computer\nlogs across the Commonwealth, Winifred believes the\nultimate collectible — the one unaccounted-for, gold-labelled\nNuka-cola Quantum that was part of Nuka-cola’s 25-year\ncelebration — was delivered to a machine in this area. It must\nhave got stuck inside.",
-    "backTitle": "WSL",
-    "backText": "ja <j; B\ngo.\n~ ser-up: Include 4 Nuka-cola machines in the terrain and\nset aside 1 Nuka-cola Quantum Item card.\n: Use ® while === with a Nuka-cola machine:\n~/ Machine can not be Searched again. Rol If result\n~~ equal to or less than total machines successfully Searched,\n: you find the collectible. Gain 1 Nuka-cola Quantum. If you\ndo not use it, Winifred rewards you with 230 C]"
+    "frontText": "After years poring over reams of paperwork and computer logs across the Commonwealth, Winnifred believes the ultimate collectible – the one unaccounted-for, gold-labelled Nuka-cola Quantum that was part of Nuka-cola's 25-year celebration – was delivered to a machine in this area. It must have got stuck inside.",
+    "backTitle": "COLLECT THE COLLECTIBLE",
+    "backText": "SET-UP: Include 4 Nuka-cola machines in the terrain and set aside 1 Nuka-cola Quantum item card."
   },
   {
     "name": "Revenge Part 3",
-    "frontText": "=\n$EN  rsvENGE: Parts\nSS There they are. ..\nThe enemy model worth the most caps is the killer.\nIf you cause the damage that removes the killer model,\nyou reclaim your brother's pistol.\nGain Indy's Freezing .44 S]",
-    "backTitle": "bo ; INDY'S FREEZING 44",
-    "backText": "a_i ie oA\nNoo EEE\nx a fed\nRE | oR\ni - - at ae dL oa cand HR ok im “ eed"
+    "frontText": "There they are...",
+    "backTitle": "INDY'S FREEZING .44",
+    "backText": "!3"
   },
   {
     "name": "Nick Valentine Part 3",
-    "frontText": "oy\n9) NICK VALENTINE: Part 3\n&)\n\nA search of the camp in the storm drain reveals a scuffle.\n\nThe camp was for one person and the gang members’ wounds\nfrom close-up gunshots — Hal was jumped but got lucky.\nTracks lead toward the ruins of a building. Hal is inside\nclutching a pistol — in shock, nervous like a frightened\n\nanimal, and unpredictable. You need to win his frust.",
-    "backTitle": "Gram) 7) - 2) 2,0 z y",
-    "backText": "yuaica KEASSUKAIN ES I\n2 (Yh 2)\nPlace H )face-up by wall nearest battlefield center. A friendly\n~~ model ending ifs activation without attacking between Red and\n: Yellow and in LoS of the token may test CHa:\n~/ Your Settlement gains a Brahmin Ranch,\n~~ X Hal fires wildly and runs off. Resolve \") 2\nRemove token after CHA test. Repeat Quest if failed.\n_ Auto-fail if friendly model moves within Yellow of token. :"
+    "frontText": "A search of the camp in the storm drain reveals a scuffle. The camp was for one person and the gang members' wounds from close-up gunshots — Hal was jumped but got lucky.",
+    "backTitle": "CAREFUL REASSURANCE",
+    "backText": "Place H face-up by wall nearest battlefield center. A friendly model ending its activation without attacking between Red and Yellow and in LoS of the token may test Cha:"
   },
   {
     "name": "A Legend Returns Part 1",
-    "frontText": "AN)\n$EN aczezho RETURNS: Part 1\nS Rock was a legendary\nSuper Mutant Overlord who went on a journey of discovery\nand found enlightenment. Enlightenment being the name\nhe gave to a big shotgun he gained in the Glowing Sea.\nIt was buried with him but rumors are circulating that it has\nbeen seen in the wasteland. You've heard a local may have\ninformation about it.",
-    "backTitle": "GrART] VAIL) ) 7,",
-    "backText": "ee:  USLY IER JAZ UAV\n<\nser-up: Add marker Red from centre of battlefield.\nThis is a Local. Only you can interact with the local.\n“= with Local and Use @®)\n+ Goto Part 2."
+    "frontText": "Rock was a legendary Super Mutant Overlord who went on a journey of discovery and found enlightenment. Enlightenment being the name he gave to a big shotgun he gained in the Glowing Sea. It was buried with him but rumors are circulating that it has been seen in the wasteland. You've heard a local may have information about it.",
+    "backTitle": "DISCOVER THE RUMOR",
+    "backText": "SET-UP: Add marker Red from centre of battlefield. This is a Local. Only you can interact with the local."
   },
   {
     "name": "Karma Incoming",
-    "frontText": ">\nFEN warma mcomne\n>\n0h no. Why them? Here. A few days ago, you were\n‘borrowing’ supplies from a camp when the owner came\nback. You managed to get away but they swore they'd\nhave their revenge if they ever saw you again.\nIf you can avoid them now — hopefully — they ll forget\nyour face over fime.\n©2020 Bethesda Softworks LLC, a ZeniMax Media company. All Rights Reserved",
-    "backTitle": "GIT pi - 1 ATI =",
-    "backText": "(C6 HIPDENIDENTITY,\nser-up: Have your opponent nominate one of your models\n{not %) / 2) @) )— do not explain why.\nIf the nominated model starts or ends any action within Black\n~ and LoS of the unengaged opposing Leader, the Quest fails.\nIf not foiled by battle end: Gain 120 C} from selling\nwhat you took. If failed, destroy your settlements largest\ngenerator. Quest cannot be re-atfempted."
+    "frontText": "Oh no. Why them? Here. A few days ago, you were 'borrowing' supplies from a camp when the owner came back. You managed to get away but they swore they'd have their revenge if they ever saw you again. If you can avoid them now – hopefully – they'll forget your face over time.",
+    "backTitle": "HIDDEN IDENTITY",
+    "backText": "SET-UP: Have your opponent nominate one of your models (not / / ) – do not explain why."
   },
   {
     "name": "Tools Of War Part 2",
-    "frontText": "= :\n$0N mower nak: Part 2\ni\nS\n“I know it needs testing before selling it, but really?\nYou think it'll work... like that? You sure we don't need\nmore parts? And | mean a lof more parts.”",
-    "backTitle": "Gang) 2170 IATL ~—",
-    "backText": "(allt £3 LUE 100 34\n< go.\n~~ ser-up: Include 1 Assaultron model in your force at no cost.\nAssaultron not usable until == to begin test: Roll @\nResult equal fo or less than total number of Assauliron paris\n~ collected so far: It fits and sparks but will run for 2 rounds only. -\n; You choose which rounds. After, sell it for 397 C]\nOtherwise: Catastrophic failure.\nPrototype is now junk — sell for 206 (C}"
+    "frontText": "\"I know it needs testing before selling it, but really? You think it'll work... like that? You sure we don't need more parts? And I mean a lot more parts.\"",
+    "backTitle": "THIS IS WHAT YOU GET",
+    "backText": "SET-UP: Include 1 Assaultron model in your force at no cost. Assaultron not usable until ⇨ to begin test: Roll ⬠"
   },
   {
     "name": "The Lost Station Part 2",
-    "frontText": "$2N rvecosT sramon: Part 2\n&S\nNow you know the frequency, you can adjust a radio\n: beacon to transmit the radio station locally.",
-    "backTitle": "RN BRINE TUE CIENT DIATE",
-    "backText": "(FSR V17CSVIVA CH UME “v\n~ Have your opponent place a (=) within Yellow of the centre\nof the battlefield — they are not told why. After placing, tell your\n: opponent this is a radio beacon and counts as cover. !\n% Test INT while === with the beacon:\nYo Relay installed. The music energises your team. Add (a\n: to 2 different models at start of next hattle."
+    "frontText": "Now you know the frequency, you can adjust a radio beacon to transmit the radio station locally.",
+    "backTitle": "BRING THE SIGNAL HOME",
+    "backText": "Have your opponent place a radio beacon within Yellow of the centre of the battlefield – they are not told why. After placing, tell your opponent this is a radio beacon and counts as cover."
   },
   {
     "name": "Artificial Insanity Part 2",
-    "frontText": "Fo Zn\nFON armrrcaae ansanery: part 2\n)\n=)\n\nCombining the message fragments reveals a hidden entry:\nFrom: Steed. | discovered an experimental A.I. from before the\nbombs fell. Cut-off from contact all this time, it's gone crazy.\nMy tinkering set if free and it's trying to take over any systems\nit can whilst blocking my attempts fo shut it down. That's why |\nhad to conceal my message. Find my hardware engineer.\n©2019 Bethesda Softworks LLC, a ZeniMax Media company. All Rights Reserved.",
-    "backTitle": "GR No YL TN?) - male) 7 7 Pr",
-    "backText": "VICE HAVECKSIZLAIV re\nae\nSE.\n; ser up: Add marker Red from centre of battlefield to\nrepresent the Engineer. Only your models can interact with it.\nq = Use (@®)\n“The A.’ facility is long-since buried. A single air vent\nabove ground is the only access. Here — use this modified\nelectro-magnetic, remotely-detonafed grenade.” Go to Part 3."
+    "frontText": "Combining the message fragments reveals a hidden entry:",
+    "backTitle": "THE ENGINEER'S PLAN",
+    "backText": "SET UP: Add marker Red from centre of battlefield to represent the Engineer. Only your models can interact with it."
   },
   {
     "name": "Nick Valentine Part 2",
-    "frontText": "ZN\n9) NICK VALENTINE: Part 2\nSS\n\n“Not in that gang, huh? Sounds like Hal didn’t make it as\nfar as their settlement. There are a lof of storm drains en\nroute there. Maybe he’s down one of those? His parents\n\nhave often had to tell him off for playing there in the past.\n\nHeavy rains are coming so, if he is down there, we've got to\n\nget him out before they flood.”",
-    "backTitle": "=~",
-    "backText": "DOWTIEDRIVE =\n~ Have opponent place ¥ ) ) # ) fuce-up at least\nGo pe Hy $ oe he\n= Test (O) (once only each token):\n~/ Amongst the remains of a small camp are two dead\n~ gang members. Tracks lead off to the east. Go to Part 3\n~~ XGain18 C] from the drain."
+    "frontText": "\"Not in that gang, huh? Sounds like Hal didn't make it as far as their settlement. There are a lot of storm drains en route here. Maybe he's down one of those? His parents have often had to tell him off for playing there in the past. Heavy rains are coming so, if he is down there, we've got to get him out before they flood.\"",
+    "backTitle": "DOWN THE DRAIN",
+    "backText": "Have opponent place F G H face-up at least Green from battlefield edges and each other."
   },
   {
     "name": "Revenge Part 2",
-    "frontText": "=)\nBN revense: part2\n=\n=)\nThe Leader taunts you that you couldn't protect your own\nbrother from a mercenary who they easily raided just a few\nmonths ago. You know who he means.",
-    "backTitle": "Un per 10 THE WI) ER?",
-    "backText": "WITTER STII CRILEER ZS Te\n¢ Next, you need to find the mercenary.\n~~ Alocal trader's computer may hold their details. Add ga\n; in building closest fo center of battlefield and Use ;\n: ©)on it. Models with n(@), gain) for this test.\n© GotoPart3\nER oan"
+    "frontText": "The Leader taunts you that you couldn't protect your own brother from a mercenary who they easily raided just a few months ago. You know who he means.",
+    "backTitle": "WHERE IS THE KILLER?",
+    "backText": "Next, you need to find the mercenary. A local trader's computer may hold their details. Add 🖥️ in building closest to center of battlefield and Use 🖥️ on it. Models with no 🖥️, gain 🖥️ 1 for this test."
   },
   {
     "name": "Pest Removal",
-    "frontText": "Fo Zn\nNN  resTrREMOVAL\n\nSo\nSs\n\n“If its not one critter eating the crop, it's another damaging\n\nthe fences. Never ends.” Ross will pay you if you help keep\n\nthe creatures off his farm.\n©2019 Bethesda Softworks LLC, a ZeniMax Media company. All Rights Reserved.",
-    "backTitle": "Gary) LAR) -7)4 , 7) y pm",
-    "backText": "(oy,  Zcizizitid  &p\n~ sere: Place a token Black from two battlefield edges furthest\n| from your models. This is a creature fo be removed.\n~ emeR Shoot it: Any damage kills it. After any attempt fo\n~ attack it, remove token - it runs off if not killed.\nor Catch it: <= Resolve Creature card then remove token.\nIf killed or caught: Gain 53 C] Quest can be repeated."
+    "frontText": "\"If it's not one critter eating the crop, it's another damaging the fences. Never ends.\" Ross will pay you if you help keep the creatures off his farm.",
+    "backTitle": "ERADICATION",
+    "backText": "SET UP: Place a token Black from two battlefield edges furthest from your models. This is a creature to be removed."
   },
   {
     "name": "One-Armed Bandit",
-    "frontText": "AN)\n$I ons-armso saneir\nS\nThe old gambling machine was said to be\naround here - loaded with caps and broken logic\nso it’s a sure thing. It needs feeding fo get it to pay,\nbut it's worth it.",
-    "backTitle": "Ger) wr",
-    "backText": "AZO\n© Placea (=) marker (the slot machine) in a corner of the\n~ hattlefield Blue from edges. Only you can interact with it. ~~\n~ = after any action to pull handle and add counting token fo\n: this card. When token added, if 5+ tokens on this card,\nflip ge). If 858 shows, machine pays out 188 for each\n: token, then remove tokens."
+    "frontText": "The old gambling machine was said to be around here - loaded with caps and broken logic so it's a sure thing. It needs feeding to get it to pay, but it's worth it.",
+    "backTitle": "JACKPOT",
+    "backText": "Place a ☐ marker (the slot machine) in a corner of the battlefield Blue from edges. Only you can interact with it."
   },
   {
     "name": "Escort The Witness Part 2A",
-    "frontText": "(By  scorr THe mimes:\nDa Part Za\n©\na\nN=)\nThe hoss’s I-51 armour strikes a daunting figure for the\nuniravelled. She is incensed by the impudence of the Raider\nwarlord. She gives you junk worth 92 {&% as reward.\nThe Raider warlord that ordered the ambush is less impressed\nwith the service you provided the Gunners, however.\nYou must offer this Quest fo each opponent unfil one accepts.",
-    "backTitle": "GIT 2 y 7) ipl) =",
-    "backText": "WPREEENDR =\n\\ BEY, (2\n© Raider warlord, Tower Tom, has hired you to deliver payback\n~~ on your opponent. You will gain 20 C] for every opponent\n~~ model you remove and 30 (C] for every & oS\n© lfatleast] opponent's model survives, they get 137 {2\nVN PT EY Sg Eres TC ey i =u"
+    "frontText": "The boss's T-51 armour strikes a daunting figure for the untravelled. She is incensed by the impudence of the Raider warlord. She gives you junk worth 92 caps as reward. The Raider warlord that ordered the ambush is less impressed with the service you provided the Gunners, however.",
+    "backTitle": "NARK'S END",
+    "backText": "Raider warlord, Tower Tom, has hired you to deliver payback on your opponent. You will gain 20 caps for every opponent model you remove and 30 caps for every  or ."
   },
   {
     "name": "The Secret Elixir Part 2",
-    "frontText": "AN)\n$ON ze sscrer sar: Part 2\n=\n[=\n\"Amazing. Well done. This is it. Easy Street with my range\nof Nuka-Colas.” Her excitement is only matched by her\ndisappointment when the cooler is opened revealing only the\naged and withered remnants of someone's uneaten lunch.\n“I knew I shouldn't have believed him. Well, two can play at\nthat game. Hey, want another job?”",
-    "backTitle": "GRY) Ny po) fe YUL IV OOP)",
-    "backText": "(Toor (Zl lel £ef2 2253001 “P\nHave your opponent nominate one of their models. Do not\ntell them why. This is who sold the information to Harris. She\n; wants them taught a lesson.\n~ Ifyou deal damage using N) that removes the nominated\n> model from the batilefield, gain 78 C} plus,\n~ at start of next battle, your opponent draws 2 weapon Items,\nd discards one and gives you the other."
+    "frontText": "\"Amazing. Well done. This is it. Easy Street with my range of Nuka-Colas.\" Her excitement is only matched by her disappointment when the cooler is opened revealing only the aged and withered remnants of someone's uneaten lunch.",
+    "backTitle": "TEACH THE LESSON",
+    "backText": "Have your opponent nominate one of their models. Do not tell them why. This is who sold the information to Harris. She wants them taught a lesson."
   },
   {
     "name": "Makeshift Armor",
-    "frontText": "[1 ) MAKESHIFT ARMOR\n5S\n(XC\na\n=\nThe metal in the building debris here could be utilised and turned into\narmor. Ripping usable pieces off requires a lot of strength, even for Super\nMutants.\nIf they are not torn off just right, the pieces will be mangled and become\nunworkable.",
-    "backTitle": "Garr) , ,",
-    "backText": "Ton, TEARTT UP:\nSET-UP: Place 4 blank Searchables markers (metallic debris) face-up\ndiagonally Blue from each corner of the battlefield.\n-— to test STR with -4 penalty to the attribute. Each additional model\ninteracting with the debris when STR is tested adds 2 to the tester's STR\nfor the test.\n+ Gain 1for next battle. Discard token.\nxX Discard token."
+    "frontText": "The metal in the building debris here could be utilised and turned into armor. Ripping usable pieces off requires a lot of strength, even for Super Mutants.",
+    "backTitle": "TEAR IT UP",
+    "backText": "SET-UP: Place 4 blank Searchables markers (metallic debris) face-up diagonally Blue from each corner of the battlefield."
   },
   {
     "name": "The Lost Watch",
-    "frontText": "&® r\nON  mecosT waren\n=\n=)\n\nA traveller says they are an armorer and will help you out\nif you find the pocket watch they lost when they ran for\ncover during a fierce storm. They would go but the area\n\ndoes not seem safe.",
-    "backTitle": "Gait) CONT TIE",
-    "backText": "EINOTHENATH =\n; During set-up, add a (= with a letter to the pool.\n~~ Ifyou pick-up this token during the battle, the traveller ~~\n% adjusts and fixes your armor for free. 5\n: Add 2 cd next battle fo separate models.\nIf not, there is no sign of the watch yet. ;\n: . A Ta TT SR RE NC"
+    "frontText": "A traveller says they are an armorer and will help you out if you find the pocket watch they lost when they ran for cover during a fierce storm. They would go but the area does not seem safe.",
+    "backTitle": "Find the Watch",
+    "backText": "During set-up, add a token with a letter to the pool."
   },
   {
     "name": "Misplaced Secrets",
-    "frontText": "oy\n$0 ausreacep sscrers\n>The Brotherhood messenger went missing\naround here. The recovery team had given up trying to find\nthe tactical survey notes the messenger was carrying.\nNow they've left, maybe you can find them?\nCould contain some useful insights.\nThe notes are in the messenger’s attaché case. Only problem?\nThose attaché cases are notoriously booby-trapped.\n©2019 Bethesda Softworks LLC, a ZeniMax Media company. All Rights Reserved.",
-    "backTitle": "Gg) | FAA TIL PA OL",
-    "backText": "AL THE GA5E BP\n~ ser up: If not already present, add these =) Green from\n: the center and af least Yellow from each other:\nQD)\n~~ If one of your models resolves the Danger card for wr\n~ you found the attaché case: Draw 2 Boosts for next batile\n: (3 if you suffer no damage from the Danger card)."
+    "frontText": "The Brotherhood messenger went missing around here. The recovery team had given up trying to find the tactical survey notes the messenger was carrying. Now they've left, maybe you can find them? Could contain some useful insights.",
+    "backTitle": "FIND THE CASE",
+    "backText": "SET UP: If not already present, add these Green from the center and at least Yellow from each other:"
   },
   {
     "name": "Potential Witness",
-    "frontText": "oy\n9) POTENTIAL WITIESS\nS\n“I swear | saw some synths by the downtown church\nyesterday. No, | didn’t think they were real either. | think\nthey saw me too so | just ran and didn’t look back.\nWhat if they're after me...?”",
-    "backTitle": "proper CIN TEDL EO;",
-    "backText": "(Fe SON OLIVER\n\\ 2A\nHave opponent nominate one of your models without\nknowing why. Start of each round: Scatter 1 Battered Gen 1\n~ Synth Blue from selected model. End of round: Synth shoots\n4 once with Institute Laser Pistol at nominated model,\nthen remove Synth.\n3 If model survives batile: Next battle, give 1 model\n2 fe) and it can use them as if they have S38 ability."
+    "frontText": "\"I swear I saw some synths by the downtown church yesterday. No, I didn't think they were real either. I think they saw me too so I just ran and didn't look back. What if they're after me...?\"",
+    "backTitle": "Person of Interest",
+    "backText": "Have opponent nominate one of your models without knowing why. Start of each round: Scatter 1 Battered Gen 1 Synth Blue from selected model. End of round: Synth shoots once with Institute Laser Pistol at nominated model, then remove Synth."
   },
   {
     "name": "The Missing Trooper Part 1",
-    "frontText": "JB) Tessie TrooeeR:\nal Part?\nEN\n~~ &S, The Enclave Outpost agreed fo let you go\nif you searched for Fabrizi, a Hellfire Trooper missing since\nyesterday. Mid-30s, though looks 50.\nLife in the Enclave can be fough.\nA couple of hours down the track, you notice recent scorch\nmarks on an area of churned ground. A fight? Maybe a\nflamer? Surely it was Fabrizi. A faint frail of blood leads away.\n©2020 Bethesda Softworks LLC, a ZeniMax Media company. All Rights Reserved.",
-    "backTitle": "ELODDTRANL",
-    "backText": "\\BE = |\nsr-up: Place {@) Yellow from battlefield center.\n~~ When any of your unengaced models are within Orange\n: ofthe @ move (3 Red (scatter direction).\nWhen (2 has moved 3 fimes, you can === fo Use (©)\nIf successful, go fo Part 2."
+    "frontText": "The Enclave Outpost agreed to let you go if you searched for Fabrizi, a Hellfire Trooper missing since yesterday. Mid-30s, though looks 50.",
+    "backTitle": "BLOOD TRAIL",
+    "backText": "SET-UP: Place Yellow from battlefield center."
   },
   {
     "name": "The Armor Fanatic Part 1",
-    "frontText": "AN)\nFEN mz anor FanATIC: Part\ni\nN=)\n\nRumor has it that a guy that used fo live in this area a long\ntime ago was obsessed with everything power armor, but had\ndisappeared one day. He said he had treasure in his safe.\nMaybe if was nothing, but worth checking.\n\nYou're fairly certain the apartment must be somewhere\nnear here. Probably rubble now.",
-    "backTitle": "GR 3 \"oA, ir. & -",
-    "backText": "FI ONIESHEE “P\n; Place a token on the building nearest the centre of the\n| battlefield in an elevated position — this is a safe.\n“=> Draw 1 Creature card, then Use ® :\nRll LB If result equal to or less than total number of\n: safes opened so far: Go to Part 2.\n~~ X Wrong apartment. Draw 1 Junk Item and repeat Quest."
+    "frontText": "Rumor has it that a guy that used to live in this area a long time ago was obsessed with everything power armor, but had disappeared one day. He said he had treasure in his safe. Maybe it was nothing, but worth checking.",
+    "backTitle": "FIND THE SAFE",
+    "backText": "Place a token on the building nearest the centre of the battlefield in an elevated position – this is a safe."
   },
   {
     "name": "Treasure Hunt",
-    "frontText": "=\n$0N  7Reasvrs unr\n=\n=)\nThe map shows a grid overlaid on a sketch of the area and\na single X in grid squares B2. Not much of a treasure map,\nbut it was a start. Digging at the first X uncovered a small\nbox containing some caps and the grid co-ordinates of\nanother X - the location of the next treasure.",
-    "backTitle": "Grr) Vp, Vg or) a=, ) for N,!",
-    "backText": "ATATIV KER GTTUIV I\n~ Place a Searchable Black from two battlefield edges — this is\n: the X. Use ® at +2 skill while == with the X:\nGain 52 (@ then move the X Yellow in a random 3\ndirection. The found cache says the next X is located there.\n~ % Draw and resolve Creature.\nQuest complete after 4 successes. Can split over several battles.\nON A A A Si ta"
+    "frontText": "The map shows a grid overlaid on a sketch of the area and a single X in grid squares B2. Not much of a treasure map, but it was a start. Digging at the first X uncovered a small box containing some caps and the grid co-ordinates of another X - the location of the next treasure.",
+    "backTitle": "CHAIN REACTION",
+    "backText": "Place a Searchable Black from two battlefield edges – this is the X. Use at +2 skill while with the X:"
   },
   {
     "name": "USS Constitution Part 1",
-    "frontText": "AN)\n[12 USS CONSTITUTION: Part 1\n-\nS\n“You visit this fine vessel in trying times. We appear to\nbe running low on cannonballs. While we fix our mobility\nissues, how about you fetch some ammunition for us?\nThere are stocks nearby.” — Captain Ironsides",
-    "backTitle": "Grn) 3 > 2A pr) gr l 7",
-    "backText": "Ta ING 17EORONAN GE: I\ny Place a (= Green from two battlefield edges.\n: = Test STR:\n~/ Model can take up to 3 cannonballs. Model's Sis -1 for ~~\n: each cannonball until end of battle. =\n~ Atend of hattle, each cannonball is worth 13 C]\nQuest can be repeated until 20 cannonballs total - at 20,\n% go fo Part 2. g\nae Ey me CCS Ta Ce ae"
+    "frontText": "\"You visit this fine vessel in trying times. We appear to be running low on cannonballs. While we fix our mobility issues, how about you fetch some ammunition for us? There are stocks nearby.\" — Captain Ironsides",
+    "backTitle": "SECURING THE ORDNANCE",
+    "backText": "Place a Green from two battlefield edges."
   },
   {
     "name": "Food Hunt",
-    "frontText": "=\nEN  Focouwonr\n=\n=)\nMeat and plenty of it. The Super Mutant diet is simple but\nrequires gathering lots of meat.",
-    "backTitle": "GRY) Ny INTL TZ A 3",
-    "backText": "(Toga, GHITERIITCTI ES V4 “P\nREE\nSe\n~ Assign this Quest to a specific model in your force. Each time it\nremoves a non-robot model with close combat, test Str:\n~~ EmheR Trade it with Super Mutants: Start of next battle, ]\ngain 1 Boost card per model removed (maximum 3).\n~~ or (Super Mutants only) Eat it: Gain 1 additional Meat Bag\nstructure in your Settlement (water still required) just for the\nSettlement use after this battle. Quest can be repeated."
+    "frontText": "Meat and plenty of it. The Super Mutant diet is simple but requires gathering lots of meat.",
+    "backTitle": "GATHER THE MEAT",
+    "backText": "Assign this Quest to a specific model in your force. Each time it removes a non-robot model with close combat, test STR:"
   },
   {
     "name": "The Armor Fanatic Part 2",
-    "frontText": "AN)\nFN re armor EanaTIC: Part 2\n& The safe is full of various official\npaperwork about the T-45 armor. Seems worthless fo anyone\nbut a fan. One document does catch your eye — a report on\nthe first manufacturing runs.\n\n“As per process, a reference suit of T-45 will be set aside for\n20 years.” The Great War hit before that time was up so the\narmor may still be there. Wherever ‘there’ is.\n\nTime fo ask around.",
-    "backTitle": "Ga) : y J) = -— 2) y=",
-    "backText": "(FEZ UHI EW HEWAKEH VISE Te\n4 set-up: Add marker Green from centre of battlefield. }\nThis is a Stranger. Either player can interact with\n3 Stranger as normal (inform your opponent). .\n© ith Stranger and Use () (instead of usual effect).\n~/ Goto Part 3,\ni a I EE a x am"
+    "frontText": "The safe is full of various official paperwork about the T-45 armor. Seems worthless to anyone but a fan. One document does catch your eye — a report on the first manufacturing runs.",
+    "backTitle": "LOCATE THE WAREHOUSE",
+    "backText": "SET-UP: Add marker Green from centre of battlefield. This is a Stranger. Either player can interact with Stranger as normal (inform your opponent)."
   },
   {
     "name": "Enemy Of My Enemy",
-    "frontText": "Po\n$2N cacmr or uy enemy\nDe\nSs\n“You don’t need to know my name, but we have a\ncommon foe. You give me information about their\nweaknesses, and I'll see you right. What do you say?”\n©2019 Bethesda Softworks LLC, a ZeniMax Media company. All Rights Reserved.",
-    "backTitle": "LG Pe 255",
-    "backText": "~ During the battle, each time one of your unengaged models\n- is within Yellow of your opponent's Leader and that Leader\nrolls an X, you may choose fo place 1 {& Jon this card.\n: After the battle, gain 50 C] per counter, then\n~ roll @: If equal or more than the number of counters,\ndiscard the counters and this quest can be attempted again."
+    "frontText": "\"You don't need to know my name, but we have a common foe. You give me information about their weaknesses, and I'll see you right. What do you say?\"",
+    "backTitle": "WATCH FOR WEAKNESS",
+    "backText": "During the battle, each time one of your unengaged models is within Yellow of your opponent's Leader and that Leader rolls an X, you may choose to place 1 cap on this card. After the battle, gain 50 caps per counter, then roll pentagon: If equal or more than the number of counters, discard the counters and this quest can be attempted again."
   },
   {
     "name": "The Crimson Caravan",
-    "frontText": "=)\n[1 ) THE CRIMSON CARAVAN\nVe\n(XC\n-\n=\n“One of our caravans forgot to pick-up a crate. It needs to remain secret\ntoo so no unauthorised personnel can go near it or the recipient won't\nwant it.”",
-    "backTitle": "Gort) Op Lr OLDEN",
-    "backText": "LC. Gn) CROTECTIHESHIPNEN 72\nSET-UP: Pick one corner of the battlefield and place a (= Black from\ntwo battlefield edges.\nIf any model is within Yellow of the (= when the model is activated,\nremove the (]\nAT THE END OF BATTLE: If the (= is on the battlefield, gain 3 (a} at\nthe start of next Battle allocating each to a different model."
+    "frontText": "\"One of our caravans forgot to pick-up a crate. It needs to remain secret too so no unauthorised personnel can go near it or the recipient won't want it.\"",
+    "backTitle": "PROTECT THE SHIPMENT",
+    "backText": "SET-UP: Pick one corner of the battlefield and place a Black from two battlefield edges."
   },
   {
     "name": "The Thief's Trail Part 1",
-    "frontText": "ay\n[12 THE THIEE'S TRAIL: Part 1\n\n25 S\n\nS\nThe gas canisters were there last night, and now nothing\nbut feint tracks leading towards the hills.\nGaining on the thief, the tracks start to fade — you need a\nvisual on the culprit.",
-    "backTitle": "GIT \\ Fr) = -— YZ <, Z)/,",
-    "backText": "(1220 Lill 3 LEAL\nIf one of your models ends any action during the battle at\n~~ the highest reachable point of the terrain on the battlefield,\n~ they can see where the thief is headed - Go fo Part 20.\n: If not, Go to Part 2b.\nEe Le"
+    "frontText": "The gas canisters were there last night, and now nothing but faint tracks leading towards the hills. Gaining on the thief, the tracks start to fade – you need a visual on the culprit.",
+    "backTitle": "THEY LEAD THIS WAY",
+    "backText": "If one of your models ends any action during the battle at the highest reachable point of the terrain on the battlefield, they can see where the thief is headed - Go to Port 2a."
   },
   {
     "name": "Nick Valentine Part 1",
-    "frontText": "oy\n9) NICK VALENTINE: Part 1\n=\n=> In the dim light of Nick's office, he tells you\nthe details of the case. “Hal's parents were delayed returning\nfrom selling their livestock at the Brahmin market due fo a\nrad storm. After recent local Raider activity, Hal headed north\nto find them but hasn't been seen since.\nThey're worried he’s been coerced info a gang out that way.\nCould you check if he’s among them?”",
-    "backTitle": "Gram) ESV TIE TA",
-    "backText": "HIER IEA ie\n~ Nominate 1 model to complete this Quest: At the end of each\naction, add a @) to this card for each opposing model\nwithin Yellow and LoS. Each opposing model can only be used\n: once to gain a token during a battle.\nIf 4 or more CJ) are on this card, go fo Part 2; otherwise,\nrepeat Part 1 starfing with zero tokens."
+    "frontText": "In the dim light of Nick's office, he tells you the details of the case. \"Hal's parents were delayed returning from selling their livestock at the Brahmin market due to a rad storm. After recent local Raider activity, Hal headed north to find them but hasn't been seen since. They're worried he's been coerced into a gang out that way. Could you check if he's among them?\"",
+    "backTitle": "CHECK THE GANG",
+    "backText": "Nominate 1 model to complete this Quest: At the end of each action, add a caps to this card for each opposing model within Yellow and LoS. Each opposing model can only be used once to gain a token during a battle."
   },
   {
     "name": "Cease Fire",
-    "frontText": ">\n$0N  ceussriee\n&\nMost of the independent turrets left by the Brotherhood\nin this area have been disabled. The recent flooding has\ncorroded the combat inhibitors of the remaining ones\nmaking them erratic as they seem to ignore some groups,\nand nof others (especially you). The locals just can’t get\nnear this one. Could you do remove it for them?\n©2020 Bethesda Softworks LLC, a ZeniMax Media company. All Rights Reserved",
-    "backTitle": "(Toy DESTROY THE TURRET. =",
-    "backText": "ser-up: Have opponentadd a {2 ot least Green from\nbattlefield edges and Orange from terrain — do not tell them\nwhy until placed. This is a Machinegun Turret Mk III.\n~ twill only attack your models — do not tell opponent that.\nGive it 1 fewer 4&3 than usual. A successful Use (©)\nwill disable it.\nIf disabled or destroyed at end of battle: Gain 76 {23"
+    "frontText": "Most of the independent turrets left by the Brotherhood in this area have been disabled. The recent flooding has corroded the combat inhibitors of the remaining ones making them erratic as they seem to ignore some groups, and not others (especially you). The locals just can't get near this one. Could you do remove it for them?",
+    "backTitle": "DESTROY THE TURRET",
+    "backText": "SET-UP: Have opponent add a caps at least Green from battlefield edges and Orange from terrain – do not tell them why until placed. This is a Machinegun Turret Mk III. It will only attack your models – do not tell opponent that. Give it 1 fewer eye than usual. A successful Use will disable it."
   },
   {
     "name": "The Missing Trooper Part 3",
-    "frontText": "A broken wagon. Slaughtered Brahmin. The body of a farmer.\nIt's a mess. Surely the work of Super Mutants. No Fabrizi\nthough. Nearby are some residential ruins — the houses blown\nfrom existence long ago but their cellars stil intact — the signs\nof a Super Mutant camp are clear. You hear yelling from the\ncellars. Is it Fabrizi or are there other captives?\n©2020 Bethesda Softworks LLC, a ZeniMax Media company. All Rights Reserved.",
-    "backTitle": "GARI) § - 14s = 5) 7 7) )”. i",
-    "backText": "Toy2, ALULLLULG Fl 22\nSY sme: Scatter 3 blank and 1\nnumbered Investigation Marker Blue from battlefield center:\n~ Use Expertise to perform (D)Test\nSuccess frees the occupant.\nBLANK TOKEN; It's not Fabrizi — gain 2 Boosts.\nNUMBERED ToKeN: You release Fabrizi — The Enclave give\nyou Enclave Power Armor, plus you may draw 2 Legendary\nweapons and keep 1."
+    "frontText": "A broken wagon. Slaughtered Brahmin. The body of a farmer. It's a mess. Surely the work of Super Mutants. No Fabrizi though. Nearby are some residential ruins – the houses blown from existence long ago but their cellars still intact – the signs of a Super Mutant camp are clear. You hear yelling from the cellars. Is it Fabrizi or are there other captives?",
+    "backTitle": "FINDING FABRIZI",
+    "backText": "SET-UP: Scatter 3 blank and 1 numbered Investigation Marker Blue from battlefield center:"
   },
   {
     "name": "Horner Herder",
-    "frontText": "[1 ) HORNER HERDER\n5S\n(XC\nCh\n=\n“Those dumb Bighorners. Always coming back to eat my craps. | need\nthem to eat the weeds around the area, not my crops! | tried shouting at\nthem but, well, that’s how | got the broken arm. They need a proper scare.\nDo me a favour and shoo them away from my seedlings, will you?”",
-    "backTitle": "Gr) COD THE RICHINS",
-    "backText": "oir (ED LZ2Edd us\nSET-UP: Place 5 > scattered Green from center of battlefield. Each is a\nBighorner.\nAfter any attack made, or attack effect, within Yellow of a Bighorner, move\nit Yellow directly away from source of the attack.\nIf 3+ are within Red of any battlefield edges (and/or have left the\nbattlefield) at Battle end: Gain 2 Incendiary Ammo Items."
+    "frontText": "\"Those dumb Bighorners. Always coming back to eat my crops. I need them to eat the weeds around the area, not my crops! I tried shouting at them but, well, that's how I got the broken arm. They need a proper scare. Do me a favour and shoo them away from my seedlings, will you?\"",
+    "backTitle": "HERD THE BIGHORNS",
+    "backText": "SET-UP: Place 5 scattered Green from center of battlefield. Each is a Bighorner."
   },
   {
     "name": "Weapons Engineer",
-    "frontText": "oy\n$2 wearons encuveer\nON\nS\n“I've tried calibrating this rifle but I'm not sure if works in\nthe field. Could you fry it out and adjust it? It should be\nmore accurate than the regular rifle.”",
-    "backTitle": "Gram) DATE TUE EAPON,",
-    "backText": "geen EVIE Yeh Er\n~ Select 1 model with an Institute Laser Rifle. When using the\n~~ weapon, roll 1 ® fewer. Each time you hit an opposing\n) model (regardless of damage), add {to this card. §\nx If3 @)on this card: Next battle, add @)to 1 Institute\n~ Loser Rifle — it rolls 1 extra @ for entirety of battle,\nthen the Engineer reclaims the weapon."
+    "frontText": "\"I've tried calibrating this rifle but I'm not sure it works in the field. Could you try it out and adjust it? It should be more accurate than the regular rifle.\"",
+    "backTitle": "CALIBRATE THE WEAPON",
+    "backText": "Select 1 model with an Institute Laser Rifle. When using the weapon, roll 1 fewer. Each time you hit an opposing model (regardless of damage), add to this card."
   },
   {
     "name": "The Missing Trooper Part 2",
-    "frontText": "(4) Part 2\nS\nThe drops of blood cease. The irail appears fo have gone\ncold but your search near the final drops reveals Brahmin\nprints — two sels, side-by-side. And there — faint wheel\nfracks and several squashed Mutfruit. Probably a farmer\nwith a wagon. Injured, Fabrizi must have grabbed a\nride with them.\n©2020 Bethesda Softworks LLC, a ZeniMax Media company. All Rights Reserved.",
-    "backTitle": "GR) -r > Tr40 4 TI",
-    "backText": "es RUITONGH,\n<E EE EERE TE\nWhen one of your models is engaged with an opposing\nmodel, it may make a Per Test. {Each opposing model may\nonly be tested once during a battle.)\n+ You see yellow leaves caught in their apparel —Mutfruit\ntree leaves. Maybe they came through a Mutfruit orchard en\nroute here — it's a lead of least. Go fo Part 3."
+    "frontText": "The drops of blood cease. The trail appears to have gone cold but your search near the final drops reveals Brahmin prints — two sets, side-by-side. And there — faint wheel tracks and several squashed Mutfruit. Probably a farmer with a wagon. Injured, Fabrizi must have grabbed a ride with them.",
+    "backTitle": "FRUIT PUNCH",
+    "backText": "When one of your models is engaged with an opposing model, it may make a PER Test. (Each opposing model may only be tested once during a battle.)"
   },
   {
     "name": "Radiation Ideation",
-    "frontText": "AN)\nFEN  =aviarion togaTIon\n=\n=)\n\nThe farmer raved about the uses of radioactive waste in crop\nfarming — it could be develop better craps, light the barn at night,\nor keep you warm — what couldn't if do? Maybe Children of Atom\n\nhad swayed the farmer's mind. He needs more waste though.\nTurning down his offer of craps as compensation, he says he has\nsome information you'll find useful if you'll help.",
-    "backTitle": "GarT) 1/40 JAZ) =",
-    "backText": "CLOWNS PHELES =\n~ ser-up: Add 3 radioactive containers Green from battlefield\n| centre. These do not emit radiation.\n; “ Test END (max. once at each barrel): 3\n~/ Gain sample. =\n~ % Gain sample. Add a\nStart of next battle, gain 1 Boost card per sample gained. :\nae ite ake a ee Ce ae"
+    "frontText": "The farmer raved about the uses of radioactive waste in crop farming – it could be develop better crops, light the barn at night, or keep you warm – what couldn't it do? Maybe Children of Atom had swayed the farmer's mind. He needs more waste though. Turning down his offer of crops as compensation, he says he has some information you'll find useful if you'll help.",
+    "backTitle": "GLOWING SAMPLES",
+    "backText": "SET-UP: Add 3 radioactive containers Green from battlefield centre. These do not emit radiation."
   },
   {
     "name": "The Stand In",
-    "frontText": "Fo Zn\nAN  mesmano-m\n)\nSs\n“I injured my leg and now can’t meet my contact.\nIt's important. Could you meet them for me? Just fake care of\nwhat they need. Tell ‘em Blanco sent you.”\n©2019 Bethesda Softworks LLC, a ZeniMax Media company. All Rights Reserved.",
-    "backTitle": "GraRT) MELT TLE TAL]",
-    "backText": "UZZLLefZ SULLA EP\n; set up: Add marker Green from center of battlefield.\n~~ Thisis a Stranger with which only your models can inferact\n: (inform your opponent). 3\n: When Stranger is removed,\n: eimHer Gain 73 cL Draw 3 [) and keep 2."
+    "frontText": "\"I injured my leg and now can't meet my contact. It's important. Could you meet them for me? Just take care of what they need. Tell 'em Blanco sent you.\"",
+    "backTitle": "MEET THE CONTACT",
+    "backText": "SET UP: Add marker Green from center of battlefield. This is a Stranger with which only your models can interact (inform your opponent)."
   },
   {
     "name": "Know Your Enemy",
-    "frontText": "Si\nAER KNOW YOUR ENEMY\n\\ =\n> (ccasional pieces of information\nabout an enemy are good, but true insight is often derived\nfrom combining data. The group you are soon fo face has\nbeen active in this area for some time. Scrape together\nwhatever information you can find on terminals in the area\nand you may be able fo glean some data that can give you\nan advantage against them.",
-    "backTitle": "aE",
-    "backText": "Tee Ye LefZ 242 “Ts\ng Scatter 2 Blue from batilefield center.\n: = Test (=)\nv Roll @ and add that many Go this card.\ner @) Gain Chor 3 separate models; else,\nrepeat Quest starting with half total (@ rounded down.\nSke - — Een ens ame Rl SA eT Su"
+    "frontText": "Occasional pieces of information about an enemy are good, but true insight is often derived from combining data. The group you are soon to face has been active in this area for some time. Scrape together whatever information you can find on terminals in the area and you may be able to glean some data that can give you an advantage against them.",
+    "backTitle": "PIECES OF THE PUZZLE",
+    "backText": "Scatter 2 [Computer icon] Blue from battlefield center."
   },
   {
     "name": "Echoes Of Yesterday",
-    "frontText": "NN  conoesorvesreroar\n5S\n(XC\na\n=\nThe sound of the TV had started a few days ago. Tomb of Amun-Ra'- great\nmovie - but not on a loop and definitely not with its reverb travelling\nacross the still air at 4am, making sleep nigh impossible. Given that you'll\nbe nearby, you might as well turn it off.",
-    "backTitle": "GRR) | ELA",
-    "backText": "(1 =o VIICEND)\n\\ / 3\nHave your opponent place a counter on the battlefield to represent the TV\n- do not tell them what it is until placed.\n—\n«== with TV to switch it off. One model starts next battle with (a) due to\nbetter night's sleep.\nIf you do not interact with the TV, one model starts every battle with S\nuntil Quest is completed."
+    "frontText": "The sound of the TV had started a few days ago. 'Tomb of Amun-Ra' - great movie - but not on a loop and definitely not with its reverb travelling across the still air at 4am, making sleep nigh impossible. Given that you'll be nearby, you might as well turn it off.",
+    "backTitle": "THE END",
+    "backText": "Have your opponent place a counter on the battlefield to represent the TV - do not tell them what it is until placed."
   },
   {
     "name": "Protectron Strike Team",
-    "frontText": "=\n[12 PROTECTRON STRIKE TEAM\na\n[=\nThe promo video was old but the Protectrons were unused.\n“These special Protectrons are your perfect support feam.\nThey learn as they go — probably more than can be said for\nsome of your team, am I right? And easier fo feed too.\nTry these early models free. We're sure you'll want more.”",
-    "backTitle": "GR) GT Fo ih",
-    "backText": "Tae UID ZUG ZS “Tr\n~ Include 2 Protectron models in your force with Hand Lasers.\nJudged individually, each model a Protectron removes gives it\nPer +1 (which accumulates). If either/oth survive the batile,\n* use this Quest again to field the remaining Protectrons with\n2 same Per bonus and CO when they finished their\nprevious hattle. They can not be repaired."
+    "frontText": "The promo video was old but the Protectrons were unused.",
+    "backTitle": "ARMED AND DANGEROUS",
+    "backText": "Include 2 Protectron models in your force with Hand Lasers. Judged individually, each model a Protectron removes gives it Per +1 (which accumulates). If either/both survive the battle, use this Quest again to field the remaining Protectrons with same Per bonus and ❤ when they finished their previous battle. They can not be repaired."
   },
   {
     "name": "Grognak The Barbarian #3",
-    "frontText": "#8 GROGHAK:\nVay THE BARBARIAN #3\nEN\n=\nSS\n| remember this issue. There's this move from\n“Jungle of the Bat-Babies’ in which Grognak does this special\ntwist that outwits one of the main antagonists.\nIt'd be awesome to see that on the battlefield!",
-    "backTitle": "RP : PEREOKMED",
-    "backText": "Ee :\n3 As Grognak: #1 Performed above. a\ni Nem ade ae oo oh SRE daamse ue RE a 1 E"
+    "frontText": "I remember this issue. There's this move from 'Jungle of the Bat-Babies' in which Grognak does this special twist that outwits one of the main antagonists. It'd be awesome to see that on the battlefield!",
+    "backTitle": "GROGNAK: #3 PERFORMED",
+    "backText": "As Grognak: #1 Performed above."
   },
   {
     "name": "Artificial Insanity Part 1",
-    "frontText": "oy\nFEN armFrcaae ansanary: part\n=\n“=> Hacking the old computer records af the\ntrain yard 3 leads on supplies was easy enough,\nbut the last entry stood out. Too quirky fo be by the workers,\nand foo recent to be part of the old records.\n\nSteed. It had to be Steed. The only hacker in the region with\nthe ability to insert such messages. The message is incomplete\nand there are directions fo find the other parts.\n©2019 Bethesda Softworks LLC, a ZeniMax Media company. All Rights Reserved.",
-    "backTitle": "GraRT) -~ -—c gy bal Vl RIP Vw",
-    "backText": "DECODETH NESTE ee\nsmu Add 2 =) Blue diagonally from opposite comers of\n: the battlefield. |\n~ After a successful Use @, discard the = used then roll -\n~~: fresult equal 10 or less than total number of these\n: computers successfully hacked so far: Go to Part 2."
+    "frontText": "Hacking the old computer records at the train yard for leads on supplies was easy enough, but the last entry stood out. Too quirky to be by the workers, and too recent to be part of the old records. Steed. It had to be Steed. The only hacker in the region with the ability to insert such messages. The message is incomplete and there are directions to find the other parts.",
+    "backTitle": "DECODE THE MESSAGE",
+    "backText": "SET UP: Add 2 [computer icon] Blue diagonally from opposite corners of the battlefield."
   },
   {
     "name": "Handy Delivery Part 2",
-    "frontText": "AN)\nFEN wanorosLivery: Part2\n> The buyer Ernest told you about\nhad been surprisingly hard to find - after all, how many\nMr Handys can there be around here?\nWho would have guessed the buyer would be\nan actual Mr Handy anyway?\nMaybe the scarcity of parts made it cautious.\nHopefully the parts you carry were no-one if used to know.",
-    "backTitle": "GagT) rr) TEC",
-    "backText": "SELLTHEEDIDS c=\n« Add [oo] face-up during set-up within Yellow of ~~\n~ battlefield center. This is the buyer. Only you can interact with him.\n- 2 About fo sell the parts, the rohot seems slightly unsure what\n: price was agreed. Do you try and increase the price? p\nwoz Gain 150 {2 os agreed.\n© ves: Test CHA. :\nGain 250 {8 X Gin50{@\nae Ey me CCS Ta SS aw"
+    "frontText": "The buyer Ernest told you about had been surprisingly hard to find - after all, how many Mr Handys can there be around here?",
+    "backTitle": "SELL THE GOODS",
+    "backText": "Add face-up during set-up within Yellow of battlefield center. This is the buyer. Only you can interact with him."
   },
   {
     "name": "Radio Interference",
-    "frontText": "Po\n$EN revo inTERFERENCE\nEe\n\n—\n\nSS)\n\nSomeone keeps placing radio jammers in the area\ncamouflaged as all sorts of ordinary objects. Carpenter asks\nyou to destroy these as they're playing havoc with listening\n\nfo the few stations around. You can sell them for parts.\n©2019 Bethesda Softworks LLC, a ZeniMax Media company. All Rights Reserved.",
-    "backTitle": "GR No P77 4 rp fr -- 0.7 ry -rlg Pm",
-    "backText": "PEST KTV ITE INT KS% Ts\n\\REY #\n27\n~ sv up: Have your opponent place 2 @) on the battlefield at\nleast Blue from any edge and each other. These are potential\n§ radio jammers. Any damage removes a foken. ;\n2 “== Test Luc to inspect a jammer to see if it's real.\nIf destroyed, gain 40 (C] each af end of battle.\nXK Junk only. Draw 1 Junk card worth 20 be] or less.\n_ Quest can be repeated. ;"
+    "frontText": "Someone keeps placing radio jammers in the area camouflaged as all sorts of ordinary objects. Carpenter asks you to destroy these as they're playing havoc with listening to the few stations around. You can sell them for parts.",
+    "backTitle": "Destroy the Jammers",
+    "backText": "SET UP: Have your opponent place 2 caps on the battlefield at least Blue from any edge and each other. These are potential radio jammers. Any damage removes a token."
   },
   {
     "name": "Agent Of Secrets",
-    "frontText": "=\n$2 acswr or sscrers\nESS ;\nShe doesn't give her name. There are\nsome documents in a car which must be retrieved and then\nthe car destroyed. Were these documents from when the car\nwas abandoned or placed there recently?\nDon't bother trying to get answers from her as she says she’s\nnot officially here for you to be able to ask any questions.",
-    "backTitle": "GIT Dr IDI - Y=",
-    "backText": "wh km J HED USSIEKS “P\n; set-up: Indude at least one car in the battlefield ferrain, ~~\ns “= with car to Use()\nIf any other non-Searched cars remain, flip 98\n; it 3 this is the correct car. Gain the documents. If car\n: destroyed by game end, gain 96 C} - if not, you gain\nonly 15 C} for a job half-complete. ;\na. in EY SS Pet (CCl wa Sh =m"
+    "frontText": "She doesn't give her name. There are some documents in a car which must be retrieved and then the car destroyed. Were these documents from when the car was abandoned or placed there recently?",
+    "backTitle": "RETRIEVE THE DOSSIER",
+    "backText": "SET-UP: Include at least one car in the battlefield terrain."
   },
   {
     "name": "Escort The Witness Part 2B",
-    "frontText": "(By  scorr THe mess:\n. Part 2\nea\n=\n=)\nWith Lowe out of the picture, the Gunner's boss demands\nyou find out what happened. You need to examine the\nlocation where the attack took place and figure out who\nwas responsible.",
-    "backTitle": "Gait) -",
-    "backText": "FORENSIUSHEEPH =\n’\n~ During set-up of scenario not using & , mix and evenly\ndistribute [] showing 4 8B\n3 Use (LO) while = with either letter token to discover the -\nambusher’s identity. (Max. 1 fest per marker.)\n~/ It was Tower Tom's Raiders out of Beantown Brewery.\nGoto Part 2a. g\nae a I EE a x am"
+    "frontText": "With Lowe out of the picture, the Gunner's boss demands you find out what happened. You need to examine the location where the attack took place and figure out who was responsible.",
+    "backTitle": "FORENSIC SWEEP",
+    "backText": "During set-up of scenario not using [blue cap icon], mix and evenly distribute [blue cap icon] showing A) B) [blank] [blank] [blank]"
   },
   {
     "name": "Problems In Paradise",
-    "frontText": "AN)\nFEN PROBLEMS ti PARADISE\nSS\nWhy someone would hack the Eyebot to take compromising\npictures of Davenport was another story, and one he wasn’t\ntelling. Davenport wants you to find the Eyebot and wipe the\nimages. The Eyebot must not be destroyed or they ll know\nhe’s onto them - just delete them.",
-    "backTitle": "GRY) Ny =) Tr — 7) 4s 7) =",
-    "backText": "Taper VHEVAUTUKESS “v\nPY B\nSETUP: After deployment, place token (or model) to represent\nthe Eyebot, at least Black from all other models.\nEnd of each round: Eyebot moves Yellow away fromthe\n: nearest model. If will not engage or attack.\n~ “= with Eyehot to fest STR.\n+ Capture Eyebot and delete images. Gain 47 C]\na. in PT EY Sg Eres TC i =v"
+    "frontText": "Why someone would hack the Eyebot to take compromising pictures of Davenport was another story, and one he wasn't telling. Davenport wants you to find the Eyebot and wipe the images. The Eyebot must not be destroyed or they'll know he's onto them - just delete them.",
+    "backTitle": "Delete the Pictures",
+    "backText": "SET-UP: After deployment, place token (or model) to represent the Eyebot, at least Black from all other models."
   },
   {
     "name": "Robotic Secrets",
-    "frontText": "~\n$2N rosome secrets\nwl\n[=\n“Most Sentry Bot processor chips get destroyed by the\nrobot's self-destruct, but | know where you could extract\none for me.” Whatever Anna wants the chip for, you know\nit's best not to ask and even better not to know.\nFinding the intact but defunct Sentry Bot was one thing,\nextracting ifs chip is another.",
-    "backTitle": "GRY) - z TY TL DY ~~)”",
-    "backText": "(Fe JRAGI 4 HEALED\n~ ser-up: Place a Sentry Bot model Yellow from battlefield centre.\n: == Use (O) sucessfully to then fest (F ):\n~ «You prise open the head and gain the chip. A\n; Gain 187 Bun 2 Boost cards for next battle.\n: XK Security tripped: Initiate self-destruct. Tell opponent.\nae a I EE a x am"
+    "frontText": "\"Most Sentry Bot processor chips get destroyed by the robot's self-destruct, but I know where you could extract one for me.\" Whatever Anna wants the chip for, you know it's best not to ask and even better not to know. Finding the intact but defunct Sentry Bot was one thing, extracting its chip is another.",
+    "backTitle": "EXTRACT THE PROCESSOR",
+    "backText": "SET-UP: Place a Sentry Bot model Yellow from battlefield centre."
   },
   {
     "name": "Battle Codex Part 3",
-    "frontText": "=\n$N zarres coven: part 3\n& “The Battle Tactics section of the\nCodex needs information on the bigger picture.\nObserve how aggressors interact.” - Beth\n\nOne of your models must be elevated and spend 1 action whilst\nat least 3 engaged enemy models are within Black. This action\n\ncounts as a Move but model does not move. Test INT:\n\nIn recognition of your service, gain Draft Codex",
-    "backTitle": "{3 DRAFT CODEX &",
-    "backText": "Per +1\nEnp +1\nAfter set-up, draw 2 Boost cards if the opposing force\ncontains any units which you have observed during any\npart of the ‘Battle Codex’ Quest so far."
+    "frontText": "\"The Battle Tactics section of the Codex needs information on the bigger picture. Observe how aggressors interact.\" - Beth",
+    "backTitle": "DRAFT CODEX",
+    "backText": "Per +1"
   },
   {
     "name": "Tags Of The Fallen",
-    "frontText": "FN mesormeraven\n5S\nEa\na\nSD\nBoth NCR and Caesar's Legion have asked you to give them any NCR Dog\nTags you find.\nShould you collect them for the NCR or Caesar's Legion?\nIf NCR: \"We must remember our fallen.\"\nIf Caesar's Legion: \"There is glory in the removal of our foes.\"\n(If your force is either of these, you must pick your own side.)",
-    "backTitle": "Gr CPT THE IARC",
-    "backText": "(CG COLECTIHEIAGS:\nSET-UP: Have opponent place 4 ©) up to Black from center and at least\nRed from each other each representing a Dog Tag.\nAT END OF BATTLE:\nNCR: Gain 10 caps per Dog Tag, then discard all Dog Tags.\nCAESAR'S LEGION: For every 3 Dog Tags discarded, draw 2 Items and keep\nleast valuable. Keep any remaining Dog Tags.\nQuest can be repeated."
+    "frontText": "Both NCR and Caesar's Legion have asked you to give them any NCR Dog Tags you find.",
+    "backTitle": "COLLECT THE TAGS",
+    "backText": "SET-UP: Have opponent place 4 caps up to Black from center and at least Red from each other each representing a Dog Tag."
   },
   {
     "name": "Guerilla In The Midst Part 1",
-    "frontText": "Fo Zn\n1) CUERILLA IN THE MIDST: Part 1\n\n)\n> If anyone will fight the good fight,\n\nit is Lucrecia. Too many have gone missing already, so she\n\nworks tirelessly to prevent more. Some people are being\n\nheld captive in a generator building. She needs a special\n\ntool which can be used to open the loading\nbay door — most people mistake it for a piece of junk.",
-    "backTitle": "ZEN",
-    "backText": "~ Pickpocket the opposing Leader to gain the fool you need.\n~~ After an action when engaged with the opposing Leader,\nmake an Opposed Skill Test: Your Aci v their Per.\n~~ No action is required. Add ® if Leader is outnumbered.\n~ «/ You gain the tool. Go fo Part 2.\nX You cannot attempt again this battle."
+    "frontText": "If anyone will fight the good fight, it is Lucrecia. Too many have gone missing already, so she works tirelessly to prevent more. Some people are being held captive in a generator building. She needs a special tool which can be used to open the loading bay door – most people mistake it for a piece of junk.",
+    "backTitle": "THE LIFT",
+    "backText": "Pickpocket the opposing Leader to gain the tool you need. After an action when engaged with the opposing Leader, make an Opposed Skill Test: Your Agi v their PER. No action is required. Add ⬠ if Leader is outnumbered."
   },
   {
     "name": "Adams Menagerie Part 3",
-    "frontText": "FNanans: IENAGERIE: Part 3\nDad 1, going where? Scorchbeasfs used\nD\n> fo roam there. Maybe | could clone one.\nImagine the crowds that would come!”\n\nSet-up: Place 4 blank Searchables - each Black from a\ndifferent corner. These are Scorchbeast bones. === to pick-up.\nEnd of battle: Roll 3 if result equal to or less than bones\ncollected: Gain Hunter's Laser Musket; else, discard bones.\n©2020 Bethesda Softworks LLC, a ZeniMax Media company. All Rights Reserved.",
-    "backTitle": "on HONTER'S LASER MUSKET",
-    "backText": "ral ol\nNOG © HEE\nF2 EEE\nCa ny TE -. V = Ee"
+    "frontText": "\"You're going where? Scorchbeasts used to roam here. Maybe I could clone one. Imagine the crowds that would come!\"",
+    "backTitle": "HUNTER'S LASER MUSKET",
+    "backText": "Set-up: Place 4 blank Searchables - each Black from a different corner. These are Scorchbeast bones. ⇄ to pick-up."
   },
   {
     "name": "Recipes Of The Wasteland",
-    "frontText": "#5) RECIPES OF THE WASTELAND\nS\nSome old Wasteland recipes require strange ingredients.\nOne local has asked you to find the nest\nof some creatures.",
-    "backTitle": "Gait) 7 THEN ;",
-    "backText": "PNDTHENES TE =\n5 |\n5 Add & face-up during set-up within Yellow of battlefield\n; center. “= Draw a Creature. Only you can interact with this. )\nq After resolving Creature, choose whether fo add £3 p-\n¢ to grab a specimen, then:\n* Ifinteracted only: Gain 65 C] reward for the info OR\nIf grabbed specimen: Gain 100 2 reward. A\nae a I EE a x am"
+    "frontText": "Some old Wasteland recipes require strange ingredients. One local has asked you to find the nest of some creatures.",
+    "backTitle": "FIND THE NEST",
+    "backText": "Add face-up during set-up within Yellow of battlefield center. Draw a Creature. Only you can interact with this. After resolving Creature, choose whether to add to grab a specimen, then:"
   },
   {
     "name": "The Lost Station Part 1",
-    "frontText": "~\n42) THE LOST STATION: Part 1\nwl\n=)\n\nEx-Vertibird pilot — Joe — describes an amazing music radio\nstation he used to receive when flying over the Wasteland.\nRumors say it travels the Wasteland hacking into radio\nbeacons along the way to transmit the signal. Joe misses it.\nWould you find a way so it can be received here?",
-    "backTitle": "Gag) vr TIL 3",
-    "backText": "Qi THESIGNAL\nad Fy\n~~ When elevated, a model can spend an action to fest Per:\n: od\n_+/ You get a bearing on the signal. Go fo Part 2. oH\nRadiation. Emergency Beacons. Static. No music. =\ni he PE a ERY. a TTR a.) a"
+    "frontText": "Ex-Vertibird pilot – Joe – describes an amazing music radio station he used to receive when flying over the Wasteland. Rumors say it travels the Wasteland hacking into radio beacons along the way to transmit the signal. Joe misses it. Would you find a way so it can be received here?",
+    "backTitle": "CATCHING THE SIGNAL",
+    "backText": "When elevated, a model can spend an action to test PER:"
   },
   {
     "name": "The Thief's Trail Part 2B",
-    "frontText": "aN\nAh THE THIEE'S TRAIL: Part 26\nS\nWithout seeing the perpetrator, the trail goes cold. Asking\naround about anyone suddenly with gas to sell is probably\nthe only way to find them now.",
-    "backTitle": "GTaRT) DIP VIL ID TIE TDA",
-    "backText": "(Fe UZ Liz Lill\nAdd [oo] face-up during set-up within Yellow of battlefield\n: center. “= Draw a Stranger. Only you can interact with this. ~~\nx Successfully interact with the Stranger: Go to Part 20.\ni I RE ae am"
+    "frontText": "Without seeing the perpetrator, the trail goes cold. Asking around about anyone suddenly with gas to sell is probably the only way to find them now.",
+    "backTitle": "PICKING UP THE TRAIL",
+    "backText": "Add face-up during set-up within Yellow of battlefield center. Draw a Stranger. Only you can interact with this. Successfully interact with the Stranger: Go to Part 2a."
   },
   {
     "name": "Wounded Glowing One",
-    "frontText": "oy\n$2N wounvep sLomme one\nS\n\nSettlement Leader Lever needs help. A Bloated Glowing One\nescaped the cull. Almost dead, if was seen limping off this\n\nway somewhere. If it reaches a source of radiation, it'll heal\nand could strike again. Find it by following the trail of its\nblood and kill it. Lever has some local knowledge for you\n\nif you destroy it.\n\n©2019 Bethesda Softworks LLC, a ZeniMax Media company. All Rights Reserved.",
-    "backTitle": "TREKTTLOWVE",
-    "backText": "§ ser uP: Place @) Yellow from the battlefield center.\n~~ When any of your models are within Orange of the @)\nresolve cd and move C)) Red in that direction.\nWhen @) has moved 3 fimes, replace it with a Bloated\nGlowing One model. Any damage removes it. If removed,\n: resolve 2 Explore cards for free next Settlement use."
+    "frontText": "Settlement Leader Lever needs help. A Bloated Glowing One escaped the cull. Almost dead, it was seen limping off his way somewhere. If it reaches a source of radiation, it'll heal and could strike again. Find it by following the trail of its blood and kill it. Lever has some local knowledge for you if you destroy it.",
+    "backTitle": "TRACK IT DOWN",
+    "backText": "SET UP: Place Yellow from the battlefield center."
   },
   {
     "name": "Junk Collection",
-    "frontText": "ay\n$0N vom covcecmon\ni\n(=)\nJunk is strewn across the Wasteland and all can be\nexchanged for caps. Over the years, the easy pickings have\ngone and it requires some digging through the rubble.\nStill, caps are caps no matter the source.",
-    "backTitle": "GIT PNTELILD TIL 147,",
-    "backText": "ATHERTON =\nset-up: Place 6 counting tokens on the batilefield\n: at least Black apart and Green from edges.\n3 = Use ® successfully to then test STR: |\n: « Gain 1 Junk card. Discard token.\n~~ X It's too broken. Discard token. :\nQuest can be repeated. :\nVN Re ne"
+    "frontText": "Junk is strewn across the Wasteland and all can be exchanged for caps. Over the years, the easy pickings have gone and it requires some digging through the rubble. Still, caps are caps no matter the source.",
+    "backTitle": "Gather the Junk",
+    "backText": "SET-UPS: Place 6 counting tokens on the battlefield at least Black apart and Green from edges."
   },
   {
     "name": "Battle Codex Part 2",
-    "frontText": "=\n$2 zarres cover: Part 2\na\nS=>The (odex’s Threat Identification Guide\nneeds accurate behavioural intelligence from the field.\nAlready impressed by your observations for the Codex,\nSenior Scribe Beth tasks you with creating annotated\nillustrations of some of the Wasteland’s inhabitants.\n“Our last illustrator got eaten by a Deathclaw,\nso you might want fo be careful.”",
-    "backTitle": "GIT J YI DOIN)? < 30",
-    "backText": "(T ogo, CHICK GI S{517755 Te\n.\n~ To observe enough detail for an accurate report, one of your\n_ unengaged models must spend 1 action within Green of an\n~~ enemy model - This action counts as a Move hut the model does\nA not move. Each action can only observe 1 model.\n~~ Collectively observe 3 different unit types during one battle:\nx Go to Part 3."
+    "frontText": "The Codex's Threat Identification Guide needs accurate behavioural intelligence from the field. Already impressed by your observations for the Codex, Senior Scribe Beth tasks you with creating annotated illustrations of some of the Wasteland's inhabitants.",
+    "backTitle": "GATHERING INSIGHTS",
+    "backText": "To observe enough detail for an accurate report, one of your unengaged models must spend 1 action within Green of an enemy model - This action counts as a Move but the model does not move. Each action can only observe 1 model."
   },
   {
     "name": "Handy Delivery Part 1",
-    "frontText": "ay\n$EN anor DELIVERY: Part\n\n-\nS\nMr Handy parts have become hard to find recently.\n\nLocal trader Ernest Watson wants you to pick some up from\nhis brother; Alfred, and then deliver them fo one of\n\nErnest's customers.",
-    "backTitle": "Gi) 2 7) 1487, DD TAIL <",
-    "backText": "RIIKOETHECDODS\nAdd & face-up during set-up within Yellow of battlefield ~~\n3 center. This is Alfred. Only you can interact with him. ~~~\n~ If one of your surviving models successfully interacted with\nAlfred, go to Part 2a.\nRe a Lage"
+    "frontText": "Mr Handy parts have become hard to find recently. Local trader Ernest Watson wants you to pick some up from his brother, Alfred, and then deliver them to one of Ernest's customers.",
+    "backTitle": "PICK UP THE GOODS",
+    "backText": "Add face-up during set-up within Yellow of battlefield center. This is Alfred. Only you can interact with him."
   },
   {
     "name": "Tales Of The Lurker",
-    "frontText": "ZN)\nAER TALES OF THE LURKER\nuy Rumors are spreading that your\nsettlement is haunted. People swear they are being followed\nby a presence and some have even % injured too.\nIt's being called ‘The Lurker’.\nNonsense, of course, but it's affecting morale.\nYou set out to show it's people’s imaginations. Wait.\nIs that something following you? Hard fo see as it darfs\nbetween the des rubble piles.\n©2019 Bethesda Softworks LLC, a ZeniMax Media company. All Rights Reserved.",
-    "backTitle": "GIR ’ yr l »",
-    "backText": "LUSUUSSLAZ ALL TP\n\\ 2A\n~ ser up: Add marker to battlefield edge nearest enemy Leader.\n~~ Marker moves Red towards your Leader after their aivation. ~~\n~~ When marker engages your Leader, draw and resolve Creature.\nIfyou do not suffer damage from the creature, you succeed\n~ and break the superstition: Add (a next battle fo 2\nseparate models."
+    "frontText": "Rumors are spreading that your settlement is haunted. People swear they are being followed by a presence and some have even been injured too. It's being called 'The Lurker'.",
+    "backTitle": "Dismiss the Myth",
+    "backText": "SET UP: Add marker to battlefield edge nearest enemy Leader."
   },
   {
     "name": "Giddyup Buttercup Part 2",
-    "frontText": "47\n$ENcworup svrrERCYP: Part 2\n1S\nThe Giddyup Buttercup has formed an attachment fo your\n\nLeader — following them everywhere, sleeping af their feet.\nIf you didn’t know better, you'd swear it had feelings.\nThe meeting to return it to its owner is only a few days\n\naway. If’ vital not to lose it before then.",
-    "backTitle": "GRR) & Bb -— i -~ 4 JR",
-    "backText": "HELOVEVIOLDT54=\n; ser-up: Place @ ) in contact with your Leader.\n- End of each round: Move Giddyup Buttercup Yellow towards\nyour Leader and then, if not within Yellow of your Leader,\n: it is lost, so discard the token - Repeat Part 1.\n~~ Giddyup Buttercup is also lost if it gains a total of 3 [x]\nIf Giddyup Buttercup is present at battle end, gain 197 2"
+    "frontText": "The Giddyup Buttercup has formed an attachment to your Leader – following them everywhere, sleeping at their feet. If you didn't know better, you'd swear it had feelings.",
+    "backTitle": "HE LOVES YOU LOTS",
+    "backText": "SET-UP: Place G in contact with your Leader."
   },
   {
     "name": "The Poisoned Deathclaw",
-    "frontText": "AN)\nAh THE POISONED DEATHCLAW\n>\nThe trappers were now uncertain how much poison they had put\nin the Brahmin carcass used to lure the Deathclaw.\nThey didn’t want to use too much in case it fainted the meat\n(and their profit), but had they given it too little? Rather than\nrisk facing an angry (and unsubdued) Deathclaw, they ask if\nyou would check on it for them, and finish it off if required?",
-    "backTitle": "GRY) : TUE NEATLY ’",
-    "backText": "SUBLTUCTIICPEAT HW “v\n~ ser-up: Place a model or token representing the Deathclaw\n: Blue from center of battlefield.\n~ Deathclaw hes @9) 3 and does not move. End of each round,\nit uses Deathclaw Swipe with only 1 © to attack 1 random\n5 model within Orange (prioritising attackers).\nIf the Deathclaw is removed, gain 3 Boost cards for next battle."
+    "frontText": "The trappers were now uncertain how much poison they had put in the Brahmin carcass used to lure the Deathclaw. They didn't want to use too much in case it tainted the meat (and their profit), but had they given it too little? Rather than risk facing an angry (and unsubdued) Deathclaw, they ask if you would check on it for them, and finish it off if required?",
+    "backTitle": "SUBDUE THE DEATHCLAW",
+    "backText": "SET-UP: Place a model or token representing the Deathclaw Blue from center of battlefield."
   },
   {
     "name": "The Time Lock Safe",
-    "frontText": "AN)\n$EN re mvs cock sare\nSS\n“Seriously. The old guy told me that’s how some of the\nsmall safes worked at Lexington Bank back then.\nThey can be opened at a specific time just once a day.\nAnd that beeping sound people hear around there?\nThat's it opening. How should I know when?! All | know is\nroughly where it is. Just give me my share if you get fo it.”",
-    "backTitle": "Grim) \\ WE ay. 4 2 / Vp 40",
-    "backText": "PEREEGTIIINES =\nPY 2\n; = The safe only opens at one moment each day.\nAdd (=) at least Black from your deployment area — this is\n: the safe. Add Consequence fo Event deck. |\n. consequence\n~ You can interact with safe during this and the next round only.\nHs Use(O)to find the open safe\n+ The safe contains bundles of currency. Gain 68 ®\na. in PT EY Sg rae To ep i =v"
+    "frontText": "\"Seriously. The old guy told me that's how some of the small safes worked at Lexington Bank back then. They can be opened at a specific time just once a day. And that beeping sound people hear around there? That's it opening. How should I know when?! All I know is roughly where it is. Just give me my share if you get to it.\"",
+    "backTitle": "PERFECT TIMING",
+    "backText": "The safe only opens at one moment each day."
   },
   {
     "name": "Artificial Insanity Part 3",
-    "frontText": "ZN\nFON armFiciae avsanemy: part 3\n2, eT up: Have opponent place\nup to Black from the battlefield centre. This is the air vent.\nAssign the special EM grenade to one model. Model must\nuse ® to hit air vent. If grenade scatters, model can pick\ngrenade up from where it landed. Model may trigger grenade\non its next activation after the successful )\nTriggering the grenade fries the AI. Steed sends you a reward.\n©2019 Bethesda Softworks LLC, a ZeniMax Media company. All Rights Reserved.",
-    "backTitle": "STACGERING PIPE PISTOL &",
-    "backText": "Neee -\n| CANN"
+    "frontText": "SET UP: Have opponent place up to Black from the battlefield centre. This is the air vent. Assign the special EM grenade to one model. Model must use to hit air vent. If grenade scatters, model can pick grenade up from where it landed. Model may trigger grenade on its next activation after the successful Triggering the grenade fries the A.I. Seed sends you a reward.",
+    "backTitle": "STAGGERING PIPE PISTOL",
+    "backText": "!2"
   },
   {
     "name": "Photo Shoot",
-    "frontText": "ZN\n[2 PHOTO SHOOT\nS\n“I need a subject for the cover of my magazine.\nCan | take a photo of you in combat? Needs to be\nsomething dramatic. Only problem is the clouds are\nmaking the light unpredictable.”",
-    "backTitle": "GR) 2 -r, y -_r",
-    "backText": "PONCE\n5 Nominate one of your models as the photo's subject.\n~~ Add Consequence to Event deck after first Event is resolved.\nconsequence The photographer will be able to fake the ~~\n~ photo during this and the next round. If nominated model\n~ removes any opposing model during this time, gain 89 C]"
+    "frontText": "\"I need a subject for the cover of my magazine. Can I take a photo of you in combat? Needs to be something dramatic. Only problem is the clouds are making the light unpredictable.\"",
+    "backTitle": "FRONT COVER",
+    "backText": "Nominate one of your models as the photo's subject. Add Consequence to Event deck after first Event is resolved."
   },
   {
     "name": "The Missing Sample",
-    "frontText": "AN)\n$ON we muss sanpee\nea\n=\n&))\nWilliam's field trip had been a success — right up until he\ndiscovered the pheromone sample he had collected\nwas no longer in his bag.\nA sample of what, the scientist would not say, or who he\nworks for; but he tells you four of the possible locations\nwhere he stopped on his way back fo check.",
-    "backTitle": "Griz) PINT) THE DHE INN ET",
-    "backText": "(Fee J1ICHITIEXDIH OVE I\n~ sirup: Mix 4 Investigation markers (3 blank and 1 letter)\nand add diagonally Blue from each corner of the battlefield.\nPick-up the token with the letter (the sample) during the battle.\nIf successful, William shares some of the pheromone that will\n© attract a creature. Once next hattle, have an enemy model up\nto Orange from one of yours resolve a Creature Card."
+    "frontText": "William's field trip had been a success – right up until he discovered the pheromone sample he had collected was no longer in his bag.",
+    "backTitle": "FIND THE PHEROMONE",
+    "backText": "SET-UP: Mix 4 Investigation markers (3 blank and 1 letter) and add diagonally Blue from each corner of the battlefield. Pick-up the token with the letter (the sample) during the battle."
   },
   {
     "name": "Battle Codex Part 1",
-    "frontText": "AN)\n$EN carrie covsx: Part\n=\nN=)\nThe Brotherhood is compiling a Codex fo assist in\ndeveloping our skills through knowledge about the\nWasteland and its inhabitants.\nYou are to take note of the events of the coming battle.\nSenior Scribe Beth declares that recording history will lay a\nbetter foundation for the new times ahead.",
-    "backTitle": "Gragr) v7",
-    "backText": "Qa rurnirivsre N=\nSelect 1 Field Scribe in your force to perform this Quest.\nEach time the Field Scribe is within Red of a friendly model\nbeing removed, take 1 counting token.\nTake 2 tokens if within Blue of an enemy model being\n: removed. After battle, gain 15 C] for each token.\nOnce a total of 45 (C] have been gained: Go fo Part 2.\n& This part may always be repeated."
+    "frontText": "The Brotherhood is compiling a Codex to assist in developing our skills through knowledge about the Wasteland and its inhabitants.",
+    "backTitle": "COMPANY HISTORIAN",
+    "backText": "Select 1 Field Scribe in your force to perform this Quest."
   },
   {
     "name": "Buried Treasure Part 2",
-    "frontText": "AN)\nAh BURIED TREASURES: Part 2\n\n=\n=)\n\nAs you wipe off the dust, you realise this is more than just\n\njunk. A palm-sized family portrait, curiously ornamented,\n\nrests in your hands. You scour the faces in the picture until\nyou stop fo look af the eyes of a little kid who looks\n\nvery familiar. Could it be...",
-    "backTitle": "PHI MENORIES =",
-    "backText": "~~ During Sop, assign the portrait fo one of your models. ~~\n~~ When this model = with another of your own models,\n: test PER (max. once with each model): :\nc It's them! From years ago. You give the portrait to its ¥\n: rightful owner. Both models gain 1 888) and conse ~~~\n& Luck during the remainder of this battle. :\nae PE AT TA Ger 1 TTT TA Ce ae"
+    "frontText": "As you wipe off the dust, you realise this is more than just junk. A palm-sized family portrait, curiously ornamented, rests in your hands. You scour the faces in the picture until you stop to look at the eyes of a little kid who looks very familiar. Could it be. . .",
+    "backTitle": "FAMILY MEMORIES",
+    "backText": "During set-up, assign the portrait to one of your models."
   },
   {
     "name": "Innocent Bystander",
-    "frontText": "$2 wwocent BrsTanosR\na\nND)\n“screaming NOOO! PLEASE, NOOO! DON'T KILL ME!\nNOOO! HELP!",
-    "backTitle": "GINS 0 Fr) gr) - -p 7 ~~),",
-    "backText": "HEU ITCH EU LES 4 “v\n5 = ser-u: Deploy model (Bystander)\n: within Yellow of one of your models.\nStart of each round: Bystander gains Ef not within Yellow\n4 of one of your models. Then, Flip of\n; iregs, you move them Yellow; otherwise, your opponent\ndoes (not off battlefield). Bystander has S) 2\n_ If Bystander survives 3 rounds: Gain 48 C} and 1£\\lfem."
+    "frontText": "*screaming* NOOO! PLEASE, NOOO! DON'T KILL ME! NOOO! HELP!",
+    "backTitle": "HELP THE HELPLESS",
+    "backText": "SET-UP: Deploy model (Bystander) within Yellow of one of your models."
   },
   {
     "name": "Target Practice",
-    "frontText": "=\n$N  mweerpRacrice\n== S\nS\n\n“This used to be a combat training ground for some of the\nBrotherhood. The pop-up targets still work. Jumped out of my\n\nskin first time | went through here. Those mannequins are\n\nalmost as creepy as the real things.”",
-    "backTitle": "Gur) i YN LL LJv v",
-    "backText": "PREENOVE =\n3 During set-up, spread 6 Feral Ghoul models across the\n: battlefield. These are mannequins. Start of each round, :\n: flip os for each mannequin. 838 means sand the\n; mannequin up; otherwise, lay it down.\nWhilst upright, remove mannequin if hit by any attack. :\n_ Remove 4 by battle end to draw 2 Boosts for next battle. ~~\n: . A A A oe"
+    "frontText": "This used to be a combat training ground for some of the Brotherhood. The pop-up targets still work. Jumped out of my skin first time I went through here. Those mannequins are almost as creepy as the real things.",
+    "backTitle": "TAKE 'EM OUT",
+    "backText": "During set-up, spread 6 Feral Ghoul models across the battlefield. These are mannequins. Start of each round, flip 🍀 for each mannequin. 🍀 means stand the mannequin up; otherwise, lay it down."
   },
   {
     "name": "The Stolen Key",
-    "frontText": "=\n$0N  mesroswier\n\n=\n\n=)\n\nThe limping settler approaches you.\n“| twisted my ankle and was resting when some creature\ngrabbed a key from my bag and disappeared in that\ndirection. | couldn't catch it. Could you help?\n| can tell you some information in return.”",
-    "backTitle": "GagT) rs) Fr’ -~)4 ’ rp) = ym)",
-    "backText": "Ue crenic IITCREYV 4 “r\n~ Have opponent place token at least Black from all battlefield\nedges without knowing why. The creature was last seen here.\n; w Use ©): E\n~/ Draw creature card. Remove token. Key found. “3\n~ X Not here. Move token Yellow in random direction. :\nIf key found, you refurn it. Start with 1 model (3) next battle.\nae Ey me CCS Ta Ce ae"
+    "frontText": "The limping settler approaches you.",
+    "backTitle": "RETRIEVING THE KEY",
+    "backText": "Have opponent place token at least Black from all battlefield edges without knowing why. The creature was last seen here."
   },
   {
     "name": "Deathclaw Statues Part 1",
-    "frontText": "7A)\n[12 DEATHCLAW STATES: Part 1\nSS\nThe Deathclaw statue had always been a weird choice. Why\nhere? Had this been a kids’ park? If so, why such a realistic\nDeathclaw? No matter though. You're here for the secret\ncompartment you saw in that book. Its one of the four\nstatues near here. Which one though?",
-    "backTitle": "GR) ADL] WPAPTNCN",
-    "backText": "Ta =r LATA ARINIEN 14 Te\n- Soh. 5\n~ ser-up: Place the Deathclaw model Blue from centre of\n: battlefield. Once per battle, you can = Use (O):\nRoll @. If result is equal to or less than total number\nof statues you have searched, you find the hidden\n: compartment. A book on Deathclaws. Go fo Part 2.\n~~ X Not here. Repeat Quest to try a different statue. :\nON A A Pr A i ta"
+    "frontText": "The Deathclaw statue had always been a weird choice. Why here? Had this been a kids' park? If so, why such a realistic Deathclaw? No matter though. You're here for the secret compartment you saw in that book. It's one of the four statues near here. Which one though?",
+    "backTitle": "SECRET COMPARTMENT",
+    "backText": "SET-UP: Place the Deathclaw model Blue from centre of battlefield. Once per battle, you can ⇄ Use 🔍:"
   },
   {
     "name": "Grognak The Barbarian #2",
-    "frontText": "a SROGHAK:\nay THE BARBARIAN #2\n= Ne\n=)\nThe second issue ‘Cometh the Trickster’ is a classic.\nAmazing battle moves. | reckon | could use that.\nMaybe not the somersault though.",
-    "backTitle": "Gm) GROGIVAK: #2,",
-    "backText": "UB Ci PEREORMEDE\n3 As Grognak: #1 Performed above. | 3\n{a - i a ae od an ca a a RN ="
+    "frontText": "The second issue 'Cometh the Trickster' is a classic. Amazing battle moves. I reckon I could use that. Maybe not the somersault though.",
+    "backTitle": "GROGNAK: #2 PERFORMED",
+    "backText": "As Grognak: #1 Performed above."
   },
   {
     "name": "The Armor Fanatic Part 3",
-    "frontText": "Ty\nFEN 7z amo EaNATIC: Part 3\nCY\n_— “Could be that underground storage fy where\n> that feral ghoul nest got out of control. You know it?\nGroup of settlers emptied a tanker of fuel in and set it alight.\nThe stench!”\nFind a way into the chamber. Place token Yellow from centre of\nbattlefield. == Use ® while no enemy model within Yellow.\nIt's ill here - blackened hut not damaged. Gain 7-45 & <)",
-    "backTitle": "a T Ee®",
-    "backText": "spol-N & §\nBana 5%"
+    "frontText": "\"Could be that underground storage facility where that feral ghoul nest got out of control. You know it? Group of settlers emptied a tanker of fuel in and set it alight. The stench!\"",
+    "backTitle": "T-45 POWER ARMOR",
+    "backText": "+2, -1, +3, +2"
   },
   {
     "name": "Boomer Bomber",
-    "frontText": "=)\n[1 ) BOOMER BOMBER\n5S\n% (Cd\n-\n=\n“The others say the bomber’s nowhere near here, but | just have a feeling...\nCall it a Boomers hunch. Could you help me and have a look out from these\nareas for me? If it is there, you won't be able to miss it.”",
-    "backTitle": "Guakt) CADE END THER) MBED",
-    "backText": "LCG SEARCH FORTIIEEOMECA:\nIf by the end of the battle, your models (combined) have been within Red\nof each battlefield corner and the center at any time: Add the\nConsequence next battle.\nCONSEQUENCE\nThe artillery shell whistles down. Select a location, scatter Yellow and\nresolve the effects of a Long-Fuse Dynamite."
+    "frontText": "\"The others say the bomber's nowhere near here, but I just have a feeling... Call it a Boomer's hunch. Could you help me and have a look out from these areas for me? If it is there, you won't be able to miss it.\"",
+    "backTitle": "SEARCH FOR THE BOMBER",
+    "backText": "If by the end of the battle, your models (combined) have been within Red of each battlefield corner and the center at any time: Add the Consequence next battle."
   },
   {
     "name": "Big T's Task",
-    "frontText": ">\nON arom\nLSS\nEven for a Super Mutant, Big T is fall and powerful.\nHe's also leader of the Super Mutants in this region and\nis willing to allow your passage through the area — if you\ncomplete a job for him... He wanis information on the\nsignificant members of local groups, but he demands a\nconstant supply or the deal’s off.\n©2020 Bethesda Softworks LLC, a ZeniMax Media company. All Rights Reserved",
-    "backTitle": "INTELIENCERERORTS >",
-    "backText": "When one of your models is within Orange of a\nUnique opposing model, Test IT. If successful, goin {2\n~ Each opposing model may only be tested once. At battle end:\nemheR Gain 10 (C] per {4 now and Quest Ends.\nor Confinue this Quest next battle: Gain 4 (8 now, but if\nyou gain no new {2} during next battle, discard all (2\nand Quest ends."
+    "frontText": "Even for a Super Mutant, Big T is tall and powerful. He's also leader of the Super Mutants in this region and is willing to allow your passage through the area — if you complete a job for him.... He wants information on the significant members of local groups, but he demands a constant supply or the deal's off.",
+    "backTitle": "INTELLIGENCE REPORTS",
+    "backText": "When one of your models is within Orange of a Unique opposing model, Test Int. If successful, gain caps."
   },
   {
     "name": "Blessing Of Atom",
-    "frontText": "AN)\n$IN  zeesome oF arom\nwl\n=)\nBlessing the bodies of the fallen in Atom’s name — giving\nthem spiritual strength whether dead or just incapacitated.\nSpread the love of Atom and take a little for your trouble too.\nWho could have an issue with that for such\na valuable service?",
-    "backTitle": "GRR) | i 7) = z, 7) 7,",
-    "backText": "RENRDIVE WIRES =\nDuring set-up, specify which model can give blessings.\nWhen any non-creature model is removed, place a token\n; in its place to mark the body. A\n\"=~ with a body to bless them and gain a ‘donation’ from\n3 their pockets, then discard token.\n: Each donation is 6-9 {8 (5+ one roll of EY). :\n& Quest can be repeated. :\na A A rT A Si ta"
+    "frontText": "Blessing the bodies of the fallen in Atom's name — giving them spiritual strength whether dead or just incapacitated. Spread the love of Atom and take a little for your trouble too. Who could have an issue with that for such a valuable service?",
+    "backTitle": "REWARDING WORK",
+    "backText": "During set-up, specify which model can give blessings. When any non-creature model is removed, place a token in its place to mark the body."
   },
   {
     "name": "Lost Plans",
-    "frontText": "oy\n9) LOST PLANS\nS\nFew know the Vertibird that crashed carried important orders\nfor the Brotherhood's next moves in the area. That holotape\nis likely to be valuable fo the Brotherhood, or maybe others\nmay want if more.\n©2019 Bethesda Softworks LLC, a ZeniMax Media company. All Rights Reserved.",
-    "backTitle": "ULL LEZ LED",
-    "backText": "ser up: Add all crashed Vertibird pieces to the battlefield,\nat least Red from each other and battlefield edges.\n~~ with any piece of crashed Vertibird and Use (©)\n4 (max. once for each piece). TENE\n~~ + You found the holotape.\n~ EmHeR Return it fo the Brotherhood. Gain 70 {@ reward.\n~~ or Sell fo highest bidder. Gain X EC)"
+    "frontText": "Few know the Vertibird that crashed carried important orders for the Brotherhood's next moves in the area. That holotape is likely to be valuable to the Brotherhood, or maybe others may want it more.",
+    "backTitle": "FIND THE HOLOTAPE",
+    "backText": "SET UP: Add all crashed Vertibird pieces to the battlefield, at least Red from each other and battlefield edges."
   },
   {
     "name": "Potential Partnership",
-    "frontText": "Fo Zn\n9) POTENTIAL PARTNERSHIP\nDe\nSs\nOne of your group says they are meeting a contact later who\nis a major clothing trader. Could be great for your settlement.\n“Thing is they won't trust anyone else. If I'm not there,\ndeal’s off. What can | say? People like me.”\n©2019 Bethesda Softworks LLC, a ZeniMax Media company. All Rights Reserved.",
-    "backTitle": "GaRT) ) yr _— a am, ry",
-    "backText": "AE LE UZ UE EP\n: set-up: Secretly select 1 model in your force\n: which is not a 3) 5 ®) or ®\n: Write down its name (and pose if not unique).\n~ Arend of battle: If the selected model was not removed\n: due to zero Health, gain 1 Clothing Shop in your\n: settlement for free."
+    "frontText": "One of your group says they are meeting a contact later who is a major clothing trader. Could be great for your settlement.",
+    "backTitle": "MAKE THE MEETING",
+    "backText": "SET-UP: Secretly select 1 model in your force which is not a , , or"
   },
   {
     "name": "Deathclaw Statues Part 2",
-    "frontText": "=\n[12 DEATHOLAW STATUES: Part 2\nWHR. The book is a study of Deathclaws which\nS=>holds them in a reverence that is disturbing.\nSigning themselves as ‘Cult of Claw’, the writers final, hastily\nwritten entry describes the cult being raided — asking the\nbook's finder to free the young one in the secret den by\nreleasing the chain above ifs pit.\nScatter a marker Red from battlefield centre. === to\ncomplete Quest and only then turn over this card.",
-    "backTitle": "GRY) Ny . -",
-    "backText": "(Toys, GUL 097 5241 “v\n\\BE =\nGain 112 C] hidden with chain. Tell opponent a roar comes\nfrom below the hattlefield’s centre. At end of round, place\n~~ Deathclaw Orange (random direction) from battlefield centre ~~\n$ as it bursts out of a concealed pit.\n~ End of each round: Deathclaw moves Yellow directly away\nfrom battlefield centre (always breaking engagement) using\nx Deathclaw Swipe only on the first model it can."
+    "frontText": "The book is a study of Deathclaws which holds them in a reverence that is disturbing. Signing themselves as 'Cult of Claw', the writer's final, hastily written entry describes the cult being raided — asking the book's finder to free the young one in the secret den by releasing the chain above its pit.",
+    "backTitle": "CULT OF CLAW",
+    "backText": "Gain 112 caps hidden with chain. Tell opponent a roar comes from below the battlefield's centre. At end of round, place Deathclaw Orange (random direction) from battlefield centre as it bursts out of a concealed pit."
   },
   {
     "name": "Wasteland Health Survey",
-    "frontText": "AN)\n[12 WASTELAND HEALTH SURVEY\nSS\nDoctor Powers is gathering blood samples from different\nparts of the Wasteland to study. She believes a cure could\nbe found for common ailments, as well as giving her a\npossibility to adapt known drugs fo work with other species.",
-    "backTitle": "GigT) i [6 ) 7, 7%",
-    "backText": "ELODDRIRVESTE =\n~ Assign this Quest fo a specific model in your force. Each time\nit deals \") damage in Close Combat to an opposing model\n~~ ithos not damaged already, place a {on this card. 3\n© Ifthereare 3or more {@ on this card at the end of the\nbattle, gain 14 C} for each. Quest can be repeated.\n: . A Sh Te Ae oe"
+    "frontText": "Doctor Powers is gathering blood samples from different parts of the Wasteland to study. She believes a cure could be found for common ailments, as well as giving her a possibility to adapt known drugs to work with other species.",
+    "backTitle": "BLOOD HARVEST",
+    "backText": "Assign this Quest to a specific model in your force. Each time it deals damage in Close Combat to an opposing model it has not damaged already, place a on this card."
+  },
+  {
+    "name": "House Rules Part 1",
+    "frontText": "Mr. House requests you perform a task for him.",
+    "backTitle": "FAIR WARNING",
+    "backText": "Have opponent select one of their models (not their Leader, or a Creature, Robot or Dog). Do not explain why."
+  },
+  {
+    "name": "House Rules Part 2",
+    "frontText": "\"It wasn't me, I swear. A Securitron told me to leave, so I did. What's that? What did it look like? Actually, it did have a weird antenna, and I could have sworn it sounded like that NCR Engineer, Bellamy – must have been the alcohol. Always tinkering in his shack that one. Think he's clever - everyone knows you can unlock his shack using terminals if you know the trick.\"",
+    "backTitle": "SHACK ATTACK",
+    "backText": "SET-UP: Place 2 [computer]. One scattered Blue from Battlefield center and the other scattered Red from Battlefield center."
+  },
+  {
+    "name": "House Rules Part 3",
+    "frontText": "Inside the shack is a workbench covered by a tarpaulin. Underneath you find a schematic of a radio-control device with microphone and another of a Securitron's head with an unusual looking antenna drawn on. Bellamy's been overriding the robot using remote control, and raided the gambler's slot machine after telling them to leave. This compromised robot needs deactivating.",
+    "backTitle": "AUTHORISED OVERRIDE",
+    "backText": "SET-UP: Arm one of your models with a Pulse Gun. Place a Securitron Mk I at Battlefield center which immediately shoots any model that attacks it using 3 and the Securitron SMG."
   },
   {
     "name": "A Legend Returns Part 3",
-    "frontText": "a\n$N aczesno ReTuRNS: Part 3\na\nSs)\n\nThe crate does not contain Rock's shotgun but his bladed helmet\ninstead. Make the legend's presence felt once more.\nser-up: Equip one non-dog Super Mutant with the helmet on\nother side of this card.\n\nIf ll opponents models are removed from the battlefield by\nend of round 4, gain Rock's Bladed Helm <5]\nand Local Leader perk.",
-    "backTitle": "{1 ROCK'S BLADED HEIM &",
-    "backText": "Super Mutants only:\n+18)\nPer +1\n(ha +2\nHEADS UP: Once per round, +1 to 1 model\n(not wearer) in addition to any other armor.\nStart of battle, wearer gains 2 Boost cards which can be\nshared like items."
+    "frontText": "The crate does not contain Rock's shotgun but his bladed helmet instead. Make the legend's presence felt once more.",
+    "backTitle": "ROCK'S BLADED HELM",
+    "backText": "Super Mutants only:"
   }
 ]
