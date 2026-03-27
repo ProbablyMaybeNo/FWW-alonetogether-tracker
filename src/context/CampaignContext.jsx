@@ -1,13 +1,13 @@
 import { createContext, useContext } from 'react'
-import { usePersistedState } from '../hooks/usePersistedState'
+import { useCampaignSync } from '../hooks/useCampaignSync'
 
 const CampaignContext = createContext(null)
 
-export function CampaignProvider({ children }) {
-  const persisted = usePersistedState()
+export function CampaignProvider({ children, campaignId, userId }) {
+  const sync = useCampaignSync({ campaignId, userId })
 
   return (
-    <CampaignContext.Provider value={persisted}>
+    <CampaignContext.Provider value={sync}>
       {children}
     </CampaignContext.Provider>
   )

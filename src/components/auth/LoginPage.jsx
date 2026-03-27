@@ -116,10 +116,10 @@ export default function LoginPage({ onSolo }) {
           onClick={onSolo}
           type="button"
         >
-          PLAY SOLO (NO ACCOUNT)
+          PLAY SOLO (LOCAL ONLY)
         </button>
         <div style={styles.soloNote}>
-          Uses local storage only — no cloud sync
+          No sync — uses this device only
         </div>
       </div>
     </div>

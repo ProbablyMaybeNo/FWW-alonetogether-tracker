@@ -13,8 +13,27 @@ import { Download, Upload } from 'lucide-react'
 
 function AppContent() {
   const [activeTab, setActiveTab] = useState('overview')
-  const { exportData, importData } = useCampaign()
+  const { state, exportData, importData, syncing } = useCampaign()
   const fileRef = useRef(null)
+
+  // Supabase player data still loading
+  if (!state) {
+    return (
+      <div style={{
+        minHeight: '100vh',
+        background: 'var(--color-terminal)',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        fontFamily: 'var(--font-family-mono)',
+        color: 'var(--color-pip)',
+        fontSize: '0.75rem',
+        letterSpacing: '0.2em',
+      }}>
+        {syncing ? 'SYNCING...' : 'LOADING...'}
+      </div>
+    )
+  }
 
   async function handleImport(e) {
     const file = e.target.files?.[0]
@@ -124,7 +143,7 @@ function AuthGate() {
 
   // Fully authenticated with a campaign selected → main app
   return (
-    <CampaignProvider>
+    <CampaignProvider campaignId={campaignId} userId={user.id}>
       <AppContent />
     </CampaignProvider>
   )
