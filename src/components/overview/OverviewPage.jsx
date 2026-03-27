@@ -16,7 +16,7 @@ const PHASES = [
 ]
 
 export default function OverviewPage({ onTabChange }) {
-  const { state, setState } = useCampaign()
+  const { state, setState, updateShared, isOnline } = useCampaign()
   const [editingCaps, setEditingCaps] = useState(false)
   const [capsInput, setCapsInput] = useState('')
   const [capsAdjust, setCapsAdjust] = useState('')
@@ -50,12 +50,21 @@ export default function OverviewPage({ onTabChange }) {
 
   function handleRoundChange(value) {
     const num = parseInt(value, 10)
-    setState(prev => ({ ...prev, round: isNaN(num) ? 0 : num }))
+    const newRound = isNaN(num) ? 0 : num
+    if (isOnline) {
+      updateShared('round', newRound)
+    } else {
+      setState(prev => ({ ...prev, round: newRound }))
+    }
   }
 
   function handlePhaseChange(delta) {
     const newPhase = Math.max(1, Math.min(4, (state.phase ?? 1) + delta))
-    setState(prev => ({ ...prev, phase: newPhase }))
+    if (isOnline) {
+      updateShared('phase', newPhase)
+    } else {
+      setState(prev => ({ ...prev, phase: newPhase }))
+    }
   }
 
   function handleCapsEdit() {
@@ -81,7 +90,12 @@ export default function OverviewPage({ onTabChange }) {
   }
 
   function handleBattleCountInc() {
-    setState(prev => ({ ...prev, battleCount: (prev.battleCount ?? 0) + 1 }))
+    const newCount = (state.battleCount ?? 0) + 1
+    if (isOnline) {
+      updateShared('battleCount', newCount)
+    } else {
+      setState(prev => ({ ...prev, battleCount: newCount }))
+    }
   }
 
   return (

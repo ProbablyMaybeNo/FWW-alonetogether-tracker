@@ -1,5 +1,4 @@
-import { LayoutDashboard, Users, Building2, Target, Map, LogOut } from 'lucide-react'
-import { useAuth } from '../../context/AuthContext'
+import { LayoutDashboard, Users, Building2, Target, Map } from 'lucide-react'
 
 const TABS = [
   { id: 'overview',    label: 'OVERVIEW',     icon: LayoutDashboard },
@@ -10,8 +9,6 @@ const TABS = [
 ]
 
 export default function TabShell({ activeTab, onTabChange }) {
-  const { signOut, profile, isSupabaseConfigured } = useAuth()
-
   return (
     <nav className="flex border-b-2 border-pip-dim bg-panel">
       {TABS.map(tab => {
@@ -38,23 +35,6 @@ export default function TabShell({ activeTab, onTabChange }) {
           </button>
         )
       })}
-
-      {isSupabaseConfigured && (
-        <div className="flex items-center gap-2 px-3 border-l border-pip-dim/40">
-          {profile?.username && (
-            <span className="hidden md:inline text-muted text-xs tracking-wider truncate max-w-24">
-              {profile.username}
-            </span>
-          )}
-          <button
-            onClick={signOut}
-            title="Log out"
-            className="p-1.5 text-muted hover:text-danger transition-colors"
-          >
-            <LogOut size={14} />
-          </button>
-        </div>
-      )}
     </nav>
   )
 }

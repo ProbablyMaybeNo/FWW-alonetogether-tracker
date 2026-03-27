@@ -2,21 +2,20 @@ import { useState, useRef } from 'react'
 import { CampaignProvider, useCampaign } from './context/CampaignContext'
 import { useAuth } from './context/AuthContext'
 import TabShell from './components/layout/TabShell'
+import AppShell from './components/layout/AppShell'
 import OverviewPage from './components/overview/OverviewPage'
 import RosterPage from './components/roster/RosterPage'
 import SettlementPage from './components/settlement/SettlementPage'
 import EventsPage from './components/events/EventsPage'
 import ObjectivesPage from './components/objectives/ObjectivesPage'
 import LoginPage from './components/auth/LoginPage'
-import CampaignLobby from './components/auth/CampaignLobby'
-import { Download, Upload } from 'lucide-react'
+import CampaignDirectory from './components/auth/CampaignDirectory'
 
-function AppContent() {
+function AppContent({ campaignId, onLeaveCampaign }) {
   const [activeTab, setActiveTab] = useState('overview')
   const { state, exportData, importData, syncing } = useCampaign()
   const fileRef = useRef(null)
 
-  // Supabase player data still loading
   if (!state) {
     return (
       <div style={{
@@ -47,50 +46,39 @@ function AppContent() {
     e.target.value = ''
   }
 
+  function handleLeaveCampaign() {
+    localStorage.removeItem('fww-last-campaign')
+    onLeaveCampaign?.()
+  }
+
   return (
     <div className="min-h-screen flex flex-col">
-      {/* Top Bar */}
-      <header className="flex items-center justify-between px-4 py-2 border-b border-pip-dim bg-panel">
-        <div className="flex items-center gap-2">
-          <span className="text-pip text-xs tracking-widest">FWW</span>
-          <span className="text-pip-dim text-xs">ALONE TOGETHER</span>
-        </div>
-        <div className="flex items-center gap-1">
-          <button onClick={exportData} className="p-1.5 text-pip-dim hover:text-pip" title="Export Campaign">
-            <Download size={16} />
-          </button>
-          <button onClick={() => fileRef.current?.click()} className="p-1.5 text-pip-dim hover:text-pip" title="Import Campaign">
-            <Upload size={16} />
-          </button>
-          <input ref={fileRef} type="file" accept=".json" onChange={handleImport} className="hidden" />
-        </div>
-      </header>
+      <AppShell
+        campaignId={campaignId}
+        onExport={exportData}
+        onImportClick={() => fileRef.current?.click()}
+        onLeaveCampaign={handleLeaveCampaign}
+        onReset={handleLeaveCampaign}
+      />
+      <input ref={fileRef} type="file" accept=".json" onChange={handleImport} className="hidden" />
 
       <TabShell activeTab={activeTab} onTabChange={setActiveTab} />
 
       <main className="flex-1 overflow-y-auto">
-        {activeTab === 'overview'    && <OverviewPage onTabChange={setActiveTab} />}
-        {activeTab === 'roster'      && <RosterPage />}
-        {activeTab === 'settlement'  && <SettlementPage />}
-        {activeTab === 'objectives'  && <ObjectivesPage />}
-        {activeTab === 'events'      && <EventsPage />}
+        {activeTab === 'overview'   && <OverviewPage onTabChange={setActiveTab} />}
+        {activeTab === 'roster'     && <RosterPage />}
+        {activeTab === 'settlement' && <SettlementPage />}
+        {activeTab === 'objectives' && <ObjectivesPage />}
+        {activeTab === 'events'     && <EventsPage />}
       </main>
     </div>
   )
 }
 
-/**
- * AuthGate handles the three-state routing:
- *  1. Supabase not configured OR soloMode → render the main app directly
- *  2. Supabase configured AND no user → LoginPage
- *  3. Supabase configured AND user AND no campaignId → CampaignLobby
- *  4. Supabase configured AND user AND campaignId → main app
- */
 function AuthGate() {
   const { user, loading, isSupabaseConfigured } = useAuth()
   const [soloMode, setSoloMode] = useState(false)
   const [campaignId, setCampaignId] = useState(() => {
-    // Restore last campaign from localStorage on load
     try {
       const stored = localStorage.getItem('fww-last-campaign')
       if (stored) return JSON.parse(stored).id ?? null
@@ -98,7 +86,6 @@ function AuthGate() {
     return null
   })
 
-  // Not configured or user chose solo → straight to app
   if (!isSupabaseConfigured || soloMode) {
     return (
       <CampaignProvider>
@@ -107,7 +94,6 @@ function AuthGate() {
     )
   }
 
-  // Supabase configured but still loading session
   if (loading) {
     return (
       <div style={{
@@ -126,25 +112,25 @@ function AuthGate() {
     )
   }
 
-  // No user → login screen
   if (!user) {
     return <LoginPage onSolo={() => setSoloMode(true)} />
   }
 
-  // User logged in but no campaign selected → lobby
   if (!campaignId) {
     return (
-      <CampaignLobby
+      <CampaignDirectory
         onEnterCampaign={(id) => setCampaignId(id)}
         onSolo={() => setSoloMode(true)}
       />
     )
   }
 
-  // Fully authenticated with a campaign selected → main app
   return (
     <CampaignProvider campaignId={campaignId} userId={user.id}>
-      <AppContent />
+      <AppContent
+        campaignId={campaignId}
+        onLeaveCampaign={() => setCampaignId(null)}
+      />
     </CampaignProvider>
   )
 }

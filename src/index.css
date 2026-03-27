@@ -8,9 +8,9 @@
   --color-pip-mid: #00b85a;
 
   /* Neon orange replaces amber — highlight/important */
-  --color-amber: #ff8c00;
+  --color-amber: #ff9f00;
   --color-amber-dim: #4a2800;
-  --color-amber-glow: #ff8c0030;
+  --color-amber-glow: rgba(255, 159, 0, 0.35);
 
   /* Neon red — danger/warning */
   --color-danger: #ff3c3c;
@@ -27,8 +27,8 @@
   --color-panel-light: #141a14;
   --color-panel-alt: #121712;
 
-  /* Muted text — more readable than before */
-  --color-muted: #4a7a5a;
+  /* Muted text — bright green for readability */
+  --color-muted: #00c060;
 
   --font-family-mono: 'Share Tech Mono', 'Courier New', monospace;
 }
@@ -109,4 +109,10 @@ select option {
 button {
   font-family: var(--font-family-mono);
   cursor: pointer;
+}
+
+@layer utilities {
+  .text-label {
+    color: var(--color-info);
+  }
 }
