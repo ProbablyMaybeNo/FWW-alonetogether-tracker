@@ -2,14 +2,14 @@
   {
     "id": 1,
     "name": "A-2018",
-    "faction": "Brotherhood of Steel",
+    "faction": "Institute",
     "type": "UNIQUE",
     "caps": 104
   },
   {
     "id": 2,
     "name": "ARMORED TRAINEE",
-    "faction": "Brotherhood of Steel",
+    "faction": "Enclave",
     "type": "UNIQUE",
     "caps": 32
   },
@@ -23,7 +23,7 @@
   {
     "id": 4,
     "name": "AVIATOR",
-    "faction": "Brotherhood of Steel",
+    "faction": "Super Mutants",
     "type": "UNIQUE",
     "caps": 90
   },
@@ -1478,13 +1478,6 @@
   },
   {
     "id": 212,
-    "name": "N.I.R.A.",
-    "faction": "Robots",
-    "type": "UNIQUE",
-    "caps": 42
-  },
-  {
-    "id": 213,
     "name": "NIRA",
     "faction": "Robots",
     "type": "UNIQUE",
@@ -1655,14 +1648,7 @@
     "id": 237,
     "name": "SUPER MUTANT",
     "faction": "Super Mutants",
-    "type": "UNIQUE",
-    "caps": 40
-  },
-  {
-    "id": 237,
-    "name": "SUPER MUTANT",
-    "faction": "Super Mutants",
-    "type": "UNIQUE",
+    "type": "GENERIC",
     "caps": 40
   },
   {
