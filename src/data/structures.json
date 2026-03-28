@@ -1002,7 +1002,7 @@
     "defenseValue": 0,
     "perk": "None",
     "effect": "Discard 1 condition from models during next battle Set-up. Contains Boost Structures. 2 Power + 1 Water.",
-    "atValid": false
+    "atValid": true
   },
   {
     "id": 68,
@@ -1017,7 +1017,7 @@
     "defenseValue": 0,
     "perk": "None",
     "effect": "Heal 2 damage points on models for next battle. 2 Power + 1 Water.",
-    "atValid": false
+    "atValid": true
   },
   {
     "id": 69,
@@ -1032,7 +1032,7 @@
     "defenseValue": 0,
     "perk": "None",
     "effect": "500 Caps OR 5 Quests. Expand Settlement area (18x18 > 24x24 > 30x30 > 36x36).",
-    "atValid": false
+    "atValid": true
   },
   {
     "id": 70,
@@ -1046,8 +1046,8 @@
     "waterGen": 0,
     "defenseValue": 1,
     "perk": "None",
-    "effect": "+Defense rating. Requires Barricades along 1-3 sides.",
-    "atValid": false
+    "effect": "Improves Defense Rating. +1 defense with Barricade on 1 side; +2 with Barricades on 2-3 sides. Requires Barricades along 1-3 sides.",
+    "atValid": true
   },
   {
     "id": 71,
@@ -1062,7 +1062,7 @@
     "defenseValue": 1,
     "perk": "None",
     "effect": "+1 Defense. Redirect 1 Structural Damage when attacked.",
-    "atValid": false
+    "atValid": true
   },
   {
     "id": 72,
@@ -1077,7 +1077,7 @@
     "defenseValue": 1,
     "perk": "None",
     "effect": "+1 Defense Rating.",
-    "atValid": false
+    "atValid": true
   },
   {
     "id": 73,
@@ -1092,7 +1092,7 @@
     "defenseValue": 2,
     "perk": "None",
     "effect": "+2 Defense Rating.",
-    "atValid": false
+    "atValid": true
   },
   {
     "id": 74,
@@ -1107,7 +1107,7 @@
     "defenseValue": 3,
     "perk": "None",
     "effect": "+3 Defense Rating.",
-    "atValid": false
+    "atValid": true
   },
   {
     "id": 75,
@@ -1122,7 +1122,7 @@
     "defenseValue": 1,
     "perk": "None",
     "effect": "+1 Defense Rating.",
-    "atValid": false
+    "atValid": true
   },
   {
     "id": 76,
@@ -1137,7 +1137,7 @@
     "defenseValue": 3,
     "perk": "None",
     "effect": "+3 Defense Rating.",
-    "atValid": false
+    "atValid": true
   },
   {
     "id": 77,
@@ -1197,7 +1197,7 @@
     "defenseValue": 0,
     "perk": "None",
     "effect": "Difficult Terrain + Cover. Does not block LoS. No Power.",
-    "atValid": false
+    "atValid": true
   },
   {
     "id": 81,
@@ -1212,7 +1212,7 @@
     "defenseValue": 0,
     "perk": "None",
     "effect": "Blocks LoS. Climbable Terrain. No Power.",
-    "atValid": false
+    "atValid": true
   },
   {
     "id": 82,
@@ -1227,7 +1227,7 @@
     "defenseValue": 0,
     "perk": "None",
     "effect": "Vertical movement. No Power.",
-    "atValid": false
+    "atValid": true
   },
   {
     "id": 83,
@@ -1242,6 +1242,6 @@
     "defenseValue": 0,
     "perk": "None",
     "effect": "Movement between Structures or heights. No Power.",
-    "atValid": false
+    "atValid": true
   }
 ]

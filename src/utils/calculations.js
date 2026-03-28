@@ -44,13 +44,17 @@ export function calcWaterConsumed(structures) {
 }
 
 export function calcDefenseRating(structures) {
+  // Base defense rating is 3
   let defense = 3
   structures.forEach(s => {
     const ref = structuresById[s.structureId]
-    if (ref) defense += (ref.defenseValue || 0)
+    if (!ref || ref.defenseValue <= 0) return
+    // Only count powered, non-wrecked defense structures
+    const usable = s.condition !== 'Damaged' && s.condition !== 'Badly Damaged' && s.condition !== 'Wrecked'
+    const hasPower = (ref.pwrReq === 0) || s.powered
+    if (usable && hasPower) defense += ref.defenseValue
   })
-  defense -= Math.floor(structures.length / 4)
-  return defense
+  return Math.max(0, defense)
 }
 
 export function calcUnitTotalCaps(unit) {

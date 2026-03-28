@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Plus, Trash2, RotateCcw, Zap, Droplets, Building2, Coins, Recycle, Shuffle } from 'lucide-react'
 import { useCampaign } from '../../context/CampaignContext'
-import { calcPowerGenerated, calcPowerConsumed, calcWaterGenerated, calcWaterConsumed, getStructureRef, calcSettlementTotalCaps } from '../../utils/calculations'
+import { calcPowerGenerated, calcPowerConsumed, calcWaterGenerated, calcWaterConsumed, getStructureRef, calcSettlementTotalCaps, calcDefenseRating } from '../../utils/calculations'
 import AddStructureModal from './AddStructureModal'
 import ItemPoolPanel from './ItemPoolPanel'
 import { BarracksModal, MedicalCenterModal, StoresModal } from './StructureUseModals'
@@ -52,6 +52,9 @@ const CONDITION_OPTIONS = ['Undamaged', 'Damaged', 'Badly Damaged', 'Wrecked', '
 // Free Phase 3 starting structures: 2x Generator-Small(1), Stores(53), Maintenance Shed(54), Listening Post(50)
 const PHASE3_FREE_IDS = [1, 1, 53, 54, 50]
 
+// Homestead starting: 1x Land, 2x Generator-Small, Stores, Maintenance Shed, Listening Post, Resource Stand, Hut
+const HOMESTEAD_FREE_IDS = [69, 1, 1, 53, 54, 50, 65, 77]
+
 // Structures with special use handlers
 const SPECIAL_STRUCTURE_NAMES = ['Listening Post', 'Ranger Outpost', 'Scout Camp', 'Barracks', 'Medical Center', 'Stores']
 
@@ -73,7 +76,7 @@ export default function SettlementPage() {
   const settings = state?.settings ?? {}
   const [subTab, setSubTab] = useState('structures')
   const [showAddStructure, setShowAddStructure] = useState(false)
-  const [atValidOnly, setAtValidOnly] = useState(true)
+  const [atValidOnly, setAtValidOnly] = useState(() => settings?.settlementMode !== 'homestead')
   const [showBarracks, setShowBarracks] = useState(false)
   const [showMedCenter, setShowMedCenter] = useState(false)
   const [showStores, setShowStores] = useState(false)
@@ -136,6 +139,40 @@ export default function SettlementPage() {
       settlement: {
         ...prev.settlement,
         resources: Math.max(0, (prev.settlement.resources ?? 0) + delta),
+      },
+    }))
+  }
+
+  function handleReinforceStructure(instanceId) {
+    const resources = state.settlement.resources ?? 0
+    if (resources < 2) { alert('Need 2 Resources to reinforce.'); return }
+    setState(prev => ({
+      ...prev,
+      settlement: {
+        ...prev.settlement,
+        resources: (prev.settlement.resources ?? 0) - 2,
+        structures: prev.settlement.structures.map(s =>
+          s.instanceId === instanceId ? { ...s, condition: 'Reinforced' } : s
+        ),
+      },
+    }))
+  }
+
+  function handleRepairStructure(instanceId) {
+    const s = structures.find(st => st.instanceId === instanceId)
+    if (!s) return
+    if (s.condition === 'Wrecked') { alert('Wrecked structures cannot be repaired.'); return }
+    const resources = state.settlement.resources ?? 0
+    if (resources < 2) { alert('Need 2 Resources to repair.'); return }
+    const next = s.condition === 'Badly Damaged' ? 'Damaged' : 'Undamaged'
+    setState(prev => ({
+      ...prev,
+      settlement: {
+        ...prev.settlement,
+        resources: (prev.settlement.resources ?? 0) - 2,
+        structures: prev.settlement.structures.map(st =>
+          st.instanceId === instanceId ? { ...st, condition: next } : st
+        ),
       },
     }))
   }
@@ -298,11 +335,17 @@ export default function SettlementPage() {
   }
 
   function handlePhase3Setup() {
-    if (!confirm('Add free starting structures? (2× Generator – Small, Stores, Maintenance Shed, Listening Post)')) return
-    const newStructures = PHASE3_FREE_IDS.map(id => ({
+    const isHomestead = settings?.settlementMode === 'homestead'
+    const freeIds = isHomestead ? HOMESTEAD_FREE_IDS : PHASE3_FREE_IDS
+    const label = isHomestead
+      ? 'Add free Homestead starting structures? (Land, 2× Generator–Small, Stores, Maintenance Shed, Listening Post, Resource Stand, Hut)'
+      : 'Add free AT starting structures? (2× Generator–Small, Stores, Maintenance Shed, Listening Post)'
+    if (!confirm(label)) return
+    const newStructures = freeIds.map(id => ({
       instanceId: Date.now() + Math.random(),
       structureId: id,
       usedThisRound: false,
+      powered: false,
       condition: 'Undamaged',
       notes: '',
     }))
@@ -506,6 +549,8 @@ export default function SettlementPage() {
           resources={resources}
           maxResources={maxResources}
           handleAdjustResources={handleAdjustResources}
+          handleReinforceStructure={handleReinforceStructure}
+          handleRepairStructure={handleRepairStructure}
           settings={settings}
         />
       ) : (
@@ -533,8 +578,10 @@ function StructuresPanel({
   handleBarracksApply, handleMedCenterApply, handleStoresApply,
   handleMarkFound, handleNotFound,
   resources, maxResources, handleAdjustResources,
+  handleReinforceStructure, handleRepairStructure,
   settings = {},
 }) {
+  const defenseRating = calcDefenseRating(structures)
   return (
     <>
       {/* Caps read-only */}
@@ -608,6 +655,13 @@ function StructuresPanel({
               <span className="text-xs text-muted">RES</span>
               <button onClick={() => handleAdjustResources(1)} className="w-5 h-5 rounded border border-pip-mid/60 text-pip hover:bg-pip-dim flex items-center justify-center text-sm leading-none">+</button>
             </div>
+          </div>
+        )}
+        {settings.settlementMode === 'homestead' && (
+          <div className="border rounded bg-panel p-2 text-center border-info/40">
+            <Zap size={14} className="mx-auto mb-1 text-info" />
+            <div className="text-sm font-bold text-info">{defenseRating}</div>
+            <div className="text-xs text-muted">DEFENSE</div>
           </div>
         )}
       </div>
@@ -705,6 +759,12 @@ function StructuresPanel({
               <div key={s.instanceId} className={`border rounded transition-colors ${
                 s.usedThisRound
                   ? 'border-pip-dim/20 bg-panel-alt opacity-40'
+                  : s.condition === 'Wrecked'
+                    ? 'border-danger/40 bg-panel-alt opacity-60'
+                  : s.condition === 'Badly Damaged'
+                    ? 'border-danger/30 bg-panel-alt'
+                  : s.condition === 'Damaged'
+                    ? 'border-amber/30 bg-panel'
                   : isPowered
                     ? isSpecial ? 'border-amber/40 bg-panel' : 'border-pip-mid/50 bg-panel'
                     : 'border-pip-dim/30 bg-panel-alt'
@@ -715,6 +775,10 @@ function StructuresPanel({
                     <div className="flex items-center gap-2 flex-wrap">
                       <span className={`text-sm font-bold ${s.usedThisRound ? 'text-muted' : 'text-pip'}`}>{ref.name}</span>
                       {isSpecial && !s.usedThisRound && <span className="text-amber text-xs">★</span>}
+                      {s.condition === 'Damaged' && <span className="text-amber text-xs font-bold">DMG</span>}
+                      {s.condition === 'Badly Damaged' && <span className="text-danger text-xs font-bold">B.DMG</span>}
+                      {s.condition === 'Wrecked' && <span className="text-danger text-xs font-bold">WRECKED</span>}
+                      {s.condition === 'Reinforced' && <span className="text-info text-xs font-bold">RNF</span>}
                       <span className="text-xs text-muted">{ref.category}</span>
                       <span className="text-xs text-amber">{ref.cost}c</span>
                       {ref.pwrGen > 0 && <span className="text-xs text-pip font-bold">+{ref.pwrGen}⚡</span>}
@@ -765,6 +829,26 @@ function StructuresPanel({
                         }`}
                       >
                         USE
+                      </button>
+                    )}
+
+                    {/* Homestead: Repair / Reinforce */}
+                    {settings.settlementMode === 'homestead' && (s.condition === 'Damaged' || s.condition === 'Badly Damaged') && (
+                      <button
+                        onClick={() => handleRepairStructure(s.instanceId)}
+                        title="Repair (2 Resources)"
+                        className="text-amber hover:text-pip transition-colors text-xs px-1 border border-amber/30 rounded"
+                      >
+                        FIX
+                      </button>
+                    )}
+                    {settings.settlementMode === 'homestead' && s.condition === 'Undamaged' && !s.usedThisRound && (
+                      <button
+                        onClick={() => handleReinforceStructure(s.instanceId)}
+                        title="Reinforce (2 Resources) — 50% chance to ignore structural damage"
+                        className="text-info hover:text-pip transition-colors text-xs px-1 border border-info/30 rounded"
+                      >
+                        RNF
                       </button>
                     )}
 
