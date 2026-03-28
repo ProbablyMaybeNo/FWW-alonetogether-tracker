@@ -207,9 +207,9 @@ export default function CampaignDirectory({ onEnterCampaign, onSolo }) {
                 <label className="text-label text-xs block mb-1.5 tracking-wider">SETTLEMENT MODE</label>
                 <div className="space-y-1">
                   {[
-                    { value: 'alone-together', label: 'ALONE TOGETHER', desc: 'AT v2.1 rules — abstract sheet, Barracks & Medical Centre, Survival Mode' },
-                    { value: 'basic', label: 'BASIC', desc: 'Campaign Handbook only — abstract sheet, no Resources, no Events' },
-                    { value: 'homestead', label: 'HOMESTEAD', desc: 'Full Homestead rules — Resources, Settlement Events, Settlement Damage' },
+                    { value: 'alone-together', label: 'ALONE TOGETHER', desc: 'Campaign Handbook settlements with Homestead Survival Mode — abstract sheet, Barracks & Medical Centre, Survival bonuses' },
+                    { value: 'basic', label: 'BASIC', desc: 'Restricted to Campaign Handbook rules — abstract settlement sheet, no Resources, no Settlement Events' },
+                    { value: 'homestead', label: 'HOMESTEAD', desc: 'Full Homestead Expansion — Resources, Settlement Events, structure damage & repair, Defense Rating, expanded structure list' },
                   ].map(opt => (
                     <label key={opt.value} className="flex items-start gap-2 cursor-pointer group">
                       <input
