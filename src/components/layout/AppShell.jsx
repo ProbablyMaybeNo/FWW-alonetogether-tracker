@@ -1,11 +1,11 @@
 import { useState } from 'react'
-import { Menu, X, User, Download, Upload, Swords, LogOut, LayoutGrid } from 'lucide-react'
+import { Menu, X, User, Download, Upload, Swords, LogOut, LayoutGrid, HelpCircle } from 'lucide-react'
 import { useAuth } from '../../context/AuthContext'
 import AccountModal from '../modals/AccountModal'
 import CampaignModal from '../modals/CampaignModal'
 import { TABS } from './TabShell'
 
-export default function AppShell({ campaignId, onExport, onImportClick, onLeaveCampaign, onReset, activeTab, onTabChange, settings = {} }) {
+export default function AppShell({ campaignId, onExport, onImportClick, onLeaveCampaign, onReset, activeTab, onTabChange, settings = {}, onStartTour }) {
   const { signOut, profile, isSupabaseConfigured } = useAuth()
   const [menuOpen, setMenuOpen] = useState(false)
   const [showAccount, setShowAccount] = useState(false)
@@ -18,6 +18,7 @@ export default function AppShell({ campaignId, onExport, onImportClick, onLeaveC
       <header className="relative flex items-center px-3 py-2.5 border-b-2 border-pip-dim/60 bg-panel" style={{ minHeight: '48px' }}>
         {/* Left: hamburger */}
         <button
+          data-tour="menu-btn"
           onClick={() => setMenuOpen(!menuOpen)}
           className="p-1.5 text-pip hover:text-amber transition-colors z-10 relative"
           aria-label="Open menu"
@@ -94,6 +95,7 @@ export default function AppShell({ campaignId, onExport, onImportClick, onLeaveC
           {/* Actions */}
           <div className="px-4 py-1.5 text-muted/50 text-xs tracking-widest border-b border-pip-dim/20 mt-2 mb-1">ACTIONS</div>
           <NavItem icon={User} label="ACCOUNT" onClick={() => { setShowAccount(true); closeMenu() }} />
+          <NavItem icon={HelpCircle} label="GETTING STARTED" onClick={() => { onStartTour?.(); closeMenu() }} />
           <NavItem icon={Download} label="EXPORT" onClick={() => { onExport?.(); closeMenu() }} />
           <NavItem icon={Upload} label="IMPORT" onClick={() => { onImportClick?.(); closeMenu() }} />
           {isSupabaseConfigured && campaignId && (

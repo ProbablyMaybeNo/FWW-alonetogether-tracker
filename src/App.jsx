@@ -11,12 +11,14 @@ import EventsPage from './components/events/EventsPage'
 import ObjectivesPage from './components/objectives/ObjectivesPage'
 import LoginPage from './components/auth/LoginPage'
 import CampaignDirectory from './components/auth/CampaignDirectory'
+import OnboardingTour, { isTourComplete } from './components/onboarding/OnboardingTour'
 
 function AppContent({ campaignId, onLeaveCampaign }) {
   const [activeTab, setActiveTab] = useState('campaign')
   const { state, exportData, importData, syncing } = useCampaign()
   const settings = state?.settings ?? {}
   const fileRef = useRef(null)
+  const [showTour, setShowTour] = useState(() => !isTourComplete())
 
   if (!state) {
     return (
@@ -64,6 +66,7 @@ function AppContent({ campaignId, onLeaveCampaign }) {
         activeTab={activeTab}
         onTabChange={setActiveTab}
         settings={settings}
+        onStartTour={() => setShowTour(true)}
       />
       <input ref={fileRef} type="file" accept=".json" onChange={handleImport} className="hidden" />
 
@@ -77,6 +80,10 @@ function AppContent({ campaignId, onLeaveCampaign }) {
         {activeTab === 'objectives' && <ObjectivesPage />}
         {activeTab === 'events' && settings.useEventCards && <EventsPage />}
       </main>
+
+      {showTour && state && (
+        <OnboardingTour settings={settings} onDone={() => setShowTour(false)} />
+      )}
     </div>
   )
 }

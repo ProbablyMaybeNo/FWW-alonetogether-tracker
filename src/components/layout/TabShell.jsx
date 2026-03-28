@@ -13,13 +13,14 @@ export { TABS }
 
 export default function TabShell({ activeTab, onTabChange, settings = {} }) {
   return (
-    <nav className="flex border-b-2 border-pip-dim bg-panel">
+    <nav data-tour="tab-bar" className="flex border-b-2 border-pip-dim bg-panel">
       {TABS.filter(tab => tab.id !== 'events' || settings.useEventCards).map(tab => {
         const Icon = tab.icon
         const active = activeTab === tab.id
         return (
           <button
             key={tab.id}
+            data-tour={`tab-${tab.id}`}
             onClick={() => onTabChange(tab.id)}
             className={`flex-1 flex items-center justify-center gap-2 py-3 px-2 text-xs transition-all duration-150 relative
               ${active
