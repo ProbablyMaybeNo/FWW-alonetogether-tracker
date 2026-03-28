@@ -15,6 +15,7 @@ import CampaignDirectory from './components/auth/CampaignDirectory'
 function AppContent({ campaignId, onLeaveCampaign }) {
   const [activeTab, setActiveTab] = useState('campaign')
   const { state, exportData, importData, syncing } = useCampaign()
+  const settings = state?.settings ?? {}
   const fileRef = useRef(null)
 
   if (!state) {
@@ -62,10 +63,11 @@ function AppContent({ campaignId, onLeaveCampaign }) {
         onReset={handleLeaveCampaign}
         activeTab={activeTab}
         onTabChange={setActiveTab}
+        settings={settings}
       />
       <input ref={fileRef} type="file" accept=".json" onChange={handleImport} className="hidden" />
 
-      <TabShell activeTab={activeTab} onTabChange={setActiveTab} />
+      <TabShell activeTab={activeTab} onTabChange={setActiveTab} settings={settings} />
 
       <main className="flex-1 overflow-y-auto">
         {activeTab === 'campaign'   && <CampaignPage campaignId={campaignId} />}
@@ -73,7 +75,7 @@ function AppContent({ campaignId, onLeaveCampaign }) {
         {activeTab === 'roster'     && <RosterPage />}
         {activeTab === 'settlement' && <SettlementPage />}
         {activeTab === 'objectives' && <ObjectivesPage />}
-        {activeTab === 'events'     && <EventsPage />}
+        {activeTab === 'events' && settings.useEventCards && <EventsPage />}
       </main>
     </div>
   )

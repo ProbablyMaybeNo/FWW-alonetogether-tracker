@@ -3,7 +3,7 @@ import { useState, useEffect, useCallback } from 'react'
 const STORAGE_KEY = 'fww-campaign'
 
 const DEFAULT_STATE = {
-  version: 3,
+  version: 4,
   player: {
     name: '',
     settlement: '',
@@ -35,6 +35,11 @@ const DEFAULT_STATE = {
   completedObjectives: [],
   objectiveProgress: {},
   secretPurposeHistory: [],
+  settings: {
+    settlementMode: 'alone-together', // 'alone-together' | 'basic' | 'homestead'
+    useEventCards: false,
+    useQuests: true,
+  },
 }
 
 function migrateUnit(u) {
@@ -125,6 +130,15 @@ function migrateState(stored) {
       itemPool: {
         items: (stored.itemPool?.items || []).map(migrateItem),
       },
+    }
+  }
+
+  if (stored.version === 3) {
+    return {
+      ...DEFAULT_STATE,
+      ...stored,
+      version: 4,
+      settings: stored.settings ?? DEFAULT_STATE.settings,
     }
   }
 

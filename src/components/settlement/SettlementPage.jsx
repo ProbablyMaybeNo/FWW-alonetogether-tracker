@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react'
-import { WASTELAND_EVENT_SEED } from '../../data/wastelandEventSeed'
 import { Plus, Trash2, RotateCcw, Zap, Droplets, Building2, Coins, Recycle, Shuffle } from 'lucide-react'
 import { useCampaign } from '../../context/CampaignContext'
 import { calcPowerGenerated, calcPowerConsumed, calcWaterGenerated, calcWaterConsumed, getStructureRef, calcSettlementTotalCaps } from '../../utils/calculations'
@@ -71,6 +70,7 @@ const EXPLORE_EVENT_FILTERS = [
 
 export default function SettlementPage() {
   const { state, setState } = useCampaign()
+  const settings = state?.settings ?? {}
   const [subTab, setSubTab] = useState('structures')
   const [showAddStructure, setShowAddStructure] = useState(false)
   const [atValidOnly, setAtValidOnly] = useState(true)
@@ -493,6 +493,7 @@ export default function SettlementPage() {
           resources={resources}
           maxResources={maxResources}
           handleAdjustResources={handleAdjustResources}
+          settings={settings}
         />
       ) : (
         <ExplorePanel state={state} setState={setState} />
@@ -519,6 +520,7 @@ function StructuresPanel({
   handleBarracksApply, handleMedCenterApply, handleStoresApply,
   handleMarkFound, handleNotFound,
   resources, maxResources, handleAdjustResources,
+  settings = {},
 }) {
   return (
     <>
@@ -581,18 +583,20 @@ function StructuresPanel({
           <div className="text-sm font-bold text-amber">{totalCost}c</div>
           <div className="text-xs text-muted">TOTAL COST</div>
         </div>
-        <div className={`border rounded bg-panel p-2 text-center ${maxResources > 0 && resources >= maxResources ? 'border-amber/60' : 'border-pip-mid/60'}`}>
-          <Recycle size={14} className="mx-auto mb-1 text-pip" />
-          <div className="text-sm font-bold text-pip flex items-center justify-center gap-1">
-            {resources}
-            {maxResources > 0 && <span className="text-muted text-xs">/{maxResources}</span>}
+        {settings.settlementMode === 'homestead' && (
+          <div className={`border rounded bg-panel p-2 text-center ${maxResources > 0 && resources >= maxResources ? 'border-amber/60' : 'border-pip-mid/60'}`}>
+            <Recycle size={14} className="mx-auto mb-1 text-pip" />
+            <div className="text-sm font-bold text-pip flex items-center justify-center gap-1">
+              {resources}
+              {maxResources > 0 && <span className="text-muted text-xs">/{maxResources}</span>}
+            </div>
+            <div className="flex items-center justify-center gap-1 mt-1">
+              <button onClick={() => handleAdjustResources(-1)} className="w-5 h-5 rounded border border-pip-mid/60 text-pip hover:bg-pip-dim flex items-center justify-center text-sm leading-none">−</button>
+              <span className="text-xs text-muted">RES</span>
+              <button onClick={() => handleAdjustResources(1)} className="w-5 h-5 rounded border border-pip-mid/60 text-pip hover:bg-pip-dim flex items-center justify-center text-sm leading-none">+</button>
+            </div>
           </div>
-          <div className="flex items-center justify-center gap-1 mt-1">
-            <button onClick={() => handleAdjustResources(-1)} className="w-5 h-5 rounded border border-pip-mid/60 text-pip hover:bg-pip-dim flex items-center justify-center text-sm leading-none">−</button>
-            <span className="text-xs text-muted">RES</span>
-            <button onClick={() => handleAdjustResources(1)} className="w-5 h-5 rounded border border-pip-mid/60 text-pip hover:bg-pip-dim flex items-center justify-center text-sm leading-none">+</button>
-          </div>
-        </div>
+        )}
       </div>
 
       {/* Buy Land section — always visible when land could be useful */}
@@ -633,17 +637,19 @@ function StructuresPanel({
 
       {/* AT Filter toggle */}
       <div className="flex items-center gap-2 mb-4 mt-4">
-        <button
-          onClick={() => setAtValidOnly(!atValidOnly)}
-          className={`flex items-center gap-2 text-xs px-3 py-1.5 border rounded transition-colors ${
-            atValidOnly ? 'border-pip text-pip bg-pip-dim/30' : 'border-muted/40 text-muted hover:text-pip hover:border-pip'
-          }`}
-        >
-          <span className={`w-3 h-3 rounded-sm border flex items-center justify-center ${atValidOnly ? 'border-pip bg-pip' : 'border-muted'}`}>
-            {atValidOnly && <span className="text-terminal text-xs leading-none font-bold">✓</span>}
-          </span>
-          AT VALID
-        </button>
+        {settings.settlementMode !== 'alone-together' && (
+          <button
+            onClick={() => setAtValidOnly(!atValidOnly)}
+            className={`flex items-center gap-2 text-xs px-3 py-1.5 border rounded transition-colors ${
+              atValidOnly ? 'border-pip text-pip bg-pip-dim/30' : 'border-muted/40 text-muted hover:text-pip hover:border-pip'
+            }`}
+          >
+            <span className={`w-3 h-3 rounded-sm border flex items-center justify-center ${atValidOnly ? 'border-pip bg-pip' : 'border-muted'}`}>
+              {atValidOnly && <span className="text-terminal text-xs leading-none font-bold">✓</span>}
+            </span>
+            AT VALID
+          </button>
+        )}
       </div>
 
       {/* Actions Bar */}
@@ -948,90 +954,6 @@ function ExplorePanel({ state, setState }) {
         <ExploreLocationsPanel state={state} setState={setState} />
       )}
 
-      {/* Legacy event deck — toggleable */}
-      <LegacyEventDeck />
-    </div>
-  )
-}
-
-/* ── Legacy Event Deck (optional, not official AT rules) ── */
-function LegacyEventDeck() {
-  const [show, setShow] = useState(false)
-  const [deck, setDeck] = useState(() => {
-    try { return JSON.parse(localStorage.getItem('fww-wasteland-deck') || 'null') || [...WASTELAND_EVENT_SEED] }
-    catch { return [...WASTELAND_EVENT_SEED] }
-  })
-  const [drawn, setDrawn] = useState(() => {
-    try { return JSON.parse(localStorage.getItem('fww-wasteland-drawn') || '[]') }
-    catch { return [] }
-  })
-
-  useEffect(() => {
-    try {
-      localStorage.setItem('fww-wasteland-deck', JSON.stringify(deck))
-      localStorage.setItem('fww-wasteland-drawn', JSON.stringify(drawn))
-    } catch {}
-  }, [deck, drawn])
-
-  function drawCard() {
-    if (deck.length === 0) return
-    const idx = Math.floor(Math.random() * deck.length)
-    const card = deck[idx]
-    setDeck(d => d.filter((_, i) => i !== idx))
-    setDrawn(d => [{ ...card, drawnAt: Date.now() }, ...d])
-  }
-
-  function dismiss(idx) { setDrawn(d => d.filter((_, i) => i !== idx)) }
-
-  function reshuffle() {
-    const conseqs = drawn.filter(c => c.type === 'consequence')
-    setDeck([...WASTELAND_EVENT_SEED, ...conseqs].sort(() => Math.random() - 0.5))
-    setDrawn([])
-  }
-
-  const TYPE_STYLE = {
-    hazard: 'text-danger border-danger/50',
-    event: 'text-amber border-amber/50',
-    boon: 'text-pip border-pip/50',
-    consequence: 'text-info border-info/50',
-  }
-
-  return (
-    <div className="mt-6 border border-pip-dim/30 rounded">
-      <button
-        onClick={() => setShow(s => !s)}
-        className="w-full flex items-center justify-between px-3 py-2 text-xs tracking-widest text-muted hover:text-pip transition-colors"
-      >
-        <span>LEGACY EVENT DECK (OPTIONAL)</span>
-        <span className="text-muted">{show ? '▲' : '▼'} {deck.length} cards</span>
-      </button>
-      {show && (
-        <div className="px-3 pb-3 border-t border-pip-dim/20">
-          <p className="text-muted text-xs italic my-2">Optional custom event deck. Not part of official AT rules.</p>
-          <div className="flex gap-2 mb-3 flex-wrap">
-            <button onClick={drawCard} disabled={deck.length === 0}
-              className="text-xs border border-pip text-pip font-bold hover:bg-pip-dim rounded px-3 py-1.5 disabled:opacity-40 transition-colors">DRAW</button>
-            <button onClick={reshuffle}
-              className="text-xs border border-muted/30 text-muted hover:text-amber hover:border-amber/60 rounded px-3 py-1.5 transition-colors">RESHUFFLE</button>
-          </div>
-          {drawn.length > 0 && (
-            <div className="space-y-1.5 mb-2">
-              {drawn.map((card, i) => (
-                <div key={i} className={`flex items-start justify-between gap-2 border rounded px-2 py-1.5 ${TYPE_STYLE[card.type] || TYPE_STYLE.event}`}>
-                  <div className="flex-1 min-w-0">
-                    <span className="text-xs font-bold">{card.name}</span>
-                    <p className="text-xs opacity-80 mt-0.5">{card.text}</p>
-                  </div>
-                  <button onClick={() => dismiss(i)} className="text-xs border border-current/30 rounded px-2 py-1 opacity-70 hover:opacity-100 shrink-0">✕</button>
-                </div>
-              ))}
-            </div>
-          )}
-          {deck.length === 0 && drawn.length === 0 && (
-            <p className="text-muted text-xs text-center py-2 border border-dashed border-muted/30 rounded">Empty — reshuffle to reset</p>
-          )}
-        </div>
-      )}
     </div>
   )
 }

@@ -11,10 +11,10 @@ const TABS = [
 
 export { TABS }
 
-export default function TabShell({ activeTab, onTabChange }) {
+export default function TabShell({ activeTab, onTabChange, settings = {} }) {
   return (
     <nav className="flex border-b-2 border-pip-dim bg-panel">
-      {TABS.map(tab => {
+      {TABS.filter(tab => tab.id !== 'events' || settings.useEventCards).map(tab => {
         const Icon = tab.icon
         const active = activeTab === tab.id
         return (

@@ -18,6 +18,11 @@ export default function CampaignDirectory({ onEnterCampaign, onSolo }) {
   const [joinError, setJoinError] = useState('')
   const [showAccount, setShowAccount] = useState(false)
   const [deleteConfirm, setDeleteConfirm] = useState(null)
+  const [createSettings, setCreateSettings] = useState({
+    settlementMode: 'alone-together',
+    useEventCards: false,
+    useQuests: true,
+  })
 
   useEffect(() => { fetchCampaigns() }, [])
 
@@ -66,6 +71,7 @@ export default function CampaignDirectory({ onEnterCampaign, onSolo }) {
       if (playerErr) throw playerErr
 
       setNewCampaign(camp)
+      localStorage.setItem('fww-pending-settings', JSON.stringify({ campaignId: camp.id, settings: createSettings }))
       fetchCampaigns()
     } catch (err) {
       setCreateError(err?.message ?? 'Failed to create campaign.')
@@ -192,6 +198,56 @@ export default function CampaignDirectory({ onEnterCampaign, onSolo }) {
                 autoFocus
               />
             </div>
+            {/* Campaign Settings */}
+            <div className="space-y-3 border-t border-pip-dim/30 pt-3">
+              <div className="text-pip text-xs tracking-widest font-bold">CAMPAIGN SETTINGS</div>
+
+              {/* Settlement Mode */}
+              <div>
+                <label className="text-label text-xs block mb-1.5 tracking-wider">SETTLEMENT MODE</label>
+                <div className="space-y-1">
+                  {[
+                    { value: 'alone-together', label: 'ALONE TOGETHER', desc: 'AT v2.1 rules — abstract sheet, Barracks & Medical Centre, Survival Mode' },
+                    { value: 'basic', label: 'BASIC', desc: 'Campaign Handbook only — abstract sheet, no Resources, no Events' },
+                    { value: 'homestead', label: 'HOMESTEAD', desc: 'Full Homestead rules — Resources, Settlement Events, Settlement Damage' },
+                  ].map(opt => (
+                    <label key={opt.value} className="flex items-start gap-2 cursor-pointer group">
+                      <input
+                        type="radio"
+                        name="settlementMode"
+                        value={opt.value}
+                        checked={createSettings.settlementMode === opt.value}
+                        onChange={() => setCreateSettings(s => ({ ...s, settlementMode: opt.value }))}
+                        className="mt-0.5 shrink-0"
+                      />
+                      <div>
+                        <span className="text-pip text-xs font-bold group-hover:text-amber transition-colors">{opt.label}</span>
+                        <span className="text-pip text-xs ml-2">{opt.desc}</span>
+                      </div>
+                    </label>
+                  ))}
+                </div>
+              </div>
+
+              {/* Toggles */}
+              <div className="flex gap-4 flex-wrap">
+                {[
+                  { key: 'useEventCards', label: 'EVENT CARDS' },
+                  { key: 'useQuests', label: 'QUEST CARDS' },
+                ].map(({ key, label }) => (
+                  <label key={key} className="flex items-center gap-2 cursor-pointer group">
+                    <input
+                      type="checkbox"
+                      checked={createSettings[key]}
+                      onChange={e => setCreateSettings(s => ({ ...s, [key]: e.target.checked }))}
+                      className="shrink-0"
+                    />
+                    <span className="text-pip text-xs group-hover:text-amber transition-colors">{label}</span>
+                  </label>
+                ))}
+              </div>
+            </div>
+
             {createError && (
               <div className="text-danger text-xs border border-danger/40 bg-danger/10 px-3 py-2 rounded">{createError}</div>
             )}

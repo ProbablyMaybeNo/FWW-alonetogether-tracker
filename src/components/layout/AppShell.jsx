@@ -5,7 +5,7 @@ import AccountModal from '../modals/AccountModal'
 import CampaignModal from '../modals/CampaignModal'
 import { TABS } from './TabShell'
 
-export default function AppShell({ campaignId, onExport, onImportClick, onLeaveCampaign, onReset, activeTab, onTabChange }) {
+export default function AppShell({ campaignId, onExport, onImportClick, onLeaveCampaign, onReset, activeTab, onTabChange, settings = {} }) {
   const { signOut, profile, isSupabaseConfigured } = useAuth()
   const [menuOpen, setMenuOpen] = useState(false)
   const [showAccount, setShowAccount] = useState(false)
@@ -73,7 +73,7 @@ export default function AppShell({ campaignId, onExport, onImportClick, onLeaveC
         <nav className="flex flex-col flex-1 py-2 overflow-y-auto">
           {/* Tab navigation */}
           <div className="px-4 py-1.5 text-muted/50 text-xs tracking-widest border-b border-pip-dim/20 mb-1">NAVIGATE</div>
-          {TABS.map(tab => {
+          {TABS.filter(tab => tab.id !== 'events' || settings.useEventCards).map(tab => {
             const Icon = tab.icon
             const isActive = activeTab === tab.id
             return (

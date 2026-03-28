@@ -22,6 +22,7 @@ function stateToDb(state) {
     objective_progress: state.objectiveProgress ?? {},
     secret_purpose_history: state.secretPurposeHistory ?? [],
     player_info: state.player ?? {},
+    settings: state.settings ?? null,
   }
 }
 
@@ -42,6 +43,7 @@ function dbToState(row) {
     objectiveProgress: row.objective_progress ?? {},
     secretPurposeHistory: row.secret_purpose_history ?? [],
     player: row.player_info ?? {},
+    settings: row.settings ?? null,
   }
 }
 
@@ -93,8 +95,19 @@ export function useCampaignSync({ campaignId, userId } = {}) {
         if (pd) {
           setStateLocal(dbToState(pd))
         } else {
-          // First join: start from defaults (usePersistedState defaults)
-          setStateLocal(solo.state)
+          // First join: check for pending settings saved during campaign creation
+          const pending = (() => {
+            try {
+              const raw = localStorage.getItem('fww-pending-settings')
+              if (!raw) return null
+              const parsed = JSON.parse(raw)
+              if (parsed.campaignId === campaignId) return parsed.settings
+            } catch {}
+            return null
+          })()
+          if (pending) localStorage.removeItem('fww-pending-settings')
+          const initialState = pending ? { ...solo.state, settings: pending } : solo.state
+          setStateLocal(initialState)
         }
 
         // Load shared campaign data
