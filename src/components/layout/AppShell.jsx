@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Menu, X, User, Download, Upload, Swords, LogOut } from 'lucide-react'
+import { Menu, X, User, Download, Upload, Swords, LogOut, LayoutGrid } from 'lucide-react'
 import { useAuth } from '../../context/AuthContext'
 import AccountModal from '../modals/AccountModal'
 import CampaignModal from '../modals/CampaignModal'
@@ -98,6 +98,9 @@ export default function AppShell({ campaignId, onExport, onImportClick, onLeaveC
           <NavItem icon={Upload} label="IMPORT" onClick={() => { onImportClick?.(); closeMenu() }} />
           {isSupabaseConfigured && campaignId && (
             <NavItem icon={Swords} label="CAMPAIGN" onClick={() => { setShowCampaign(true); closeMenu() }} />
+          )}
+          {isSupabaseConfigured && campaignId && (
+            <NavItem icon={LayoutGrid} label="ALL CAMPAIGNS" onClick={() => { onLeaveCampaign?.(); closeMenu() }} />
           )}
         </nav>
 
