@@ -122,6 +122,7 @@ export default function CampaignPage({ campaignId }) {
   const round = state?.round ?? 0
   const battleCount = state?.battleCount ?? 0
   const phaseInfo = PHASES[phase - 1] || PHASES[0]
+  const isAT = !state?.settings?.settlementMode || state.settings.settlementMode === 'alone-together'
 
   useEffect(() => {
     if (!isOnline || !campaignId) return
@@ -226,28 +227,33 @@ export default function CampaignPage({ campaignId }) {
         style={{ boxShadow: '0 0 12px var(--color-amber-glow)' }}
       >
         <div className="flex items-start justify-between flex-wrap gap-4">
-          <div>
-            <div className="flex items-center gap-3 mb-1">
-              <span className="text-amber text-xl font-bold tracking-widest">PHASE {phase}</span>
-              <span className="text-pip text-base font-bold tracking-wider">— {phaseInfo.name}</span>
+          {/* Phase name — AT only */}
+          {isAT && (
+            <div>
+              <div className="flex items-center gap-3 mb-1">
+                <span className="text-amber text-xl font-bold tracking-widest">PHASE {phase}</span>
+                <span className="text-pip text-base font-bold tracking-wider">— {phaseInfo.name}</span>
+              </div>
+              <p className="text-muted text-xs italic">{phaseInfo.subtitle}</p>
             </div>
-            <p className="text-muted text-xs italic">{phaseInfo.subtitle}</p>
-          </div>
+          )}
           <div className="flex items-center gap-4 flex-wrap">
-            {/* Phase stepper */}
-            <div className="flex items-center gap-2">
-              <button
-                onClick={() => handlePhaseChange(-1)} disabled={phase <= 1}
-                className="p-1.5 border border-muted rounded text-muted hover:text-pip hover:border-pip disabled:opacity-30 transition-colors"
-              ><ChevronLeft size={14} /></button>
-              <span className="text-pip text-xs w-20 text-center tracking-wider">PHASE {phase} / 4</span>
-              <button
-                onClick={() => handlePhaseChange(1)} disabled={phase >= 4}
-                className="p-1.5 border border-muted rounded text-muted hover:text-pip hover:border-pip disabled:opacity-30 transition-colors"
-              ><ChevronRight size={14} /></button>
-            </div>
+            {/* Phase stepper — AT only */}
+            {isAT && (
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={() => handlePhaseChange(-1)} disabled={phase <= 1}
+                  className="p-1.5 border border-muted rounded text-muted hover:text-pip hover:border-pip disabled:opacity-30 transition-colors"
+                ><ChevronLeft size={14} /></button>
+                <span className="text-pip text-xs w-20 text-center tracking-wider">PHASE {phase} / 4</span>
+                <button
+                  onClick={() => handlePhaseChange(1)} disabled={phase >= 4}
+                  className="p-1.5 border border-muted rounded text-muted hover:text-pip hover:border-pip disabled:opacity-30 transition-colors"
+                ><ChevronRight size={14} /></button>
+              </div>
+            )}
             {/* Round */}
-            <div className="flex items-center gap-2 border-l border-pip-dim/30 pl-4">
+            <div className={`flex items-center gap-2 ${isAT ? 'border-l border-pip-dim/30 pl-4' : ''}`}>
               <span className="text-pip text-xs tracking-wider">ROUND</span>
               <input
                 type="number" min="0" value={round}
