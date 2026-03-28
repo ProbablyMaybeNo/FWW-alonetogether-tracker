@@ -1,4 +1,4 @@
-import { X, CheckCircle } from 'lucide-react'
+import { X, CheckCircle, ArrowUp } from 'lucide-react'
 import { useCampaign } from '../../context/CampaignContext'
 
 export default function ActiveEvents() {
@@ -14,6 +14,14 @@ export default function ActiveEvents() {
         [cardId]: { ...prev.eventCards[cardId], inPlay: false, complete: true },
       },
     }))
+  }
+
+  function addToWastelandDeck(event) {
+    try {
+      const existing = JSON.parse(localStorage.getItem('fww-wasteland-deck') || 'null') || []
+      const card = { id: 'consequence-' + Date.now(), name: event.name, type: 'consequence', text: event.text || '' }
+      localStorage.setItem('fww-wasteland-deck', JSON.stringify([card, ...existing]))
+    } catch { /* ignore */ }
   }
 
   function handleRemove(index) {
@@ -52,6 +60,13 @@ export default function ActiveEvents() {
               className="text-muted hover:text-pip p-1 transition-colors" title="Complete"
             >
               <CheckCircle size={16} />
+            </button>
+            <button
+              onClick={() => addToWastelandDeck(event)}
+              className="text-muted hover:text-info p-1 transition-colors"
+              title="Add to Wasteland Deck top"
+            >
+              <ArrowUp size={16} />
             </button>
             <button
               onClick={() => handleRemove(i)}

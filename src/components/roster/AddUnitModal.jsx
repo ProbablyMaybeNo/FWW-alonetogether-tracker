@@ -4,7 +4,9 @@ import unitsData from '../../data/units.json'
 
 export default function AddUnitModal({ isOpen, onClose, onAdd, existingUnitIds }) {
   const [search, setSearch] = useState('')
-  const [factionFilter, setFactionFilter] = useState('')
+  const [factionFilter, setFactionFilter] = useState(() => {
+    try { return localStorage.getItem('fww-last-faction') || '' } catch { return '' }
+  })
 
   const factions = useMemo(() => {
     const set = new Set(unitsData.map(u => u.faction))
@@ -18,6 +20,11 @@ export default function AddUnitModal({ isOpen, onClose, onAdd, existingUnitIds }
       return true
     })
   }, [search, factionFilter])
+
+  function handleFactionChange(val) {
+    setFactionFilter(val)
+    try { localStorage.setItem('fww-last-faction', val) } catch { /* ignore */ }
+  }
 
   function handleAdd(unit) {
     onAdd({
@@ -65,7 +72,7 @@ export default function AddUnitModal({ isOpen, onClose, onAdd, existingUnitIds }
         />
         <select
           value={factionFilter}
-          onChange={(e) => setFactionFilter(e.target.value)}
+          onChange={(e) => handleFactionChange(e.target.value)}
           className="text-xs w-48"
         >
           <option value="">All Factions</option>

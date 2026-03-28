@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Plus, Trash2, ChevronDown, ChevronRight, Dices, Package, X, Star, Shield } from 'lucide-react'
+import { Plus, Trash2, ChevronDown, ChevronRight, Dices, Package, X, Star, Shield, Shuffle } from 'lucide-react'
 import { useCampaign } from '../../context/CampaignContext'
 import { calcUnitTotalCaps, calcUnitItemCaps, getItemRef, getStructureRef } from '../../utils/calculations'
 import { STATUS_OPTIONS } from '../../utils/fateTable'
@@ -7,6 +7,8 @@ import unitsData from '../../data/units.json'
 import AddUnitModal from './AddUnitModal'
 import AddItemModal from './AddItemModal'
 import FateRollModal from './FateRollModal'
+import PerkPickerModal from './PerkPickerModal'
+import { PERK_CARDS, parseSymbols } from '../../data/perkCards'
 
 // Armor budget calc: items on units that have subType === 'Armor' via equippedItems (uses items.json ref)
 // We need to look at item pool items with location 'stores' assigned to units — but equipped items are separate
@@ -160,6 +162,30 @@ export default function RosterPage() {
 
   return (
     <div className="p-4 max-w-5xl mx-auto">
+      {/* Roster Overview Bar */}
+      <div className="mb-4 grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-5 gap-2">
+        <div className="border border-pip-mid/50 rounded bg-panel p-2 text-center">
+          <div className="text-pip text-lg font-bold">{roster.filter(u => u.fate !== 'Dead' && !ABSENT_FATES.includes(u.fate)).length}</div>
+          <div className="text-xs text-muted tracking-wider">ACTIVE</div>
+        </div>
+        <div className="border border-danger/40 rounded bg-panel p-2 text-center">
+          <div className="text-danger text-lg font-bold">{roster.filter(u => u.fate === 'Dead').length}</div>
+          <div className="text-xs text-muted tracking-wider">DEAD</div>
+        </div>
+        <div className="border border-amber/40 rounded bg-panel p-2 text-center">
+          <div className="text-amber text-lg font-bold">{roster.filter(u => ABSENT_FATES.filter(f => f !== 'Dead' && f !== 'Pending').includes(u.fate)).length}</div>
+          <div className="text-xs text-muted tracking-wider">UNAVAILABLE</div>
+        </div>
+        <div className="border border-amber/50 rounded bg-panel p-2 text-center">
+          <div className="text-amber text-lg font-bold">{roster.reduce((s, u) => s + calcUnitTotalCaps(u), 0).toLocaleString()}c</div>
+          <div className="text-xs text-muted tracking-wider">ROSTER VALUE</div>
+        </div>
+        <div className="border border-pip-mid/40 rounded bg-panel p-2 text-center">
+          <div className="text-pip text-lg font-bold">{roster.reduce((s, u) => s + (u.perks || []).length, 0)}</div>
+          <div className="text-xs text-muted tracking-wider">TOTAL PERKS</div>
+        </div>
+      </div>
+
       {/* Leader Absent Banner */}
       {leaderAbsent && (
         <div className="mb-3 border border-danger rounded bg-danger-dim/20 px-4 py-2 text-danger text-xs font-bold" style={{ boxShadow: '0 0 8px var(--color-danger-glow)' }}>
@@ -242,6 +268,11 @@ export default function RosterPage() {
             const itemCaps = calcUnitItemCaps(unit)
             const items = (unit.equippedItems || []).map(id => getItemRef(id)).filter(Boolean)
             const perks = unit.perks || []
+            const activeConditions = [
+              unit.condPoisoned && 'POISONED',
+              unit.condInjuredArm && 'INJ ARM',
+              unit.condInjuredLeg && 'INJ LEG',
+            ].filter(Boolean)
 
             // Status badge color — each status is visually distinct
             const fateBadge = unit.fate === 'Active'
@@ -282,262 +313,284 @@ export default function RosterPage() {
                   {items.length > 0 && <Package size={12} className="text-muted" />}
                 </div>
 
+                {/* Inline Summary — visible when collapsed */}
+                {!expanded && (items.length > 0 || perks.length > 0 || activeConditions.length > 0 || unit.conditions || (unit.regDamage || 0) > 0 || (unit.radDamage || 0) > 0 || (unit.battles || 0) > 0 || (unit.removed || 0) > 0 || unit.addiction) && (
+                  <div className="px-3 pb-2 pt-1.5 border-t border-pip-dim/20 space-y-1">
+                    {(items.length > 0 || perks.length > 0) && (
+                      <div className="flex flex-wrap gap-1">
+                        {items.slice(0, 3).map((item, idx) => (
+                          <span key={idx} className="text-xs px-1.5 py-0.5 bg-panel-light border border-pip-dim/40 rounded text-pip truncate max-w-[140px]" title={item.name}>{item.name}</span>
+                        ))}
+                        {items.length > 3 && (
+                          <span className="text-xs px-1.5 py-0.5 text-muted">+{items.length - 3} items</span>
+                        )}
+                        {perks.slice(0, 3).map((perk, idx) => (
+                          <span key={`p${idx}`} className="text-xs px-1.5 py-0.5 bg-panel-light border border-amber/30 rounded text-amber truncate max-w-[140px]" title={perk}>{perk}</span>
+                        ))}
+                        {perks.length > 3 && (
+                          <span className="text-xs px-1.5 py-0.5 text-muted">+{perks.length - 3} perks</span>
+                        )}
+                      </div>
+                    )}
+                    {(activeConditions.length > 0 || unit.conditions || (unit.regDamage || 0) > 0 || (unit.radDamage || 0) > 0 || (unit.battles || 0) > 0 || (unit.removed || 0) > 0 || unit.addiction) && (
+                      <div className="flex flex-wrap gap-2 items-center">
+                        {activeConditions.map(c => (
+                          <span key={c} className="text-xs px-1.5 py-0.5 border border-danger/60 rounded text-danger font-bold">{c}</span>
+                        ))}
+                        {unit.conditions && (
+                          <span className="text-xs px-1.5 py-0.5 border border-muted/40 rounded text-muted">{unit.conditions}</span>
+                        )}
+                        {(unit.regDamage || 0) > 0 && (
+                          <span className="text-xs text-muted">DMG <span className="text-danger font-bold">{unit.regDamage}</span></span>
+                        )}
+                        {(unit.radDamage || 0) > 0 && (
+                          <span className="text-xs text-muted">RAD <span className="text-amber font-bold">{unit.radDamage}</span></span>
+                        )}
+                        {(unit.battles || 0) > 0 && (
+                          <span className="text-xs text-muted">⚔ <span className="text-pip font-bold">{unit.battles}</span></span>
+                        )}
+                        {(unit.removed || 0) > 0 && (
+                          <span className="text-xs text-muted">✕ <span className="text-muted font-bold">{unit.removed}</span></span>
+                        )}
+                        {unit.addiction && (
+                          <span className="text-xs px-1.5 py-0.5 border border-amber/40 rounded text-amber">Addicted: {unit.addiction}</span>
+                        )}
+                      </div>
+                    )}
+                  </div>
+                )}
+
                 {/* Expanded Detail */}
                 {expanded && (
-                  <div className="border-t border-pip-dim/40 px-4 py-3 space-y-3">
-                    {/* Phase 2: minimal view */}
+                  <div className="border-t border-pip-mid/40 bg-panel-alt">
                     {phase === 2 ? (
-                      <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
-                        <div>
-                          <label className="text-xs text-muted tracking-wider">FATE</label>
-                          <div className="flex gap-1 mt-1">
-                            <select value={unit.fate} onChange={(e) => handleUpdateUnit(unit.slotId, 'fate', e.target.value)} className="flex-1 text-xs py-1 px-2">
-                              {STATUS_OPTIONS.map(s => <option key={s} value={s}>{s}</option>)}
-                            </select>
-                            <button onClick={() => setFateModalUnit(unit)} className="px-2 border border-muted rounded text-muted hover:text-pip hover:border-pip text-xs transition-colors" title="Roll Fate">
-                              <Dices size={14} />
-                            </button>
-                          </div>
+                      // ── Phase 2 minimal view ──
+                      <div className="px-4 py-3 space-y-3">
+                        <div className="text-xs text-pip tracking-widest font-bold border-b border-pip-dim/20 pb-1">FATE</div>
+                        <div className="flex gap-2 items-center">
+                          <select value={unit.fate} onChange={(e) => handleUpdateUnit(unit.slotId, 'fate', e.target.value)} className="flex-1 text-xs py-1 px-2">
+                            {STATUS_OPTIONS.map(s => <option key={s} value={s}>{s}</option>)}
+                          </select>
+                          <button onClick={() => setFateModalUnit(unit)} className="flex items-center gap-1 px-3 py-1.5 border border-amber text-amber rounded text-xs hover:bg-amber-dim/30 transition-colors font-bold" title="Roll Fate">
+                            <Dices size={12} /> ROLL
+                          </button>
+                          <button onClick={() => handleMarkRemoved(unit.slotId)} className="px-3 py-1.5 border border-muted/40 text-muted rounded text-xs hover:text-amber hover:border-amber/60 transition-colors">
+                            MARK REMOVED
+                          </button>
                         </div>
-                        <div>
-                          <label className="text-xs text-muted tracking-wider">DEAD</label>
-                          <div className={`text-sm mt-1 font-bold ${unit.fate === 'Dead' ? 'text-danger' : 'text-muted'}`}>
-                            {unit.fate === 'Dead' ? 'DEAD' : '—'}
-                          </div>
+
+                        {/* Equipment section — available in Phase 2 */}
+                        <div className="text-xs text-pip tracking-widest font-bold border-b border-pip-dim/20 pb-1">EQUIPMENT</div>
+                        <div className="space-y-1">
+                          {items.map((item, idx) => (
+                            <div key={idx} className="flex items-center justify-between border border-pip-dim/30 rounded px-3 py-1.5 bg-panel">
+                              <span className="text-pip text-xs font-bold">{item.name}</span>
+                              <div className="flex items-center gap-3">
+                                <span className="text-muted text-xs">{item.subType}</span>
+                                <span className="text-amber text-xs font-bold">{item.caps}c</span>
+                                <button onClick={() => handleRemoveItem(unit.slotId, idx)} className="text-muted hover:text-danger transition-colors"><Trash2 size={12} /></button>
+                              </div>
+                            </div>
+                          ))}
+                          <button onClick={() => setShowAddItem(unit.slotId)} className="w-full flex items-center justify-center gap-2 py-2 border border-dashed border-pip-mid/50 text-pip rounded text-xs hover:border-pip hover:bg-pip-dim/20 transition-colors font-bold tracking-wider">
+                            <Plus size={12} /> ADD EQUIPMENT
+                          </button>
                         </div>
                       </div>
                     ) : (
-                      <>
-                        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
-                          <div>
-                            <label className="text-xs text-muted tracking-wider">BASE CAPS</label>
-                            <div className="text-amber text-sm font-bold">{unit.baseCaps}c</div>
-                          </div>
-                          <div>
-                            <label className="text-xs text-muted tracking-wider">ITEM CAPS</label>
-                            <div className="text-amber text-sm font-bold">{itemCaps}c</div>
-                          </div>
-                          <div>
-                            <label className="text-xs text-muted tracking-wider">BATTLES</label>
-                            <input type="number" min="0" value={unit.battles} onChange={(e) => handleUpdateUnit(unit.slotId, 'battles', parseInt(e.target.value) || 0)} className="w-full text-xs py-1 px-2" />
-                          </div>
-                          <div>
-                            <label className="text-xs text-muted tracking-wider">REMOVED</label>
-                            <input type="number" min="0" value={unit.removed} onChange={(e) => handleUpdateUnit(unit.slotId, 'removed', parseInt(e.target.value) || 0)} className="w-full text-xs py-1 px-2" />
-                          </div>
-                        </div>
+                      // ── Phase 3/4 full view ──
+                      <div className="divide-y divide-pip-dim/20">
 
-                        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
-                          <div>
-                            <label className="text-xs text-muted tracking-wider">REG DAMAGE</label>
-                            <input type="number" min="0" value={unit.regDamage} onChange={(e) => handleUpdateUnit(unit.slotId, 'regDamage', parseInt(e.target.value) || 0)} className="w-full text-xs py-1 px-2" />
-                          </div>
-                          <div>
-                            <label className="text-xs text-muted tracking-wider">RAD DAMAGE</label>
-                            <input type="number" min="0" value={unit.radDamage} onChange={(e) => handleUpdateUnit(unit.slotId, 'radDamage', parseInt(e.target.value) || 0)} className="w-full text-xs py-1 px-2" />
-                          </div>
-                          <div>
-                            <label className="text-xs text-muted tracking-wider">FATE</label>
-                            <div className="flex gap-1">
-                              <select value={unit.fate} onChange={(e) => handleUpdateUnit(unit.slotId, 'fate', e.target.value)} className="flex-1 text-xs py-1 px-2">
-                                {STATUS_OPTIONS.map(s => <option key={s} value={s}>{s}</option>)}
-                              </select>
-                              <button onClick={() => setFateModalUnit(unit)} className="px-2 border border-muted rounded text-muted hover:text-pip hover:border-pip text-xs transition-colors" title="Roll Fate">
-                                <Dices size={14} />
-                              </button>
+                        {/* ── STATS ── */}
+                        <div className="px-4 py-3 space-y-2">
+                          <div className="text-xs text-pip tracking-widest font-bold">STATS</div>
+                          <div className="grid grid-cols-3 sm:grid-cols-6 gap-2">
+                            <div className="bg-panel rounded px-2 py-1.5 text-center">
+                              <div className="text-amber font-bold text-sm">{unit.baseCaps}c</div>
+                              <div className="text-xs text-muted">BASE</div>
                             </div>
-                            {unit.fate === 'Pending' && (
-                              <p className="text-amber text-xs mt-1">Fate pending — roll at start of next round</p>
-                            )}
-                            <button
-                              onClick={() => handleMarkRemoved(unit.slotId)}
-                              className="mt-1 text-xs text-muted hover:text-amber border border-muted/30 hover:border-amber/60 rounded px-2 py-0.5 transition-colors"
-                              title="Mark as removed in battle — sets fate to Pending"
-                            >
-                              MARK REMOVED (?)
-                            </button>
+                            <div className="bg-panel rounded px-2 py-1.5 text-center">
+                              <div className="text-amber font-bold text-sm">{itemCaps}c</div>
+                              <div className="text-xs text-muted">EQUIP</div>
+                            </div>
+                            <div className="bg-panel rounded px-2 py-1.5 text-center">
+                              <div className="text-amber font-bold text-sm">{totalCaps}c</div>
+                              <div className="text-xs text-muted">TOTAL</div>
+                            </div>
+                            <div className="bg-panel rounded px-2 py-1.5 text-center">
+                              <input type="number" min="0" value={unit.battles} onChange={(e) => handleUpdateUnit(unit.slotId, 'battles', parseInt(e.target.value) || 0)} className="w-full text-xs py-0.5 px-1 text-center bg-transparent border-0 text-pip font-bold" />
+                              <div className="text-xs text-muted">BATTLES</div>
+                            </div>
+                            <div className="bg-panel rounded px-2 py-1.5 text-center">
+                              <input type="number" min="0" value={unit.removed} onChange={(e) => handleUpdateUnit(unit.slotId, 'removed', parseInt(e.target.value) || 0)} className="w-full text-xs py-0.5 px-1 text-center bg-transparent border-0 text-pip font-bold" />
+                              <div className="text-xs text-muted">REMOVED</div>
+                            </div>
+                            <div className="bg-panel rounded px-2 py-1.5 text-center">
+                              <input type="number" min="0" max="10" value={unit.lucScore ?? 3} onChange={(e) => handleUpdateUnit(unit.slotId, 'lucScore', parseInt(e.target.value) || 0)} className="w-full text-xs py-0.5 px-1 text-center bg-transparent border-0 text-pip font-bold" />
+                              <div className="text-xs text-muted">LUC</div>
+                            </div>
                           </div>
-                          <div>
-                            <label className="text-xs text-muted tracking-wider">LUC SCORE</label>
-                            <input type="number" min="0" max="10" value={unit.lucScore ?? 3} onChange={(e) => handleUpdateUnit(unit.slotId, 'lucScore', parseInt(e.target.value) || 0)} className="w-full text-xs py-1 px-2" />
-                          </div>
-                        </div>
-
-                        {/* Leader + Heroic Row */}
-                        <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
-                          <div>
-                            <label className="text-xs text-muted tracking-wider">LEADER</label>
-                            <select value={unit.isLeader ? 'Yes' : 'No'} onChange={(e) => handleUpdateUnit(unit.slotId, 'isLeader', e.target.value === 'Yes')} className="w-full text-xs py-1 px-2">
-                              <option>No</option>
-                              <option>Yes</option>
-                            </select>
-                          </div>
-                          <div>
-                            <label className="text-xs text-muted tracking-wider">HEROIC</label>
-                            <div className="mt-1">
+                          <div className="flex gap-2 flex-wrap">
+                            <div className="flex items-center gap-1">
+                              <span className="text-xs text-muted">LEADER:</span>
+                              <select value={unit.isLeader ? 'Yes' : 'No'} onChange={(e) => handleUpdateUnit(unit.slotId, 'isLeader', e.target.value === 'Yes')} className="text-xs py-0.5 px-1 w-16">
+                                <option>No</option><option>Yes</option>
+                              </select>
+                            </div>
+                            <div>
                               {(unit.battles || 0) < 2 ? (
-                                <button
-                                  disabled
-                                  title="Available after 2 battles"
-                                  className="flex items-center gap-1 text-xs px-3 py-1 border border-pip-dim/30 text-pip-dim rounded opacity-40 cursor-not-allowed"
-                                >
-                                  <Star size={12} /> HEROIC
-                                  <span className="text-pip-dim">(2 battles req.)</span>
+                                <button disabled className="flex items-center gap-1 text-xs px-3 py-1 border border-muted/30 text-muted rounded opacity-40 cursor-not-allowed">
+                                  <Star size={12} /> HEROIC <span className="text-muted">(need 2 battles)</span>
                                 </button>
                               ) : (
-                                <button
-                                  onClick={() => handleUpdateUnit(unit.slotId, 'heroic', !unit.heroic)}
-                                  className={`flex items-center gap-1 text-xs px-3 py-1 border rounded transition-colors ${
-                                    unit.heroic
-                                      ? 'border-amber text-amber bg-amber-dim/20'
-                                      : 'border-pip-dim text-pip-dim hover:text-amber hover:border-amber/50'
-                                  }`}
-                                >
-                                  <Star size={12} /> {unit.heroic ? 'HEROIC (ON)' : 'HEROIC'}
+                                <button onClick={() => handleUpdateUnit(unit.slotId, 'heroic', !unit.heroic)} className={`flex items-center gap-1 text-xs px-3 py-1 border rounded transition-colors font-bold ${unit.heroic ? 'border-amber text-amber bg-amber-dim/20' : 'border-pip/50 text-pip hover:bg-pip-dim/20'}`}>
+                                  <Star size={12} /> {unit.heroic ? 'HEROIC ★' : 'HEROIC'}
                                 </button>
                               )}
                             </div>
                           </div>
-                          <div>
-                            <label className="text-xs text-muted tracking-wider">ADDICTION</label>
-                            <input type="text" value={unit.addiction || ''} onChange={(e) => handleUpdateUnit(unit.slotId, 'addiction', e.target.value)} className="w-full text-xs py-1 px-2" placeholder="None" />
+                        </div>
+
+                        {/* ── FATE & DAMAGE ── */}
+                        <div className="px-4 py-3 space-y-2">
+                          <div className="text-xs text-pip tracking-widest font-bold">FATE & DAMAGE</div>
+                          <div className="flex gap-2 flex-wrap items-start">
+                            <div className="flex gap-1 items-center flex-1 min-w-[180px]">
+                              <select value={unit.fate} onChange={(e) => handleUpdateUnit(unit.slotId, 'fate', e.target.value)} className="flex-1 text-xs py-1.5 px-2">
+                                {STATUS_OPTIONS.map(s => <option key={s} value={s}>{s}</option>)}
+                              </select>
+                              <button onClick={() => setFateModalUnit(unit)} className="flex items-center gap-1 px-3 py-1.5 border border-amber text-amber rounded text-xs hover:bg-amber-dim/30 transition-colors font-bold">
+                                <Dices size={12} /> ROLL
+                              </button>
+                            </div>
+                            <button onClick={() => handleMarkRemoved(unit.slotId)} className="px-3 py-1.5 border border-muted/40 text-muted rounded text-xs hover:text-amber hover:border-amber/60 transition-colors font-bold">
+                              MARK REMOVED →PENDING
+                            </button>
                           </div>
+                          {unit.fate === 'Pending' && <p className="text-amber text-xs">Fate pending — roll at start of next round</p>}
+                          <div className="grid grid-cols-2 gap-3">
+                            <div>
+                              <label className="text-xs text-muted block mb-1">REG DAMAGE</label>
+                              <div className="flex gap-1">
+                                <button onClick={() => handleUpdateUnit(unit.slotId, 'regDamage', Math.max(0, (unit.regDamage || 0) - 1))} className="px-2 py-1 border border-muted/40 text-muted rounded text-xs hover:text-pip hover:border-pip transition-colors">−</button>
+                                <input type="number" min="0" value={unit.regDamage} onChange={(e) => handleUpdateUnit(unit.slotId, 'regDamage', parseInt(e.target.value) || 0)} className="flex-1 text-xs py-1 px-2 text-center" />
+                                <button onClick={() => handleUpdateUnit(unit.slotId, 'regDamage', (unit.regDamage || 0) + 1)} className="px-2 py-1 border border-danger/50 text-danger rounded text-xs hover:bg-danger/10 transition-colors">+</button>
+                              </div>
+                            </div>
+                            <div>
+                              <label className="text-xs text-muted block mb-1">RAD DAMAGE</label>
+                              <div className="flex gap-1">
+                                <button onClick={() => handleUpdateUnit(unit.slotId, 'radDamage', Math.max(0, (unit.radDamage || 0) - 1))} className="px-2 py-1 border border-muted/40 text-muted rounded text-xs hover:text-pip hover:border-pip transition-colors">−</button>
+                                <input type="number" min="0" value={unit.radDamage} onChange={(e) => handleUpdateUnit(unit.slotId, 'radDamage', parseInt(e.target.value) || 0)} className="flex-1 text-xs py-1 px-2 text-center" />
+                                <button onClick={() => handleUpdateUnit(unit.slotId, 'radDamage', (unit.radDamage || 0) + 1)} className="px-2 py-1 border border-amber/50 text-amber rounded text-xs hover:bg-amber/10 transition-colors">+</button>
+                              </div>
+                            </div>
+                          </div>
+                          {unit.fate === 'Captured' && (
+                            <div className="grid grid-cols-2 gap-2 border border-amber/40 rounded p-2 bg-amber-dim/10 mt-1">
+                              <div>
+                                <label className="text-xs text-amber">CAPTURED BY</label>
+                                <input type="text" value={unit.capturedBy || ''} onChange={(e) => handleUpdateUnit(unit.slotId, 'capturedBy', e.target.value)} className="w-full text-xs py-1 px-2 mt-1" />
+                              </div>
+                              <div>
+                                <label className="text-xs text-amber">CAPTURE ROUND</label>
+                                <input type="number" min="0" value={unit.captureRound ?? ''} onChange={(e) => handleUpdateUnit(unit.slotId, 'captureRound', parseInt(e.target.value) || null)} className="w-full text-xs py-1 px-2 mt-1" />
+                              </div>
+                              {unit.captureRound != null && (
+                                <div className="col-span-2">
+                                  <span className={`text-xs font-bold ${(state.round || 0) >= (unit.captureRound + 2) ? 'text-danger' : 'text-amber'}`}>
+                                    Deadline: Round {unit.captureRound + 2}{(state.round || 0) >= (unit.captureRound + 2) ? ' — OVERDUE' : ''}
+                                  </span>
+                                </div>
+                              )}
+                            </div>
+                          )}
                         </div>
 
-                        {/* Power Armor */}
-                        <div className="flex items-center gap-4 flex-wrap">
-                          <label className="flex items-center gap-2 cursor-pointer">
-                            <input
-                              type="checkbox"
-                              checked={unit.hasPowerArmor ?? false}
-                              onChange={(e) => handleUpdateUnit(unit.slotId, 'hasPowerArmor', e.target.checked)}
-                              className="accent-pip"
-                            />
-                            <span className="text-xs text-muted flex items-center gap-1">
-                              <Shield size={12} /> POWER ARMOR
-                            </span>
-                          </label>
-                          {unit.hasPowerArmor && (
-                            <label className="flex items-center gap-2 cursor-pointer">
-                              <input
-                                type="checkbox"
-                                checked={unit.paDegraded ?? false}
-                                onChange={(e) => handleUpdateUnit(unit.slotId, 'paDegraded', e.target.checked)}
-                                className="accent-amber"
-                              />
-                              <span className="text-xs text-muted">DEGRADED</span>
-                            </label>
-                          )}
-                          {unit.hasPowerArmor && unit.paDegraded && (
-                            <span className="text-amber text-xs">Needs Power Armor Station to repair</span>
-                          )}
-                        </div>
-
-                        {/* Conditions */}
-                        <div>
-                          <label className="text-xs text-muted tracking-wider block mb-1">CONDITIONS</label>
-                          <div className="flex gap-2 flex-wrap mb-2">
+                        {/* ── CONDITIONS & STATUS ── */}
+                        <div className="px-4 py-3 space-y-2">
+                          <div className="text-xs text-pip tracking-widest font-bold">CONDITIONS & STATUS</div>
+                          <div className="flex gap-2 flex-wrap">
                             {[
                               { key: 'condPoisoned', label: 'POISONED' },
                               { key: 'condInjuredArm', label: 'INJ ARM' },
                               { key: 'condInjuredLeg', label: 'INJ LEG' },
                             ].map(({ key, label }) => (
-                              <button
-                                key={key}
-                                onClick={() => handleUpdateUnit(unit.slotId, key, !unit[key])}
-                                className={`text-xs px-3 py-1 border rounded transition-colors font-bold ${
-                                  unit[key]
-                                    ? 'border-danger text-danger bg-danger-dim/30'
-                                    : 'border-muted/40 text-muted hover:border-danger/50 hover:text-danger'
-                                }`}
-                              >
+                              <button key={key} onClick={() => handleUpdateUnit(unit.slotId, key, !unit[key])} className={`text-xs px-3 py-1.5 border rounded transition-colors font-bold ${unit[key] ? 'border-danger text-danger bg-danger/10' : 'border-muted/40 text-muted hover:border-danger/50 hover:text-danger'}`}>
                                 {label}
                               </button>
                             ))}
-                          </div>
-                          <div>
-                            <label className="text-xs text-muted tracking-wider">OTHER CONDITIONS</label>
-                            <input type="text" value={unit.conditions || ''} onChange={(e) => handleUpdateUnit(unit.slotId, 'conditions', e.target.value)} className="w-full text-xs py-1 px-2 mt-1" placeholder="e.g. Stun, custom condition" />
-                          </div>
-                        </div>
-
-                        <div>
-                          <label className="text-xs text-muted tracking-wider">NOTES</label>
-                          <input type="text" value={unit.notes || ''} onChange={(e) => handleUpdateUnit(unit.slotId, 'notes', e.target.value)} className="w-full text-xs py-1 px-2" />
-                        </div>
-
-                        {/* Capture tracking */}
-                        {unit.fate === 'Captured' && (
-                          <div className="grid grid-cols-2 gap-2 border border-amber/40 rounded p-2 bg-amber-dim/10">
-                            <div>
-                              <label className="text-xs text-amber">CAPTURED BY</label>
-                              <input type="text" value={unit.capturedBy || ''} onChange={(e) => handleUpdateUnit(unit.slotId, 'capturedBy', e.target.value)} className="w-full text-xs py-1 px-2 mt-1" />
-                            </div>
-                            <div>
-                              <label className="text-xs text-amber">CAPTURE ROUND</label>
-                              <input type="number" min="0" value={unit.captureRound ?? ''} onChange={(e) => handleUpdateUnit(unit.slotId, 'captureRound', parseInt(e.target.value) || null)} className="w-full text-xs py-1 px-2 mt-1" />
-                            </div>
-                            {unit.captureRound != null && (
-                              <div className="col-span-2">
-                                <span className={`text-xs font-bold ${(state.round || 0) >= (unit.captureRound + 2) ? 'text-danger' : 'text-amber'}`}>
-                                  Deadline: Round {unit.captureRound + 2}
-                                  {(state.round || 0) >= (unit.captureRound + 2) ? ' OVERDUE' : ''}
-                                </span>
-                              </div>
+                            <label className={`flex items-center gap-2 cursor-pointer px-3 py-1.5 border rounded transition-colors text-xs font-bold ${unit.hasPowerArmor ? 'border-pip text-pip bg-pip-dim/20' : 'border-muted/40 text-muted hover:border-pip/50 hover:text-pip'}`}>
+                              <input type="checkbox" checked={unit.hasPowerArmor ?? false} onChange={(e) => handleUpdateUnit(unit.slotId, 'hasPowerArmor', e.target.checked)} className="accent-pip" />
+                              <Shield size={12} /> PA
+                            </label>
+                            {unit.hasPowerArmor && (
+                              <label className={`flex items-center gap-2 cursor-pointer px-3 py-1.5 border rounded transition-colors text-xs ${unit.paDegraded ? 'border-amber text-amber' : 'border-muted/40 text-muted hover:border-amber/50 hover:text-amber'}`}>
+                                <input type="checkbox" checked={unit.paDegraded ?? false} onChange={(e) => handleUpdateUnit(unit.slotId, 'paDegraded', e.target.checked)} className="accent-amber" />
+                                PA DEGRADED
+                              </label>
                             )}
                           </div>
-                        )}
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                            <div>
+                              <label className="text-xs text-muted block mb-1">OTHER CONDITIONS</label>
+                              <input type="text" value={unit.conditions || ''} onChange={(e) => handleUpdateUnit(unit.slotId, 'conditions', e.target.value)} className="w-full text-xs py-1 px-2" placeholder="e.g. Stun, Prone..." />
+                            </div>
+                            <div>
+                              <label className="text-xs text-muted block mb-1">ADDICTION</label>
+                              <input type="text" value={unit.addiction || ''} onChange={(e) => handleUpdateUnit(unit.slotId, 'addiction', e.target.value)} className="w-full text-xs py-1 px-2" placeholder="None" />
+                            </div>
+                          </div>
+                        </div>
 
-                        {/* Perks */}
-                        <PerkPanel
-                          unit={unit}
-                          phase={phase}
-                          battleCount={state.battleCount ?? 0}
-                          onAddPerk={handleAddPerk}
-                          onRemovePerk={handleRemovePerk}
-                        />
-                      </>
-                    )}
-
-                    {/* Equipment */}
-                    <div>
-                      <div className="flex items-center justify-between mb-2">
-                        <label className="text-xs text-muted tracking-wider">EQUIPMENT ({items.length})</label>
-                        <button
-                          onClick={() => setShowAddItem(unit.slotId)}
-                          className="flex items-center gap-1 text-xs text-muted hover:text-pip border border-muted/40 hover:border-pip rounded px-2 py-1 transition-colors"
-                        >
-                          <Plus size={12} /> ADD ITEM
-                        </button>
-                      </div>
-                      {items.length === 0 ? (
-                        <p className="text-muted text-xs">No equipment assigned</p>
-                      ) : (
-                        <div className="space-y-1">
+                        {/* ── EQUIPMENT ── */}
+                        <div className="px-4 py-3 space-y-2">
+                          <div className="flex items-center justify-between">
+                            <div className="text-xs text-pip tracking-widest font-bold">EQUIPMENT {items.length > 0 && <span className="text-amber">({items.length})</span>}</div>
+                            <span className="text-xs text-amber font-bold">{itemCaps > 0 ? `${itemCaps}c equipped` : ''}</span>
+                          </div>
                           {items.map((item, idx) => (
-                            <div key={idx} className="flex items-center justify-between border border-pip-dim/30 rounded px-2 py-1 bg-panel-light">
-                              <span className="text-pip text-xs">{item.name}</span>
-                              <div className="flex items-center gap-2">
+                            <div key={idx} className="flex items-center justify-between border border-pip-dim/30 rounded px-3 py-2 bg-panel">
+                              <span className="text-pip text-sm font-bold flex-1">{item.name}</span>
+                              <div className="flex items-center gap-3 shrink-0">
                                 <span className="text-muted text-xs">{item.subType}</span>
-                                <span className="text-amber text-xs font-bold">{item.caps}c</span>
-                                <button onClick={() => handleRemoveItem(unit.slotId, idx)} className="text-muted hover:text-danger transition-colors">
-                                  <Trash2 size={12} />
-                                </button>
+                                <span className="text-amber text-sm font-bold">{item.caps}c</span>
+                                <button onClick={() => handleRemoveItem(unit.slotId, idx)} className="text-muted hover:text-danger transition-colors"><Trash2 size={13} /></button>
                               </div>
                             </div>
                           ))}
+                          <button
+                            onClick={() => setShowAddItem(unit.slotId)}
+                            className="w-full flex items-center justify-center gap-2 py-2.5 border border-dashed border-pip-mid/50 text-pip rounded text-sm hover:border-pip hover:bg-pip-dim/20 transition-colors font-bold tracking-wider"
+                            style={{ boxShadow: '0 0 4px var(--color-pip-glow)' }}
+                          >
+                            <Plus size={14} /> ADD EQUIPMENT
+                          </button>
                         </div>
-                      )}
-                    </div>
 
-                    <div className="flex justify-end pt-2 border-t border-pip-dim/30">
-                      <button
-                        onClick={() => handleRemoveUnit(unit.slotId)}
-                        className="flex items-center gap-1 text-xs text-muted hover:text-danger border border-muted/30 hover:border-danger/50 rounded px-3 py-1 transition-colors"
-                      >
-                        <Trash2 size={12} /> REMOVE UNIT
-                      </button>
-                    </div>
+                        {/* ── PERKS ── */}
+                        <div className="px-4 py-3">
+                          <PerkPanel
+                            unit={unit}
+                            phase={phase}
+                            battleCount={state.battleCount ?? 0}
+                            onAddPerk={handleAddPerk}
+                            onRemovePerk={handleRemovePerk}
+                          />
+                        </div>
+
+                        {/* ── NOTES & ACTIONS ── */}
+                        <div className="px-4 py-3 space-y-2">
+                          <div className="text-xs text-pip tracking-widest font-bold">NOTES</div>
+                          <input type="text" value={unit.notes || ''} onChange={(e) => handleUpdateUnit(unit.slotId, 'notes', e.target.value)} className="w-full text-xs py-1.5 px-2" placeholder="Any notes about this unit..." />
+                          <div className="flex justify-end pt-1">
+                            <button onClick={() => handleRemoveUnit(unit.slotId)} className="flex items-center gap-1 text-xs text-muted hover:text-danger border border-muted/30 hover:border-danger/50 rounded px-3 py-1.5 transition-colors">
+                              <Trash2 size={12} /> REMOVE UNIT FROM ROSTER
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    )}
                   </div>
                 )}
               </div>
@@ -565,6 +618,7 @@ export default function RosterPage() {
           isOpen={!!showAddItem}
           onClose={() => setShowAddItem(null)}
           onAdd={(itemId) => handleAddItem(showAddItem, itemId)}
+          poolItems={state.itemPool?.items || []}
         />
       )}
       {fateModalUnit && (
@@ -580,7 +634,9 @@ export default function RosterPage() {
 }
 
 function PerkPanel({ unit, phase, battleCount, onAddPerk, onRemovePerk }) {
-  const [newPerk, setNewPerk] = useState('')
+  const [showPerkModal, setShowPerkModal] = useState(false)
+  const [expandedPerk, setExpandedPerk] = useState(null)
+
   const perks = unit.perks || []
   const battles = unit.battles || 0
   const perksThisRound = unit.perksThisRound || 0
@@ -590,64 +646,97 @@ function PerkPanel({ unit, phase, battleCount, onAddPerk, onRemovePerk }) {
   const phase4FirstBattle = phase === 4 && battleCount === 0
   const canAdd = !roundLimitReached && !phase4FirstBattle && perks.length < battles
 
-  function handleAdd() {
-    if (!newPerk.trim()) return
+  function handleDrawRandom() {
     if (!canAdd) return
-    onAddPerk(unit.slotId, newPerk)
-    setNewPerk('')
+    const available = PERK_CARDS.filter(p => !perks.includes(p.name))
+    if (available.length === 0) return
+    const picked = available[Math.floor(Math.random() * available.length)]
+    onAddPerk(unit.slotId, picked.name)
   }
 
   let warning = null
-  if (phase4FirstBattle) {
-    warning = 'First perk available after first Phase 4 battle'
-  } else if (roundLimitReached) {
-    warning = 'Max 1 new perk per settlement round'
-  } else if (perks.length >= battles && battles > 0) {
-    warning = 'Cannot exceed battles fought'
-  } else if (battles === 0) {
-    warning = 'No battles fought yet — perks require at least 1 battle'
-  }
+  if (phase4FirstBattle) warning = 'First perk available after first Phase 4 battle'
+  else if (roundLimitReached) warning = 'Max 1 new perk per settlement round'
+  else if (perks.length >= battles && battles > 0) warning = 'Cannot exceed battles fought'
+  else if (battles === 0) warning = 'No battles fought yet — perks require at least 1 battle'
 
   return (
     <div>
-      <div className="flex items-center gap-2 mb-1 flex-wrap">
-        <label className="text-xs text-muted tracking-wider">PERKS ({perks.length} / {battles} battles)</label>
-        <span className="text-muted text-xs">PERKS THIS ROUND: {perksThisRound}/1</span>
-        {tooMany && <span className="text-danger text-xs font-bold">Too many perks for battles fought</span>}
+      {/* Header */}
+      <div className="flex items-center justify-between mb-2 flex-wrap gap-2">
+        <label className="text-xs text-muted tracking-wider">
+          PERKS ({perks.length} / {battles} battles)
+          <span className="ml-2 text-pip text-xs">THIS ROUND: {perksThisRound}/1</span>
+        </label>
+        <div className="flex items-center gap-2">
+          <button
+            onClick={handleDrawRandom}
+            disabled={!canAdd}
+            className="flex items-center gap-1 text-xs border border-info/60 text-info hover:bg-info-dim/20 rounded px-2 py-1 transition-colors disabled:opacity-40 disabled:cursor-not-allowed font-bold"
+            title="Draw a random perk card"
+          >
+            <Shuffle size={11} /> RANDOM
+          </button>
+          <button
+            onClick={() => setShowPerkModal(true)}
+            disabled={!canAdd}
+            className="flex items-center gap-1 text-xs border border-pip text-pip hover:bg-pip-dim/20 rounded px-2 py-1 transition-colors disabled:opacity-40 disabled:cursor-not-allowed font-bold"
+          >
+            <Plus size={11} /> SELECT PERK
+          </button>
+        </div>
       </div>
-      <div className="flex gap-2 mb-1">
-        <input
-          type="text"
-          value={newPerk}
-          onChange={(e) => setNewPerk(e.target.value)}
-          onKeyDown={(e) => { if (e.key === 'Enter') handleAdd() }}
-          placeholder="Add perk..."
-          className="flex-1 text-xs py-1 px-2"
-          disabled={!canAdd}
-        />
-        <button
-          onClick={handleAdd}
-          disabled={!canAdd || !newPerk.trim()}
-          className="px-3 py-1 border border-muted text-pip text-xs rounded hover:bg-pip-dim hover:border-pip disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
-        >
-          <Plus size={12} />
-        </button>
-      </div>
-      {warning && (
-        <p className="text-amber text-xs mb-1">{warning}</p>
-      )}
+
+      {warning && <p className="text-amber text-xs mb-2">{warning}</p>}
+      {tooMany && <p className="text-danger text-xs mb-2 font-bold">⚠ Too many perks for battles fought</p>}
+
+      {/* Equipped perks */}
       {perks.length > 0 && (
         <div className="space-y-1">
-          {perks.map((perk, i) => (
-            <div key={i} className="flex items-center justify-between border border-pip-dim/30 rounded px-2 py-1 bg-panel-light">
-              <span className="text-pip text-xs">{perk}</span>
-              <button onClick={() => onRemovePerk(unit.slotId, i)} className="text-muted hover:text-danger p-0.5 transition-colors">
-                <X size={12} />
-              </button>
-            </div>
-          ))}
+          {perks.map((perkName, i) => {
+            const perkRef = PERK_CARDS.find(p => p.name === perkName)
+            const isExpanded = expandedPerk === i
+            return (
+              <div key={i} className="border border-pip-dim/30 rounded bg-panel-light overflow-hidden">
+                <div
+                  className="flex items-center justify-between px-2 py-1.5 cursor-pointer hover:bg-panel"
+                  onClick={() => setExpandedPerk(isExpanded ? null : i)}
+                >
+                  <div className="flex items-center gap-2 min-w-0">
+                    {isExpanded ? <ChevronDown size={12} className="text-muted shrink-0" /> : <ChevronRight size={12} className="text-muted shrink-0" />}
+                    <span className="text-pip text-xs font-bold truncate">{perkName}</span>
+                  </div>
+                  <button
+                    onClick={e => { e.stopPropagation(); onRemovePerk(unit.slotId, i) }}
+                    className="text-muted hover:text-danger p-0.5 transition-colors shrink-0"
+                  >
+                    <X size={12} />
+                  </button>
+                </div>
+                {isExpanded && perkRef && (
+                  <div className="px-3 pb-2 pt-1 border-t border-pip-dim/20">
+                    <p className="text-muted text-xs leading-relaxed">{parseSymbols(perkRef.text)}</p>
+                    {perkRef.requires && (
+                      <p className="text-amber text-xs mt-1">Requires: {perkRef.requires}</p>
+                    )}
+                  </div>
+                )}
+              </div>
+            )
+          })}
         </div>
       )}
+
+      <PerkPickerModal
+        isOpen={showPerkModal}
+        onClose={() => setShowPerkModal(false)}
+        onSelect={(perkName) => {
+          onAddPerk(unit.slotId, perkName)
+          setShowPerkModal(false)
+        }}
+        equippedPerks={perks}
+        canAdd={canAdd}
+      />
     </div>
   )
 }

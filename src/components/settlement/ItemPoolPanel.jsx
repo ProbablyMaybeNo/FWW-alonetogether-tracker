@@ -5,15 +5,9 @@ import { useCampaign } from '../../context/CampaignContext'
 import { getStructureRef } from '../../utils/calculations'
 import itemsData from '../../data/items.json'
 
-const SUBTYPES = ['Weapon', 'Armor', 'Chem', 'Food', 'Drink', 'Boost', 'Gear', 'Junk', 'Other']
 
 function AddItemToPoolModal({ isOpen, onClose, onAdd }) {
   const [search, setSearch] = useState('')
-  const [customMode, setCustomMode] = useState(false)
-  const [customName, setCustomName] = useState('')
-  const [customCaps, setCustomCaps] = useState(0)
-  const [customSubType, setCustomSubType] = useState('Other')
-  const [customIsBoost, setCustomIsBoost] = useState(false)
 
   const searchResults = useMemo(() => {
     if (!search.trim()) return []
@@ -24,6 +18,7 @@ function AddItemToPoolModal({ isOpen, onClose, onAdd }) {
   function handleAddFromSearch(item) {
     onAdd({
       id: Date.now() + Math.random(),
+      catalogId: item.id,
       name: item.name,
       caps: item.caps,
       subType: item.subType,
@@ -34,98 +29,37 @@ function AddItemToPoolModal({ isOpen, onClose, onAdd }) {
     onClose()
   }
 
-  function handleAddCustom() {
-    if (!customName.trim()) return
-    onAdd({
-      id: Date.now() + Math.random(),
-      name: customName.trim(),
-      caps: parseInt(customCaps) || 0,
-      subType: customSubType,
-      isBoost: customIsBoost,
-      location: 'recovery',
-      assignedUnit: null,
-    })
-    onClose()
-  }
-
   return (
-    <Modal isOpen={isOpen} onClose={onClose} title="ADD ITEM TO RECOVERY POOL">
+    <Modal isOpen={isOpen} onClose={onClose} title="ADD ITEM TO POOL">
       <div className="space-y-4">
-        <div className="flex gap-2">
-          <button
-            onClick={() => setCustomMode(false)}
-            className={`flex-1 py-1.5 text-xs border rounded ${!customMode ? 'border-pip text-pip' : 'border-muted text-muted hover:text-pip'}`}
-          >
-            SEARCH ITEMS
-          </button>
-          <button
-            onClick={() => setCustomMode(true)}
-            className={`flex-1 py-1.5 text-xs border rounded ${customMode ? 'border-pip text-pip' : 'border-muted text-muted hover:text-pip'}`}
-          >
-            CUSTOM ITEM
-          </button>
-        </div>
-
-        {!customMode ? (
-          <div>
-            <input
-              type="text"
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              placeholder="Search items by name..."
-              className="w-full text-xs py-1 px-2 mb-2"
-              autoFocus
-            />
-            <div className="max-h-64 overflow-y-auto space-y-1">
-              {searchResults.length === 0 && search.trim() && (
-                <p className="text-muted text-xs">No results. Try custom item.</p>
-              )}
-              {searchResults.map(item => (
-                <div
-                  key={item.id}
-                  onClick={() => handleAddFromSearch(item)}
-                  className="flex items-center justify-between border border-muted/40 rounded px-3 py-2 hover:bg-panel-alt cursor-pointer"
-                >
-                  <span className="text-pip text-xs">{item.name}</span>
-                  <div className="flex items-center gap-2">
-                    <span className="text-muted text-xs">{item.subType}</span>
-                    <span className="text-amber text-xs font-bold">{item.caps}c</span>
-                  </div>
+        <div>
+          <input
+            type="text"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            placeholder="Search items by name..."
+            className="w-full text-xs py-1 px-2 mb-2"
+            autoFocus
+          />
+          <div className="max-h-64 overflow-y-auto space-y-1">
+            {searchResults.length === 0 && search.trim() && (
+              <p className="text-muted text-xs">No results found.</p>
+            )}
+            {searchResults.map(item => (
+              <div
+                key={item.id}
+                onClick={() => handleAddFromSearch(item)}
+                className="flex items-center justify-between border border-muted/40 rounded px-3 py-2 hover:bg-panel-alt cursor-pointer"
+              >
+                <span className="text-pip text-xs">{item.name}</span>
+                <div className="flex items-center gap-2">
+                  <span className="text-muted text-xs">{item.subType}</span>
+                  <span className="text-amber text-xs font-bold">{item.caps}c</span>
                 </div>
-              ))}
-            </div>
-          </div>
-        ) : (
-          <div className="space-y-3">
-            <div>
-              <label className="text-xs text-muted block mb-1">ITEM NAME</label>
-              <input type="text" value={customName} onChange={(e) => setCustomName(e.target.value)} className="w-full text-xs py-1 px-2" placeholder="Item name..." autoFocus />
-            </div>
-            <div className="grid grid-cols-2 gap-3">
-              <div>
-                <label className="text-xs text-muted block mb-1">CAPS VALUE</label>
-                <input type="number" min="0" value={customCaps} onChange={(e) => setCustomCaps(e.target.value)} className="w-full text-xs py-1 px-2" />
               </div>
-              <div>
-                <label className="text-xs text-muted block mb-1">SUB TYPE</label>
-                <select value={customSubType} onChange={(e) => setCustomSubType(e.target.value)} className="w-full text-xs py-1 px-2">
-                  {SUBTYPES.map(t => <option key={t} value={t}>{t}</option>)}
-                </select>
-              </div>
-            </div>
-            <label className="flex items-center gap-2 cursor-pointer">
-              <input type="checkbox" checked={customIsBoost} onChange={(e) => setCustomIsBoost(e.target.checked)} className="accent-pip" />
-              <span className="text-xs text-muted">IS BOOST (takes 0.5 slots)</span>
-            </label>
-            <button
-              onClick={handleAddCustom}
-              disabled={!customName.trim()}
-              className="w-full py-2 border border-pip text-pip text-xs rounded hover:bg-pip-dim/30 disabled:opacity-40"
-            >
-              ADD TO RECOVERY
-            </button>
+            ))}
           </div>
-        )}
+        </div>
       </div>
     </Modal>
   )
@@ -258,10 +192,10 @@ export default function ItemPoolPanel({ structures }) {
   }
 
   const tabs = [
-    { key: 'recovery', label: `RECOVERY (${recoveryItems.length})` },
-    { key: 'stored', label: `STORED (${storedItems.length}/${shedSlots || '0'})` },
-    { key: 'locker', label: `LOCKERS (${lockerItems.length}/${lockerSlots || '0'})` },
-    { key: 'stores', label: `STORES (${storesItems.length})` },
+    { key: 'recovery', label: `POOL (${recoveryItems.length})` },
+    { key: 'stored',   label: `SHED (${storedItems.length}/${shedSlots || '0'})` },
+    { key: 'locker',   label: `LOCKERS (${lockerItems.length}/${lockerSlots || '0'})` },
+    { key: 'stores',   label: `STORES (${storesItems.length})` },
   ]
 
   return (
@@ -281,10 +215,19 @@ export default function ItemPoolPanel({ structures }) {
       {!collapsed && (
         <div className="border-t border-muted/40 p-4">
           {/* Slot overview */}
-          <div className="flex gap-3 text-xs text-muted mb-3 flex-wrap">
-            <span>Sheds: <span className="text-pip">{shedSlots}</span> slots</span>
-            <span>Lockers: <span className="text-pip">{lockerSlots}</span> slots</span>
-            <span>Stores: <span className="text-pip">{storesSlots}</span> slots</span>
+          <div className="grid grid-cols-3 gap-2 mb-3">
+            <div className="border border-pip-mid/40 rounded bg-panel-alt p-2 text-center">
+              <div className="text-pip font-bold text-sm">{storedItems.filter(i=>!i.isBoost).length}/{shedSlots || 0}</div>
+              <div className="text-muted text-xs">SHED</div>
+            </div>
+            <div className="border border-pip-mid/40 rounded bg-panel-alt p-2 text-center">
+              <div className="text-pip font-bold text-sm">{lockerItems.length}/{lockerSlots || 0}</div>
+              <div className="text-muted text-xs">LOCKERS</div>
+            </div>
+            <div className="border border-pip-mid/40 rounded bg-panel-alt p-2 text-center">
+              <div className="text-pip font-bold text-sm">{storesItems.length}/{storesSlots || 0}</div>
+              <div className="text-muted text-xs">STORES</div>
+            </div>
           </div>
 
           {/* Tabs */}
@@ -308,7 +251,7 @@ export default function ItemPoolPanel({ structures }) {
           {activeTab === 'recovery' && (
             <div>
               <div className="flex items-center justify-between mb-3">
-                <span className="text-muted text-xs">Items from last battle pending decisions</span>
+                <span className="text-muted text-xs">Items gathered from battle — keep, store, or sell</span>
                 <button
                   onClick={() => setShowAddItem(true)}
                   className="flex items-center gap-1 text-xs px-3 py-1 border border-muted rounded text-muted hover:text-pip hover:border-pip"
@@ -332,7 +275,7 @@ export default function ItemPoolPanel({ structures }) {
                           className="text-xs px-2 py-0.5 border border-muted rounded text-muted hover:text-pip hover:border-pip disabled:opacity-40 disabled:cursor-not-allowed"
                           title={`Keep in Maintenance Shed (${storedItems.filter(i => !i.isBoost).length}/${shedSlots} used)`}
                         >
-                          Keep ({shedSlots - storedItems.filter(i => !i.isBoost).length} left)
+                          SHED ({shedSlots - storedItems.filter(i => !i.isBoost).length} left)
                         </button>
                         <button
                           onClick={() => moveToLocker(item)}
@@ -356,7 +299,7 @@ export default function ItemPoolPanel({ structures }) {
                       onClick={sellAllRecovery}
                       className="text-xs px-4 py-2 border border-danger/40 text-danger rounded hover:bg-danger-dim/10 transition-colors"
                     >
-                      SELL ALL REMAINING ({recoveryItems.reduce((s, i) => s + (i.caps || 0), 0)}c)
+                      SELL ALL ({recoveryItems.reduce((s, i) => s + (i.caps || 0), 0)}c)
                     </button>
                   </div>
                 </div>
@@ -367,7 +310,7 @@ export default function ItemPoolPanel({ structures }) {
           {/* STORED TAB */}
           {activeTab === 'stored' && (
             <div>
-              <p className="text-muted text-xs mb-3">Retained via Maintenance Shed — permanent item pool</p>
+              <p className="text-muted text-xs mb-3">Retained via Maintenance Shed (1 item or 2 Boosts per Shed)</p>
               {storedItems.length === 0 ? (
                 <p className="text-muted text-xs">No stored items.</p>
               ) : (

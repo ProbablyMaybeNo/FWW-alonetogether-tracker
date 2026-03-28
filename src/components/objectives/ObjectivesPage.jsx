@@ -37,7 +37,7 @@ function QuestCardViewer({ cardName, cardId, onClose }) {
           {/* Header */}
           <div className="flex items-center justify-between">
             <span className="text-pip text-xs font-bold tracking-wider uppercase">{cardName}</span>
-            <button onClick={onClose} className="text-pip-dim hover:text-danger p-1"><X size={14} /></button>
+            <button onClick={onClose} className="text-pip hover:text-danger p-1"><X size={14} /></button>
           </div>
 
           {content ? (
@@ -63,7 +63,7 @@ function QuestCardViewer({ cardName, cardId, onClose }) {
               </button>
             </>
           ) : (
-            <p className="text-center py-8 text-pip-dim text-xs">Card content not in library yet.</p>
+            <p className="text-center py-8 text-pip text-xs">Card content not in library yet.</p>
           )}
         </div>
       </div>
@@ -122,7 +122,7 @@ export default function ObjectivesPage() {
             key={t.id}
             onClick={() => setSubTab(t.id)}
             className={`flex-1 py-2 text-xs rounded border transition-colors font-bold tracking-wider ${
-              subTab === t.id ? 'border-pip bg-panel-light text-pip' : 'border-muted/30 text-muted hover:text-pip hover:border-pip'
+              subTab === t.id ? 'border-pip bg-panel-light text-pip' : 'border-pip/30 text-pip hover:text-amber hover:border-amber'
             }`}
           >
             {t.label}
@@ -141,45 +141,64 @@ export default function ObjectivesPage() {
 function SecretPurposes() {
   const { state, setState } = useCampaign()
   const [currentId, setCurrentId] = useState(null)
+  const [justCompleted, setJustCompleted] = useState(null)
 
   const history = state.secretPurposeHistory || []
 
   function handleDraw() {
     const idx = Math.floor(Math.random() * SECRET_PURPOSES.length)
     setCurrentId(SECRET_PURPOSES[idx].id)
+    setJustCompleted(null)
   }
 
-  function handleMarkComplete() {
-    if (currentId == null) return
+  function handleMarkComplete(id) {
     setState(prev => ({
       ...prev,
-      secretPurposeHistory: [...(prev.secretPurposeHistory || []), { id: currentId, completedOnRound: prev.round ?? 0 }],
+      secretPurposeHistory: [...(prev.secretPurposeHistory || []), { id, completedOnRound: prev.round ?? 0 }],
     }))
-    alert('Perk earned! Choose any legal Perk for a qualifying model.')
+    setCurrentId(null)
+    setJustCompleted(id)
   }
 
-  function getCompletionCount(id) {
-    return history.filter(h => h.id === id).length
+  function handleUndoLast() {
+    setState(prev => {
+      const h = [...(prev.secretPurposeHistory || [])]
+      h.pop()
+      return { ...prev, secretPurposeHistory: h }
+    })
+    setJustCompleted(null)
+  }
+
+  function getHistory(id) {
+    return history.filter(h => h.id === id)
   }
 
   return (
     <div className="space-y-4">
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-3 flex-wrap">
         <button
           onClick={handleDraw}
-          className="px-4 py-2 border border-pip rounded text-pip text-sm hover:bg-pip-dim/30 transition-colors"
+          className="flex items-center gap-2 px-4 py-2 border border-pip rounded text-pip text-xs font-bold hover:bg-pip-dim/30 transition-colors"
         >
-          DRAW RANDOM
+          <Shuffle size={12} /> DRAW RANDOM
         </button>
         {currentId && (
-          <span className="text-pip-dim text-xs">Currently drawn: <span className="text-amber">{SECRET_PURPOSES.find(p => p.id === currentId)?.name}</span></span>
+          <span className="text-xs text-pip">Active: <span className="text-amber font-bold">{SECRET_PURPOSES.find(p => p.id === currentId)?.name}</span></span>
+        )}
+        {justCompleted && (
+          <div className="flex items-center gap-2 text-xs text-pip border border-pip/40 rounded px-3 py-1.5 bg-pip-dim/10">
+            <Check size={12} className="text-pip" />
+            Purpose complete — earn a Perk for a qualifying model
+            <button onClick={handleUndoLast} className="ml-2 text-muted hover:text-danger transition-colors">undo</button>
+          </div>
         )}
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
         {SECRET_PURPOSES.map(purpose => {
           const isCurrent = purpose.id === currentId
-          const count = getCompletionCount(purpose.id)
+          const purposeHistory = getHistory(purpose.id)
+          const count = purposeHistory.length
 
           return (
             <div
@@ -188,27 +207,37 @@ function SecretPurposes() {
                 isCurrent ? 'border-amber bg-amber-dim/10' : 'border-pip-dim/40'
               }`}
             >
-              <div className="flex items-center justify-between mb-2">
+              <div className="flex items-start justify-between mb-2 gap-2">
                 <span className={`text-sm font-bold tracking-wider ${isCurrent ? 'text-amber' : 'text-pip'}`}>
                   {isCurrent && '▶ '}{purpose.name}
                 </span>
                 {count > 0 && (
-                  <span className="text-xs px-2 py-0.5 border border-pip-dim/40 rounded text-pip-dim">
-                    Completed {count}×
+                  <span className="text-xs px-2 py-0.5 border border-pip/40 rounded text-pip shrink-0">
+                    ✓ {count}×
                   </span>
                 )}
               </div>
               <p className="text-muted text-xs leading-relaxed mb-1">{purpose.objective}</p>
-              <p className="text-muted/80 text-xs italic">When: {purpose.completedWhen}</p>
+              <p className="text-muted/60 text-xs italic mb-2">Complete when: {purpose.completedWhen}</p>
 
-              {isCurrent && (
-                <button
-                  onClick={handleMarkComplete}
-                  className="mt-3 w-full py-1.5 border border-pip text-pip text-xs rounded hover:bg-pip-dim/30 transition-colors"
-                >
-                  MARK COMPLETE
-                </button>
+              {purposeHistory.length > 0 && (
+                <div className="flex flex-wrap gap-1 mb-2">
+                  {purposeHistory.map((h, i) => (
+                    <span key={i} className="text-xs px-1.5 py-0.5 border border-pip/30 rounded text-pip">R{h.completedOnRound}</span>
+                  ))}
+                </div>
               )}
+
+              <button
+                onClick={() => isCurrent ? handleMarkComplete(purpose.id) : setCurrentId(purpose.id)}
+                className={`w-full py-1.5 text-xs rounded border transition-colors font-bold ${
+                  isCurrent
+                    ? 'border-pip text-pip hover:bg-pip-dim/30'
+                    : 'border-muted/30 text-muted hover:border-pip hover:text-pip'
+                }`}
+              >
+                {isCurrent ? '✓ MARK COMPLETE' : 'SET ACTIVE'}
+              </button>
             </div>
           )
         })}
@@ -260,7 +289,7 @@ function ScavengerObjectives() {
             key={n}
             onClick={() => setPlayerCount(n)}
             className={`px-3 py-1 text-xs border rounded transition-colors ${
-              playerCount === n ? 'border-pip text-pip bg-pip-dim/20' : 'border-pip-dim/30 text-pip-dim hover:text-pip'
+              playerCount === n ? 'border-pip text-pip bg-pip-dim/20' : 'border-pip/30 text-pip hover:text-amber hover:border-amber'
             }`}
           >
             {n}
@@ -289,8 +318,8 @@ function ScavengerObjectives() {
                   <span className={`text-sm font-bold ${isActive ? 'text-amber' : isComplete ? 'text-pip-dim' : 'text-pip'}`}>
                     {obj.name}
                   </span>
-                  <span className="text-xs px-2 py-0.5 border border-pip-dim/30 rounded text-pip-dim">{obj.mode}</span>
-                  {isActive && <span className="text-xs px-2 py-0.5 border border-amber rounded text-amber">ACTIVE</span>}
+                  <span className="text-xs px-2 py-0.5 border border-pip/30 rounded text-pip">{obj.mode}</span>
+                  {isActive && <span className="text-xs px-2 py-0.5 border border-amber rounded text-amber font-bold" style={{ boxShadow: '0 0 4px var(--color-amber-glow)' }}>● ACTIVE</span>}
                   {isComplete && <span className="text-xs px-2 py-0.5 border border-pip rounded text-pip">✓ DONE</span>}
                 </div>
                 <span className="text-xs text-amber">{obj.reward}</span>
@@ -314,7 +343,8 @@ function ScavengerObjectives() {
                     <button
                       onClick={() => handleSetActive(obj.id)}
                       disabled={activeId != null}
-                      className="px-3 py-1 border border-pip-dim text-pip-dim text-xs rounded hover:text-pip hover:border-pip disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+                      className="px-3 py-1.5 border border-pip text-pip text-xs rounded hover:bg-pip-dim/20 disabled:opacity-30 disabled:cursor-not-allowed transition-colors font-bold"
+                    style={{ boxShadow: '0 0 4px var(--color-pip-glow)' }}
                     >
                       SET ACTIVE
                     </button>
@@ -457,10 +487,10 @@ function QuestCardsPanel() {
       <div className="border border-pip-dim/30 rounded bg-panel-alt px-3 py-2">
         <div className="flex items-center justify-between flex-wrap gap-2">
           <div className="flex gap-4 text-xs">
-            <span className="text-pip">{remainingDeck.length} <span className="text-pip-dim">in deck</span></span>
-            <span className="text-pip-dim">{drawnQuestIds.length} drawn</span>
-            <span className="text-pip-dim">{discardedQuestIds.length} discarded</span>
-            <span className="text-pip-dim">{questCardDeck.length} total</span>
+            <span className="text-pip">{remainingDeck.length} <span className="text-pip">in deck</span></span>
+            <span className="text-pip">{drawnQuestIds.length} drawn</span>
+            <span className="text-pip">{discardedQuestIds.length} discarded</span>
+            <span className="text-pip">{questCardDeck.length} total</span>
           </div>
           <button onClick={handleResetDeck} className="text-xs text-danger-dim hover:text-danger">RESET DECK</button>
         </div>
@@ -478,7 +508,7 @@ function QuestCardsPanel() {
           </button>
           <button
             onClick={() => setShowDeckBrowser(b => !b)}
-            className="flex items-center gap-2 px-3 py-2 border border-pip-dim/30 rounded text-pip-dim text-xs hover:text-pip transition-colors"
+            className="flex items-center gap-2 px-3 py-2 border border-pip/30 rounded text-pip text-xs hover:text-amber transition-colors"
           >
             {showDeckBrowser ? <ChevronDown size={12} /> : <ChevronRight size={12} />}
             BROWSE DECK
@@ -511,12 +541,12 @@ function QuestCardsPanel() {
                     >
                       <span className="font-bold">{card.name}</span>
                       {card.isMultiPart && (
-                        <span className="text-pip-dim ml-2">[{card.series}]</span>
+                        <span className="text-pip ml-2">[{card.series}]</span>
                       )}
                     </button>
                     <button
                       onClick={() => setViewingCard({ name: card.name, cardId: card.id })}
-                      className="p-1 text-pip-dim/50 hover:text-pip transition-colors flex-shrink-0"
+                      className="p-1 text-pip hover:text-pip transition-colors flex-shrink-0"
                       title="Read card"
                     >
                       <BookOpen size={10} />
@@ -534,7 +564,7 @@ function QuestCardsPanel() {
             <div className="text-xs text-amber font-bold tracking-wider">DRAWN CARD</div>
             <div className="text-pip font-bold text-sm">{drawnCard.name}</div>
             {drawnCard.isMultiPart && (
-              <div className="text-pip-dim text-xs">
+              <div className="text-pip text-xs">
                 Series: <span className="text-pip">{drawnCard.series}</span>
                 {' — '}<span className="text-amber">Part {drawnCard.part}</span>
               </div>
@@ -550,7 +580,7 @@ function QuestCardsPanel() {
               </button>
               <button
                 onClick={handleDiscardDrawnCard}
-                className="px-3 py-1.5 border border-pip-dim/30 text-pip-dim text-xs rounded hover:text-danger transition-colors"
+                className="px-3 py-1.5 border border-pip/30 text-pip text-xs rounded hover:text-danger transition-colors"
               >
                 DISCARD
               </button>
@@ -570,7 +600,7 @@ function QuestCardsPanel() {
         <h3 className="text-pip text-xs tracking-wider mb-2 border-b border-pip-dim/30 pb-1">QUEST LOG</h3>
 
         {quests.length === 0 ? (
-          <p className="text-pip-dim text-xs text-center py-4">No quests in log. Draw a card or add manually below.</p>
+          <p className="text-pip text-xs text-center py-4">No quests in log. Draw a card or add manually below.</p>
         ) : (
           <div className="space-y-2">
             {quests.map(q => (
@@ -584,16 +614,16 @@ function QuestCardsPanel() {
                   <div className="flex items-center gap-2 flex-wrap">
                     <span className={`text-sm ${q.status === 'Complete' ? 'text-pip-dim line-through' : 'text-pip'}`}>{q.name}</span>
                     <span className={`text-xs px-2 py-0.5 rounded border ${
-                      q.part && q.part !== '1' ? 'border-amber/50 text-amber' : 'border-pip-dim/40 text-pip-dim'
+                      q.part && q.part !== '1' ? 'border-amber/50 text-amber' : 'border-pip/40 text-pip'
                     }`}>
                       Part {q.part || '1'}
                     </span>
-                    <span className="text-pip-dim text-xs">R{q.startedRound ?? 0}</span>
+                    <span className="text-pip text-xs">R{q.startedRound ?? 0}</span>
                   </div>
                 </div>
                 <button
                   onClick={() => setViewingCard({ name: q.name, cardId: q.cardId })}
-                  className="p-1.5 border border-pip-dim/30 rounded text-pip-dim hover:text-pip transition-colors"
+                  className="p-1.5 border border-pip/30 rounded text-pip hover:text-amber transition-colors"
                   title="Read card"
                 >
                   <BookOpen size={12} />
@@ -601,13 +631,13 @@ function QuestCardsPanel() {
                 <button
                   onClick={() => handleToggleStatus(q.id)}
                   className={`p-1.5 border rounded text-xs transition-colors ${
-                    q.status === 'Complete' ? 'border-pip text-pip' : 'border-pip-dim/30 text-pip-dim hover:text-pip'
+                    q.status === 'Complete' ? 'border-pip text-pip' : 'border-pip/30 text-pip hover:text-amber'
                   }`}
                   title={q.status === 'Complete' ? 'Mark Active' : 'Mark Complete'}
                 >
                   <Check size={12} />
                 </button>
-                <button onClick={() => handleRemove(q.id)} className="text-pip-dim hover:text-danger p-1">
+                <button onClick={() => handleRemove(q.id)} className="text-pip hover:text-danger p-1">
                   <X size={14} />
                 </button>
               </div>
@@ -634,7 +664,7 @@ function QuestCardsPanel() {
                 key={p}
                 onClick={() => setNewPart(p)}
                 className={`px-2 py-1 text-xs border rounded transition-colors ${
-                  newPart === p ? 'border-pip text-pip bg-pip-dim/20' : 'border-pip-dim/30 text-pip-dim hover:text-pip'
+                  newPart === p ? 'border-pip text-pip bg-pip-dim/20' : 'border-pip/30 text-pip hover:text-amber hover:border-amber'
                 }`}
               >
                 {p}

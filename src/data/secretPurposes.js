@@ -6,5 +6,5 @@ export const SECRET_PURPOSES = [
   { id: 5, name: 'Scavenge',  objective: 'Collect more Item cards from Searchables than all other players.',         completedWhen: 'The required number of items has been collected.' },
   { id: 6, name: 'Find',      objective: 'Be the first to reveal an Investigation Marker showing a Searchable icon.', completedWhen: "A player's model reveals the required marker." },
   { id: 7, name: 'Raid',      objective: 'Secure more items from Searchables within Yellow of an Inhabitant.',       completedWhen: 'The required number of items are held by player models.' },
-  { id: 8, name: 'Expertise', objective: 'Pass more Use Expertise tests on Searchable Markers than all other players.', completedWhen: 'All Searchables requiring Expertise have been resolved.' },
+  { id: 8, name: 'Contact',   objective: 'Fulfill more Stranger requests than all other players.',                        completedWhen: "All Strangers' requests on the board have been fulfilled." },
 ]

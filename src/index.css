@@ -8,9 +8,9 @@
   --color-pip-mid: #00b85a;
 
   /* Neon orange replaces amber — highlight/important */
-  --color-amber: #ff9f00;
+  --color-amber: #ffb700;
   --color-amber-dim: #4a2800;
-  --color-amber-glow: rgba(255, 159, 0, 0.35);
+  --color-amber-glow: rgba(255, 183, 0, 0.55);
 
   /* Neon red — danger/warning */
   --color-danger: #ff3c3c;
@@ -27,8 +27,10 @@
   --color-panel-light: #141a14;
   --color-panel-alt: #121712;
 
-  /* Muted text — bright green for readability */
-  --color-muted: #00c060;
+  /* Muted text — same brightness as pip per UX requirement: no greyed-out active text */
+  --color-muted: #00e676;
+  /* Dim — only for truly unavailable/disabled content */
+  --color-dim: #006633;
 
   --font-family-mono: 'Share Tech Mono', 'Courier New', monospace;
 }
@@ -90,7 +92,7 @@ input, select, textarea {
   font-family: var(--font-family-mono);
   background-color: var(--color-panel);
   color: var(--color-pip);
-  border: 1px solid var(--color-muted);
+  border: 1px solid var(--color-pip-mid);
   border-radius: 4px;
   padding: 6px 10px;
   font-size: 14px;

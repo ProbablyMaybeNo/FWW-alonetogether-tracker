@@ -3,8 +3,9 @@ import { Menu, X, User, Download, Upload, Swords, LogOut } from 'lucide-react'
 import { useAuth } from '../../context/AuthContext'
 import AccountModal from '../modals/AccountModal'
 import CampaignModal from '../modals/CampaignModal'
+import { TABS } from './TabShell'
 
-export default function AppShell({ campaignId, onExport, onImportClick, onLeaveCampaign, onReset }) {
+export default function AppShell({ campaignId, onExport, onImportClick, onLeaveCampaign, onReset, activeTab, onTabChange }) {
   const { signOut, profile, isSupabaseConfigured } = useAuth()
   const [menuOpen, setMenuOpen] = useState(false)
   const [showAccount, setShowAccount] = useState(false)
@@ -64,12 +65,34 @@ export default function AppShell({ campaignId, onExport, onImportClick, onLeaveC
       >
         <div className="flex items-center justify-between px-4 py-3 border-b border-pip-mid/30">
           <span className="text-pip text-xs font-bold tracking-widest">MENU</span>
-          <button onClick={closeMenu} className="text-muted hover:text-pip transition-colors">
+          <button onClick={closeMenu} className="text-pip hover:text-amber transition-colors">
             <X size={14} />
           </button>
         </div>
 
         <nav className="flex flex-col flex-1 py-2 overflow-y-auto">
+          {/* Tab navigation */}
+          <div className="px-4 py-1.5 text-muted/50 text-xs tracking-widest border-b border-pip-dim/20 mb-1">NAVIGATE</div>
+          {TABS.map(tab => {
+            const Icon = tab.icon
+            const isActive = activeTab === tab.id
+            return (
+              <button
+                key={tab.id}
+                onClick={() => { onTabChange?.(tab.id); closeMenu() }}
+                className={`flex items-center gap-3 px-4 py-2.5 text-xs tracking-widest transition-colors w-full text-left border-b border-pip-mid/10 ${
+                  isActive ? 'text-amber bg-amber-dim/10 font-bold' : 'text-pip hover:bg-pip-dim/20 hover:text-amber'
+                }`}
+              >
+                <Icon size={14} />
+                {tab.label}
+                {isActive && <span className="ml-auto text-amber text-xs">●</span>}
+              </button>
+            )
+          })}
+
+          {/* Actions */}
+          <div className="px-4 py-1.5 text-muted/50 text-xs tracking-widest border-b border-pip-dim/20 mt-2 mb-1">ACTIONS</div>
           <NavItem icon={User} label="ACCOUNT" onClick={() => { setShowAccount(true); closeMenu() }} />
           <NavItem icon={Download} label="EXPORT" onClick={() => { onExport?.(); closeMenu() }} />
           <NavItem icon={Upload} label="IMPORT" onClick={() => { onImportClick?.(); closeMenu() }} />

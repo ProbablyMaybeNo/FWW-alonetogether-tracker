@@ -3,7 +3,8 @@ import { CampaignProvider, useCampaign } from './context/CampaignContext'
 import { useAuth } from './context/AuthContext'
 import TabShell from './components/layout/TabShell'
 import AppShell from './components/layout/AppShell'
-import OverviewPage from './components/overview/OverviewPage'
+import CampaignPage from './components/campaign/CampaignPage'
+import PlayerPage from './components/overview/OverviewPage'
 import RosterPage from './components/roster/RosterPage'
 import SettlementPage from './components/settlement/SettlementPage'
 import EventsPage from './components/events/EventsPage'
@@ -12,7 +13,7 @@ import LoginPage from './components/auth/LoginPage'
 import CampaignDirectory from './components/auth/CampaignDirectory'
 
 function AppContent({ campaignId, onLeaveCampaign }) {
-  const [activeTab, setActiveTab] = useState('overview')
+  const [activeTab, setActiveTab] = useState('campaign')
   const { state, exportData, importData, syncing } = useCampaign()
   const fileRef = useRef(null)
 
@@ -59,13 +60,16 @@ function AppContent({ campaignId, onLeaveCampaign }) {
         onImportClick={() => fileRef.current?.click()}
         onLeaveCampaign={handleLeaveCampaign}
         onReset={handleLeaveCampaign}
+        activeTab={activeTab}
+        onTabChange={setActiveTab}
       />
       <input ref={fileRef} type="file" accept=".json" onChange={handleImport} className="hidden" />
 
       <TabShell activeTab={activeTab} onTabChange={setActiveTab} />
 
       <main className="flex-1 overflow-y-auto">
-        {activeTab === 'overview'   && <OverviewPage onTabChange={setActiveTab} />}
+        {activeTab === 'campaign'   && <CampaignPage campaignId={campaignId} />}
+        {activeTab === 'player'     && <PlayerPage onTabChange={setActiveTab} />}
         {activeTab === 'roster'     && <RosterPage />}
         {activeTab === 'settlement' && <SettlementPage />}
         {activeTab === 'objectives' && <ObjectivesPage />}

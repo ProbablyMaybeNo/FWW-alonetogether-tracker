@@ -199,7 +199,7 @@ export default function CampaignDirectory({ onEnterCampaign, onSolo }) {
               <button type="submit" disabled={createLoading} className="px-4 py-2 border border-pip text-pip text-xs rounded hover:bg-pip-dim/20 transition-colors">
                 {createLoading ? 'CREATING...' : 'CREATE'}
               </button>
-              <button type="button" onClick={() => { setPanel(null); setCreateName('') }} className="px-4 py-2 border border-muted/30 text-muted text-xs rounded hover:text-pip hover:border-pip transition-colors">
+              <button type="button" onClick={() => { setPanel(null); setCreateName('') }} className="px-4 py-2 border border-pip/30 text-pip text-xs rounded hover:text-amber hover:border-amber transition-colors">
                 CANCEL
               </button>
             </div>
@@ -223,7 +223,7 @@ export default function CampaignDirectory({ onEnterCampaign, onSolo }) {
               </button>
               <button
                 onClick={() => { setNewCampaign(null); setPanel(null); setCreateName('') }}
-                className="px-5 py-2 border border-muted/30 text-muted text-xs rounded hover:text-pip hover:border-pip transition-colors"
+                className="px-5 py-2 border border-pip/30 text-pip text-xs rounded hover:text-amber hover:border-amber transition-colors"
               >
                 BACK TO DIRECTORY
               </button>
@@ -255,7 +255,7 @@ export default function CampaignDirectory({ onEnterCampaign, onSolo }) {
               <button type="submit" disabled={joinLoading} className="px-4 py-2 border border-pip text-pip text-xs rounded hover:bg-pip-dim/20 transition-colors">
                 {joinLoading ? 'JOINING...' : 'JOIN'}
               </button>
-              <button type="button" onClick={() => { setPanel(null); setJoinCode('') }} className="px-4 py-2 border border-muted/30 text-muted text-xs rounded hover:text-pip hover:border-pip transition-colors">
+              <button type="button" onClick={() => { setPanel(null); setJoinCode('') }} className="px-4 py-2 border border-pip/30 text-pip text-xs rounded hover:text-amber hover:border-amber transition-colors">
                 CANCEL
               </button>
             </div>
@@ -281,7 +281,7 @@ export default function CampaignDirectory({ onEnterCampaign, onSolo }) {
                     </span>
                     <div className="flex gap-2">
                       <button onClick={() => handleLeaveOrDelete(camp)} className="px-3 py-1.5 text-xs border border-danger text-danger rounded hover:bg-danger/10 transition-colors">CONFIRM</button>
-                      <button onClick={() => setDeleteConfirm(null)} className="px-3 py-1.5 text-xs border border-muted/30 text-muted rounded hover:text-pip hover:border-pip transition-colors">CANCEL</button>
+                      <button onClick={() => setDeleteConfirm(null)} className="px-3 py-1.5 text-xs border border-pip/30 text-pip rounded hover:text-amber hover:border-amber transition-colors">CANCEL</button>
                     </div>
                   </div>
                 ) : (
@@ -291,7 +291,7 @@ export default function CampaignDirectory({ onEnterCampaign, onSolo }) {
                         <div className="text-pip text-sm font-bold truncate">{camp.name}</div>
                         <div className="text-pip text-xs mt-0.5 flex items-center gap-3">
                           <span>Phase {camp.phase} · Round {camp.round}</span>
-                          <span className="hidden sm:inline text-pip/70">
+                          <span className="hidden sm:inline text-pip">
                             {camp.created_at ? new Date(camp.created_at).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }) : ''}
                           </span>
                         </div>
@@ -304,7 +304,7 @@ export default function CampaignDirectory({ onEnterCampaign, onSolo }) {
                     </button>
                     <button
                       onClick={() => setDeleteConfirm(camp.id)}
-                      className="p-1.5 text-muted hover:text-danger transition-colors opacity-0 group-hover:opacity-100 shrink-0"
+                      className="p-1.5 text-pip-mid hover:text-danger transition-colors opacity-0 group-hover:opacity-100 shrink-0"
                       title={camp.created_by === user.id ? 'Delete campaign' : 'Leave campaign'}
                     >
                       <Trash2 size={13} />
@@ -319,7 +319,7 @@ export default function CampaignDirectory({ onEnterCampaign, onSolo }) {
         {/* Solo option */}
         <div className="flex items-center gap-4 pt-2">
           <div className="flex-1 h-px bg-pip-dim/30" />
-          <button onClick={onSolo} className="text-xs text-muted hover:text-pip transition-colors px-4 py-2 border border-muted/20 rounded hover:border-pip">
+          <button onClick={onSolo} className="text-xs text-pip hover:text-amber transition-colors px-4 py-2 border border-pip/30 rounded hover:border-amber">
             PLAY SOLO (LOCAL ONLY)
           </button>
           <div className="flex-1 h-px bg-pip-dim/30" />

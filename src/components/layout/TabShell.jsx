@@ -1,12 +1,15 @@
-import { LayoutDashboard, Users, Building2, Target, Map } from 'lucide-react'
+import { Globe, User, Users, Building2, Target, Zap } from 'lucide-react'
 
 const TABS = [
-  { id: 'overview',    label: 'OVERVIEW',     icon: LayoutDashboard },
+  { id: 'campaign',    label: 'CAMPAIGN',     icon: Globe },
+  { id: 'player',      label: 'PLAYER',       icon: User },
   { id: 'roster',      label: 'ROSTER',       icon: Users },
   { id: 'settlement',  label: 'SETTLEMENT',   icon: Building2 },
   { id: 'objectives',  label: 'OBJECTIVES',   icon: Target },
-  { id: 'events',      label: 'EVENTS',       icon: Map },
+  { id: 'events',      label: 'EVENTS',       icon: Zap },
 ]
+
+export { TABS }
 
 export default function TabShell({ activeTab, onTabChange }) {
   return (
@@ -21,7 +24,7 @@ export default function TabShell({ activeTab, onTabChange }) {
             className={`flex-1 flex items-center justify-center gap-2 py-3 px-2 text-xs transition-all duration-150 relative
               ${active
                 ? 'text-pip font-bold bg-panel-light'
-                : 'text-muted hover:text-pip hover:bg-panel-alt'
+                : 'text-pip hover:text-amber hover:bg-panel-alt'
               }`}
           >
             {active && (

@@ -4,10 +4,48 @@ import { useCampaign } from '../../context/CampaignContext'
 import { calcPowerGenerated, calcPowerConsumed, calcWaterGenerated, calcWaterConsumed, getStructureRef, calcSettlementTotalCaps } from '../../utils/calculations'
 import AddStructureModal from './AddStructureModal'
 import ItemPoolPanel from './ItemPoolPanel'
-import { BarracksModal, MedicalCenterModal } from './StructureUseModals'
-import { getDeckStats } from '../../utils/cardDraw'
+import { BarracksModal, MedicalCenterModal, StoresModal } from './StructureUseModals'
+import { getDeckStats, drawCard } from '../../utils/cardDraw'
+import CardDrawer from '../overview/CardDrawer'
 import eventCardsData from '../../data/eventCards.json'
 import exploreCardDeck from '../../data/exploreCardDeck.json'
+import itemsData from '../../data/items.json'
+
+// Parse "Draw X Y card(s), Keep Z" or "Draw & Keep X Y" from structure effect text
+function parseDrawEffect(effect) {
+  if (!effect) return null
+  const m1 = effect.match(/Draw (\d+) (.+?) cards?, Keep (\d+)/i)
+  if (m1) return { drawCount: parseInt(m1[1]), keepCount: parseInt(m1[3]), typeLabel: m1[2].trim() }
+  const m2 = effect.match(/Draw & Keep (\d+) (.+?)(?:\s*[\.(]|$)/i)
+  if (m2) { const n = parseInt(m2[1]); return { drawCount: n, keepCount: n, typeLabel: m2[2].trim() } }
+  return null
+}
+
+function getItemsForType(typeLabel) {
+  const label = typeLabel.toLowerCase()
+  if (label.includes('power armor')) return itemsData.filter(i => i.subType === 'Mod' && i.name.toLowerCase().includes('power armor'))
+  if (label.includes('creature mod')) return itemsData.filter(i => i.subType === 'Mod' && i.name.toLowerCase().includes('creature'))
+  if (label.includes('armor mod')) return itemsData.filter(i => i.subType === 'Mod')
+  if (label.includes('weapon')) return itemsData.filter(i => ['Pistol', 'Rifle', 'Heavy Weapon', 'Melee', 'Grenade', 'Mine'].includes(i.subType))
+  if (label.includes('armor')) return itemsData.filter(i => i.subType === 'Armor')
+  if (label.includes('clothing')) return itemsData.filter(i => i.subType === 'Clothing')
+  if (label.includes('drink')) return itemsData.filter(i => i.subType === 'Drink')
+  if (label.includes('food')) return itemsData.filter(i => i.subType === 'Food')
+  if (label.includes('chem')) return itemsData.filter(i => i.subType === 'Chem')
+  if (label.includes('junk') || label.includes('gear')) return itemsData.filter(i => ['Utility', 'Mod', 'Automatron Part'].includes(i.subType))
+  if (label.includes('mod')) return itemsData.filter(i => i.subType === 'Mod')
+  return itemsData.filter(i => !['Perk', 'Leader'].includes(i.subType))
+}
+
+function drawRandomItems(typeLabel, count) {
+  const pool = [...getItemsForType(typeLabel)]
+  const drawn = []
+  for (let i = 0; i < count && pool.length > 0; i++) {
+    const idx = Math.floor(Math.random() * pool.length)
+    drawn.push(pool.splice(idx, 1)[0])
+  }
+  return drawn
+}
 
 const CONDITION_OPTIONS = ['Undamaged', 'Damaged', 'Badly Damaged', 'Wrecked', 'Reinforced']
 
@@ -15,7 +53,7 @@ const CONDITION_OPTIONS = ['Undamaged', 'Damaged', 'Badly Damaged', 'Wrecked', '
 const PHASE3_FREE_IDS = [1, 1, 53, 54, 50]
 
 // Structures with special use handlers
-const SPECIAL_STRUCTURE_NAMES = ['Listening Post', 'Ranger Outpost', 'Scout Camp', 'Barracks', 'Medical Center']
+const SPECIAL_STRUCTURE_NAMES = ['Listening Post', 'Ranger Outpost', 'Scout Camp', 'Barracks', 'Medical Center', 'Stores']
 
 const SETTLEMENT_SUB_TABS = [
   { id: 'structures', label: 'STRUCTURES' },
@@ -37,14 +75,19 @@ export default function SettlementPage() {
   const [atValidOnly, setAtValidOnly] = useState(true)
   const [showBarracks, setShowBarracks] = useState(false)
   const [showMedCenter, setShowMedCenter] = useState(false)
+  const [showStores, setShowStores] = useState(false)
   // Lost model recovery: array of units to check
   const [lostRecoveryQueue, setLostRecoveryQueue] = useState([])
+  const [pendingExploreCard, setPendingExploreCard] = useState(null)
+  const [pendingIsScoutCamp, setPendingIsScoutCamp] = useState(false)
+  const [pendingItemDraw, setPendingItemDraw] = useState(null)
 
   const structures = state.settlement.structures || []
   const phase = state.phase ?? 1
   const caps = state.caps ?? 0
   const landPurchased = state.settlement.landPurchased ?? false
-  const maxSlots = landPurchased ? 25 : 15
+  const landCount = state.settlement.landCount ?? (landPurchased ? 1 : 0)
+  const maxSlots = 15 + (landCount * 10)
   const usedSlots = structures.reduce((sum, s) => {
     const ref = getStructureRef(s.structureId)
     return sum + (ref?.size || 1)
@@ -56,6 +99,12 @@ export default function SettlementPage() {
   const waterUsed = calcWaterConsumed(structures)
   const totalCost = calcSettlementTotalCaps(structures)
   const usedCount = structures.filter(s => s.usedThisRound).length
+  const resources = state.settlement.resources ?? 0
+  const resourceSheds = structures.filter(s => getStructureRef(s.structureId)?.name === 'Resource Shed')
+  const maxResources = resourceSheds.reduce((sum, s) => {
+    const ref = getStructureRef(s.structureId)
+    return sum + (ref?.size ?? 4) * 2
+  }, 0)
 
   // Quest-based land claim
   const completedQuestCount = (state.questCards || []).filter(q => q.status === 'Complete').length
@@ -76,6 +125,16 @@ export default function SettlementPage() {
       settlement: {
         ...prev.settlement,
         structures: prev.settlement.structures.filter(s => s.instanceId !== instanceId),
+      },
+    }))
+  }
+
+  function handleAdjustResources(delta) {
+    setState(prev => ({
+      ...prev,
+      settlement: {
+        ...prev.settlement,
+        resources: Math.max(0, (prev.settlement.resources ?? 0) + delta),
       },
     }))
   }
@@ -109,8 +168,14 @@ export default function SettlementPage() {
     if (!s) return
     const ref = getStructureRef(s.structureId)
     const structureName = ref?.name || ''
+    const togglingOn = !s.usedThisRound
 
-    // First toggle the state
+    // Pre-draw explore card before setState (needs current eventCards state)
+    let drawnCard = null
+    if (togglingOn && ['Listening Post', 'Ranger Outpost', 'Scout Camp'].includes(structureName)) {
+      drawnCard = drawCard('explore', state.eventCards, eventCardsData)
+    }
+
     setState(prev => {
       const newUsed = !s.usedThisRound
       const newStructures = prev.settlement.structures.map(st =>
@@ -118,14 +183,9 @@ export default function SettlementPage() {
       )
 
       if (!newUsed) {
-        // Un-toggling: just update
-        return {
-          ...prev,
-          settlement: { ...prev.settlement, structures: newStructures },
-        }
+        return { ...prev, settlement: { ...prev.settlement, structures: newStructures } }
       }
 
-      // Special handling on toggle ON
       let extraUpdates = {}
 
       if (structureName === 'Listening Post') {
@@ -133,21 +193,38 @@ export default function SettlementPage() {
         extraUpdates.caps = deduct ? Math.max(0, (prev.caps || 0) - 50) : prev.caps
         const newCount = (prev.exploreCardsThisRound || 0) + 1
         extraUpdates.exploreCardsThisRound = newCount
+        if (drawnCard) extraUpdates.eventCards = { ...prev.eventCards, [drawnCard.id]: { drawn: true } }
         setTimeout(() => checkLostUnits(newCount), 100)
       } else if (structureName === 'Ranger Outpost') {
-        alert('Ranger Outpost: free Explore card this round.')
         const newCount = (prev.exploreCardsThisRound || 0) + 1
         extraUpdates.exploreCardsThisRound = newCount
+        if (drawnCard) extraUpdates.eventCards = { ...prev.eventCards, [drawnCard.id]: { drawn: true } }
         setTimeout(() => checkLostUnits(newCount), 100)
       } else if (structureName === 'Scout Camp') {
-        alert('Scout Camp: draw and optionally redraw 1 Explore card.')
         const newCount = (prev.exploreCardsThisRound || 0) + 1
         extraUpdates.exploreCardsThisRound = newCount
+        if (drawnCard) extraUpdates.eventCards = { ...prev.eventCards, [drawnCard.id]: { drawn: true } }
         setTimeout(() => checkLostUnits(newCount), 100)
       } else if (structureName === 'Barracks') {
         setTimeout(() => setShowBarracks(true), 100)
       } else if (structureName === 'Medical Center') {
         setTimeout(() => setShowMedCenter(true), 100)
+      } else if (structureName === 'Stores') {
+        setTimeout(() => setShowStores(true), 100)
+      } else {
+        // Equipment draw mechanic
+        const drawDef = parseDrawEffect(ref?.effect)
+        if (drawDef) {
+          const drawn = drawRandomItems(drawDef.typeLabel, drawDef.drawCount)
+          if (drawn.length > 0) {
+            setTimeout(() => setPendingItemDraw({
+              structureName,
+              drawnItems: drawn,
+              keepCount: drawDef.keepCount,
+              typeLabel: drawDef.typeLabel,
+            }), 150)
+          }
+        }
       }
 
       return {
@@ -156,6 +233,14 @@ export default function SettlementPage() {
         settlement: { ...prev.settlement, structures: newStructures },
       }
     })
+
+    // Show drawn explore card modal
+    if (drawnCard) {
+      setTimeout(() => {
+        setPendingIsScoutCamp(structureName === 'Scout Camp')
+        setPendingExploreCard(drawnCard)
+      }, 150)
+    }
   }
 
   function handleUpdateStructure(instanceId, field, value) {
@@ -182,11 +267,12 @@ export default function SettlementPage() {
   }
 
   function handleBuyLand() {
-    if (!confirm('Purchase additional land for 500c? This adds 10 extra structure slots.')) return
+    const currentLand = state.settlement.landCount ?? (landPurchased ? 1 : 0)
+    if (!confirm(`Purchase additional land for 500c? This adds 10 extra structure slots. (Current land: ${currentLand})`)) return
     setState(prev => ({
       ...prev,
       caps: Math.max(0, (prev.caps ?? 0) - 500),
-      settlement: { ...prev.settlement, landPurchased: true },
+      settlement: { ...prev.settlement, landPurchased: true, landCount: (prev.settlement.landCount ?? (prev.settlement.landPurchased ? 1 : 0)) + 1 },
     }))
   }
 
@@ -194,7 +280,7 @@ export default function SettlementPage() {
     if (!confirm('Claim additional land via 5 completed quests? (No cap cost)')) return
     setState(prev => ({
       ...prev,
-      settlement: { ...prev.settlement, landPurchased: true },
+      settlement: { ...prev.settlement, landPurchased: true, landCount: (prev.settlement.landCount ?? (prev.settlement.landPurchased ? 1 : 0)) + 1 },
     }))
   }
 
@@ -241,6 +327,20 @@ export default function SettlementPage() {
     }))
   }
 
+  function handleStoresApply(selections) {
+    setState(prev => ({
+      ...prev,
+      itemPool: {
+        ...prev.itemPool,
+        items: prev.itemPool.items.map(item => {
+          const sel = selections.find(s => s.id === item.id)
+          if (!sel) return item
+          return { ...item, location: 'stores', assignedUnit: sel.unitSlotId ?? null }
+        }),
+      },
+    }))
+  }
+
   // Lost recovery handlers
   const currentLostUnit = lostRecoveryQueue[0] || null
 
@@ -256,6 +356,29 @@ export default function SettlementPage() {
 
   function handleNotFound() {
     setLostRecoveryQueue(prev => prev.slice(1))
+  }
+
+  function handleItemDrawKeep(keptItems) {
+    if (!keptItems.length) return
+    setState(prev => ({
+      ...prev,
+      itemPool: {
+        ...prev.itemPool,
+        items: [
+          ...(prev.itemPool?.items || []),
+          ...keptItems.map(item => ({
+            id: Date.now() + Math.random(),
+            catalogId: item.id,
+            name: item.name,
+            caps: item.caps,
+            subType: item.subType,
+            isBoost: false,
+            location: 'recovery',
+            assignedUnit: null,
+          })),
+        ],
+      },
+    }))
   }
 
   return (
@@ -277,6 +400,51 @@ export default function SettlementPage() {
         ))}
       </div>
 
+      {/* Explore Card Draw Result */}
+      {pendingExploreCard && (
+        <ExploreCardModal
+          card={pendingExploreCard}
+          isScoutCamp={pendingIsScoutCamp}
+          onRedraw={() => {
+            const newCard = drawCard('explore', state.eventCards, eventCardsData)
+            if (newCard) {
+              setState(prev => ({
+                ...prev,
+                eventCards: { ...prev.eventCards, [newCard.id]: { drawn: true } },
+              }))
+              setPendingExploreCard(newCard)
+            }
+          }}
+          onAddToEvents={() => {
+            setState(prev => ({
+              ...prev,
+              eventCards: { ...prev.eventCards, [pendingExploreCard.id]: { drawn: true, inPlay: true } },
+              activeEvents: [
+                ...(prev.activeEvents || []),
+                {
+                  cardId: pendingExploreCard.id,
+                  name: pendingExploreCard.name,
+                  text: pendingExploreCard.consequence,
+                  consequence: '',
+                  type: 'EXPLORE CONSEQUENCE',
+                  sinceRound: prev.round,
+                },
+              ],
+            }))
+            setPendingExploreCard(null)
+          }}
+          onDismiss={() => setPendingExploreCard(null)}
+        />
+      )}
+
+      {pendingItemDraw && (
+        <ItemDrawModal
+          draw={pendingItemDraw}
+          onKeep={handleItemDrawKeep}
+          onClose={() => setPendingItemDraw(null)}
+        />
+      )}
+
       {subTab === 'structures' ? (
         <StructuresPanel
           state={state}
@@ -285,6 +453,7 @@ export default function SettlementPage() {
           phase={phase}
           caps={caps}
           landPurchased={landPurchased}
+          landCount={landCount}
           maxSlots={maxSlots}
           usedSlots={usedSlots}
           pwrGen={pwrGen}
@@ -303,6 +472,8 @@ export default function SettlementPage() {
           setShowBarracks={setShowBarracks}
           showMedCenter={showMedCenter}
           setShowMedCenter={setShowMedCenter}
+          showStores={showStores}
+          setShowStores={setShowStores}
           currentLostUnit={currentLostUnit}
           handleAddStructure={handleAddStructure}
           handleRemoveStructure={handleRemoveStructure}
@@ -315,8 +486,12 @@ export default function SettlementPage() {
           handlePhase3Setup={handlePhase3Setup}
           handleBarracksApply={handleBarracksApply}
           handleMedCenterApply={handleMedCenterApply}
+          handleStoresApply={handleStoresApply}
           handleMarkFound={handleMarkFound}
           handleNotFound={handleNotFound}
+          resources={resources}
+          maxResources={maxResources}
+          handleAdjustResources={handleAdjustResources}
         />
       ) : (
         <ExplorePanel state={state} setState={setState} />
@@ -328,19 +503,21 @@ export default function SettlementPage() {
 /* ── Structures sub-panel ── */
 function StructuresPanel({
   state, setState,
-  structures, phase, caps, landPurchased, maxSlots, usedSlots,
+  structures, phase, caps, landPurchased, landCount, maxSlots, usedSlots,
   pwrGen, pwrUsed, waterGen, waterUsed, totalCost, usedCount,
   completedQuestCount, roster,
   atValidOnly, setAtValidOnly,
   showAddStructure, setShowAddStructure,
   showBarracks, setShowBarracks,
   showMedCenter, setShowMedCenter,
+  showStores, setShowStores,
   currentLostUnit,
   handleAddStructure, handleRemoveStructure, handleScrapStructure,
   handleToggleUsed, handleUpdateStructure, handleResetRound,
   handleBuyLand, handleClaimLandViaQuests, handlePhase3Setup,
-  handleBarracksApply, handleMedCenterApply,
+  handleBarracksApply, handleMedCenterApply, handleStoresApply,
   handleMarkFound, handleNotFound,
+  resources, maxResources, handleAdjustResources,
 }) {
   return (
     <>
@@ -378,7 +555,7 @@ function StructuresPanel({
       )}
 
       {/* Dashboard */}
-      <div className="grid grid-cols-2 sm:grid-cols-5 gap-2 mb-4">
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-7 gap-2 mb-4">
         <div className="border border-pip-mid/60 rounded bg-panel p-2 text-center">
           <Zap size={14} className="mx-auto mb-1 text-pip" />
           <div className="text-sm font-bold text-pip">{pwrGen - pwrUsed}</div>
@@ -395,38 +572,48 @@ function StructuresPanel({
           <div className="text-xs text-muted">STRUCTURES</div>
         </div>
         <div className={`border rounded bg-panel p-2 text-center ${usedSlots >= maxSlots ? 'border-danger/60' : 'border-pip-mid/60'}`}>
-          <div className={`text-sm font-bold ${usedSlots >= maxSlots ? 'text-danger' : 'text-pip'}`}>{usedSlots} / {maxSlots}</div>
+          <div className={`text-xs font-bold ${usedSlots >= maxSlots ? 'text-danger' : 'text-pip'}`}>{usedSlots}/{maxSlots}</div>
           <div className="text-xs text-muted">SLOTS</div>
-          {usedSlots >= maxSlots && <div className="text-danger text-xs mt-0.5 font-bold">FULL</div>}
+          <div className="text-pip text-xs mt-1">LAND {landCount}</div>
         </div>
         <div className="border border-amber/50 rounded bg-panel p-2 text-center">
           <div className="text-sm font-bold text-amber">{totalCost}c</div>
           <div className="text-xs text-muted">TOTAL COST</div>
         </div>
+        <div className={`border rounded bg-panel p-2 text-center ${maxResources > 0 && resources >= maxResources ? 'border-amber/60' : 'border-pip-mid/60'}`}>
+          <Recycle size={14} className="mx-auto mb-1 text-pip" />
+          <div className="text-sm font-bold text-pip flex items-center justify-center gap-1">
+            {resources}
+            {maxResources > 0 && <span className="text-muted text-xs">/{maxResources}</span>}
+          </div>
+          <div className="flex items-center justify-center gap-1 mt-1">
+            <button onClick={() => handleAdjustResources(-1)} className="w-5 h-5 rounded border border-pip-mid/60 text-pip hover:bg-pip-dim flex items-center justify-center text-sm leading-none">−</button>
+            <span className="text-xs text-muted">RES</span>
+            <button onClick={() => handleAdjustResources(1)} className="w-5 h-5 rounded border border-pip-mid/60 text-pip hover:bg-pip-dim flex items-center justify-center text-sm leading-none">+</button>
+          </div>
+        </div>
       </div>
 
-      {/* Buy Land / Quest Claim buttons */}
-      {!landPurchased && usedSlots >= 12 && (
-        <div className="mb-4 flex gap-2 flex-wrap">
+      {/* Buy Land section — always visible when land could be useful */}
+      <div className="mb-4 flex gap-2 flex-wrap">
+        <button
+          onClick={handleBuyLand}
+          disabled={caps < 500}
+          className="flex items-center gap-2 px-3 py-1.5 border border-amber text-amber rounded text-xs hover:bg-amber-dim/30 disabled:opacity-40 disabled:cursor-not-allowed transition-colors font-bold"
+        >
+          BUY LAND +10 SLOTS (500c)
+        </button>
+        {completedQuestCount >= 5 ? (
           <button
-            onClick={handleBuyLand}
-            disabled={caps < 500}
-            className="flex items-center gap-2 px-4 py-2 border border-amber text-amber rounded text-sm hover:bg-amber-dim/30 disabled:opacity-40 disabled:cursor-not-allowed transition-colors font-bold"
+            onClick={handleClaimLandViaQuests}
+            className="flex items-center gap-2 px-3 py-1.5 border border-pip text-pip rounded text-xs hover:bg-pip-dim transition-colors font-bold"
           >
-            BUY LAND (+10 SLOTS) — 500c
+            CLAIM LAND FREE (5 Quests ✓)
           </button>
-          {completedQuestCount >= 5 ? (
-            <button
-              onClick={handleClaimLandViaQuests}
-              className="flex items-center gap-2 px-4 py-2 border border-pip text-pip rounded text-sm hover:bg-pip-dim transition-colors font-bold"
-            >
-              CLAIM LAND (5 Quests ✓)
-            </button>
-          ) : (
-            <span className="text-muted text-xs self-center">{completedQuestCount}/5 quests completed</span>
-          )}
-        </div>
-      )}
+        ) : (
+          <span className="text-muted text-xs self-center">{completedQuestCount}/5 quests for free land</span>
+        )}
+      </div>
 
       {/* Phase 3 Setup */}
       {phase === 3 && structures.length === 0 && (
@@ -440,8 +627,11 @@ function StructuresPanel({
         </div>
       )}
 
+      {/* Item Pool Panel — above structure list */}
+      <ItemPoolPanel structures={structures} />
+
       {/* AT Filter toggle */}
-      <div className="flex items-center gap-2 mb-4">
+      <div className="flex items-center gap-2 mb-4 mt-4">
         <button
           onClick={() => setAtValidOnly(!atValidOnly)}
           className={`flex items-center gap-2 text-xs px-3 py-1.5 border rounded transition-colors ${
@@ -451,7 +641,7 @@ function StructuresPanel({
           <span className={`w-3 h-3 rounded-sm border flex items-center justify-center ${atValidOnly ? 'border-pip bg-pip' : 'border-muted'}`}>
             {atValidOnly && <span className="text-terminal text-xs leading-none font-bold">✓</span>}
           </span>
-          SHOW AT STRUCTURES ONLY
+          AT VALID
         </button>
       </div>
 
@@ -541,9 +731,6 @@ function StructuresPanel({
         </div>
       )}
 
-      {/* Item Pool Panel */}
-      <ItemPoolPanel structures={structures} />
-
       <AddStructureModal
         isOpen={showAddStructure}
         onClose={() => setShowAddStructure(false)}
@@ -563,6 +750,14 @@ function StructuresPanel({
         onClose={() => setShowMedCenter(false)}
         roster={roster}
         onApply={handleMedCenterApply}
+      />
+
+      <StoresModal
+        isOpen={showStores}
+        onClose={() => setShowStores(false)}
+        poolItems={state.itemPool?.items || []}
+        roster={roster}
+        onApply={(selections) => { handleStoresApply(selections); setShowStores(false) }}
       />
     </>
   )
@@ -606,6 +801,14 @@ function ExplorePanel({ state, setState }) {
 
       return { ...prev, eventCards: { ...prev.eventCards, [cardId]: updates } }
     })
+  }
+
+  function addConsequenceToWasteland(card) {
+    try {
+      const existing = JSON.parse(localStorage.getItem('fww-wasteland-deck') || '[]')
+      const entry = { id: `consequence-${card.id}-${Date.now()}`, name: card.name, type: 'consequence', text: card.consequence || card.text || '' }
+      localStorage.setItem('fww-wasteland-deck', JSON.stringify([entry, ...existing]))
+    } catch { /* ignore */ }
   }
 
   function handleResetExploreDeck() {
@@ -652,13 +855,16 @@ function ExplorePanel({ state, setState }) {
 
       {exploreSubTab === 'events' ? (
         <>
+          {/* Quick Draw */}
+          <CardDrawer deckType="explore" title="DRAW EXPLORE CARD" />
+
           {/* Stats */}
           <div className="flex gap-4 text-xs">
             <span className="text-pip font-bold">Available: {exploreStats.available}</span>
-            <span className="text-muted">Drawn: {exploreStats.drawn}</span>
+            <span className="text-pip">Drawn: {exploreStats.drawn}</span>
             <span className="text-amber font-bold">In Play: {exploreStats.inPlay}</span>
-            <span className="text-muted">Complete: {exploreStats.completed}</span>
-            <button onClick={handleResetExploreDeck} className="ml-auto text-muted hover:text-danger transition-colors">RESET DECK</button>
+            <span className="text-pip">Complete: {exploreStats.completed}</span>
+            <button onClick={handleResetExploreDeck} className="ml-auto text-pip/60 hover:text-danger transition-colors">RESET DECK</button>
           </div>
 
           {/* Filters */}
@@ -723,6 +929,13 @@ function ExplorePanel({ state, setState }) {
                           cardState.complete ? 'border-pip text-pip bg-pip-dim/30 font-bold' : 'border-muted/30 text-muted hover:text-pip hover:border-pip'
                         }`}
                       >DONE</button>
+                      {cardState.inPlay && (card.consequence || card.text) && (
+                        <button
+                          onClick={() => addConsequenceToWasteland(card)}
+                          title="Add consequence to top of Wasteland Deck"
+                          className="px-2 py-1 text-xs rounded border border-info/40 text-info hover:bg-info-dim/20 transition-colors"
+                        >→ DECK</button>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -891,6 +1104,139 @@ function ExploreLocationsPanel({ state, setState }) {
           Press DRAW to pull a random location card from the deck.
         </p>
       )}
+    </div>
+  )
+}
+
+/* ── Item Draw Modal (equipment structures) ── */
+function ItemDrawModal({ draw, onKeep, onClose }) {
+  const [selected, setSelected] = useState([])
+  const { structureName, drawnItems, keepCount, typeLabel } = draw
+
+  function toggle(item) {
+    setSelected(prev => {
+      if (prev.find(i => i.id === item.id)) return prev.filter(i => i.id !== item.id)
+      if (prev.length >= keepCount) return prev
+      return [...prev, item]
+    })
+  }
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-terminal/70 backdrop-blur-sm">
+      <div className="bg-panel border border-pip-mid/60 rounded-lg w-full max-w-lg shadow-xl" style={{ boxShadow: '0 0 24px var(--color-pip-glow)' }}>
+        <div className="flex items-center justify-between px-5 py-3 border-b border-pip-mid/40">
+          <h3 className="text-pip text-sm tracking-widest font-bold">ITEM DRAW — {structureName.toUpperCase()}</h3>
+          <button onClick={onClose} className="text-muted hover:text-pip text-xs px-2 py-1 border border-muted/40 rounded hover:border-pip transition-colors">CLOSE</button>
+        </div>
+        <div className="px-5 py-4 space-y-4">
+          <p className="text-muted text-xs">
+            Drew <span className="text-pip font-bold">{drawnItems.length}</span> {typeLabel} card{drawnItems.length !== 1 ? 's' : ''}.{' '}
+            Select up to <span className="text-amber font-bold">{keepCount}</span> to add to your Item Pool.{' '}
+            <span className="text-muted/60">({selected.length}/{keepCount} selected)</span>
+          </p>
+          <div className="space-y-2 max-h-72 overflow-y-auto">
+            {drawnItems.map((item, idx) => {
+              const isSel = !!selected.find(i => i.id === item.id)
+              const maxed = !isSel && selected.length >= keepCount
+              return (
+                <div
+                  key={`${item.id}-${idx}`}
+                  onClick={() => !maxed && toggle(item)}
+                  className={`flex items-center gap-3 border rounded px-3 py-2.5 transition-colors ${
+                    isSel
+                      ? 'border-pip bg-pip-dim/20 cursor-pointer'
+                      : maxed
+                      ? 'border-muted/20 opacity-40 cursor-not-allowed'
+                      : 'border-muted/40 hover:border-pip/60 hover:bg-panel-light cursor-pointer'
+                  }`}
+                >
+                  <div className={`w-4 h-4 rounded border flex items-center justify-center shrink-0 ${isSel ? 'border-pip bg-pip' : 'border-muted'}`}>
+                    {isSel && <span className="text-terminal text-xs font-bold leading-none">✓</span>}
+                  </div>
+                  <span className="flex-1 min-w-0 text-sm font-bold text-pip truncate">{item.name}</span>
+                  <span className="text-muted text-xs shrink-0">{item.subType}</span>
+                  <span className="text-amber text-sm font-bold shrink-0">{item.caps}c</span>
+                </div>
+              )
+            })}
+          </div>
+          <div className="flex gap-2 pt-1">
+            <button
+              onClick={() => { onKeep(selected); onClose() }}
+              disabled={selected.length === 0}
+              className="flex-1 px-4 py-2.5 border border-pip text-pip rounded text-sm hover:bg-pip-dim transition-colors font-bold disabled:opacity-40 disabled:cursor-not-allowed"
+              style={selected.length > 0 ? { boxShadow: '0 0 6px var(--color-pip-glow)' } : {}}
+            >
+              {selected.length > 0 ? `KEEP ${selected.length} ITEM${selected.length !== 1 ? 'S' : ''} → POOL` : 'SELECT ITEMS TO KEEP'}
+            </button>
+            <button
+              onClick={onClose}
+              className="px-4 py-2.5 border border-muted/40 text-muted rounded text-sm hover:text-pip hover:border-pip transition-colors"
+            >
+              Discard All
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+/* ── Explore Card Draw Result Modal ── */
+function ExploreCardModal({ card, isScoutCamp, onRedraw, onAddToEvents, onDismiss }) {
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-terminal/70 backdrop-blur-sm">
+      <div className="bg-panel border border-pip-mid/60 rounded-lg w-full max-w-lg shadow-xl" style={{ boxShadow: '0 0 24px var(--color-pip-glow)' }}>
+        <div className="flex items-center justify-between px-5 py-3 border-b border-pip-mid/40">
+          <h3 className="text-pip text-sm tracking-widest font-bold">EXPLORE CARD DRAWN</h3>
+          <button onClick={onDismiss} className="text-muted hover:text-pip text-xs px-2 py-1 border border-muted/40 rounded hover:border-pip transition-colors">CLOSE</button>
+        </div>
+        <div className="px-5 py-4 space-y-3">
+          <div className="border border-pip-mid/40 rounded p-4 bg-panel-alt space-y-2">
+            <div className="flex items-center justify-between">
+              <span className="text-amber text-xs font-bold tracking-wider">#{card.id}</span>
+              {card.type && (
+                <span className={`text-xs px-2 py-0.5 rounded font-bold ${
+                  card.type.includes('★') ? 'bg-amber-dim/50 text-amber' : 'bg-pip-dim/30 text-muted'
+                }`}>{card.type}</span>
+              )}
+            </div>
+            <h4 className="text-pip font-bold text-base">{card.name}</h4>
+            <p className="text-muted text-sm leading-relaxed">{card.text}</p>
+            {card.consequence && (
+              <div className="border-t border-pip-dim/30 pt-2 mt-2">
+                <p className="text-amber text-xs font-bold mb-1 tracking-wider">CONSEQUENCE</p>
+                <p className="text-amber text-sm leading-relaxed">{card.consequence}</p>
+              </div>
+            )}
+          </div>
+          <div className="flex gap-2 flex-wrap">
+            {isScoutCamp && (
+              <button
+                onClick={onRedraw}
+                className="flex items-center gap-2 px-4 py-2 border border-amber text-amber rounded text-sm hover:bg-amber-dim/30 transition-colors font-bold"
+              >
+                <Shuffle size={14} /> REDRAW (Scout Camp)
+              </button>
+            )}
+            {card.consequence && (
+              <button
+                onClick={onAddToEvents}
+                className="flex items-center gap-2 px-4 py-2 border border-pip text-pip rounded text-sm hover:bg-pip-dim transition-colors font-bold"
+                style={{ boxShadow: '0 0 6px var(--color-pip-glow)' }}
+              >
+                ADD CONSEQUENCE TO ACTIVE EVENTS
+              </button>
+            )}
+            <button
+              onClick={onDismiss}
+              className="px-4 py-2 border border-muted/40 text-muted rounded text-sm hover:text-pip hover:border-pip transition-colors ml-auto"
+            >
+              Dismiss
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
   )
 }
