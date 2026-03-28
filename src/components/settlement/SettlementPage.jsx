@@ -1,4 +1,5 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { WASTELAND_EVENT_SEED } from '../../data/wastelandEventSeed'
 import { Plus, Trash2, RotateCcw, Zap, Droplets, Building2, Coins, Recycle, Shuffle } from 'lucide-react'
 import { useCampaign } from '../../context/CampaignContext'
 import { calcPowerGenerated, calcPowerConsumed, calcWaterGenerated, calcWaterConsumed, getStructureRef, calcSettlementTotalCaps } from '../../utils/calculations'
@@ -945,6 +946,91 @@ function ExplorePanel({ state, setState }) {
         </>
       ) : (
         <ExploreLocationsPanel state={state} setState={setState} />
+      )}
+
+      {/* Legacy event deck — toggleable */}
+      <LegacyEventDeck />
+    </div>
+  )
+}
+
+/* ── Legacy Event Deck (optional, not official AT rules) ── */
+function LegacyEventDeck() {
+  const [show, setShow] = useState(false)
+  const [deck, setDeck] = useState(() => {
+    try { return JSON.parse(localStorage.getItem('fww-wasteland-deck') || 'null') || [...WASTELAND_EVENT_SEED] }
+    catch { return [...WASTELAND_EVENT_SEED] }
+  })
+  const [drawn, setDrawn] = useState(() => {
+    try { return JSON.parse(localStorage.getItem('fww-wasteland-drawn') || '[]') }
+    catch { return [] }
+  })
+
+  useEffect(() => {
+    try {
+      localStorage.setItem('fww-wasteland-deck', JSON.stringify(deck))
+      localStorage.setItem('fww-wasteland-drawn', JSON.stringify(drawn))
+    } catch {}
+  }, [deck, drawn])
+
+  function drawCard() {
+    if (deck.length === 0) return
+    const idx = Math.floor(Math.random() * deck.length)
+    const card = deck[idx]
+    setDeck(d => d.filter((_, i) => i !== idx))
+    setDrawn(d => [{ ...card, drawnAt: Date.now() }, ...d])
+  }
+
+  function dismiss(idx) { setDrawn(d => d.filter((_, i) => i !== idx)) }
+
+  function reshuffle() {
+    const conseqs = drawn.filter(c => c.type === 'consequence')
+    setDeck([...WASTELAND_EVENT_SEED, ...conseqs].sort(() => Math.random() - 0.5))
+    setDrawn([])
+  }
+
+  const TYPE_STYLE = {
+    hazard: 'text-danger border-danger/50',
+    event: 'text-amber border-amber/50',
+    boon: 'text-pip border-pip/50',
+    consequence: 'text-info border-info/50',
+  }
+
+  return (
+    <div className="mt-6 border border-pip-dim/30 rounded">
+      <button
+        onClick={() => setShow(s => !s)}
+        className="w-full flex items-center justify-between px-3 py-2 text-xs tracking-widest text-muted hover:text-pip transition-colors"
+      >
+        <span>LEGACY EVENT DECK (OPTIONAL)</span>
+        <span className="text-muted">{show ? '▲' : '▼'} {deck.length} cards</span>
+      </button>
+      {show && (
+        <div className="px-3 pb-3 border-t border-pip-dim/20">
+          <p className="text-muted text-xs italic my-2">Optional custom event deck. Not part of official AT rules.</p>
+          <div className="flex gap-2 mb-3 flex-wrap">
+            <button onClick={drawCard} disabled={deck.length === 0}
+              className="text-xs border border-pip text-pip font-bold hover:bg-pip-dim rounded px-3 py-1.5 disabled:opacity-40 transition-colors">DRAW</button>
+            <button onClick={reshuffle}
+              className="text-xs border border-muted/30 text-muted hover:text-amber hover:border-amber/60 rounded px-3 py-1.5 transition-colors">RESHUFFLE</button>
+          </div>
+          {drawn.length > 0 && (
+            <div className="space-y-1.5 mb-2">
+              {drawn.map((card, i) => (
+                <div key={i} className={`flex items-start justify-between gap-2 border rounded px-2 py-1.5 ${TYPE_STYLE[card.type] || TYPE_STYLE.event}`}>
+                  <div className="flex-1 min-w-0">
+                    <span className="text-xs font-bold">{card.name}</span>
+                    <p className="text-xs opacity-80 mt-0.5">{card.text}</p>
+                  </div>
+                  <button onClick={() => dismiss(i)} className="text-xs border border-current/30 rounded px-2 py-1 opacity-70 hover:opacity-100 shrink-0">✕</button>
+                </div>
+              ))}
+            </div>
+          )}
+          {deck.length === 0 && drawn.length === 0 && (
+            <p className="text-muted text-xs text-center py-2 border border-dashed border-muted/30 rounded">Empty — reshuffle to reset</p>
+          )}
+        </div>
       )}
     </div>
   )

@@ -5,6 +5,7 @@ import { useAuth } from '../../context/AuthContext'
 import { supabase } from '../../lib/supabase'
 import { calcRosterTotalCaps } from '../../utils/calculations'
 import { SCAVENGER_OBJECTIVES } from '../../data/scavengerObjectives'
+import itemsData from '../../data/items.json'
 
 const PHASES = [
   { num: 1, name: 'THE ROAD AHEAD',           subtitle: 'Build your starting roster. 750 cap limit.' },
@@ -13,55 +14,77 @@ const PHASES = [
   { num: 4, name: 'FIGHTING FOR THE FRONTIER', subtitle: 'Open campaign loop. Fight, build, grow.' },
 ]
 
-const WASTELAND_SEED = [
-  { id: 'w01', name: 'Rad Storm',          type: 'hazard',      text: 'All models gain 1 Rad Damage at the start of each round this battle.' },
-  { id: 'w02', name: 'Ambush',             type: 'event',       text: 'The player with the most units draws an extra Explore card this round.' },
-  { id: 'w03', name: 'Scavenging Party',   type: 'event',       text: 'Each player may immediately loot one Searchable without moving.' },
-  { id: 'w04', name: 'Raider Attack',      type: 'hazard',      text: 'Place 2 Raiders at a random board edge. They activate immediately.' },
-  { id: 'w05', name: 'Trade Caravan',      type: 'boon',        text: 'One player may buy any one item at half price this round.' },
-  { id: 'w06', name: 'Power Surge',        type: 'hazard',      text: 'All power-dependent structures lose their bonus until next round.' },
-  { id: 'w07', name: 'Hidden Cache',       type: 'boon',        text: 'Place one extra Searchable token anywhere on the board.' },
-  { id: 'w08', name: 'Fog of War',         type: 'hazard',      text: 'All models have movement reduced by 2 this round.' },
-  { id: 'w09', name: 'Supply Drop',        type: 'boon',        text: 'Draw one item from the general item pool for free.' },
-  { id: 'w10', name: 'Creature Encounter', type: 'hazard',      text: 'A random creature enters from the nearest board edge at the start of round 2.' },
-  { id: 'w11', name: 'Old World Tech',     type: 'boon',        text: 'One unit may use any equipment without meeting requirements this battle.' },
-  { id: 'w12', name: 'Wasteland Winds',    type: 'hazard',      text: 'Thrown weapons scatter an extra d6 inches this round.' },
+const WASTELAND_DECK_TYPES = ['Pistol','Rifle','Heavy Weapon','Melee','Grenade','Mine','Armor','Clothing','Food','Drink','Chem','Utility','Mod']
+
+const TYPE_FILTER_OPTIONS = [
+  { id: 'any',        label: 'ANY',        types: WASTELAND_DECK_TYPES },
+  { id: 'weapon',     label: 'WEAPON',     types: ['Pistol','Rifle','Heavy Weapon','Melee','Grenade','Mine'] },
+  { id: 'armor',      label: 'ARMOR',      types: ['Armor','Clothing'] },
+  { id: 'consumable', label: 'CONSUMABLE', types: ['Food','Drink','Chem'] },
+  { id: 'mod',        label: 'MOD',        types: ['Mod'] },
+  { id: 'utility',    label: 'UTILITY',    types: ['Utility'] },
 ]
 
-const TYPE_STYLE = {
-  hazard:      'text-danger border-danger/50 bg-danger-dim/20',
-  event:       'text-amber border-amber/50 bg-amber-dim/20',
-  boon:        'text-pip border-pip/50 bg-pip-dim/20',
-  consequence: 'text-info border-info/50 bg-info-dim/20',
+const SUBTYPE_COLOR = {
+  Pistol: 'text-amber', Rifle: 'text-amber', 'Heavy Weapon': 'text-amber', Melee: 'text-amber',
+  Grenade: 'text-danger', Mine: 'text-danger',
+  Armor: 'text-info', Clothing: 'text-info',
+  Food: 'text-pip', Drink: 'text-pip', Chem: 'text-pip',
+  Mod: 'text-amber', Utility: 'text-muted',
 }
 
-function useWastelandDeck() {
-  const [deck, setDeck] = useState(() => {
-    try { return JSON.parse(localStorage.getItem('fww-wasteland-deck') || 'null') || [...WASTELAND_SEED] }
-    catch { return [...WASTELAND_SEED] }
+function buildItemDeck() {
+  return itemsData
+    .filter(i => WASTELAND_DECK_TYPES.includes(i.subType))
+    .map(i => i.id)
+}
+
+function useWastelandItemDeck() {
+  const allIds = buildItemDeck()
+
+  const [deckIds, setDeckIds] = useState(() => {
+    try {
+      const stored = JSON.parse(localStorage.getItem('fww-wasteland-item-deck') || 'null')
+      if (Array.isArray(stored) && stored.length > 0) return stored
+    } catch {}
+    return [...allIds].sort(() => Math.random() - 0.5)
   })
+
   const [drawn, setDrawn] = useState(() => {
-    try { return JSON.parse(localStorage.getItem('fww-wasteland-drawn') || '[]') }
+    try { return JSON.parse(localStorage.getItem('fww-wasteland-item-drawn') || '[]') }
     catch { return [] }
   })
 
+  const [typeFilter, setTypeFilter] = useState('any')
+
   useEffect(() => {
     try {
-      localStorage.setItem('fww-wasteland-deck', JSON.stringify(deck))
-      localStorage.setItem('fww-wasteland-drawn', JSON.stringify(drawn))
-    } catch { /* ignore */ }
-  }, [deck, drawn])
+      localStorage.setItem('fww-wasteland-item-deck', JSON.stringify(deckIds))
+      localStorage.setItem('fww-wasteland-item-drawn', JSON.stringify(drawn))
+    } catch {}
+  }, [deckIds, drawn])
 
   function draw() {
-    if (deck.length === 0) return
-    const idx = Math.floor(Math.random() * deck.length)
-    const card = deck[idx]
-    setDeck(d => d.filter((_, i) => i !== idx))
-    setDrawn(d => [{ ...card, drawnAt: Date.now() }, ...d])
+    const filterTypes = TYPE_FILTER_OPTIONS.find(f => f.id === typeFilter)?.types || WASTELAND_DECK_TYPES
+    const eligible = deckIds.filter(id => {
+      const item = itemsData.find(i => i.id === id)
+      return item && filterTypes.includes(item.subType)
+    })
+    if (eligible.length === 0) return
+    const randomId = eligible[Math.floor(Math.random() * eligible.length)]
+    const item = itemsData.find(i => i.id === randomId)
+    setDeckIds(d => d.filter(id => id !== randomId))
+    setDrawn(d => [{ ...item, drawnAt: Date.now(), kept: false }, ...d])
   }
 
-  function addToTop(card) {
-    setDeck(d => [card, ...d])
+  function keep(idx) {
+    setDrawn(d => d.map((c, i) => i === idx ? { ...c, kept: true } : c))
+  }
+
+  function discard(idx) {
+    const item = drawn[idx]
+    if (item) setDeckIds(d => [...d, item.id])
+    setDrawn(d => d.filter((_, i) => i !== idx))
   }
 
   function dismiss(idx) {
@@ -69,12 +92,23 @@ function useWastelandDeck() {
   }
 
   function reshuffle() {
-    const conseqs = drawn.filter(c => c.type === 'consequence')
-    setDeck([...WASTELAND_SEED, ...conseqs].sort(() => Math.random() - 0.5))
+    const keptIds = new Set(drawn.filter(d => d.kept).map(d => d.id))
+    const newDeck = allIds.filter(id => !keptIds.has(id))
+    setDeckIds(newDeck.sort(() => Math.random() - 0.5))
+    setDrawn(d => d.filter(c => c.kept))
+  }
+
+  function fullReset() {
+    setDeckIds([...allIds].sort(() => Math.random() - 0.5))
     setDrawn([])
   }
 
-  return { deck, drawn, draw, addToTop, dismiss, reshuffle }
+  return {
+    deckIds, drawn, draw, keep, discard, dismiss, reshuffle, fullReset,
+    typeFilter, setTypeFilter,
+    total: allIds.length,
+    keptCount: drawn.filter(d => d.kept).length,
+  }
 }
 
 export default function CampaignPage({ campaignId }) {
@@ -82,8 +116,7 @@ export default function CampaignPage({ campaignId }) {
   const { user } = useAuth()
   const [allPlayers, setAllPlayers] = useState([])
   const [loadingPlayers, setLoadingPlayers] = useState(false)
-  const [showDeck, setShowDeck] = useState(false)
-  const wasteland = useWastelandDeck()
+  const wasteland = useWastelandItemDeck()
 
   const phase = state?.phase ?? 1
   const round = state?.round ?? 0
@@ -342,76 +375,99 @@ export default function CampaignPage({ campaignId }) {
         </div>
       )}
 
-      {/* ── Wasteland Deck ── */}
+      {/* ── Wasteland Item Deck ── */}
       <div>
-        <div className="flex items-center gap-3 mb-3 border-b border-pip-mid/50 pb-2">
+        <div className="flex items-center gap-3 mb-3 border-b border-pip-mid/50 pb-2 flex-wrap gap-y-2">
           <h2 className="text-pip text-sm tracking-widest font-bold flex-1">
-            WASTELAND DECK
-            <span className="text-muted text-xs font-normal ml-2">({wasteland.deck.length} remaining)</span>
+            WASTELAND ITEM DECK
           </h2>
-          <button
-            onClick={() => setShowDeck(s => !s)}
-            className="text-xs text-muted hover:text-pip border border-muted/30 hover:border-pip rounded px-2 py-1 transition-colors"
-          >{showDeck ? 'HIDE' : 'VIEW DECK'}</button>
+          <span className="text-muted text-xs">
+            {wasteland.deckIds.length}/{wasteland.total} remaining
+            {wasteland.keptCount > 0 && ` · ${wasteland.keptCount} kept`}
+          </span>
           <button
             onClick={wasteland.reshuffle}
             className="flex items-center gap-1 text-xs text-muted hover:text-amber border border-muted/30 hover:border-amber/60 rounded px-2 py-1 transition-colors"
           ><Shuffle size={11} /> RESHUFFLE</button>
           <button
-            onClick={wasteland.draw}
-            disabled={wasteland.deck.length === 0}
-            className="text-xs border border-pip text-pip font-bold hover:bg-pip-dim rounded px-3 py-1.5 transition-colors disabled:opacity-40"
-            style={{ boxShadow: '0 0 6px var(--color-pip-glow)' }}
-          >DRAW CARD</button>
+            onClick={wasteland.fullReset}
+            className="text-xs text-muted hover:text-danger border border-muted/30 hover:border-danger/60 rounded px-2 py-1 transition-colors"
+          >FULL RESET</button>
         </div>
 
-        {/* Drawn / in-play */}
+        {/* Type filter */}
+        <div className="flex flex-wrap gap-1.5 mb-3">
+          {TYPE_FILTER_OPTIONS.map(f => (
+            <button
+              key={f.id}
+              onClick={() => wasteland.setTypeFilter(f.id)}
+              className={`text-xs px-2.5 py-1 border rounded transition-colors ${
+                wasteland.typeFilter === f.id
+                  ? 'border-pip text-pip bg-pip-dim/20 font-bold'
+                  : 'border-muted/30 text-muted hover:text-pip hover:border-pip'
+              }`}
+            >{f.label}</button>
+          ))}
+          <button
+            onClick={wasteland.draw}
+            disabled={wasteland.deckIds.length === 0}
+            className="ml-auto text-xs border border-amber text-amber font-bold hover:bg-amber-dim/30 rounded px-4 py-1 transition-colors disabled:opacity-40"
+            style={{ boxShadow: '0 0 6px var(--color-amber-glow)' }}
+          >DRAW ITEM</button>
+        </div>
+
+        {/* Drawn cards */}
         {wasteland.drawn.length > 0 && (
-          <div className="space-y-2 mb-3">
-            <p className="text-muted text-xs tracking-wider">IN PLAY</p>
-            {wasteland.drawn.map((card, i) => (
-              <div key={i} className={`flex items-start justify-between gap-3 border rounded px-3 py-2 ${TYPE_STYLE[card.type] || TYPE_STYLE.event}`}>
+          <div className="space-y-2 mb-2">
+            {wasteland.drawn.map((item, i) => (
+              <div key={`${item.id}-${item.drawnAt}`} className={`flex items-center gap-3 border rounded px-3 py-2 ${
+                item.kept ? 'border-pip/40 bg-pip-dim/10 opacity-70' : 'border-amber/40 bg-panel-light'
+              }`}>
                 <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-2 mb-0.5">
-                    <span className="font-bold text-xs tracking-wider">{card.name}</span>
-                    <span className="text-xs opacity-70 capitalize border border-current/30 rounded px-1">{card.type}</span>
+                  <div className="flex items-center gap-2 flex-wrap">
+                    <span className={`text-xs font-bold ${item.kept ? 'text-pip' : 'text-amber'}`}>{item.name}</span>
+                    <span className={`text-xs px-1.5 py-0.5 border border-current/30 rounded ${SUBTYPE_COLOR[item.subType] || 'text-muted'}`}>{item.subType}</span>
+                    {item.caps != null && <span className="text-muted text-xs">{item.caps}c</span>}
+                    {item.kept && <span className="text-pip text-xs font-bold">✓ KEPT</span>}
                   </div>
-                  <p className="text-xs opacity-90">{card.text}</p>
                 </div>
-                <button
-                  onClick={() => wasteland.dismiss(i)}
-                  className="text-xs border border-current/30 rounded px-2 py-1 opacity-70 hover:opacity-100 shrink-0 transition-opacity"
-                >DONE</button>
+                {!item.kept ? (
+                  <div className="flex gap-1.5 shrink-0">
+                    <button
+                      onClick={() => wasteland.keep(i)}
+                      className="text-xs border border-pip text-pip hover:bg-pip-dim rounded px-2 py-1 transition-colors font-bold"
+                    >KEEP</button>
+                    <button
+                      onClick={() => wasteland.discard(i)}
+                      className="text-xs border border-muted/40 text-muted hover:text-pip hover:border-pip rounded px-2 py-1 transition-colors"
+                    >RETURN</button>
+                  </div>
+                ) : (
+                  <button
+                    onClick={() => wasteland.dismiss(i)}
+                    className="text-xs border border-muted/30 text-muted hover:text-pip rounded px-2 py-1 transition-colors shrink-0"
+                  >DISMISS</button>
+                )}
               </div>
             ))}
           </div>
         )}
 
-        {wasteland.deck.length === 0 && wasteland.drawn.length === 0 && (
-          <p className="text-center py-4 text-muted text-xs border border-dashed border-muted/30 rounded">Deck empty — click RESHUFFLE to reset</p>
-        )}
-
-        {showDeck && wasteland.deck.length > 0 && (
-          <div className="max-h-48 overflow-y-auto border border-pip-dim/30 rounded p-2 bg-panel-alt space-y-1">
-            {wasteland.deck.map((card, i) => (
-              <div key={i} className="flex items-center gap-2 text-xs py-1 border-b border-pip-dim/10 last:border-0">
-                {i === 0 && <span className="text-amber text-xs shrink-0">TOP →</span>}
-                <span className={`shrink-0 px-1 rounded text-xs capitalize ${TYPE_STYLE[card.type]}`}>{card.type}</span>
-                <span className="text-muted">{card.name}</span>
-              </div>
-            ))}
-          </div>
+        {wasteland.deckIds.length === 0 && wasteland.drawn.filter(d => !d.kept).length === 0 && (
+          <p className="text-center py-4 text-muted text-xs border border-dashed border-muted/30 rounded">
+            Deck empty — click RESHUFFLE to return discarded items, or FULL RESET to start fresh
+          </p>
         )}
       </div>
 
-      {/* ── Active Explore Consequences → add to Wasteland ── */}
+      {/* ── Active Explore Consequences ── */}
       {(state.activeEvents || []).length > 0 && (
         <div>
           <h2 className="text-pip text-sm tracking-widest font-bold mb-2 border-b border-pip-mid/50 pb-1">
             ACTIVE EXPLORE CONSEQUENCES
           </h2>
           <p className="text-muted text-xs mb-3 italic">
-            Per campaign rules, explore consequences can be placed on top of the Wasteland Deck to be triggered soon during play.
+            Shuffle these into the Event Deck before your next battle (Campaign Handbook p.5).
           </p>
           <div className="space-y-2">
             {(state.activeEvents || []).map((ev, i) => (
@@ -421,14 +477,9 @@ export default function CampaignPage({ campaignId }) {
                   {ev.text && <p className="text-muted text-xs mt-0.5">{ev.text}</p>}
                 </div>
                 <button
-                  onClick={() => wasteland.addToTop({
-                    id: `consequence-${Date.now()}-${i}`,
-                    name: ev.title || ev.name || 'Consequence',
-                    type: 'consequence',
-                    text: ev.text || 'Explore consequence.',
-                  })}
-                  className="text-xs border border-info/50 text-info hover:bg-info-dim/20 rounded px-2 py-1 transition-colors shrink-0"
-                >+ DECK TOP</button>
+                  onClick={() => setState(prev => ({ ...prev, activeEvents: (prev.activeEvents || []).filter((_, j) => j !== i) }))}
+                  className="text-xs border border-muted/30 text-muted hover:text-pip rounded px-2 py-1 transition-colors shrink-0"
+                >DONE</button>
               </div>
             ))}
           </div>
