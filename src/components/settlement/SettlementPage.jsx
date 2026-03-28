@@ -244,6 +244,18 @@ export default function SettlementPage() {
     }
   }
 
+  function handleTogglePowered(instanceId) {
+    setState(prev => ({
+      ...prev,
+      settlement: {
+        ...prev.settlement,
+        structures: prev.settlement.structures.map(s =>
+          s.instanceId === instanceId ? { ...s, powered: !s.powered } : s
+        ),
+      },
+    }))
+  }
+
   function handleUpdateStructure(instanceId, field, value) {
     setState(prev => ({
       ...prev,
@@ -257,12 +269,12 @@ export default function SettlementPage() {
   }
 
   function handleResetRound() {
-    if (!confirm('Reset all structures to unused for the new round?')) return
+    if (!confirm('Reset all structures for new round? (Clears powered and used status)')) return
     setState(prev => ({
       ...prev,
       settlement: {
         ...prev.settlement,
-        structures: prev.settlement.structures.map(s => ({ ...s, usedThisRound: false })),
+        structures: prev.settlement.structures.map(s => ({ ...s, usedThisRound: false, powered: false })),
       },
     }))
   }
@@ -480,6 +492,7 @@ export default function SettlementPage() {
           handleRemoveStructure={handleRemoveStructure}
           handleScrapStructure={handleScrapStructure}
           handleToggleUsed={handleToggleUsed}
+          handleTogglePowered={handleTogglePowered}
           handleUpdateStructure={handleUpdateStructure}
           handleResetRound={handleResetRound}
           handleBuyLand={handleBuyLand}
@@ -515,7 +528,7 @@ function StructuresPanel({
   showStores, setShowStores,
   currentLostUnit,
   handleAddStructure, handleRemoveStructure, handleScrapStructure,
-  handleToggleUsed, handleUpdateStructure, handleResetRound,
+  handleToggleUsed, handleTogglePowered, handleUpdateStructure, handleResetRound,
   handleBuyLand, handleClaimLandViaQuests, handlePhase3Setup,
   handleBarracksApply, handleMedCenterApply, handleStoresApply,
   handleMarkFound, handleNotFound,
@@ -677,60 +690,108 @@ function StructuresPanel({
           <p className="text-muted text-sm">No structures built. Click ADD to build your settlement.</p>
         </div>
       ) : (
-        <div className="space-y-1">
+        <div className="space-y-1.5">
           {structures.map(s => {
             const ref = getStructureRef(s.structureId)
             if (!ref) return null
             const isSpecial = SPECIAL_STRUCTURE_NAMES.includes(ref.name)
-            return (
-              <div key={s.instanceId} className={`border rounded px-3 py-2 flex items-start gap-3 transition-colors ${
-                s.usedThisRound ? 'border-pip-dim/20 bg-panel-alt opacity-50' : isSpecial ? 'border-amber/30 bg-panel' : 'border-pip-mid/40 bg-panel'
-              }`}>
-                <button
-                  onClick={() => handleToggleUsed(s.instanceId)}
-                  className={`mt-1 w-5 h-5 rounded border shrink-0 flex items-center justify-center text-xs transition-colors ${
-                    s.usedThisRound ? 'border-pip bg-pip text-terminal font-bold' : 'border-muted hover:border-pip'
-                  } ${isSpecial ? 'ring-1 ring-amber/50' : ''}`}
-                  title={isSpecial ? `${ref.name} — has special use effect` : undefined}
-                >
-                  {s.usedThisRound ? '✓' : ''}
-                </button>
+            // Structures that generate power/water or need no power are auto-powered
+            const needsPower = (ref.pwrReq > 0) || (ref.waterReq > 0)
+            const selfPowering = !needsPower // generators, land, crop fields, etc.
+            const isPowered = selfPowering || s.powered
+            const canUse = isPowered && !s.usedThisRound && s.condition !== 'Damaged' && s.condition !== 'Badly Damaged' && s.condition !== 'Wrecked'
 
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-2 flex-wrap">
-                    <span className="text-pip text-sm font-bold">{ref.name}</span>
-                    {isSpecial && <span className="text-amber text-xs font-bold">★</span>}
-                    <span className="text-xs text-muted">{ref.category}</span>
-                    <span className="text-xs text-amber font-bold">{ref.cost}c</span>
-                    {ref.pwrGen > 0 && <span className="text-xs text-pip font-bold">+{ref.pwrGen}⚡</span>}
-                    {ref.pwrReq > 0 && <span className="text-xs text-muted">-{ref.pwrReq}⚡</span>}
-                    {ref.waterGen > 0 && <span className="text-xs text-pip font-bold">+{ref.waterGen}💧</span>}
-                    {ref.waterReq > 0 && <span className="text-xs text-muted">-{ref.waterReq}💧</span>}
+            return (
+              <div key={s.instanceId} className={`border rounded transition-colors ${
+                s.usedThisRound
+                  ? 'border-pip-dim/20 bg-panel-alt opacity-40'
+                  : isPowered
+                    ? isSpecial ? 'border-amber/40 bg-panel' : 'border-pip-mid/50 bg-panel'
+                    : 'border-pip-dim/30 bg-panel-alt'
+              }`}>
+                {/* Header row */}
+                <div className="flex items-center gap-2 px-3 pt-2 pb-1">
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-2 flex-wrap">
+                      <span className={`text-sm font-bold ${s.usedThisRound ? 'text-muted' : 'text-pip'}`}>{ref.name}</span>
+                      {isSpecial && !s.usedThisRound && <span className="text-amber text-xs">★</span>}
+                      <span className="text-xs text-muted">{ref.category}</span>
+                      <span className="text-xs text-amber">{ref.cost}c</span>
+                      {ref.pwrGen > 0 && <span className="text-xs text-pip font-bold">+{ref.pwrGen}⚡</span>}
+                      {ref.pwrReq > 0 && <span className="text-xs text-muted">req {ref.pwrReq}⚡</span>}
+                      {ref.waterGen > 0 && <span className="text-xs text-pip font-bold">+{ref.waterGen}💧</span>}
+                      {ref.waterReq > 0 && <span className="text-xs text-muted">req {ref.waterReq}💧</span>}
+                    </div>
+                    <p className="text-muted text-xs mt-0.5 leading-relaxed">{ref.effect}</p>
                   </div>
-                  <p className="text-muted text-xs mt-1 leading-relaxed">{ref.effect}</p>
-                  <div className="flex items-center gap-2 mt-1">
-                    <select value={s.condition} onChange={(e) => handleUpdateStructure(s.instanceId, 'condition', e.target.value)}
-                      className="text-xs py-0.5 px-1 bg-panel-alt">
-                      {CONDITION_OPTIONS.map(c => <option key={c} value={c}>{c}</option>)}
-                    </select>
-                    <input type="text" value={s.notes || ''} onChange={(e) => handleUpdateStructure(s.instanceId, 'notes', e.target.value)}
-                      placeholder="Notes..." className="flex-1 text-xs py-0.5 px-1 bg-panel-alt" />
+
+                  {/* Actions column */}
+                  <div className="flex items-center gap-1.5 shrink-0">
+                    {/* Power toggle — only for structures that need power */}
+                    {needsPower && !s.usedThisRound && (
+                      <button
+                        onClick={() => handleTogglePowered(s.instanceId)}
+                        title={s.powered ? 'Powered — click to cut power' : 'Unpowered — click to allocate power'}
+                        className={`flex items-center gap-1 px-2 py-1 rounded border text-xs font-bold transition-colors ${
+                          s.powered
+                            ? 'border-pip text-pip bg-pip-dim/30'
+                            : 'border-muted/40 text-muted hover:border-pip hover:text-pip'
+                        }`}
+                      >
+                        <Zap size={11} />
+                        {s.powered ? 'ON' : 'OFF'}
+                      </button>
+                    )}
+
+                    {/* USE button */}
+                    {s.usedThisRound ? (
+                      <span className="px-2 py-1 rounded border border-pip-dim/30 text-pip text-xs font-bold tracking-wider">USED ✓</span>
+                    ) : (
+                      <button
+                        onClick={() => canUse && handleToggleUsed(s.instanceId)}
+                        disabled={!canUse}
+                        title={
+                          s.condition !== 'Undamaged' && s.condition !== 'Reinforced' ? `${s.condition} — cannot use`
+                          : !isPowered ? 'Power not allocated'
+                          : isSpecial ? `Use ${ref.name}`
+                          : 'Use structure'
+                        }
+                        className={`px-2 py-1 rounded border text-xs font-bold tracking-wider transition-colors ${
+                          canUse
+                            ? isSpecial
+                              ? 'border-amber text-amber hover:bg-amber/10'
+                              : 'border-pip text-pip hover:bg-pip-dim/30'
+                            : 'border-pip-dim/30 text-dim cursor-not-allowed'
+                        }`}
+                      >
+                        USE
+                      </button>
+                    )}
+
+                    {/* Scrap / Remove */}
+                    {!s.usedThisRound && s.condition === 'Undamaged' && (
+                      <button
+                        onClick={() => handleScrapStructure(s.instanceId)}
+                        className="text-muted hover:text-amber transition-colors"
+                        title={`Scrap for ${Math.floor((ref.cost || 0) / 2)}c`}
+                      >
+                        <Recycle size={12} />
+                      </button>
+                    )}
+                    <button onClick={() => handleRemoveStructure(s.instanceId)} className="text-muted hover:text-danger transition-colors">
+                      <Trash2 size={13} />
+                    </button>
                   </div>
                 </div>
 
-                <div className="flex flex-col gap-1 shrink-0">
-                  {s.condition === 'Undamaged' && (
-                    <button
-                      onClick={() => handleScrapStructure(s.instanceId)}
-                      className="text-muted hover:text-amber flex items-center gap-0.5 text-xs transition-colors"
-                      title={`Scrap for ${Math.floor((ref.cost || 0) / 2)}c`}
-                    >
-                      <Recycle size={12} />
-                    </button>
-                  )}
-                  <button onClick={() => handleRemoveStructure(s.instanceId)} className="text-muted hover:text-danger mt-1 transition-colors">
-                    <Trash2 size={14} />
-                  </button>
+                {/* Condition / Notes row */}
+                <div className="flex items-center gap-2 px-3 pb-2">
+                  <select value={s.condition} onChange={(e) => handleUpdateStructure(s.instanceId, 'condition', e.target.value)}
+                    className="text-xs py-0.5 px-1 bg-panel-alt">
+                    {CONDITION_OPTIONS.map(c => <option key={c} value={c}>{c}</option>)}
+                  </select>
+                  <input type="text" value={s.notes || ''} onChange={(e) => handleUpdateStructure(s.instanceId, 'notes', e.target.value)}
+                    placeholder="Notes..." className="flex-1 text-xs py-0.5 px-1 bg-panel-alt" />
                 </div>
               </div>
             )

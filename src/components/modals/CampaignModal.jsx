@@ -13,6 +13,7 @@ export default function CampaignModal({ campaignId, onClose, onLeaveCampaign, on
   const [renameLoading, setRenameLoading] = useState(false)
   const [resetConfirm, setResetConfirm] = useState(false)
   const [deleteConfirm, setDeleteConfirm] = useState(false)
+  const [deleteError, setDeleteError] = useState('')
   const [copied, setCopied] = useState(false)
 
   useEffect(() => {
@@ -61,9 +62,19 @@ export default function CampaignModal({ campaignId, onClose, onLeaveCampaign, on
   }
 
   async function handleDelete() {
-    await supabase.from('campaigns').delete().eq('id', campaignId)
-    onLeaveCampaign?.()
-    onClose()
+    setDeleteError('')
+    try {
+      // Delete child records first (in case DB lacks cascade)
+      await supabase.from('player_data').delete().eq('campaign_id', campaignId)
+      await supabase.from('campaign_players').delete().eq('campaign_id', campaignId)
+      const { error } = await supabase.from('campaigns').delete().eq('id', campaignId)
+      if (error) throw error
+      onLeaveCampaign?.()
+      onClose()
+    } catch (e) {
+      console.error('Delete campaign error:', e)
+      setDeleteError(e?.message ?? 'Failed to delete. Check your permissions.')
+    }
   }
 
   async function handleLeave() {
@@ -170,9 +181,12 @@ export default function CampaignModal({ campaignId, onClose, onLeaveCampaign, on
               {deleteConfirm && (
                 <div className="space-y-2 border border-danger/30 rounded p-3 bg-danger/5">
                   <div className="text-danger text-xs">Delete for ALL players? This cannot be undone.</div>
+                  {deleteError && (
+                    <div className="text-danger text-xs border border-danger/40 bg-danger/10 px-2 py-1.5 rounded">{deleteError}</div>
+                  )}
                   <div className="flex gap-2">
                     <button onClick={handleDelete} className="px-3 py-1.5 text-xs border border-danger text-danger rounded hover:bg-danger/10">CONFIRM DELETE</button>
-                    <button onClick={() => setDeleteConfirm(false)} className="px-3 py-1.5 text-xs border border-muted/30 text-muted rounded hover:text-pip hover:border-pip">CANCEL</button>
+                    <button onClick={() => { setDeleteConfirm(false); setDeleteError('') }} className="px-3 py-1.5 text-xs border border-muted/30 text-muted rounded hover:text-pip hover:border-pip">CANCEL</button>
                   </div>
                 </div>
               )}
