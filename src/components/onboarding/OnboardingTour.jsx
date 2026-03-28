@@ -7,13 +7,71 @@ export function isTourComplete() {
   try { return !!localStorage.getItem(TOUR_KEY) } catch { return false }
 }
 
+const MODE_INFO = {
+  'alone-together': {
+    label: 'ALONE TOGETHER',
+    color: 'text-pip',
+    desc: 'Campaign Handbook settlements with Homestead Survival Mode. You have a full settlement (Barracks, Medical Centre) and access to Survival bonuses — no Resources counter or settlement damage tracking.',
+  },
+  'basic': {
+    label: 'BASIC',
+    color: 'text-info',
+    desc: 'Restricted to Campaign Handbook rules. Abstract settlement sheet only — no Resources, no Settlement Events, no structure damage tracking.',
+  },
+  'homestead': {
+    label: 'HOMESTEAD EXPANSION',
+    color: 'text-amber',
+    desc: 'Full Homestead Expansion rules. Track Resources, draw Settlement Events each round, manage structure damage and repairs, monitor your Defense Rating, and build from the full expanded structure list.',
+  },
+}
+
+function WelcomeBody({ settings }) {
+  const mode = MODE_INFO[settings?.settlementMode] || MODE_INFO['alone-together']
+
+  return (
+    <div className="space-y-3 text-xs">
+
+      {/* Mode badge */}
+      <div className="border border-pip-mid/30 rounded px-3 py-2 bg-panel-light">
+        <div className="text-label text-xs tracking-wider mb-1">CAMPAIGN MODE</div>
+        <div className={`font-bold tracking-wider ${mode.color}`}>{mode.label}</div>
+        <p className="text-pip mt-1 leading-relaxed">{mode.desc}</p>
+      </div>
+
+      {/* Shared vs personal */}
+      <div className="space-y-1.5">
+        <div className="text-label text-xs tracking-wider">HOW TRACKING WORKS</div>
+        <div className="flex gap-2">
+          <span className="text-pip shrink-0">▸</span>
+          <span className="text-pip leading-relaxed">
+            <span className="text-amber font-bold">Your data is private.</span> Your roster, settlement, caps, quests, and objectives belong to you — only you can view and edit them.
+          </span>
+        </div>
+        <div className="flex gap-2">
+          <span className="text-pip shrink-0">▸</span>
+          <span className="text-pip leading-relaxed">
+            <span className="text-amber font-bold">Campaign state is shared.</span> Phase, round number, and battle count sync live across all players — anyone can advance the round and everyone updates instantly.
+          </span>
+        </div>
+        <div className="flex gap-2">
+          <span className="text-pip shrink-0">▸</span>
+          <span className="text-pip leading-relaxed">
+            <span className="text-amber font-bold">Invite players</span> by sharing your campaign join code. Find it in the menu → <span className="text-pip font-bold">CAMPAIGN SETTINGS</span>.
+          </span>
+        </div>
+      </div>
+
+    </div>
+  )
+}
+
 const ALL_STEPS = [
   {
     id: 'welcome',
     target: null,
     placement: 'center',
     title: 'WELCOME, SURVIVOR',
-    body: "You've entered your FWW campaign tracker. This quick tour covers each section so you can start running your Fallout: Wasteland Warfare campaigns.",
+    node: (settings) => <WelcomeBody settings={settings} />,
   },
   {
     id: 'menu',
@@ -34,28 +92,28 @@ const ALL_STEPS = [
     target: '[data-tour="tab-campaign"]',
     placement: 'below',
     title: 'CAMPAIGN TAB',
-    body: 'Track your campaign phase (1–4), current round, and battle count. Hit NEW ROUND to step through the round sequence. Draw from the Wasteland Item Deck here when looting after battles.',
+    body: 'Shared across all players. Track campaign phase (1–4), current round, and battle count. Hit NEW ROUND to step through the round sequence. Draw from the Wasteland Item Deck here when looting after battles.',
   },
   {
     id: 'player',
     target: '[data-tour="tab-player"]',
     placement: 'below',
     title: 'PLAYER TAB',
-    body: 'Your at-a-glance overview — caps balance, active roster count, settlement power and water totals, active quests, and your current scavenger objective.',
+    body: 'Your personal overview — caps balance, active roster count, settlement power and water totals, active quests, and your current scavenger objective.',
   },
   {
     id: 'roster',
     target: '[data-tour="tab-roster"]',
     placement: 'below',
     title: 'ROSTER TAB',
-    body: 'Manage every unit in your warband. Track wounds, XP, fate status (Injured, Captured, Dead), equipped items, and perks. Add new recruits and run Fate rolls post-battle.',
+    body: 'Your personal warband. Add units, track wounds and XP, assign perks and items, set fate status (Injured, Captured, Dead), and see each unit\'s cap value.',
   },
   {
     id: 'settlement',
     target: '[data-tour="tab-settlement"]',
     placement: 'below',
     title: 'SETTLEMENT TAB',
-    body: 'Build and manage your settlement structures. Power them with Generators then USE them to trigger their effects each round. Track damage, repair, and reinforce structures. Monitor power, water, and defense totals.',
+    body: 'Your personal settlement. Add structures, power them with Generators, then USE them each round to trigger their effects. Track damage, repair, and reinforce. Monitor power, water, and defense totals.',
   },
   {
     id: 'objectives',
@@ -77,12 +135,12 @@ const ALL_STEPS = [
     target: null,
     placement: 'center',
     title: 'YOU\'RE READY',
-    body: "That's the full tour. You can revisit it anytime from the ACCOUNT menu. Now get out there — the Wasteland isn't going to survive itself.",
+    body: "That's the full tour. You can relaunch it anytime from the menu → GETTING STARTED. Now get out there — the Wasteland isn't going to survive itself.",
   },
 ]
 
 const PAD = 16
-const TOOLTIP_W = 296
+const TOOLTIP_W = 316
 const ARROW_SIZE = 9
 
 function getSpotlight(el) {
@@ -148,11 +206,11 @@ export default function OnboardingTour({ settings = {}, onDone }) {
   const isLast = idx === steps.length - 1
   const tip = spot ? tooltipPos(spot, current.placement) : null
   const centered = !tip
-
-  // Spotlight quads
-  const vw = window.innerWidth
-  const vh = window.innerHeight
   const sp = spot ? { ...spot, pad: 5 } : null
+
+  const bodyContent = current.node
+    ? current.node(settings)
+    : <p className="text-pip text-xs leading-relaxed">{current.body}</p>
 
   return (
     <div className="fixed inset-0 font-mono" style={{ zIndex: 9000, pointerEvents: 'none' }}>
@@ -160,58 +218,16 @@ export default function OnboardingTour({ settings = {}, onDone }) {
       {/* === OVERLAY === */}
       {sp ? (
         <>
-          {/* top */}
-          <div
-            onClick={finish}
-            style={{ position: 'fixed', pointerEvents: 'all', top: 0, left: 0, right: 0, height: Math.max(0, sp.top - sp.pad), background: 'rgba(0,0,0,0.82)' }}
-          />
-          {/* bottom */}
-          <div
-            onClick={finish}
-            style={{ position: 'fixed', pointerEvents: 'all', top: sp.bottom + sp.pad, left: 0, right: 0, bottom: 0, background: 'rgba(0,0,0,0.82)' }}
-          />
-          {/* left */}
-          <div
-            onClick={finish}
-            style={{ position: 'fixed', pointerEvents: 'all', top: sp.top - sp.pad, left: 0, width: Math.max(0, sp.left - sp.pad), height: sp.height + sp.pad * 2, background: 'rgba(0,0,0,0.82)' }}
-          />
-          {/* right */}
-          <div
-            onClick={finish}
-            style={{ position: 'fixed', pointerEvents: 'all', top: sp.top - sp.pad, left: sp.right + sp.pad, right: 0, height: sp.height + sp.pad * 2, background: 'rgba(0,0,0,0.82)' }}
-          />
+          <div onClick={finish} style={{ position: 'fixed', pointerEvents: 'all', top: 0, left: 0, right: 0, height: Math.max(0, sp.top - sp.pad), background: 'rgba(0,0,0,0.82)' }} />
+          <div onClick={finish} style={{ position: 'fixed', pointerEvents: 'all', top: sp.bottom + sp.pad, left: 0, right: 0, bottom: 0, background: 'rgba(0,0,0,0.82)' }} />
+          <div onClick={finish} style={{ position: 'fixed', pointerEvents: 'all', top: sp.top - sp.pad, left: 0, width: Math.max(0, sp.left - sp.pad), height: sp.height + sp.pad * 2, background: 'rgba(0,0,0,0.82)' }} />
+          <div onClick={finish} style={{ position: 'fixed', pointerEvents: 'all', top: sp.top - sp.pad, left: sp.right + sp.pad, right: 0, height: sp.height + sp.pad * 2, background: 'rgba(0,0,0,0.82)' }} />
           {/* highlight ring */}
-          <div style={{
-            position: 'fixed',
-            pointerEvents: 'none',
-            top: sp.top - sp.pad,
-            left: sp.left - sp.pad,
-            width: sp.width + sp.pad * 2,
-            height: sp.height + sp.pad * 2,
-            borderRadius: 5,
-            border: '2px solid var(--color-pip)',
-            boxShadow: '0 0 0 1px var(--color-pip-dim), 0 0 18px var(--color-pip-glow)',
-            zIndex: 9001,
-          }} />
-          {/* pulse ring */}
-          <div style={{
-            position: 'fixed',
-            pointerEvents: 'none',
-            top: sp.top - sp.pad - 3,
-            left: sp.left - sp.pad - 3,
-            width: sp.width + (sp.pad + 3) * 2,
-            height: sp.height + (sp.pad + 3) * 2,
-            borderRadius: 7,
-            border: '1px solid var(--color-pip-mid)',
-            opacity: 0.4,
-            zIndex: 9001,
-          }} />
+          <div style={{ position: 'fixed', pointerEvents: 'none', top: sp.top - sp.pad, left: sp.left - sp.pad, width: sp.width + sp.pad * 2, height: sp.height + sp.pad * 2, borderRadius: 5, border: '2px solid var(--color-pip)', boxShadow: '0 0 0 1px var(--color-pip-dim), 0 0 18px var(--color-pip-glow)', zIndex: 9001 }} />
+          <div style={{ position: 'fixed', pointerEvents: 'none', top: sp.top - sp.pad - 3, left: sp.left - sp.pad - 3, width: sp.width + (sp.pad + 3) * 2, height: sp.height + (sp.pad + 3) * 2, borderRadius: 7, border: '1px solid var(--color-pip-mid)', opacity: 0.4, zIndex: 9001 }} />
         </>
       ) : (
-        <div
-          onClick={finish}
-          style={{ position: 'fixed', pointerEvents: 'all', inset: 0, background: 'rgba(0,0,0,0.88)' }}
-        />
+        <div onClick={finish} style={{ position: 'fixed', pointerEvents: 'all', inset: 0, background: 'rgba(0,0,0,0.88)' }} />
       )}
 
       {/* === TOOLTIP === */}
@@ -229,49 +245,30 @@ export default function OnboardingTour({ settings = {}, onDone }) {
           border: '1px solid rgba(0,182,90,0.45)',
           borderRadius: 5,
           boxShadow: '0 0 32px rgba(0,0,0,0.9), 0 0 16px var(--color-pip-glow)',
+          maxHeight: '85vh',
+          overflowY: 'auto',
         }}
       >
-        {/* Arrow up — tooltip is below target */}
+        {/* Arrow up */}
         {tip?.arrowDir === 'up' && (
-          <div style={{
-            position: 'absolute',
-            top: -(ARROW_SIZE),
-            left: tip.arrowOffset - ARROW_SIZE,
-            width: 0, height: 0,
-            borderLeft: `${ARROW_SIZE}px solid transparent`,
-            borderRight: `${ARROW_SIZE}px solid transparent`,
-            borderBottom: `${ARROW_SIZE}px solid rgba(0,182,90,0.45)`,
-          }} />
+          <div style={{ position: 'absolute', top: -(ARROW_SIZE), left: tip.arrowOffset - ARROW_SIZE, width: 0, height: 0, borderLeft: `${ARROW_SIZE}px solid transparent`, borderRight: `${ARROW_SIZE}px solid transparent`, borderBottom: `${ARROW_SIZE}px solid rgba(0,182,90,0.45)` }} />
         )}
-        {/* Arrow left — tooltip is right of target */}
+        {/* Arrow left */}
         {tip?.arrowDir === 'left' && (
-          <div style={{
-            position: 'absolute',
-            left: -(ARROW_SIZE),
-            top: tip.arrowOffset - ARROW_SIZE,
-            width: 0, height: 0,
-            borderTop: `${ARROW_SIZE}px solid transparent`,
-            borderBottom: `${ARROW_SIZE}px solid transparent`,
-            borderRight: `${ARROW_SIZE}px solid rgba(0,182,90,0.45)`,
-          }} />
+          <div style={{ position: 'absolute', left: -(ARROW_SIZE), top: tip.arrowOffset - ARROW_SIZE, width: 0, height: 0, borderTop: `${ARROW_SIZE}px solid transparent`, borderBottom: `${ARROW_SIZE}px solid transparent`, borderRight: `${ARROW_SIZE}px solid rgba(0,182,90,0.45)` }} />
         )}
 
         {/* Header */}
         <div className="flex items-center justify-between px-4 py-3 border-b border-pip-mid/30">
           <span className="text-pip text-xs font-bold tracking-widest">{current.title}</span>
-          <button
-            onClick={finish}
-            className="text-muted hover:text-pip transition-colors ml-3 shrink-0"
-            style={{ lineHeight: 1 }}
-            title="Skip tour"
-          >
+          <button onClick={finish} className="text-muted hover:text-pip transition-colors ml-3 shrink-0" title="Skip tour">
             <X size={13} />
           </button>
         </div>
 
         {/* Body */}
         <div className="px-4 py-3">
-          <p className="text-pip text-xs leading-relaxed">{current.body}</p>
+          {bodyContent}
         </div>
 
         {/* Footer */}
@@ -279,10 +276,7 @@ export default function OnboardingTour({ settings = {}, onDone }) {
           <span className="text-dim text-xs tracking-wider">{idx + 1} / {steps.length}</span>
           <div className="flex gap-2">
             {idx > 0 && (
-              <button
-                onClick={prev}
-                className="px-3 py-1.5 text-xs border border-pip-mid/40 text-pip rounded hover:bg-pip-dim/20 transition-colors tracking-wider"
-              >
+              <button onClick={prev} className="px-3 py-1.5 text-xs border border-pip-mid/40 text-pip rounded hover:bg-pip-dim/20 transition-colors tracking-wider">
                 BACK
               </button>
             )}
