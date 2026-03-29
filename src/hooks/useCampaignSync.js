@@ -25,6 +25,9 @@ function stateToDb(state) {
     settings: state.settings ?? null,
     settlement_deck: state.settlementDeck ?? [],
     settlement_discard: state.settlementDiscard ?? [],
+    boost_hand: state.boostHand ?? [],
+    boost_deck: state.boostDeck ?? [],
+    boost_discard: state.boostDiscard ?? [],
   }
 }
 
@@ -48,6 +51,9 @@ function dbToState(row) {
     settings: row.settings ?? null,
     settlementDeck: row.settlement_deck ?? [],
     settlementDiscard: row.settlement_discard ?? [],
+    boostHand: row.boost_hand ?? [],
+    boostDeck: row.boost_deck ?? [],
+    boostDiscard: row.boost_discard ?? [],
   }
 }
 

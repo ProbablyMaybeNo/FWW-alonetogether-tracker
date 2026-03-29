@@ -24,6 +24,7 @@ export function calcPowerGenerated(structures) {
 
 export function calcPowerConsumed(structures) {
   return structures.reduce((sum, s) => {
+    if (!s.powered) return sum
     const ref = structuresById[s.structureId]
     return sum + (ref?.pwrReq || 0)
   }, 0)
@@ -38,6 +39,7 @@ export function calcWaterGenerated(structures) {
 
 export function calcWaterConsumed(structures) {
   return structures.reduce((sum, s) => {
+    if (!s.powered) return sum
     const ref = structuresById[s.structureId]
     return sum + (ref?.waterReq || 0)
   }, 0)

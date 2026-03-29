@@ -69,13 +69,27 @@ function AppContent({ campaignId, onLeaveCampaign }) {
         fate: u.fate === 'Delayed' ? 'Active' : u.fate,
       }))
 
+      // Move boost hand → recovery pool (players decide what to keep in stores)
+      const boostHandItems = (prev.boostHand ?? []).map(b => ({
+        id: Date.now() + Math.random(),
+        boostId: b.boostId,
+        name: b.name,
+        caps: 0,
+        subType: 'Boost',
+        isBoost: true,
+        boostType: b.boostType,
+        location: 'recovery',
+        assignedUnit: null,
+      }))
+
       return {
         ...prev,
         caps: (prev.caps ?? 0) + capsFromSales,
         exploreCardsThisRound: 0,
-        itemPool: { ...prev.itemPool, items: updatedItems },
+        itemPool: { ...prev.itemPool, items: [...updatedItems, ...boostHandItems] },
         settlement: { ...prev.settlement, structures: updatedStructures },
         roster: updatedRoster,
+        boostHand: [],
       }
     })
   }, [sharedState?.round])

@@ -1,9 +1,10 @@
 import { useState } from 'react'
-import { Plus, Trash2, ChevronDown, ChevronRight, Dices, Package, X, Star, Shield, Shuffle } from 'lucide-react'
+import { Plus, Trash2, ChevronDown, ChevronRight, Dices, Package, X, Star, Shield, Shuffle, Sparkles } from 'lucide-react'
 import { useCampaign } from '../../context/CampaignContext'
 import { calcUnitTotalCaps, calcUnitItemCaps, getItemRef, getStructureRef } from '../../utils/calculations'
 import { STATUS_OPTIONS } from '../../utils/fateTable'
 import unitsData from '../../data/units.json'
+import boostsData from '../../data/boosts.json'
 import AddUnitModal from './AddUnitModal'
 import AddItemModal from './AddItemModal'
 import FateRollModal from './FateRollModal'
@@ -49,7 +50,12 @@ export default function RosterPage() {
   const leaderAbsent = leaderUnit && ABSENT_FATES.includes(leaderUnit.fate)
 
   function handleAddUnit(unit) {
-    setState(prev => ({ ...prev, roster: [...prev.roster, unit] }))
+    const cost = unit.baseCaps || 0
+    setState(prev => ({
+      ...prev,
+      caps: Math.max(0, (prev.caps ?? 0) - cost),
+      roster: [...prev.roster, unit],
+    }))
   }
 
   function handleRemoveUnit(slotId) {
@@ -612,7 +618,10 @@ export default function RosterPage() {
         </div>
       )}
 
-      <AddUnitModal isOpen={showAddUnit} onClose={() => setShowAddUnit(false)} onAdd={handleAddUnit} />
+      {/* ── BOOST HAND ── */}
+      <BoostHandPanel state={state} setState={setState} />
+
+      <AddUnitModal isOpen={showAddUnit} onClose={() => setShowAddUnit(false)} onAdd={handleAddUnit} caps={state.caps ?? 0} />
       {showAddItem && (
         <AddItemModal
           isOpen={!!showAddItem}
@@ -629,6 +638,115 @@ export default function RosterPage() {
           onApply={(fate) => handleApplyFate(fateModalUnit.slotId, fate)}
         />
       )}
+    </div>
+  )
+}
+
+const BOOST_TYPE_STYLE = {
+  tactical:   { color: '#fbbf24', shadow: 'rgba(251,191,36,0.5)',  label: 'TACTICAL' },
+  instinctive:{ color: '#00b65a', shadow: 'rgba(0,182,90,0.5)',    label: 'INSTINCTIVE' },
+  cunning:    { color: '#00a0ff', shadow: 'rgba(0,160,255,0.5)',   label: 'CUNNING' },
+  practiced:  { color: '#a855f7', shadow: 'rgba(168,85,247,0.5)', label: 'PRACTICED' },
+}
+
+function BoostHandPanel({ state, setState }) {
+  const boostHand = state.boostHand ?? []
+
+  function handleUseBoost(instanceId) {
+    setState(prev => ({
+      ...prev,
+      boostHand: prev.boostHand.map(b =>
+        b.instanceId === instanceId ? { ...b, usedThisRound: !b.usedThisRound } : b
+      ),
+    }))
+  }
+
+  function handleDiscardBoost(instanceId) {
+    setState(prev => ({
+      ...prev,
+      boostHand: prev.boostHand.filter(b => b.instanceId !== instanceId),
+    }))
+  }
+
+  function handleReturnToRecovery(boost) {
+    setState(prev => ({
+      ...prev,
+      boostHand: prev.boostHand.filter(b => b.instanceId !== boost.instanceId),
+      itemPool: {
+        ...prev.itemPool,
+        items: [...(prev.itemPool?.items ?? []), {
+          id: Date.now() + Math.random(),
+          boostId: boost.boostId,
+          name: boost.name,
+          caps: 0,
+          subType: 'Boost',
+          isBoost: true,
+          boostType: boost.boostType,
+          location: 'recovery',
+          assignedUnit: null,
+        }],
+      },
+    }))
+  }
+
+  return (
+    <div className="mt-6 border rounded" style={{ borderColor: 'rgba(168,85,247,0.5)', boxShadow: '0 0 10px rgba(168,85,247,0.12)' }}>
+      <div className="flex items-center gap-2 px-4 py-3 border-b" style={{ borderColor: 'rgba(168,85,247,0.25)' }}>
+        <Sparkles size={13} style={{ color: '#a855f7' }} />
+        <h3 className="text-sm font-bold tracking-wider flex-1" style={{ color: '#a855f7', textShadow: '0 0 8px rgba(168,85,247,0.5)' }}>
+          BOOST HAND ({boostHand.length})
+        </h3>
+        <span className="text-muted text-xs">Secret — visible only to you · Max = leader's highest stat · Return to Recovery Pool at round end</span>
+      </div>
+      <div className="p-4">
+        {boostHand.length === 0 ? (
+          <p className="text-muted text-xs">No boosts in hand. Move boosts from Recovery or Settlement Pool → TO HAND on the Settlement tab.</p>
+        ) : (
+          <div className="space-y-2">
+            {boostHand.map(boost => {
+              const bs = BOOST_TYPE_STYLE[boost.boostType] || {}
+              const ref = boostsData.find(b => b.id === boost.boostId)
+              return (
+                <div
+                  key={boost.instanceId}
+                  className={`border rounded px-3 py-2 space-y-1 transition-opacity ${boost.usedThisRound ? 'opacity-50' : ''}`}
+                  style={{ borderColor: boost.usedThisRound ? 'rgba(100,100,100,0.3)' : `${bs.color || '#a855f7'}50`, boxShadow: boost.usedThisRound ? 'none' : `0 0 6px ${bs.shadow || 'rgba(168,85,247,0.2)'}` }}
+                >
+                  <div className="flex items-center gap-2 flex-wrap">
+                    <Sparkles size={11} style={{ color: boost.usedThisRound ? '#666' : bs.color }} />
+                    <span className="text-xs font-bold flex-1 min-w-0" style={{ color: boost.usedThisRound ? '#666' : bs.color }}>
+                      {boost.name}
+                      {boost.usedThisRound && <span className="ml-2 text-dim text-xs font-normal">(USED)</span>}
+                    </span>
+                    <span className="text-xs px-1.5 py-0.5 border rounded" style={{ color: bs.color, borderColor: `${bs.color}50` }}>{bs.label}</span>
+                    <div className="flex gap-1">
+                      <button
+                        onClick={() => handleUseBoost(boost.instanceId)}
+                        className="text-xs px-2 py-0.5 border font-bold rounded transition-colors"
+                        style={boost.usedThisRound
+                          ? { color: '#666', borderColor: 'rgba(100,100,100,0.3)' }
+                          : { color: bs.color, borderColor: `${bs.color}70`, boxShadow: `0 0 4px ${bs.shadow}` }
+                        }
+                      >{boost.usedThisRound ? 'UNUSE' : 'USE'}</button>
+                      <button
+                        onClick={() => handleReturnToRecovery(boost)}
+                        className="text-xs px-2 py-0.5 border border-muted/30 rounded text-muted hover:text-pip hover:border-pip transition-colors"
+                        title="Return to Recovery Pool"
+                      >RETURN</button>
+                      <button
+                        onClick={() => handleDiscardBoost(boost.instanceId)}
+                        className="text-xs px-2 py-0.5 border border-muted/20 rounded text-dim hover:text-danger hover:border-danger/40 transition-colors"
+                        title="Discard boost permanently"
+                      >DISCARD</button>
+                    </div>
+                  </div>
+                  {ref && <p className="text-xs leading-relaxed pl-5" style={{ color: boost.usedThisRound ? '#555' : '#888' }}>{ref.effect}</p>}
+                </div>
+              )
+            })}
+          </div>
+        )}
+      </div>
     </div>
   )
 }

@@ -3,7 +3,7 @@ import { useState, useEffect, useCallback } from 'react'
 const STORAGE_KEY = 'fww-campaign'
 
 const DEFAULT_STATE = {
-  version: 5,
+  version: 6,
   player: {
     name: '',
     settlement: '',
@@ -42,6 +42,9 @@ const DEFAULT_STATE = {
   },
   settlementDeck: [],    // array of item IDs remaining in deck (shuffled order)
   settlementDiscard: [], // array of item IDs that have been drawn
+  boostHand: [],         // array of { instanceId, boostId, name, boostType, usedThisRound } — boosts player holds for battle
+  boostDeck: [],         // array of boost IDs remaining in boost deck
+  boostDiscard: [],      // array of boost IDs in boost discard pile
 }
 
 function migrateUnit(u) {
@@ -69,6 +72,8 @@ function migrateItem(item) {
     caps: item.caps ?? 0,
     subType: item.subType ?? 'Other',
     isBoost: item.isBoost ?? false,
+    boostId: item.boostId ?? null,
+    boostType: item.boostType ?? null,
     location: item.location ?? 'recovery',
     assignedUnit: item.assignedUnit ?? null,
   }
@@ -151,6 +156,17 @@ function migrateState(stored) {
       version: 5,
       settlementDeck: [],
       settlementDiscard: [],
+    }
+  }
+
+  if (stored.version === 5) {
+    return {
+      ...DEFAULT_STATE,
+      ...stored,
+      version: 6,
+      boostHand: [],
+      boostDeck: [],
+      boostDiscard: [],
     }
   }
 

@@ -57,6 +57,9 @@ create table if not exists player_data (
   player_info jsonb default '{}'::jsonb,
   settlement_deck jsonb default '[]'::jsonb,
   settlement_discard jsonb default '[]'::jsonb,
+  boost_hand jsonb default '[]'::jsonb,
+  boost_deck jsonb default '[]'::jsonb,
+  boost_discard jsonb default '[]'::jsonb,
   updated_at timestamptz default now(),
   unique(campaign_id, user_id)
 );

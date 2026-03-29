@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { Plus, Trash2, RotateCcw, Zap, Droplets, Building2, Coins, Recycle, Shuffle, X } from 'lucide-react'
+import { Plus, Trash2, RotateCcw, Zap, Droplets, Building2, Coins, Recycle, Shuffle, X, Sparkles } from 'lucide-react'
 import { useCampaign } from '../../context/CampaignContext'
 import { calcPowerGenerated, calcPowerConsumed, calcWaterGenerated, calcWaterConsumed, getStructureRef, calcSettlementTotalCaps, calcDefenseRating } from '../../utils/calculations'
 import AddStructureModal from './AddStructureModal'
@@ -10,6 +10,7 @@ import CardDrawer from '../overview/CardDrawer'
 import eventCardsData from '../../data/eventCards.json'
 import exploreCardDeck from '../../data/exploreCardDeck.json'
 import itemsData from '../../data/items.json'
+import boostsData from '../../data/boosts.json'
 
 // Parse "Draw X Y card(s), Keep Z" or "Draw & Keep X Y" from structure effect text
 function parseDrawEffect(effect) {
@@ -26,13 +27,26 @@ function parseDrawEffect(effect) {
 const SETTLEMENT_DECK_TYPES = ['Pistol','Rifle','Heavy Weapon','Melee','Grenade','Mine','Armor','Clothing','Food','Drink','Chem','Utility','Mod']
 
 const DECK_FILTER_OPTIONS = [
-  { id: 'any',        label: 'ANY',        types: SETTLEMENT_DECK_TYPES },
+  { id: 'any',        label: 'ANY',        types: [...SETTLEMENT_DECK_TYPES, 'Boost'] },
   { id: 'weapon',     label: 'WEAPON',     types: ['Pistol','Rifle','Heavy Weapon','Melee','Grenade','Mine'] },
   { id: 'armor',      label: 'ARMOR',      types: ['Armor','Clothing'] },
   { id: 'consumable', label: 'CONSUMABLE', types: ['Food','Drink','Chem'] },
   { id: 'mod',        label: 'MOD',        types: ['Mod'] },
   { id: 'utility',    label: 'UTILITY',    types: ['Utility'] },
+  { id: 'boost',      label: 'BOOST',      types: ['Boost'] },
 ]
+
+// Boost card type colours
+const BOOST_TYPE_STYLE = {
+  tactical:   { color: '#fbbf24', shadow: 'rgba(251,191,36,0.55)',  label: 'TACTICAL' },
+  instinctive:{ color: '#00b65a', shadow: 'rgba(0,182,90,0.55)',    label: 'INSTINCTIVE' },
+  cunning:    { color: '#00a0ff', shadow: 'rgba(0,160,255,0.55)',   label: 'CUNNING' },
+  practiced:  { color: '#a855f7', shadow: 'rgba(168,85,247,0.55)', label: 'PRACTICED' },
+}
+
+function buildBoostDeckIds() {
+  return boostsData.map(b => b.id)
+}
 
 const DECK_SUBTYPE_COLOR = {
   Pistol: 'text-amber', Rifle: 'text-amber', 'Heavy Weapon': 'text-amber', Melee: 'text-amber',
@@ -135,8 +149,11 @@ export default function SettlementPage() {
   const roster = state.roster || []
 
   function handleAddStructure(structure) {
+    const ref = getStructureRef(structure.structureId)
+    const cost = ref?.cost || 0
     setState(prev => ({
       ...prev,
+      caps: Math.max(0, (prev.caps ?? 0) - cost),
       settlement: { ...prev.settlement, structures: [...prev.settlement.structures, structure] },
     }))
   }
@@ -342,12 +359,30 @@ export default function SettlementPage() {
   }
 
   function handleTogglePowered(instanceId) {
+    const s = structures.find(st => st.instanceId === instanceId)
+    if (!s) return
+    const ref = getStructureRef(s.structureId)
+    if (!ref) return
+
+    if (!s.powered) {
+      const netPower = pwrGen - pwrUsed
+      const netWater = waterGen - waterUsed
+      if (ref.pwrReq > 0 && netPower < ref.pwrReq) {
+        alert(`Not enough power. Need ${ref.pwrReq}⚡, only ${netPower}⚡ available.`)
+        return
+      }
+      if (ref.waterReq > 0 && netWater < ref.waterReq) {
+        alert(`Not enough water. Need ${ref.waterReq}💧, only ${netWater}💧 available.`)
+        return
+      }
+    }
+
     setState(prev => ({
       ...prev,
       settlement: {
         ...prev.settlement,
-        structures: prev.settlement.structures.map(s =>
-          s.instanceId === instanceId ? { ...s, powered: !s.powered } : s
+        structures: prev.settlement.structures.map(st =>
+          st.instanceId === instanceId ? { ...st, powered: !st.powered } : st
         ),
       },
     }))
@@ -973,9 +1008,10 @@ function StructuresPanel({
                         title={s.powered ? 'Powered — click to cut power' : 'Unpowered — click to allocate power'}
                         className={`flex items-center gap-1 px-2 py-1 rounded border text-xs font-bold transition-colors ${
                           s.powered
-                            ? 'border-pip text-pip bg-pip-dim/30'
-                            : 'border-muted/40 text-muted hover:border-pip hover:text-pip'
+                            ? 'border-amber text-amber bg-amber/10'
+                            : 'border-muted/30 text-dim hover:border-amber/60 hover:text-muted'
                         }`}
+                        style={s.powered ? { boxShadow: '0 0 6px rgba(251,191,36,0.3)' } : {}}
                       >
                         <Zap size={11} />
                         {s.powered ? 'ON' : 'OFF'}
@@ -984,7 +1020,7 @@ function StructuresPanel({
 
                     {/* USE button */}
                     {s.usedThisRound ? (
-                      <span className="px-2 py-1 rounded border border-pip-dim/30 text-pip text-xs font-bold tracking-wider">USED ✓</span>
+                      <span className="px-2 py-1 rounded border border-pip-dim/20 text-dim text-xs font-bold tracking-wider">USED ✓</span>
                     ) : (
                       <button
                         onClick={() => canUse && handleToggleUsed(s.instanceId)}
@@ -1000,8 +1036,9 @@ function StructuresPanel({
                             ? isSpecial
                               ? 'border-amber text-amber hover:bg-amber/10'
                               : 'border-pip text-pip hover:bg-pip-dim/30'
-                            : 'border-pip-dim/30 text-dim cursor-not-allowed'
+                            : 'border-pip-dim/20 text-dim cursor-not-allowed opacity-40'
                         }`}
+                        style={canUse ? { boxShadow: isSpecial ? '0 0 6px rgba(251,191,36,0.25)' : '0 0 6px rgba(0,182,90,0.2)' } : {}}
                       >
                         USE
                       </button>
@@ -1063,6 +1100,7 @@ function StructuresPanel({
         onClose={() => setShowAddStructure(false)}
         onAdd={handleAddStructure}
         atValidOnly={atValidOnly}
+        caps={caps}
       />
 
       <BarracksModal
@@ -1513,56 +1551,94 @@ function ItemDrawModal({ draw, onKeep, onClose }) {
 /* ── Deck Draw Modal (deck-based equipment structure draws) ── */
 function DeckDrawModal({ draw, onKeep, onClose }) {
   const { structureName, typeLabel, drawnCards = [], foundItem } = draw
+  const [visibleCount, setVisibleCount] = useState(0)
+  const [done, setDone] = useState(false)
+
+  useEffect(() => {
+    if (drawnCards.length === 0) { setDone(true); return }
+    let i = 0
+    const tick = () => {
+      i++
+      setVisibleCount(i)
+      if (i < drawnCards.length) {
+        setTimeout(tick, 340)
+      } else {
+        setTimeout(() => setDone(true), 200)
+      }
+    }
+    setTimeout(tick, 180)
+  }, [drawnCards.length])
+
+  const visibleCards = drawnCards.slice(0, visibleCount)
+  const drawing = !done
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4">
       <div className="bg-panel border border-pip-mid/50 rounded-lg w-full max-w-md space-y-4 p-5" style={{ boxShadow: '0 0 24px rgba(0,0,0,0.8)' }}>
         <div className="flex items-center justify-between">
           <div className="text-pip text-xs font-bold tracking-widest">{structureName} — DRAW</div>
-          <button onClick={onClose} className="text-muted hover:text-pip transition-colors"><X size={14} /></button>
+          {done && <button onClick={onClose} className="text-muted hover:text-pip transition-colors"><X size={14} /></button>}
         </div>
 
         <div className="text-muted text-xs">
-          Drew <span className="text-pip font-bold">{drawnCards.length}</span> card{drawnCards.length !== 1 ? 's' : ''} looking for a{' '}
-          <span className="text-amber font-bold">{typeLabel}</span> — all go to discard.
+          {drawing
+            ? <span className="text-pip animate-pulse">DRAWING... searching for <span className="text-amber font-bold">{typeLabel}</span></span>
+            : <>Drew <span className="text-pip font-bold">{drawnCards.length}</span> card{drawnCards.length !== 1 ? 's' : ''} looking for a{' '}<span className="text-amber font-bold">{typeLabel}</span> — all go to discard.</>
+          }
         </div>
 
-        {/* All drawn cards */}
-        <div className="space-y-1 max-h-48 overflow-y-auto">
-          {drawnCards.map((item, i) => {
-            const isMatch = foundItem && item.id === foundItem.id && i === drawnCards.length - 1
+        {/* Animated card list */}
+        <div className="space-y-1 max-h-56 overflow-y-auto">
+          {visibleCards.map((item, i) => {
+            const isMatch = done && foundItem && item.id === foundItem.id && i === drawnCards.length - 1
+            const isLatest = i === visibleCards.length - 1 && drawing
             return (
-              <div key={i} className={`flex items-center gap-2 px-3 py-1.5 rounded border text-xs ${
-                isMatch ? 'border-amber/60 bg-amber-dim/10' : 'border-pip-dim/30 opacity-60'
-              }`}>
-                <span className={isMatch ? 'text-amber font-bold' : 'text-muted'}>{item.name}</span>
+              <div
+                key={i}
+                className={`flex items-center gap-2 px-3 py-1.5 rounded border text-xs transition-all ${
+                  isMatch
+                    ? 'border-amber/70 bg-amber/5'
+                    : isLatest
+                      ? 'border-pip/50 bg-pip-dim/10'
+                      : 'border-pip-dim/20 opacity-50'
+                }`}
+                style={isMatch ? { boxShadow: '0 0 10px rgba(251,191,36,0.3)' } : isLatest ? { boxShadow: '0 0 6px rgba(0,182,90,0.2)' } : {}}
+              >
+                <span className={isMatch ? 'text-amber font-bold' : isLatest ? 'text-pip' : 'text-muted'}>{item.name}</span>
                 <span className={`text-xs px-1 border border-current/30 rounded ml-auto ${DECK_SUBTYPE_COLOR[item.subType] || 'text-muted'}`}>{item.subType}</span>
                 {item.caps != null && <span className="text-muted">{item.caps}c</span>}
-                {isMatch && <span className="text-amber text-xs font-bold">MATCH</span>}
+                {isMatch && <span className="text-amber text-xs font-bold">✓ MATCH</span>}
               </div>
             )
           })}
+          {drawing && (
+            <div className="flex items-center gap-2 px-3 py-1.5 rounded border border-pip-dim/20 text-xs">
+              <span className="text-dim animate-pulse">drawing...</span>
+            </div>
+          )}
         </div>
 
-        {foundItem ? (
-          <div className="border-t border-pip-dim/30 pt-3 space-y-2">
-            <div className="text-pip text-xs">Found: <span className="text-amber font-bold">{foundItem.name}</span></div>
-            <div className="flex gap-2">
-              <button
-                onClick={() => { onKeep([foundItem]); onClose() }}
-                className="flex-1 py-2 text-xs border border-pip text-pip rounded hover:bg-pip-dim/20 transition-colors font-bold"
-              >ADD TO POOL</button>
-              <button
-                onClick={onClose}
-                className="px-4 py-2 text-xs border border-muted/40 text-muted rounded hover:text-pip hover:border-pip transition-colors"
-              >DISCARD</button>
+        {done && (
+          foundItem ? (
+            <div className="border-t border-pip-dim/30 pt-3 space-y-2">
+              <div className="text-pip text-xs">Found: <span className="text-amber font-bold">{foundItem.name}</span></div>
+              <div className="flex gap-2">
+                <button
+                  onClick={() => { onKeep([foundItem]); onClose() }}
+                  className="flex-1 py-2 text-xs border border-pip text-pip rounded hover:bg-pip-dim/20 transition-colors font-bold"
+                >ADD TO POOL</button>
+                <button
+                  onClick={onClose}
+                  className="px-4 py-2 text-xs border border-muted/40 text-muted rounded hover:text-pip hover:border-pip transition-colors"
+                >DISCARD</button>
+              </div>
             </div>
-          </div>
-        ) : (
-          <div className="border-t border-pip-dim/30 pt-3">
-            <p className="text-danger text-xs text-center">No matching {typeLabel} found in deck.</p>
-            <button onClick={onClose} className="mt-2 w-full py-2 text-xs border border-muted/40 text-muted rounded hover:text-pip hover:border-pip transition-colors">CLOSE</button>
-          </div>
+          ) : (
+            <div className="border-t border-pip-dim/30 pt-3">
+              <p className="text-danger text-xs text-center">No matching {typeLabel} found in deck.</p>
+              <button onClick={onClose} className="mt-2 w-full py-2 text-xs border border-muted/40 text-muted rounded hover:text-pip hover:border-pip transition-colors">CLOSE</button>
+            </div>
+          )
         )}
       </div>
     </div>
@@ -1584,6 +1660,16 @@ function SettlementDeckPanel({ state, setState, structures, deckFilter, setDeckF
   const [addRecoverySearch, setAddRecoverySearch] = useState('')
   const [addRecoveryResults, setAddRecoveryResults] = useState([])
 
+  // Boost deck state
+  const boostDeck = state.boostDeck ?? []
+  const boostDiscard = state.boostDiscard ?? []
+  const allBoostIds = buildBoostDeckIds()
+  const boostDeckCount = (boostDeck.length === 0 && boostDiscard.length === 0) ? allBoostIds.length : boostDeck.length
+  const boostDiscardCount = boostDiscard.length
+  const [showBoostBrowse, setShowBoostBrowse] = useState(false)
+  const [boostBrowseSearch, setBoostBrowseSearch] = useState('')
+  const [boostBrowseType, setBoostBrowseType] = useState('all')
+
   // Item pool data
   const items = state.itemPool?.items ?? []
   const roster = state.roster ?? []
@@ -1598,11 +1684,93 @@ function SettlementDeckPanel({ state, setState, structures, deckFilter, setDeckF
   const lockerItems = items.filter(i => i.location === 'locker' || i.location === 'Locker')
   const storesItems = items.filter(i => i.location === 'stores' || i.location === 'Stores')
 
-  const recoveryFilterTypes = DECK_FILTER_OPTIONS.find(f => f.id === recoveryFilter)?.types ?? SETTLEMENT_DECK_TYPES
-  const settlementFilterTypes = DECK_FILTER_OPTIONS.find(f => f.id === settlementFilter)?.types ?? SETTLEMENT_DECK_TYPES
+  const recoveryFilterTypes = DECK_FILTER_OPTIONS.find(f => f.id === recoveryFilter)?.types ?? [...SETTLEMENT_DECK_TYPES, 'Boost']
+  const settlementFilterTypes = DECK_FILTER_OPTIONS.find(f => f.id === settlementFilter)?.types ?? [...SETTLEMENT_DECK_TYPES, 'Boost']
 
   const filteredRecovery = recoveryItems.filter(i => recoveryFilterTypes.includes(i.subType))
   const filteredStored = storedItems.filter(i => settlementFilterTypes.includes(i.subType))
+
+  // Boost deck functions
+  function handleDrawRandomBoost() {
+    let bdeck = [...boostDeck]
+    let bdiscard = [...boostDiscard]
+    if (bdeck.length === 0 && bdiscard.length === 0) {
+      bdeck = [...allBoostIds].sort(() => Math.random() - 0.5)
+    }
+    if (bdeck.length === 0 && bdiscard.length > 0) {
+      bdeck = [...bdiscard].sort(() => Math.random() - 0.5)
+      bdiscard = []
+    }
+    if (bdeck.length === 0) return
+    const boostId = bdeck.shift()
+    bdiscard.push(boostId)
+    const boost = boostsData.find(b => b.id === boostId)
+    if (!boost) { setState(prev => ({ ...prev, boostDeck: bdeck, boostDiscard: bdiscard })); return }
+    setState(prev => ({
+      ...prev,
+      boostDeck: bdeck,
+      boostDiscard: bdiscard,
+      itemPool: {
+        ...prev.itemPool,
+        items: [...(prev.itemPool?.items ?? []), {
+          id: Date.now() + Math.random(),
+          boostId: boost.id,
+          name: boost.name,
+          caps: 0,
+          subType: 'Boost',
+          isBoost: true,
+          boostType: boost.boostType,
+          location: 'recovery',
+          assignedUnit: null,
+        }],
+      },
+    }))
+  }
+
+  function handleAddBoostToRecovery(boost) {
+    setState(prev => ({
+      ...prev,
+      itemPool: {
+        ...prev.itemPool,
+        items: [...(prev.itemPool?.items ?? []), {
+          id: Date.now() + Math.random(),
+          boostId: boost.id,
+          name: boost.name,
+          caps: 0,
+          subType: 'Boost',
+          isBoost: true,
+          boostType: boost.boostType,
+          location: 'recovery',
+          assignedUnit: null,
+        }],
+      },
+    }))
+  }
+
+  function handleMoveBoostToHand(item) {
+    setState(prev => ({
+      ...prev,
+      itemPool: { ...prev.itemPool, items: prev.itemPool.items.filter(i => i.id !== item.id) },
+      boostHand: [...(prev.boostHand ?? []), {
+        instanceId: item.id,
+        boostId: item.boostId,
+        name: item.name,
+        boostType: item.boostType,
+        usedThisRound: false,
+      }],
+    }))
+  }
+
+  function handleMoveBoostToStores(item) {
+    updateItem(item.id, { location: 'stores', assignedUnit: null })
+  }
+
+  function handleDiscardBoostItem(item) {
+    setState(prev => ({
+      ...prev,
+      itemPool: { ...prev.itemPool, items: prev.itemPool.items.filter(i => i.id !== item.id) },
+    }))
+  }
 
   function updateItem(id, changes) {
     setState(prev => ({
@@ -1807,10 +1975,101 @@ function SettlementDeckPanel({ state, setState, structures, deckFilter, setDeckF
         </p>
       )}
 
+      {/* ── BOOST DECK ── */}
+      <div className="border rounded bg-panel" style={{ borderColor: 'rgba(168,85,247,0.5)', boxShadow: '0 0 10px rgba(168,85,247,0.12)' }}>
+        <div className="flex items-center gap-3 px-4 py-3 border-b flex-wrap gap-y-1" style={{ borderColor: 'rgba(168,85,247,0.25)' }}>
+          <Sparkles size={13} style={{ color: '#a855f7' }} />
+          <h3 className="text-sm font-bold tracking-wider flex-1" style={{ color: '#a855f7', textShadow: '0 0 8px rgba(168,85,247,0.6)' }}>BOOST DECK</h3>
+          <span className="text-muted text-xs">{boostDeckCount}/{allBoostIds.length} remaining · {boostDiscardCount} discarded</span>
+          {boostDeck.length === 0 && boostDiscard.length > 0 && (
+            <button
+              onClick={() => setState(prev => ({ ...prev, boostDeck: [...(prev.boostDiscard ?? [])].sort(() => Math.random() - 0.5), boostDiscard: [] }))}
+              className="flex items-center gap-1 text-xs border rounded px-2 py-1 hover:opacity-80 transition-colors font-bold"
+              style={{ color: '#a855f7', borderColor: 'rgba(168,85,247,0.6)' }}
+            ><Shuffle size={11} /> RESHUFFLE</button>
+          )}
+          {(boostDeck.length > 0 || boostDiscard.length > 0) && (
+            <button
+              onClick={() => { if (!confirm('Reset Boost Deck? This reshuffles all boost cards back in.')) return; setState(prev => ({ ...prev, boostDeck: [...buildBoostDeckIds()].sort(() => Math.random() - 0.5), boostDiscard: [] })) }}
+              className="text-xs border rounded px-2 py-1 transition-colors text-muted hover:text-danger border-muted/30 hover:border-danger/50"
+            >RESET</button>
+          )}
+        </div>
+        <div className="p-4 space-y-3">
+          <p className="text-muted text-xs italic">Draw boost cards during settlement phase. Boosts go to your Recovery Pool — move to hand before battle or to Stores to keep them. Unused boosts are discarded at round end.</p>
+
+          <div className="flex gap-2 flex-wrap">
+            <button
+              onClick={handleDrawRandomBoost}
+              className="flex items-center gap-1.5 text-xs border font-bold rounded px-4 py-1.5 hover:opacity-80 transition-colors"
+              style={{ color: '#a855f7', borderColor: 'rgba(168,85,247,0.7)', boxShadow: '0 0 6px rgba(168,85,247,0.25)' }}
+            ><Sparkles size={11} /> DRAW RANDOM BOOST</button>
+            <button
+              onClick={() => { setShowBoostBrowse(v => !v); setBoostBrowseSearch('') }}
+              className="flex items-center gap-1.5 text-xs border rounded px-3 py-1.5 transition-colors text-muted hover:text-pip hover:border-pip border-muted/40"
+            ><Plus size={11} /> ADD MANUALLY</button>
+          </div>
+
+          {/* Browse boost cards */}
+          {showBoostBrowse && (
+            <div className="border rounded p-3 space-y-2 bg-panel-alt" style={{ borderColor: 'rgba(168,85,247,0.3)' }}>
+              <div className="flex items-center justify-between">
+                <span className="text-xs tracking-wider" style={{ color: '#a855f7' }}>BROWSE BOOSTS</span>
+                <button onClick={() => setShowBoostBrowse(false)} className="text-muted hover:text-danger"><X size={13} /></button>
+              </div>
+              <div className="flex gap-2 flex-wrap">
+                <input
+                  type="text"
+                  value={boostBrowseSearch}
+                  onChange={e => setBoostBrowseSearch(e.target.value)}
+                  placeholder="Search boost name..."
+                  className="flex-1 text-xs py-1 px-2 min-w-0"
+                  autoFocus
+                />
+                <select value={boostBrowseType} onChange={e => setBoostBrowseType(e.target.value)} className="text-xs py-1 px-1">
+                  <option value="all">All Types</option>
+                  <option value="tactical">Tactical</option>
+                  <option value="instinctive">Instinctive</option>
+                  <option value="cunning">Cunning</option>
+                  <option value="practiced">Practiced</option>
+                </select>
+              </div>
+              <div className="max-h-56 overflow-y-auto space-y-1">
+                {boostsData
+                  .filter(b =>
+                    (boostBrowseType === 'all' || b.boostType === boostBrowseType) &&
+                    (!boostBrowseSearch.trim() || b.name.toLowerCase().includes(boostBrowseSearch.toLowerCase()))
+                  )
+                  .map(b => {
+                    const s = BOOST_TYPE_STYLE[b.boostType] || {}
+                    return (
+                      <div
+                        key={b.id}
+                        onClick={() => { handleAddBoostToRecovery(b); setShowBoostBrowse(false) }}
+                        className="flex items-start gap-2 border rounded px-3 py-2 cursor-pointer hover:opacity-80 transition-colors"
+                        style={{ borderColor: `${s.color}40` }}
+                      >
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center gap-2 flex-wrap">
+                            <span className="text-xs font-bold" style={{ color: s.color }}>{b.name}</span>
+                            <span className="text-xs px-1 rounded border" style={{ color: s.color, borderColor: `${s.color}50` }}>{s.label}</span>
+                          </div>
+                          <p className="text-muted text-xs mt-0.5 leading-relaxed">{b.effect}</p>
+                        </div>
+                        <Plus size={12} className="text-muted shrink-0 mt-0.5" />
+                      </div>
+                    )
+                  })}
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+
       {/* ── RECOVERY POOL ── */}
-      <div className="border border-muted/40 rounded bg-panel mt-2">
-        <div className="flex items-center gap-3 px-4 py-3 border-b border-muted/30">
-          <h3 className="text-pip text-sm font-bold tracking-wider flex-1">RECOVERY POOL ({recoveryItems.length})</h3>
+      <div className="border rounded bg-panel mt-2" style={{ borderColor: 'rgba(251,100,10,0.55)', boxShadow: '0 0 10px rgba(251,100,10,0.15)' }}>
+        <div className="flex items-center gap-3 px-4 py-3 border-b" style={{ borderColor: 'rgba(251,100,10,0.3)' }}>
+          <h3 className="text-sm font-bold tracking-wider flex-1" style={{ color: '#fb640a', textShadow: '0 0 8px rgba(251,100,10,0.6)' }}>RECOVERY POOL ({recoveryItems.length})</h3>
         </div>
         <div className="p-4 space-y-3">
           <p className="text-muted text-xs">Items gathered from battle. Use Maintenance Sheds to process into your Settlement Pool.</p>
@@ -1877,37 +2136,68 @@ function SettlementDeckPanel({ state, setState, structures, deckFilter, setDeckF
             <p className="text-muted text-xs">No items in recovery pool.</p>
           ) : (
             <div className="space-y-1">
-              {filteredRecovery.map(item => (
-                <div key={item.id} className="flex items-center gap-2 border border-pip-mid/30 rounded px-3 py-2 bg-panel-light flex-wrap">
-                  <span className="text-pip text-xs flex-1 min-w-0">{item.name}</span>
-                  <span className={`text-xs px-1.5 py-0.5 border border-current/30 rounded ${DECK_SUBTYPE_COLOR[item.subType] || 'text-muted'}`}>{item.subType}</span>
-                  <span className="text-amber text-xs font-bold">{item.caps}c</span>
-                  <div className="flex gap-1 flex-wrap">
-                    <button
-                      onClick={() => handleMoveToSettlement(item)}
-                      disabled={!item.isBoost && shedCount > 0 && storedItems.filter(i => !i.isBoost).length >= shedCount}
-                      className="text-xs px-2 py-0.5 border border-muted rounded text-muted hover:text-pip hover:border-pip disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
-                      title={`Move to Settlement Pool (${storedItems.filter(i => !i.isBoost).length}/${shedCount} shed slots)`}
-                    >TO SETTLEMENT</button>
-                    <button
-                      onClick={() => handleMoveToLocker(item)}
-                      disabled={lockerCount > 0 && lockerItems.length >= lockerCount}
-                      className="text-xs px-2 py-0.5 border border-muted rounded text-muted hover:text-pip hover:border-pip disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
-                      title={`Move to Locker (${lockerItems.length}/${lockerCount} slots)`}
-                    >LOCKER</button>
-                    <button
-                      onClick={() => removeItemAndAddCaps(item)}
-                      className="text-xs px-2 py-0.5 border border-amber/40 rounded text-amber hover:bg-amber-dim/20 transition-colors"
-                    >SELL {item.caps}c</button>
+              {filteredRecovery.map(item => {
+                if (item.isBoost) {
+                  const bs = BOOST_TYPE_STYLE[item.boostType] || {}
+                  const boostRef = boostsData.find(b => b.id === item.boostId)
+                  return (
+                    <div key={item.id} className="border rounded px-3 py-2 bg-panel-light space-y-1" style={{ borderColor: `${bs.color || '#a855f7'}40` }}>
+                      <div className="flex items-center gap-2 flex-wrap">
+                        <Sparkles size={11} style={{ color: bs.color }} />
+                        <span className="text-xs font-bold flex-1 min-w-0" style={{ color: bs.color }}>{item.name}</span>
+                        <span className="text-xs px-1.5 py-0.5 border rounded" style={{ color: bs.color, borderColor: `${bs.color}50` }}>{bs.label || item.boostType}</span>
+                        <div className="flex gap-1 flex-wrap">
+                          <button
+                            onClick={() => handleMoveBoostToHand(item)}
+                            className="text-xs px-2 py-0.5 border font-bold rounded hover:opacity-80 transition-colors"
+                            style={{ color: bs.color, borderColor: `${bs.color}70` }}
+                          >TO HAND</button>
+                          <button
+                            onClick={() => handleMoveBoostToStores(item)}
+                            className="text-xs px-2 py-0.5 border border-muted rounded text-muted hover:text-pip hover:border-pip transition-colors"
+                          >TO STORES</button>
+                          <button
+                            onClick={() => handleDiscardBoostItem(item)}
+                            className="text-xs px-2 py-0.5 border border-muted/30 rounded text-dim hover:text-danger hover:border-danger/40 transition-colors"
+                          >DISCARD</button>
+                        </div>
+                      </div>
+                      {boostRef && <p className="text-muted text-xs leading-relaxed pl-5">{boostRef.effect}</p>}
+                    </div>
+                  )
+                }
+                return (
+                  <div key={item.id} className="flex items-center gap-2 border border-pip-mid/30 rounded px-3 py-2 bg-panel-light flex-wrap">
+                    <span className="text-pip text-xs flex-1 min-w-0">{item.name}</span>
+                    <span className={`text-xs px-1.5 py-0.5 border border-current/30 rounded ${DECK_SUBTYPE_COLOR[item.subType] || 'text-muted'}`}>{item.subType}</span>
+                    <span className="text-amber text-xs font-bold">{item.caps}c</span>
+                    <div className="flex gap-1 flex-wrap">
+                      <button
+                        onClick={() => handleMoveToSettlement(item)}
+                        disabled={shedCount > 0 && storedItems.filter(i => !i.isBoost).length >= shedCount}
+                        className="text-xs px-2 py-0.5 border border-muted rounded text-muted hover:text-pip hover:border-pip disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+                        title={`Move to Settlement Pool (${storedItems.filter(i => !i.isBoost).length}/${shedCount} shed slots)`}
+                      >TO SETTLEMENT</button>
+                      <button
+                        onClick={() => handleMoveToLocker(item)}
+                        disabled={lockerCount > 0 && lockerItems.length >= lockerCount}
+                        className="text-xs px-2 py-0.5 border border-muted rounded text-muted hover:text-pip hover:border-pip disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+                        title={`Move to Locker (${lockerItems.length}/${lockerCount} slots)`}
+                      >LOCKER</button>
+                      <button
+                        onClick={() => removeItemAndAddCaps(item)}
+                        className="text-xs px-2 py-0.5 border border-amber/40 rounded text-amber hover:bg-amber-dim/20 transition-colors"
+                      >SELL {item.caps}c</button>
+                    </div>
                   </div>
-                </div>
-              ))}
+                )
+              })}
               <div className="pt-2">
                 <button
                   onClick={handleSellAllRecovery}
                   className="text-xs px-4 py-2 border border-danger/40 text-danger rounded hover:bg-danger-dim/10 transition-colors"
                 >
-                  SELL ALL ({recoveryItems.reduce((s, i) => s + (i.caps ?? 0), 0)}c)
+                  SELL ALL ({recoveryItems.filter(i => !i.isBoost).reduce((s, i) => s + (i.caps ?? 0), 0)}c)
                 </button>
               </div>
             </div>
@@ -1916,9 +2206,9 @@ function SettlementDeckPanel({ state, setState, structures, deckFilter, setDeckF
       </div>
 
       {/* ── SETTLEMENT POOL ── */}
-      <div className="border border-muted/40 rounded bg-panel">
-        <div className="flex items-center gap-3 px-4 py-3 border-b border-muted/30 flex-wrap gap-y-1">
-          <h3 className="text-pip text-sm font-bold tracking-wider flex-1">SETTLEMENT POOL ({storedItems.length})</h3>
+      <div className="border rounded bg-panel" style={{ borderColor: 'rgba(0,160,255,0.55)', boxShadow: '0 0 10px rgba(0,160,255,0.15)' }}>
+        <div className="flex items-center gap-3 px-4 py-3 border-b flex-wrap gap-y-1" style={{ borderColor: 'rgba(0,160,255,0.3)' }}>
+          <h3 className="text-sm font-bold tracking-wider flex-1" style={{ color: '#00a0ff', textShadow: '0 0 8px rgba(0,160,255,0.6)' }}>SETTLEMENT POOL ({storedItems.length})</h3>
           <span className="text-muted text-xs">
             SHED {storedItems.filter(i => !i.isBoost).length}/{shedCount} · LOCKERS {lockerItems.length}/{lockerCount} · STORES {storesItems.length}/{storesCount}
           </span>
@@ -1958,6 +2248,8 @@ function SettlementDeckPanel({ state, setState, structures, deckFilter, setDeckF
                   onEquip={(unitSlotId) => handleEquipItem(item, unitSlotId)}
                   onLocker={() => handleMoveToLocker(item)}
                   onSell={() => removeItemAndAddCaps(item)}
+                  onMoveBoostToHand={() => handleMoveBoostToHand(item)}
+                  onDiscardBoost={() => handleDiscardBoostItem(item)}
                 />
               ))}
             </div>
@@ -2049,8 +2341,28 @@ function SettlementDeckPanel({ state, setState, structures, deckFilter, setDeckF
 }
 
 /* Inline equip helper for SettlementDeckPanel */
-function SettlementPoolItem({ item, roster, storesCount, storesItems, lockerCount, lockerItems, onEquip, onLocker, onSell }) {
+function SettlementPoolItem({ item, roster, storesCount, storesItems, lockerCount, lockerItems, onEquip, onLocker, onSell, onMoveBoostToHand, onDiscardBoost }) {
   const [pickingUnit, setPickingUnit] = useState(false)
+
+  if (item.isBoost) {
+    const bs = BOOST_TYPE_STYLE[item.boostType] || {}
+    const boostRef = boostsData.find(b => b.id === item.boostId)
+    return (
+      <div className="border rounded px-3 py-2 bg-panel-light space-y-1" style={{ borderColor: `${bs.color || '#a855f7'}40` }}>
+        <div className="flex items-center gap-2 flex-wrap">
+          <Sparkles size={11} style={{ color: bs.color }} />
+          <span className="text-xs font-bold flex-1 min-w-0" style={{ color: bs.color }}>{item.name}</span>
+          <span className="text-xs px-1.5 py-0.5 border rounded" style={{ color: bs.color, borderColor: `${bs.color}50` }}>{bs.label || item.boostType}</span>
+          <div className="flex gap-1">
+            <button onClick={onMoveBoostToHand} className="text-xs px-2 py-0.5 border font-bold rounded hover:opacity-80 transition-colors" style={{ color: bs.color, borderColor: `${bs.color}70` }}>TO HAND</button>
+            <button onClick={onDiscardBoost} className="text-xs px-2 py-0.5 border border-muted/30 rounded text-dim hover:text-danger hover:border-danger/40 transition-colors">DISCARD</button>
+          </div>
+        </div>
+        {boostRef && <p className="text-muted text-xs leading-relaxed pl-5">{boostRef.effect}</p>}
+      </div>
+    )
+  }
+
   return (
     <div className="flex items-center gap-2 border border-pip-mid/30 rounded px-3 py-2 bg-panel-light flex-wrap">
       <span className="text-pip text-xs flex-1 min-w-0">{item.name}</span>
