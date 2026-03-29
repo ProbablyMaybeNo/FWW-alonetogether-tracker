@@ -3,7 +3,7 @@ import { useState, useEffect, useCallback } from 'react'
 const STORAGE_KEY = 'fww-campaign'
 
 const DEFAULT_STATE = {
-  version: 4,
+  version: 5,
   player: {
     name: '',
     settlement: '',
@@ -40,6 +40,8 @@ const DEFAULT_STATE = {
     useEventCards: false,
     useQuests: true,
   },
+  settlementDeck: [],    // array of item IDs remaining in deck (shuffled order)
+  settlementDiscard: [], // array of item IDs that have been drawn
 }
 
 function migrateUnit(u) {
@@ -139,6 +141,16 @@ function migrateState(stored) {
       ...stored,
       version: 4,
       settings: stored.settings ?? DEFAULT_STATE.settings,
+    }
+  }
+
+  if (stored.version === 4) {
+    return {
+      ...DEFAULT_STATE,
+      ...stored,
+      version: 5,
+      settlementDeck: [],
+      settlementDiscard: [],
     }
   }
 

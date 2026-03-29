@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { CampaignProvider, useCampaign } from './context/CampaignContext'
 import { useAuth } from './context/AuthContext'
 import TabShell from './components/layout/TabShell'
@@ -15,10 +15,70 @@ import OnboardingTour, { isTourComplete } from './components/onboarding/Onboardi
 
 function AppContent({ campaignId, onLeaveCampaign }) {
   const [activeTab, setActiveTab] = useState('campaign')
-  const { state, exportData, importData, syncing } = useCampaign()
+  const { state, setState, exportData, importData, syncing, sharedState } = useCampaign()
   const settings = state?.settings ?? {}
   const fileRef = useRef(null)
   const [showTour, setShowTour] = useState(() => !isTourComplete())
+  const lastProcessedRoundRef = useRef(null)
+
+  useEffect(() => {
+    if (!sharedState?.round || !state) return
+    const currentRound = sharedState.round
+
+    // Skip initial load
+    if (lastProcessedRoundRef.current === null) {
+      lastProcessedRoundRef.current = currentRound
+      return
+    }
+
+    // Only process when round actually advances
+    if (lastProcessedRoundRef.current >= currentRound) return
+    lastProcessedRoundRef.current = currentRound
+
+    // Round-end cleanup for this player
+    setState(prev => {
+      if (!prev) return prev
+
+      // Sell unsaved items: recovery + stored (but NOT locker or stores/equipped)
+      const itemsToSell = (prev.itemPool?.items ?? []).filter(
+        i => i.location === 'recovery' || i.location === 'stored' || i.location === 'Temp Pool' || i.location === 'Maint. Shed'
+      )
+      const capsFromSales = itemsToSell.reduce((sum, i) => sum + (i.caps ?? 0), 0)
+
+      // Move locker items to stored (settlement pool) for next round
+      const updatedItems = (prev.itemPool?.items ?? [])
+        .filter(i => !['recovery', 'stored', 'Temp Pool', 'Maint. Shed'].includes(i.location))
+        .map(i => {
+          if (i.location === 'locker' || i.location === 'Locker') {
+            return { ...i, location: 'stored' }
+          }
+          return i
+        })
+
+      // Reset structures: usedThisRound → false, powered → false
+      const updatedStructures = (prev.settlement?.structures ?? []).map(s => ({
+        ...s,
+        usedThisRound: false,
+        powered: false,
+      }))
+
+      // Reset units: perksThisRound → 0, Delayed → Active
+      const updatedRoster = (prev.roster ?? []).map(u => ({
+        ...u,
+        perksThisRound: 0,
+        fate: u.fate === 'Delayed' ? 'Active' : u.fate,
+      }))
+
+      return {
+        ...prev,
+        caps: (prev.caps ?? 0) + capsFromSales,
+        exploreCardsThisRound: 0,
+        itemPool: { ...prev.itemPool, items: updatedItems },
+        settlement: { ...prev.settlement, structures: updatedStructures },
+        roster: updatedRoster,
+      }
+    })
+  }, [sharedState?.round])
 
   if (!state) {
     return (

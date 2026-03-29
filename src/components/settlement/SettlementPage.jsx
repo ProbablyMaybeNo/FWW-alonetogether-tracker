@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { Plus, Trash2, RotateCcw, Zap, Droplets, Building2, Coins, Recycle, Shuffle } from 'lucide-react'
+import { Plus, Trash2, RotateCcw, Zap, Droplets, Building2, Coins, Recycle, Shuffle, X } from 'lucide-react'
 import { useCampaign } from '../../context/CampaignContext'
 import { calcPowerGenerated, calcPowerConsumed, calcWaterGenerated, calcWaterConsumed, getStructureRef, calcSettlementTotalCaps, calcDefenseRating } from '../../utils/calculations'
 import AddStructureModal from './AddStructureModal'
@@ -21,31 +21,47 @@ function parseDrawEffect(effect) {
   return null
 }
 
-function getItemsForType(typeLabel) {
-  const label = typeLabel.toLowerCase()
-  if (label.includes('power armor')) return itemsData.filter(i => i.subType === 'Mod' && i.name.toLowerCase().includes('power armor'))
-  if (label.includes('creature mod')) return itemsData.filter(i => i.subType === 'Mod' && i.name.toLowerCase().includes('creature'))
-  if (label.includes('armor mod')) return itemsData.filter(i => i.subType === 'Mod')
-  if (label.includes('weapon')) return itemsData.filter(i => ['Pistol', 'Rifle', 'Heavy Weapon', 'Melee', 'Grenade', 'Mine'].includes(i.subType))
-  if (label.includes('armor')) return itemsData.filter(i => i.subType === 'Armor')
-  if (label.includes('clothing')) return itemsData.filter(i => i.subType === 'Clothing')
-  if (label.includes('drink')) return itemsData.filter(i => i.subType === 'Drink')
-  if (label.includes('food')) return itemsData.filter(i => i.subType === 'Food')
-  if (label.includes('chem')) return itemsData.filter(i => i.subType === 'Chem')
-  if (label.includes('junk') || label.includes('gear')) return itemsData.filter(i => ['Utility', 'Mod', 'Automatron Part'].includes(i.subType))
-  if (label.includes('mod')) return itemsData.filter(i => i.subType === 'Mod')
-  return itemsData.filter(i => !['Perk', 'Leader'].includes(i.subType))
+
+// ── Settlement Item Deck ──────────────────────────────────────
+const SETTLEMENT_DECK_TYPES = ['Pistol','Rifle','Heavy Weapon','Melee','Grenade','Mine','Armor','Clothing','Food','Drink','Chem','Utility','Mod']
+
+const DECK_FILTER_OPTIONS = [
+  { id: 'any',        label: 'ANY',        types: SETTLEMENT_DECK_TYPES },
+  { id: 'weapon',     label: 'WEAPON',     types: ['Pistol','Rifle','Heavy Weapon','Melee','Grenade','Mine'] },
+  { id: 'armor',      label: 'ARMOR',      types: ['Armor','Clothing'] },
+  { id: 'consumable', label: 'CONSUMABLE', types: ['Food','Drink','Chem'] },
+  { id: 'mod',        label: 'MOD',        types: ['Mod'] },
+  { id: 'utility',    label: 'UTILITY',    types: ['Utility'] },
+]
+
+const DECK_SUBTYPE_COLOR = {
+  Pistol: 'text-amber', Rifle: 'text-amber', 'Heavy Weapon': 'text-amber', Melee: 'text-amber',
+  Grenade: 'text-danger', Mine: 'text-danger',
+  Armor: 'text-info', Clothing: 'text-info',
+  Food: 'text-pip', Drink: 'text-pip', Chem: 'text-pip',
+  Mod: 'text-amber', Utility: 'text-muted',
 }
 
-function drawRandomItems(typeLabel, count) {
-  const pool = [...getItemsForType(typeLabel)]
-  const drawn = []
-  for (let i = 0; i < count && pool.length > 0; i++) {
-    const idx = Math.floor(Math.random() * pool.length)
-    drawn.push(pool.splice(idx, 1)[0])
-  }
-  return drawn
+function buildFullDeckIds() {
+  return itemsData.filter(i => SETTLEMENT_DECK_TYPES.includes(i.subType)).map(i => i.id)
 }
+
+function itemMatchesTypeLabel(item, typeLabel) {
+  const label = typeLabel.toLowerCase()
+  if (label.includes('power armor')) return item.subType === 'Mod' && item.name.toLowerCase().includes('power armor')
+  if (label.includes('creature mod')) return item.subType === 'Mod' && item.name.toLowerCase().includes('creature')
+  if (label.includes('armor mod')) return item.subType === 'Mod'
+  if (label.includes('weapon')) return ['Pistol','Rifle','Heavy Weapon','Melee','Grenade','Mine'].includes(item.subType)
+  if (label.includes('armor')) return item.subType === 'Armor'
+  if (label.includes('clothing')) return item.subType === 'Clothing'
+  if (label.includes('drink')) return item.subType === 'Drink'
+  if (label.includes('food')) return item.subType === 'Food'
+  if (label.includes('chem')) return item.subType === 'Chem'
+  if (label.includes('junk') || label.includes('gear')) return ['Utility','Mod','Automatron Part'].includes(item.subType)
+  if (label.includes('mod')) return item.subType === 'Mod'
+  return SETTLEMENT_DECK_TYPES.includes(item.subType)
+}
+// ─────────────────────────────────────────────────────────────
 
 const CONDITION_OPTIONS = ['Undamaged', 'Damaged', 'Badly Damaged', 'Wrecked', 'Reinforced']
 
@@ -60,6 +76,7 @@ const SPECIAL_STRUCTURE_NAMES = ['Listening Post', 'Ranger Outpost', 'Scout Camp
 
 const SETTLEMENT_SUB_TABS = [
   { id: 'structures', label: 'STRUCTURES' },
+  { id: 'deck',       label: 'ITEM DECK' },
   { id: 'explore',    label: 'EXPLORE' },
 ]
 
@@ -85,6 +102,8 @@ export default function SettlementPage() {
   const [pendingExploreCard, setPendingExploreCard] = useState(null)
   const [pendingIsScoutCamp, setPendingIsScoutCamp] = useState(false)
   const [pendingItemDraw, setPendingItemDraw] = useState(null)
+  const [deckFilter, setDeckFilter] = useState('any')
+  const [recentlyDrawn, setRecentlyDrawn] = useState([])
 
   const structures = state.settlement.structures || []
   const phase = state.phase ?? 1
@@ -250,16 +269,57 @@ export default function SettlementPage() {
       } else if (structureName === 'Stores') {
         setTimeout(() => setShowStores(true), 100)
       } else {
-        // Equipment draw mechanic
+        // Equipment draw mechanic — draw from Settlement Item Deck
         const drawDef = parseDrawEffect(ref?.effect)
         if (drawDef) {
-          const drawn = drawRandomItems(drawDef.typeLabel, drawDef.drawCount)
-          if (drawn.length > 0) {
+          // Compute deck draw now using current state (same pattern as explore card draw)
+          const allIds = buildFullDeckIds()
+          const hasDeckData = (state.settlementDeck?.length > 0 || state.settlementDiscard?.length > 0)
+          let deckArr = hasDeckData
+            ? [...(state.settlementDeck ?? [])]
+            : [...allIds].sort(() => Math.random() - 0.5)
+          let discardArr = hasDeckData
+            ? [...(state.settlementDiscard ?? [])]
+            : []
+
+          if (deckArr.length === 0 && discardArr.length === 0) {
+            deckArr = [...allIds].sort(() => Math.random() - 0.5)
+          }
+
+          const drawnCards = []
+          let foundItem = null
+          let attempts = 0
+          const maxAttempts = allIds.length * 2 + 10
+
+          while (attempts < maxAttempts) {
+            if (deckArr.length === 0) {
+              if (discardArr.length === 0) break
+              deckArr = [...discardArr].sort(() => Math.random() - 0.5)
+              discardArr = []
+            }
+            const id = deckArr.shift()
+            const item = itemsData.find(i => i.id === id)
+            if (!item) { attempts++; continue }
+            drawnCards.push(item)
+            discardArr.push(id)
+            if (itemMatchesTypeLabel(item, drawDef.typeLabel)) {
+              foundItem = item
+              break
+            }
+            attempts++
+          }
+
+          extraUpdates.settlementDeck = deckArr
+          extraUpdates.settlementDiscard = discardArr
+
+          if (drawnCards.length > 0) {
             setTimeout(() => setPendingItemDraw({
               structureName,
-              drawnItems: drawn,
-              keepCount: drawDef.keepCount,
               typeLabel: drawDef.typeLabel,
+              keepCount: drawDef.keepCount,
+              drawnCards,
+              foundItem,
+              deckDraw: true,
             }), 150)
           }
         }
@@ -414,6 +474,95 @@ export default function SettlementPage() {
     setLostRecoveryQueue(prev => prev.slice(1))
   }
 
+  // ── Settlement Item Deck helpers ──────────────────────────────
+  function getInitializedDeck() {
+    const deck = state.settlementDeck ?? []
+    const discard = state.settlementDiscard ?? []
+    if (deck.length === 0 && discard.length === 0) {
+      return { deck: [...buildFullDeckIds()].sort(() => Math.random() - 0.5), discard: [] }
+    }
+    return { deck, discard }
+  }
+
+  function drawManualFromDeck() {
+    const allIds = buildFullDeckIds()
+    const filterTypes = DECK_FILTER_OPTIONS.find(f => f.id === deckFilter)?.types || SETTLEMENT_DECK_TYPES
+    let { deck, discard } = getInitializedDeck()
+    deck = [...deck]
+    discard = [...discard]
+
+    if (deck.length === 0 && discard.length === 0) return null
+
+    let foundItem = null
+    let attempts = 0
+    const maxAttempts = allIds.length + 10
+
+    while (attempts < maxAttempts) {
+      if (deck.length === 0) {
+        if (discard.length === 0) break
+        deck = [...discard].sort(() => Math.random() - 0.5)
+        discard = []
+      }
+      const id = deck.shift()
+      const item = itemsData.find(i => i.id === id)
+      if (!item) { attempts++; continue }
+      discard.push(id)
+      if (filterTypes.includes(item.subType)) {
+        foundItem = item
+        break
+      }
+      attempts++
+    }
+
+    setState(prev => ({ ...prev, settlementDeck: deck, settlementDiscard: discard }))
+    if (foundItem) {
+      setRecentlyDrawn(prev => [{ ...foundItem, drawnAt: Date.now() }, ...prev.slice(0, 19)])
+    }
+    return foundItem
+  }
+
+  function reshuffleDeck() {
+    const discard = state.settlementDiscard ?? []
+    setState(prev => ({
+      ...prev,
+      settlementDeck: [...discard].sort(() => Math.random() - 0.5),
+      settlementDiscard: [],
+    }))
+  }
+
+  function fullResetDeck() {
+    if (!confirm('Reset Settlement Item Deck? This shuffles all cards back in.')) return
+    setState(prev => ({
+      ...prev,
+      settlementDeck: [...buildFullDeckIds()].sort(() => Math.random() - 0.5),
+      settlementDiscard: [],
+    }))
+    setRecentlyDrawn([])
+  }
+
+  function addRecentlyDrawnToPool(item) {
+    setState(prev => ({
+      ...prev,
+      itemPool: {
+        ...prev.itemPool,
+        items: [
+          ...(prev.itemPool?.items || []),
+          {
+            id: Date.now() + Math.random(),
+            catalogId: item.id,
+            name: item.name,
+            caps: item.caps,
+            subType: item.subType,
+            isBoost: false,
+            location: 'stored',
+            assignedUnit: null,
+          },
+        ],
+      },
+    }))
+  }
+  // ─────────────────────────────────────────────────────────────
+
   function handleItemDrawKeep(keptItems) {
     if (!keptItems.length) return
     setState(prev => ({
@@ -429,7 +578,7 @@ export default function SettlementPage() {
             caps: item.caps,
             subType: item.subType,
             isBoost: false,
-            location: 'recovery',
+            location: 'stored',
             assignedUnit: null,
           })),
         ],
@@ -494,14 +643,22 @@ export default function SettlementPage() {
       )}
 
       {pendingItemDraw && (
-        <ItemDrawModal
-          draw={pendingItemDraw}
-          onKeep={handleItemDrawKeep}
-          onClose={() => setPendingItemDraw(null)}
-        />
+        pendingItemDraw.deckDraw ? (
+          <DeckDrawModal
+            draw={pendingItemDraw}
+            onKeep={handleItemDrawKeep}
+            onClose={() => setPendingItemDraw(null)}
+          />
+        ) : (
+          <ItemDrawModal
+            draw={pendingItemDraw}
+            onKeep={handleItemDrawKeep}
+            onClose={() => setPendingItemDraw(null)}
+          />
+        )
       )}
 
-      {subTab === 'structures' ? (
+      {subTab === 'structures' && (
         <StructuresPanel
           state={state}
           setState={setState}
@@ -553,7 +710,25 @@ export default function SettlementPage() {
           handleRepairStructure={handleRepairStructure}
           settings={settings}
         />
-      ) : (
+      )}
+
+      {subTab === 'deck' && (
+        <SettlementDeckPanel
+          state={state}
+          setState={setState}
+          structures={structures}
+          deckFilter={deckFilter}
+          setDeckFilter={setDeckFilter}
+          recentlyDrawn={recentlyDrawn}
+          setRecentlyDrawn={setRecentlyDrawn}
+          drawManualFromDeck={drawManualFromDeck}
+          reshuffleDeck={reshuffleDeck}
+          fullResetDeck={fullResetDeck}
+          addRecentlyDrawnToPool={addRecentlyDrawnToPool}
+        />
+      )}
+
+      {subTab === 'explore' && (
         <ExplorePanel state={state} setState={setState} />
       )}
     </div>
@@ -1330,6 +1505,589 @@ function ItemDrawModal({ draw, onKeep, onClose }) {
             </button>
           </div>
         </div>
+      </div>
+    </div>
+  )
+}
+
+/* ── Deck Draw Modal (deck-based equipment structure draws) ── */
+function DeckDrawModal({ draw, onKeep, onClose }) {
+  const { structureName, typeLabel, drawnCards = [], foundItem } = draw
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4">
+      <div className="bg-panel border border-pip-mid/50 rounded-lg w-full max-w-md space-y-4 p-5" style={{ boxShadow: '0 0 24px rgba(0,0,0,0.8)' }}>
+        <div className="flex items-center justify-between">
+          <div className="text-pip text-xs font-bold tracking-widest">{structureName} — DRAW</div>
+          <button onClick={onClose} className="text-muted hover:text-pip transition-colors"><X size={14} /></button>
+        </div>
+
+        <div className="text-muted text-xs">
+          Drew <span className="text-pip font-bold">{drawnCards.length}</span> card{drawnCards.length !== 1 ? 's' : ''} looking for a{' '}
+          <span className="text-amber font-bold">{typeLabel}</span> — all go to discard.
+        </div>
+
+        {/* All drawn cards */}
+        <div className="space-y-1 max-h-48 overflow-y-auto">
+          {drawnCards.map((item, i) => {
+            const isMatch = foundItem && item.id === foundItem.id && i === drawnCards.length - 1
+            return (
+              <div key={i} className={`flex items-center gap-2 px-3 py-1.5 rounded border text-xs ${
+                isMatch ? 'border-amber/60 bg-amber-dim/10' : 'border-pip-dim/30 opacity-60'
+              }`}>
+                <span className={isMatch ? 'text-amber font-bold' : 'text-muted'}>{item.name}</span>
+                <span className={`text-xs px-1 border border-current/30 rounded ml-auto ${DECK_SUBTYPE_COLOR[item.subType] || 'text-muted'}`}>{item.subType}</span>
+                {item.caps != null && <span className="text-muted">{item.caps}c</span>}
+                {isMatch && <span className="text-amber text-xs font-bold">MATCH</span>}
+              </div>
+            )
+          })}
+        </div>
+
+        {foundItem ? (
+          <div className="border-t border-pip-dim/30 pt-3 space-y-2">
+            <div className="text-pip text-xs">Found: <span className="text-amber font-bold">{foundItem.name}</span></div>
+            <div className="flex gap-2">
+              <button
+                onClick={() => { onKeep([foundItem]); onClose() }}
+                className="flex-1 py-2 text-xs border border-pip text-pip rounded hover:bg-pip-dim/20 transition-colors font-bold"
+              >ADD TO POOL</button>
+              <button
+                onClick={onClose}
+                className="px-4 py-2 text-xs border border-muted/40 text-muted rounded hover:text-pip hover:border-pip transition-colors"
+              >DISCARD</button>
+            </div>
+          </div>
+        ) : (
+          <div className="border-t border-pip-dim/30 pt-3">
+            <p className="text-danger text-xs text-center">No matching {typeLabel} found in deck.</p>
+            <button onClick={onClose} className="mt-2 w-full py-2 text-xs border border-muted/40 text-muted rounded hover:text-pip hover:border-pip transition-colors">CLOSE</button>
+          </div>
+        )}
+      </div>
+    </div>
+  )
+}
+
+/* ── Settlement Item Deck Panel ── */
+function SettlementDeckPanel({ state, setState, structures, deckFilter, setDeckFilter, recentlyDrawn, setRecentlyDrawn, drawManualFromDeck, reshuffleDeck, fullResetDeck, addRecentlyDrawnToPool }) {
+  const allIds = buildFullDeckIds()
+  const deck = state.settlementDeck ?? []
+  const discard = state.settlementDiscard ?? []
+  const total = allIds.length
+  const deckCount = (deck.length === 0 && discard.length === 0) ? total : deck.length
+  const discardCount = discard.length
+  const [pooledSet, setPooledSet] = useState(new Set())
+  const [recoveryFilter, setRecoveryFilter] = useState('any')
+  const [settlementFilter, setSettlementFilter] = useState('any')
+  const [showAddRecovery, setShowAddRecovery] = useState(false)
+  const [addRecoverySearch, setAddRecoverySearch] = useState('')
+  const [addRecoveryResults, setAddRecoveryResults] = useState([])
+
+  // Item pool data
+  const items = state.itemPool?.items ?? []
+  const roster = state.roster ?? []
+
+  // Slot counts from structures
+  const shedCount = (structures || []).filter(s => getStructureRef(s.structureId)?.name === 'Maintenance Shed').length
+  const lockerCount = (structures || []).filter(s => getStructureRef(s.structureId)?.name === 'Lockers').length
+  const storesCount = (structures || []).filter(s => getStructureRef(s.structureId)?.name === 'Stores').length
+
+  const recoveryItems = items.filter(i => i.location === 'recovery' || i.location === 'Temp Pool')
+  const storedItems = items.filter(i => i.location === 'stored' || i.location === 'Maint. Shed')
+  const lockerItems = items.filter(i => i.location === 'locker' || i.location === 'Locker')
+  const storesItems = items.filter(i => i.location === 'stores' || i.location === 'Stores')
+
+  const recoveryFilterTypes = DECK_FILTER_OPTIONS.find(f => f.id === recoveryFilter)?.types ?? SETTLEMENT_DECK_TYPES
+  const settlementFilterTypes = DECK_FILTER_OPTIONS.find(f => f.id === settlementFilter)?.types ?? SETTLEMENT_DECK_TYPES
+
+  const filteredRecovery = recoveryItems.filter(i => recoveryFilterTypes.includes(i.subType))
+  const filteredStored = storedItems.filter(i => settlementFilterTypes.includes(i.subType))
+
+  function updateItem(id, changes) {
+    setState(prev => ({
+      ...prev,
+      itemPool: {
+        ...prev.itemPool,
+        items: prev.itemPool.items.map(i => i.id === id ? { ...i, ...changes } : i),
+      },
+    }))
+  }
+
+  function removeItemAndAddCaps(item) {
+    setState(prev => ({
+      ...prev,
+      caps: (prev.caps ?? 0) + (item.caps ?? 0),
+      itemPool: {
+        ...prev.itemPool,
+        items: prev.itemPool.items.filter(i => i.id !== item.id),
+      },
+    }))
+  }
+
+  function handleSellAllRecovery() {
+    const total = recoveryItems.reduce((s, i) => s + (i.caps ?? 0), 0)
+    if (!confirm(`Sell all ${recoveryItems.length} recovery items for ${total}c?`)) return
+    setState(prev => ({
+      ...prev,
+      caps: (prev.caps ?? 0) + total,
+      itemPool: {
+        ...prev.itemPool,
+        items: prev.itemPool.items.filter(i => i.location !== 'recovery' && i.location !== 'Temp Pool'),
+      },
+    }))
+  }
+
+  function handleMoveToSettlement(item) {
+    const nonBoostStored = storedItems.filter(i => !i.isBoost).length
+    if (!item.isBoost && shedCount > 0 && nonBoostStored >= shedCount) {
+      alert(`Maintenance Shed full (${shedCount} slot${shedCount !== 1 ? 's' : ''})`)
+      return
+    }
+    updateItem(item.id, { location: 'stored' })
+  }
+
+  function handleMoveToLocker(item) {
+    if (lockerCount > 0 && lockerItems.length >= lockerCount) {
+      alert(`Lockers full (${lockerCount} slot${lockerCount !== 1 ? 's' : ''})`)
+      return
+    }
+    updateItem(item.id, { location: 'locker' })
+  }
+
+  function handleEquipItem(item, unitSlotId) {
+    if (storesCount > 0 && storesItems.length >= storesCount) {
+      alert(`Stores full (${storesCount} slot${storesCount !== 1 ? 's' : ''})`)
+      return
+    }
+    updateItem(item.id, { location: 'stores', assignedUnit: parseInt(unitSlotId) })
+  }
+
+  function handleAddToRecovery(item) {
+    setState(prev => ({
+      ...prev,
+      itemPool: {
+        ...prev.itemPool,
+        items: [
+          ...(prev.itemPool?.items ?? []),
+          {
+            id: Date.now() + Math.random(),
+            catalogId: item.id,
+            name: item.name,
+            caps: item.caps,
+            subType: item.subType,
+            isBoost: false,
+            location: 'recovery',
+            assignedUnit: null,
+          },
+        ],
+      },
+    }))
+  }
+
+  function handleAddRecoverySearchChange(val) {
+    setAddRecoverySearch(val)
+    if (!val.trim()) { setAddRecoveryResults([]); return }
+    const q = val.toLowerCase()
+    setAddRecoveryResults(itemsData.filter(i => i.name.toLowerCase().includes(q)).slice(0, 20))
+  }
+
+  function handleAddToPool(item, drawnAt) {
+    addRecentlyDrawnToPool(item)
+    setPooledSet(prev => new Set([...prev, drawnAt]))
+  }
+
+  return (
+    <div className="space-y-4">
+      {/* Header */}
+      <div className="flex items-center gap-3 border-b border-pip-mid/50 pb-2 flex-wrap gap-y-2">
+        <h2 className="text-pip text-sm tracking-widest font-bold flex-1">SETTLEMENT ITEM DECK</h2>
+        <span className="text-muted text-xs">{deckCount}/{total} remaining · {discardCount} in discard</span>
+        {deck.length === 0 && discard.length > 0 && (
+          <button
+            onClick={reshuffleDeck}
+            className="flex items-center gap-1 text-xs text-amber border border-amber/50 rounded px-2 py-1 hover:bg-amber/10 transition-colors font-bold"
+          >
+            <Shuffle size={11} /> RESHUFFLE DISCARD
+          </button>
+        )}
+        {(deck.length > 0 || discard.length > 0) && (
+          <button
+            onClick={reshuffleDeck}
+            className="flex items-center gap-1 text-xs text-muted hover:text-amber border border-muted/30 hover:border-amber/60 rounded px-2 py-1 transition-colors"
+          ><Shuffle size={11} /> RESHUFFLE</button>
+        )}
+        <button
+          onClick={fullResetDeck}
+          className="text-xs text-muted hover:text-danger border border-muted/30 hover:border-danger/60 rounded px-2 py-1 transition-colors"
+        >FULL RESET</button>
+      </div>
+
+      {/* Deck stats */}
+      <div className="grid grid-cols-3 gap-3 text-center">
+        <div className="border border-pip-mid/50 rounded bg-panel p-3">
+          <div className="text-pip font-bold text-lg">{deckCount}</div>
+          <div className="text-muted text-xs">IN DECK</div>
+        </div>
+        <div className="border border-pip-mid/50 rounded bg-panel p-3">
+          <div className="text-pip font-bold text-lg">{discardCount}</div>
+          <div className="text-muted text-xs">DISCARDED</div>
+        </div>
+        <div className="border border-pip-mid/50 rounded bg-panel p-3">
+          <div className="text-muted font-bold text-lg">{total}</div>
+          <div className="text-muted text-xs">TOTAL</div>
+        </div>
+      </div>
+
+      {/* Type filter + Draw button */}
+      <div className="flex flex-wrap gap-1.5">
+        {DECK_FILTER_OPTIONS.map(f => (
+          <button
+            key={f.id}
+            onClick={() => setDeckFilter(f.id)}
+            className={`text-xs px-2.5 py-1 border rounded transition-colors ${
+              deckFilter === f.id
+                ? 'border-pip text-pip bg-pip-dim/20 font-bold'
+                : 'border-muted/30 text-muted hover:text-pip hover:border-pip'
+            }`}
+          >{f.label}</button>
+        ))}
+        <button
+          onClick={drawManualFromDeck}
+          disabled={deckCount === 0 && discardCount === 0}
+          className="ml-auto text-xs border border-amber text-amber font-bold hover:bg-amber-dim/30 rounded px-4 py-1 transition-colors disabled:opacity-40"
+          style={{ boxShadow: '0 0 6px var(--color-amber-glow)' }}
+        >DRAW CARD</button>
+      </div>
+
+      <p className="text-muted text-xs italic">
+        Draws sequentially through the deck. All drawn cards go to discard — even items added to your Settlement Pool.
+        When the deck runs empty the discard pile reshuffles into a new deck.
+      </p>
+
+      {/* Recently drawn */}
+      {recentlyDrawn.length > 0 && (
+        <div>
+          <div className="text-muted text-xs tracking-wider mb-2">RECENTLY DRAWN</div>
+          <div className="space-y-1.5">
+            {recentlyDrawn.map((item, i) => {
+              const added = pooledSet.has(item.drawnAt)
+              return (
+                <div key={item.drawnAt} className={`flex items-center gap-3 border rounded px-3 py-2 ${
+                  added ? 'border-pip-dim/30 opacity-60' : 'border-pip-mid/40 bg-panel-light'
+                }`}>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-2 flex-wrap">
+                      <span className="text-pip text-xs font-bold">{item.name}</span>
+                      <span className={`text-xs px-1.5 py-0.5 border border-current/30 rounded ${DECK_SUBTYPE_COLOR[item.subType] || 'text-muted'}`}>{item.subType}</span>
+                      {item.caps != null && <span className="text-muted text-xs">{item.caps}c</span>}
+                      {added && <span className="text-pip text-xs">✓ ADDED TO POOL</span>}
+                    </div>
+                  </div>
+                  {!added && (
+                    <button
+                      onClick={() => handleAddToPool(item, item.drawnAt)}
+                      className="text-xs border border-pip text-pip hover:bg-pip-dim rounded px-2 py-1 transition-colors font-bold shrink-0"
+                    >ADD TO POOL</button>
+                  )}
+                  <button
+                    onClick={() => setRecentlyDrawn(prev => prev.filter((_, j) => j !== i))}
+                    className="text-xs border border-muted/30 text-muted hover:text-pip rounded px-2 py-1 transition-colors shrink-0"
+                  >DISCARD</button>
+                </div>
+              )
+            })}
+          </div>
+        </div>
+      )}
+
+      {deckCount === 0 && discardCount === 0 && recentlyDrawn.length === 0 && (
+        <p className="text-center py-8 text-muted text-xs border border-dashed border-muted/30 rounded">
+          No deck initialized — draw a card or use a structure to start.
+        </p>
+      )}
+
+      {/* ── RECOVERY POOL ── */}
+      <div className="border border-muted/40 rounded bg-panel mt-2">
+        <div className="flex items-center gap-3 px-4 py-3 border-b border-muted/30">
+          <h3 className="text-pip text-sm font-bold tracking-wider flex-1">RECOVERY POOL ({recoveryItems.length})</h3>
+        </div>
+        <div className="p-4 space-y-3">
+          <p className="text-muted text-xs">Items gathered from battle. Use Maintenance Sheds to process into your Settlement Pool.</p>
+
+          {/* Filter + Add */}
+          <div className="flex gap-1.5 flex-wrap items-center">
+            {DECK_FILTER_OPTIONS.map(f => (
+              <button
+                key={f.id}
+                onClick={() => setRecoveryFilter(f.id)}
+                className={`text-xs px-2 py-0.5 border rounded transition-colors ${
+                  recoveryFilter === f.id
+                    ? 'border-pip text-pip bg-pip-dim/20 font-bold'
+                    : 'border-muted/30 text-muted hover:text-pip hover:border-pip'
+                }`}
+              >{f.label}</button>
+            ))}
+            <button
+              onClick={() => { setShowAddRecovery(true); setAddRecoverySearch(''); setAddRecoveryResults([]) }}
+              className="ml-auto flex items-center gap-1 text-xs px-3 py-1 border border-muted rounded text-muted hover:text-pip hover:border-pip transition-colors"
+            >
+              <Plus size={11} /> ADD ITEM
+            </button>
+          </div>
+
+          {/* Add item modal inline */}
+          {showAddRecovery && (
+            <div className="border border-pip-mid/40 rounded bg-panel-alt p-3 space-y-2">
+              <div className="flex items-center justify-between">
+                <span className="text-muted text-xs tracking-wider">ADD ITEM TO RECOVERY</span>
+                <button onClick={() => setShowAddRecovery(false)} className="text-muted hover:text-danger"><X size={13} /></button>
+              </div>
+              <input
+                type="text"
+                value={addRecoverySearch}
+                onChange={e => handleAddRecoverySearchChange(e.target.value)}
+                placeholder="Search items by name..."
+                className="w-full text-xs py-1 px-2"
+                autoFocus
+              />
+              <div className="max-h-48 overflow-y-auto space-y-1">
+                {addRecoveryResults.length === 0 && addRecoverySearch.trim() && (
+                  <p className="text-muted text-xs">No results found.</p>
+                )}
+                {addRecoveryResults.map(item => (
+                  <div
+                    key={item.id}
+                    onClick={() => { handleAddToRecovery(item); setShowAddRecovery(false) }}
+                    className="flex items-center justify-between border border-muted/40 rounded px-3 py-2 hover:bg-panel cursor-pointer"
+                  >
+                    <span className="text-pip text-xs">{item.name}</span>
+                    <div className="flex items-center gap-2">
+                      <span className="text-muted text-xs">{item.subType}</span>
+                      <span className="text-amber text-xs font-bold">{item.caps}c</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Recovery items list */}
+          {filteredRecovery.length === 0 ? (
+            <p className="text-muted text-xs">No items in recovery pool.</p>
+          ) : (
+            <div className="space-y-1">
+              {filteredRecovery.map(item => (
+                <div key={item.id} className="flex items-center gap-2 border border-pip-mid/30 rounded px-3 py-2 bg-panel-light flex-wrap">
+                  <span className="text-pip text-xs flex-1 min-w-0">{item.name}</span>
+                  <span className={`text-xs px-1.5 py-0.5 border border-current/30 rounded ${DECK_SUBTYPE_COLOR[item.subType] || 'text-muted'}`}>{item.subType}</span>
+                  <span className="text-amber text-xs font-bold">{item.caps}c</span>
+                  <div className="flex gap-1 flex-wrap">
+                    <button
+                      onClick={() => handleMoveToSettlement(item)}
+                      disabled={!item.isBoost && shedCount > 0 && storedItems.filter(i => !i.isBoost).length >= shedCount}
+                      className="text-xs px-2 py-0.5 border border-muted rounded text-muted hover:text-pip hover:border-pip disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+                      title={`Move to Settlement Pool (${storedItems.filter(i => !i.isBoost).length}/${shedCount} shed slots)`}
+                    >TO SETTLEMENT</button>
+                    <button
+                      onClick={() => handleMoveToLocker(item)}
+                      disabled={lockerCount > 0 && lockerItems.length >= lockerCount}
+                      className="text-xs px-2 py-0.5 border border-muted rounded text-muted hover:text-pip hover:border-pip disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+                      title={`Move to Locker (${lockerItems.length}/${lockerCount} slots)`}
+                    >LOCKER</button>
+                    <button
+                      onClick={() => removeItemAndAddCaps(item)}
+                      className="text-xs px-2 py-0.5 border border-amber/40 rounded text-amber hover:bg-amber-dim/20 transition-colors"
+                    >SELL {item.caps}c</button>
+                  </div>
+                </div>
+              ))}
+              <div className="pt-2">
+                <button
+                  onClick={handleSellAllRecovery}
+                  className="text-xs px-4 py-2 border border-danger/40 text-danger rounded hover:bg-danger-dim/10 transition-colors"
+                >
+                  SELL ALL ({recoveryItems.reduce((s, i) => s + (i.caps ?? 0), 0)}c)
+                </button>
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* ── SETTLEMENT POOL ── */}
+      <div className="border border-muted/40 rounded bg-panel">
+        <div className="flex items-center gap-3 px-4 py-3 border-b border-muted/30 flex-wrap gap-y-1">
+          <h3 className="text-pip text-sm font-bold tracking-wider flex-1">SETTLEMENT POOL ({storedItems.length})</h3>
+          <span className="text-muted text-xs">
+            SHED {storedItems.filter(i => !i.isBoost).length}/{shedCount} · LOCKERS {lockerItems.length}/{lockerCount} · STORES {storesItems.length}/{storesCount}
+          </span>
+        </div>
+        <div className="p-4 space-y-3">
+          <p className="text-muted text-xs">Items available for equipping or storing. Unsaved items are sold at round end.</p>
+
+          {/* Filter */}
+          <div className="flex gap-1.5 flex-wrap">
+            {DECK_FILTER_OPTIONS.map(f => (
+              <button
+                key={f.id}
+                onClick={() => setSettlementFilter(f.id)}
+                className={`text-xs px-2 py-0.5 border rounded transition-colors ${
+                  settlementFilter === f.id
+                    ? 'border-pip text-pip bg-pip-dim/20 font-bold'
+                    : 'border-muted/30 text-muted hover:text-pip hover:border-pip'
+                }`}
+              >{f.label}</button>
+            ))}
+          </div>
+
+          {/* Stored items */}
+          {filteredStored.length === 0 ? (
+            <p className="text-muted text-xs">No items in settlement pool.</p>
+          ) : (
+            <div className="space-y-1">
+              {filteredStored.map(item => (
+                <SettlementPoolItem
+                  key={item.id}
+                  item={item}
+                  roster={roster}
+                  storesCount={storesCount}
+                  storesItems={storesItems}
+                  lockerCount={lockerCount}
+                  lockerItems={lockerItems}
+                  onEquip={(unitSlotId) => handleEquipItem(item, unitSlotId)}
+                  onLocker={() => handleMoveToLocker(item)}
+                  onSell={() => removeItemAndAddCaps(item)}
+                />
+              ))}
+            </div>
+          )}
+
+          {/* Lockers sub-section */}
+          <div className="border-t border-muted/20 pt-3">
+            <div className="text-muted text-xs font-bold tracking-wider mb-2">
+              LOCKERS ({lockerItems.length}/{lockerCount})
+            </div>
+            {lockerItems.length === 0 ? (
+              <p className="text-muted text-xs">No items in lockers.</p>
+            ) : (
+              <div className="space-y-1 ml-2">
+                {lockerItems.map(item => (
+                  <div key={item.id} className="flex items-center gap-2 border border-pip-mid/30 rounded px-3 py-2 bg-panel-light flex-wrap">
+                    <span className="text-pip text-xs flex-1 min-w-0">{item.name}</span>
+                    <span className={`text-xs px-1.5 py-0.5 border border-current/30 rounded ${DECK_SUBTYPE_COLOR[item.subType] || 'text-muted'}`}>{item.subType}</span>
+                    <span className="text-amber text-xs font-bold">{item.caps}c</span>
+                    <div className="flex gap-1">
+                      <button
+                        onClick={() => updateItem(item.id, { location: 'stored' })}
+                        className="text-xs px-2 py-0.5 border border-muted rounded text-muted hover:text-pip hover:border-pip transition-colors"
+                      >RETURN TO POOL</button>
+                      <button
+                        onClick={() => removeItemAndAddCaps(item)}
+                        className="text-xs px-2 py-0.5 border border-amber/40 rounded text-amber hover:bg-amber-dim/20 transition-colors"
+                      >SELL {item.caps}c</button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {/* Equipped / Stores sub-section */}
+          <div className="border-t border-muted/20 pt-3">
+            <div className="text-muted text-xs font-bold tracking-wider mb-2">
+              EQUIPPED / STORES ({storesItems.length}/{storesCount})
+            </div>
+            {storesItems.length === 0 ? (
+              <p className="text-muted text-xs">No items equipped or in stores.</p>
+            ) : (
+              <div className="space-y-3 ml-2">
+                {(() => {
+                  const groups = {}
+                  storesItems.forEach(item => {
+                    const key = item.assignedUnit != null ? String(item.assignedUnit) : 'unassigned'
+                    if (!groups[key]) groups[key] = []
+                    groups[key].push(item)
+                  })
+                  return Object.entries(groups).map(([unitKey, groupItems]) => {
+                    const unit = roster.find(u => String(u.slotId) === unitKey)
+                    return (
+                      <div key={unitKey}>
+                        <div className="text-muted text-xs mb-1 font-bold">
+                          {unit ? unit.unitName : 'Unassigned'}
+                        </div>
+                        <div className="space-y-1">
+                          {groupItems.map(item => (
+                            <div key={item.id} className="flex items-center gap-2 border border-pip-mid/30 rounded px-3 py-2 bg-panel-light flex-wrap">
+                              <span className="text-pip text-xs flex-1 min-w-0">{item.name}</span>
+                              <span className={`text-xs px-1.5 py-0.5 border border-current/30 rounded ${DECK_SUBTYPE_COLOR[item.subType] || 'text-muted'}`}>{item.subType}</span>
+                              <span className="text-amber text-xs font-bold">{item.caps}c</span>
+                              <div className="flex gap-1">
+                                <button
+                                  onClick={() => updateItem(item.id, { location: 'stored', assignedUnit: null })}
+                                  className="text-xs px-2 py-0.5 border border-muted rounded text-muted hover:text-pip hover:border-pip transition-colors"
+                                >UNEQUIP</button>
+                                <button
+                                  onClick={() => removeItemAndAddCaps(item)}
+                                  className="text-xs px-2 py-0.5 border border-amber/40 rounded text-amber hover:bg-amber-dim/20 transition-colors"
+                                >SELL {item.caps}c</button>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )
+                  })
+                })()}
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+/* Inline equip helper for SettlementDeckPanel */
+function SettlementPoolItem({ item, roster, storesCount, storesItems, lockerCount, lockerItems, onEquip, onLocker, onSell }) {
+  const [pickingUnit, setPickingUnit] = useState(false)
+  return (
+    <div className="flex items-center gap-2 border border-pip-mid/30 rounded px-3 py-2 bg-panel-light flex-wrap">
+      <span className="text-pip text-xs flex-1 min-w-0">{item.name}</span>
+      <span className={`text-xs px-1.5 py-0.5 border border-current/30 rounded ${DECK_SUBTYPE_COLOR[item.subType] || 'text-muted'}`}>{item.subType}</span>
+      <span className="text-amber text-xs font-bold">{item.caps}c</span>
+      <div className="flex gap-1 flex-wrap items-center">
+        {pickingUnit ? (
+          <>
+            <select
+              autoFocus
+              defaultValue=""
+              onChange={e => { if (e.target.value) { onEquip(e.target.value); setPickingUnit(false) } }}
+              className="text-xs py-0.5 px-1"
+            >
+              <option value="">Pick unit...</option>
+              {roster.map(u => (
+                <option key={u.slotId} value={u.slotId}>{u.unitName}</option>
+              ))}
+            </select>
+            <button onClick={() => setPickingUnit(false)} className="text-muted hover:text-danger"><X size={12} /></button>
+          </>
+        ) : (
+          <button
+            onClick={() => setPickingUnit(true)}
+            disabled={storesCount > 0 && storesItems.length >= storesCount}
+            className="text-xs px-2 py-0.5 border border-muted rounded text-muted hover:text-pip hover:border-pip disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+          >EQUIP</button>
+        )}
+        <button
+          onClick={onLocker}
+          disabled={lockerCount > 0 && lockerItems.length >= lockerCount}
+          className="text-xs px-2 py-0.5 border border-muted rounded text-muted hover:text-pip hover:border-pip disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+        >LOCKER</button>
+        <button
+          onClick={onSell}
+          className="text-xs px-2 py-0.5 border border-amber/40 rounded text-amber hover:bg-amber-dim/20 transition-colors"
+        >SELL {item.caps}c</button>
       </div>
     </div>
   )

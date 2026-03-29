@@ -23,6 +23,8 @@ function stateToDb(state) {
     secret_purpose_history: state.secretPurposeHistory ?? [],
     player_info: state.player ?? {},
     settings: state.settings ?? null,
+    settlement_deck: state.settlementDeck ?? [],
+    settlement_discard: state.settlementDiscard ?? [],
   }
 }
 
@@ -44,6 +46,8 @@ function dbToState(row) {
     secretPurposeHistory: row.secret_purpose_history ?? [],
     player: row.player_info ?? {},
     settings: row.settings ?? null,
+    settlementDeck: row.settlement_deck ?? [],
+    settlementDiscard: row.settlement_discard ?? [],
   }
 }
 
@@ -54,6 +58,7 @@ function campaignDbToState(row) {
     battleCount: row.battle_count ?? 0,
     phase1CapLimit: row.phase1_cap_limit ?? 750,
     exploreLocations: row.explore_locations ?? {},
+    battles: row.battles ?? {},
   }
 }
 
@@ -113,7 +118,7 @@ export function useCampaignSync({ campaignId, userId } = {}) {
         // Load shared campaign data
         const { data: camp, error: campErr } = await supabase
           .from('campaigns')
-          .select('phase, round, battle_count, phase1_cap_limit, explore_locations')
+          .select('phase, round, battle_count, phase1_cap_limit, explore_locations, battles')
           .eq('id', campaignId)
           .single()
 
@@ -235,6 +240,7 @@ export function useCampaignSync({ campaignId, userId } = {}) {
       battleCount: 'battle_count',
       phase1CapLimit: 'phase1_cap_limit',
       exploreLocations: 'explore_locations',
+      battles: 'battles',
     }
     const col = colMap[field] ?? field
 

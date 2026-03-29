@@ -21,6 +21,7 @@ create table if not exists campaigns (
   battle_count int default 0 not null,
   phase1_cap_limit int default 750 not null,
   explore_locations jsonb default '{}'::jsonb,
+  battles jsonb default '{}'::jsonb,
   created_at timestamptz default now(),
   updated_at timestamptz default now()
 );
@@ -54,6 +55,8 @@ create table if not exists player_data (
   objective_progress jsonb default '{}'::jsonb,
   secret_purpose_history jsonb default '[]'::jsonb,
   player_info jsonb default '{}'::jsonb,
+  settlement_deck jsonb default '[]'::jsonb,
+  settlement_discard jsonb default '[]'::jsonb,
   updated_at timestamptz default now(),
   unique(campaign_id, user_id)
 );
@@ -94,6 +97,9 @@ create policy "campaigns_insert_own" on campaigns
 create policy "campaigns_update_creator" on campaigns
   for update using (auth.uid() = created_by);
 
+create policy "campaigns_delete_creator" on campaigns
+  for delete using (auth.uid() = created_by);
+
 -- ── 5. POLICIES — campaign_players ──
 
 create policy "campaign_players_select_members" on campaign_players
@@ -110,6 +116,18 @@ create policy "campaign_players_insert_self" on campaign_players
 
 create policy "campaign_players_update_self" on campaign_players
   for update using (auth.uid() = user_id);
+
+create policy "campaign_players_delete_self" on campaign_players
+  for delete using (auth.uid() = user_id);
+
+create policy "campaign_players_delete_by_creator" on campaign_players
+  for delete using (
+    exists (
+      select 1 from campaigns
+      where campaigns.id = campaign_players.campaign_id
+        and campaigns.created_by = auth.uid()
+    )
+  );
 
 -- ── 6. POLICIES — player_data ──
 

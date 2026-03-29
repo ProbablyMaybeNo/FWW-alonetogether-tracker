@@ -92,7 +92,7 @@ const ALL_STEPS = [
     target: '[data-tour="tab-campaign"]',
     placement: 'below',
     title: 'CAMPAIGN TAB',
-    body: 'Shared across all players. Track campaign phase (1–4), current round, and battle count. Hit NEW ROUND to step through the round sequence. Draw from the Wasteland Item Deck here when looting after battles.',
+    body: 'Shared across all players. Track campaign phase (1–4), current round, and battle count. Hit NEW ROUND to step through the round sequence.',
   },
   {
     id: 'player',
@@ -113,7 +113,7 @@ const ALL_STEPS = [
     target: '[data-tour="tab-settlement"]',
     placement: 'below',
     title: 'SETTLEMENT TAB',
-    body: 'Your personal settlement. Add structures, power them with Generators, then USE them each round to trigger their effects. Track damage, repair, and reinforce. Monitor power, water, and defense totals.',
+    body: 'Your personal settlement. Add structures, power them with Generators, then USE them each round to trigger their effects. Track damage, repair, and reinforce. Monitor power, water, and defense totals. The ITEM DECK tab holds your personal Settlement Item Deck — draw cards sequentially when looting or using structures that produce items.',
   },
   {
     id: 'objectives',

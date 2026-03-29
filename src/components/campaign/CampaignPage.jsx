@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react'
-import { ChevronLeft, ChevronRight, Shuffle } from 'lucide-react'
+import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { useCampaign } from '../../context/CampaignContext'
 import { useAuth } from '../../context/AuthContext'
 import { supabase } from '../../lib/supabase'
 import { calcRosterTotalCaps } from '../../utils/calculations'
 import { SCAVENGER_OBJECTIVES } from '../../data/scavengerObjectives'
-import itemsData from '../../data/items.json'
+
 
 const PHASES = [
   { num: 1, name: 'THE ROAD AHEAD',           subtitle: 'Build your starting roster. 750 cap limit.' },
@@ -14,109 +14,15 @@ const PHASES = [
   { num: 4, name: 'FIGHTING FOR THE FRONTIER', subtitle: 'Open campaign loop. Fight, build, grow.' },
 ]
 
-const WASTELAND_DECK_TYPES = ['Pistol','Rifle','Heavy Weapon','Melee','Grenade','Mine','Armor','Clothing','Food','Drink','Chem','Utility','Mod']
-
-const TYPE_FILTER_OPTIONS = [
-  { id: 'any',        label: 'ANY',        types: WASTELAND_DECK_TYPES },
-  { id: 'weapon',     label: 'WEAPON',     types: ['Pistol','Rifle','Heavy Weapon','Melee','Grenade','Mine'] },
-  { id: 'armor',      label: 'ARMOR',      types: ['Armor','Clothing'] },
-  { id: 'consumable', label: 'CONSUMABLE', types: ['Food','Drink','Chem'] },
-  { id: 'mod',        label: 'MOD',        types: ['Mod'] },
-  { id: 'utility',    label: 'UTILITY',    types: ['Utility'] },
-]
-
-const SUBTYPE_COLOR = {
-  Pistol: 'text-amber', Rifle: 'text-amber', 'Heavy Weapon': 'text-amber', Melee: 'text-amber',
-  Grenade: 'text-danger', Mine: 'text-danger',
-  Armor: 'text-info', Clothing: 'text-info',
-  Food: 'text-pip', Drink: 'text-pip', Chem: 'text-pip',
-  Mod: 'text-amber', Utility: 'text-muted',
-}
-
-function buildItemDeck() {
-  return itemsData
-    .filter(i => WASTELAND_DECK_TYPES.includes(i.subType))
-    .map(i => i.id)
-}
-
-function useWastelandItemDeck() {
-  const allIds = buildItemDeck()
-
-  const [deckIds, setDeckIds] = useState(() => {
-    try {
-      const stored = JSON.parse(localStorage.getItem('fww-wasteland-item-deck') || 'null')
-      if (Array.isArray(stored) && stored.length > 0) return stored
-    } catch {}
-    return [...allIds].sort(() => Math.random() - 0.5)
-  })
-
-  const [drawn, setDrawn] = useState(() => {
-    try { return JSON.parse(localStorage.getItem('fww-wasteland-item-drawn') || '[]') }
-    catch { return [] }
-  })
-
-  const [typeFilter, setTypeFilter] = useState('any')
-
-  useEffect(() => {
-    try {
-      localStorage.setItem('fww-wasteland-item-deck', JSON.stringify(deckIds))
-      localStorage.setItem('fww-wasteland-item-drawn', JSON.stringify(drawn))
-    } catch {}
-  }, [deckIds, drawn])
-
-  function draw() {
-    const filterTypes = TYPE_FILTER_OPTIONS.find(f => f.id === typeFilter)?.types || WASTELAND_DECK_TYPES
-    const eligible = deckIds.filter(id => {
-      const item = itemsData.find(i => i.id === id)
-      return item && filterTypes.includes(item.subType)
-    })
-    if (eligible.length === 0) return
-    const randomId = eligible[Math.floor(Math.random() * eligible.length)]
-    const item = itemsData.find(i => i.id === randomId)
-    setDeckIds(d => d.filter(id => id !== randomId))
-    setDrawn(d => [{ ...item, drawnAt: Date.now(), kept: false }, ...d])
-  }
-
-  function keep(idx) {
-    setDrawn(d => d.map((c, i) => i === idx ? { ...c, kept: true } : c))
-  }
-
-  function discard(idx) {
-    const item = drawn[idx]
-    if (item) setDeckIds(d => [...d, item.id])
-    setDrawn(d => d.filter((_, i) => i !== idx))
-  }
-
-  function dismiss(idx) {
-    setDrawn(d => d.filter((_, i) => i !== idx))
-  }
-
-  function reshuffle() {
-    const keptIds = new Set(drawn.filter(d => d.kept).map(d => d.id))
-    const newDeck = allIds.filter(id => !keptIds.has(id))
-    setDeckIds(newDeck.sort(() => Math.random() - 0.5))
-    setDrawn(d => d.filter(c => c.kept))
-  }
-
-  function fullReset() {
-    setDeckIds([...allIds].sort(() => Math.random() - 0.5))
-    setDrawn([])
-  }
-
-  return {
-    deckIds, drawn, draw, keep, discard, dismiss, reshuffle, fullReset,
-    typeFilter, setTypeFilter,
-    total: allIds.length,
-    keptCount: drawn.filter(d => d.kept).length,
-  }
-}
 
 export default function CampaignPage({ campaignId }) {
   const { state, setState, updateShared, isOnline, sharedState } = useCampaign()
   const { user } = useAuth()
   const [allPlayers, setAllPlayers] = useState([])
   const [loadingPlayers, setLoadingPlayers] = useState(false)
-  const wasteland = useWastelandItemDeck()
+  const [battleOpponent, setBattleOpponent] = useState('')
+  const [battleResult, setBattleResult] = useState('win')
+  const [battleSubmitting, setBattleSubmitting] = useState(false)
 
   const phase = state?.phase ?? 1
   const round = state?.round ?? 0
@@ -214,6 +120,60 @@ export default function CampaignPage({ campaignId }) {
     const n = battleCount + 1
     if (isOnline) updateShared('battleCount', n)
     else setState(prev => ({ ...prev, battleCount: n }))
+  }
+
+  // Battle data
+  const battles = sharedState?.battles ?? {}
+  const roundBattles = battles[String(round)] ?? {}
+  const myBattleRecord = roundBattles[user?.id] ?? null
+  const allReady = displayPlayers.length > 0 && displayPlayers.every(p => roundBattles[p.userId]?.ready)
+
+  async function handleRecordBattle(e) {
+    e.preventDefault()
+    if (!battleOpponent || !user?.id) return
+    setBattleSubmitting(true)
+
+    const mirrorResult = battleResult === 'win' ? 'loss' : battleResult === 'loss' ? 'win' : 'draw'
+    const currentBattles = sharedState?.battles ?? {}
+    const roundKey = String(round)
+    const roundData = { ...(currentBattles[roundKey] ?? {}) }
+
+    // Update my record
+    const myRecord = roundData[user.id] ?? { ready: true, noBattles: false, matches: [] }
+    roundData[user.id] = {
+      ...myRecord,
+      ready: true,
+      noBattles: false,
+      matches: [...(myRecord.matches ?? []), { opponentId: battleOpponent, result: battleResult }],
+    }
+
+    // Update opponent's record (mirror)
+    const oppRecord = roundData[battleOpponent] ?? { ready: true, noBattles: false, matches: [] }
+    roundData[battleOpponent] = {
+      ...oppRecord,
+      ready: true,
+      matches: [...(oppRecord.matches ?? []), { opponentId: user.id, result: mirrorResult }],
+    }
+
+    await updateShared('battles', { ...currentBattles, [roundKey]: roundData })
+    setBattleOpponent('')
+    setBattleSubmitting(false)
+  }
+
+  async function handleNoBattles() {
+    if (!user?.id) return
+    const currentBattles = sharedState?.battles ?? {}
+    const roundKey = String(round)
+    const roundData = { ...(currentBattles[roundKey] ?? {}) }
+    roundData[user.id] = { ready: true, noBattles: true, matches: [] }
+    await updateShared('battles', { ...currentBattles, [roundKey]: roundData })
+  }
+
+  async function handleNextRound() {
+    if (!allReady && displayPlayers.length > 1) return
+    const newRound = round + 1
+    if (isOnline) updateShared('round', newRound)
+    else setState(prev => ({ ...prev, round: newRound }))
   }
 
   if (!state) return <div className="p-8 text-center text-muted text-xs tracking-wider">LOADING...</div>
@@ -345,6 +305,124 @@ export default function CampaignPage({ campaignId }) {
         </div>
       </div>
 
+      {/* ── Battles ── */}
+      <div>
+        <div className="flex items-center gap-3 mb-3 border-b border-pip-mid/50 pb-2">
+          <h2 className="text-pip text-sm tracking-widest font-bold flex-1">BATTLES — ROUND {round}</h2>
+          <span className="text-muted text-xs">
+            {displayPlayers.filter(p => roundBattles[p.userId]?.ready).length}/{displayPlayers.length} reported
+          </span>
+        </div>
+
+        {/* Battle log */}
+        <div className="space-y-1.5 mb-4">
+          {displayPlayers.map(p => {
+            const record = roundBattles[p.userId]
+            return (
+              <div key={p.userId} className={`border rounded px-3 py-2 ${record?.ready ? 'border-pip-dim/40 bg-panel' : 'border-muted/20 bg-panel opacity-60'}`}>
+                <div className="flex items-center gap-2 flex-wrap">
+                  <span className="text-xs font-bold text-pip">{p.username}</span>
+                  {record?.ready ? (
+                    record.noBattles ? (
+                      <span className="text-muted text-xs">No battles this round</span>
+                    ) : (
+                      <div className="flex gap-2 flex-wrap">
+                        {(record.matches ?? []).map((m, i) => {
+                          const opp = displayPlayers.find(x => x.userId === m.opponentId)
+                          return (
+                            <span key={i} className={`text-xs px-2 py-0.5 border rounded font-bold ${
+                              m.result === 'win' ? 'border-pip/40 text-pip' :
+                              m.result === 'loss' ? 'border-danger/40 text-danger' :
+                              'border-muted/40 text-muted'
+                            }`}>
+                              {m.result.toUpperCase()} vs {opp?.username ?? m.opponentId}
+                            </span>
+                          )
+                        })}
+                      </div>
+                    )
+                  ) : (
+                    <span className="text-muted text-xs italic">Not yet reported</span>
+                  )}
+                  {record?.ready && <span className="ml-auto text-pip text-xs">✓</span>}
+                </div>
+              </div>
+            )
+          })}
+        </div>
+
+        {/* Record battle form */}
+        {isOnline && user && (
+          <div className="border border-pip-mid/30 rounded bg-panel p-3 space-y-3">
+            <div className="text-muted text-xs tracking-wider">RECORD BATTLE</div>
+            <form onSubmit={handleRecordBattle} className="flex gap-2 flex-wrap items-end">
+              <div className="flex-1 min-w-32">
+                <label className="text-muted text-xs block mb-1">OPPONENT</label>
+                <select
+                  value={battleOpponent}
+                  onChange={e => setBattleOpponent(e.target.value)}
+                  className="w-full text-xs py-1 px-2"
+                >
+                  <option value="">Select opponent...</option>
+                  {displayPlayers.filter(p => !p.isMe).map(p => (
+                    <option key={p.userId} value={p.userId}>{p.username}</option>
+                  ))}
+                </select>
+              </div>
+              <div>
+                <label className="text-muted text-xs block mb-1">RESULT</label>
+                <div className="flex gap-1">
+                  {['win','loss','draw'].map(r => (
+                    <button
+                      key={r}
+                      type="button"
+                      onClick={() => setBattleResult(r)}
+                      className={`text-xs px-3 py-1 border rounded transition-colors font-bold ${
+                        battleResult === r
+                          ? r === 'win' ? 'border-pip text-pip bg-pip-dim/20'
+                            : r === 'loss' ? 'border-danger text-danger bg-danger/10'
+                            : 'border-muted text-muted bg-muted/10'
+                          : 'border-muted/30 text-muted hover:text-pip hover:border-pip'
+                      }`}
+                    >{r.toUpperCase()}</button>
+                  ))}
+                </div>
+              </div>
+              <button
+                type="submit"
+                disabled={!battleOpponent || battleSubmitting}
+                className="text-xs border border-amber text-amber font-bold px-4 py-1.5 rounded hover:bg-amber/10 transition-colors disabled:opacity-40"
+              >{battleSubmitting ? '...' : 'RECORD'}</button>
+            </form>
+            {!roundBattles[user.id]?.ready && (
+              <button
+                onClick={handleNoBattles}
+                className="text-xs text-muted border border-muted/30 rounded px-3 py-1.5 hover:text-pip hover:border-pip transition-colors"
+              >NO BATTLES THIS ROUND</button>
+            )}
+          </div>
+        )}
+
+        {/* Next Round button */}
+        <div className="mt-4 flex items-center gap-3">
+          <button
+            onClick={handleNextRound}
+            disabled={!allReady && displayPlayers.length > 1 && isOnline}
+            className={`flex-1 py-3 text-sm font-bold tracking-widest border rounded transition-all ${
+              allReady || displayPlayers.length <= 1 || !isOnline
+                ? 'border-amber text-amber hover:bg-amber/10'
+                : 'border-muted/30 text-muted opacity-40 cursor-not-allowed'
+            }`}
+            style={allReady || displayPlayers.length <= 1 || !isOnline ? { boxShadow: '0 0 12px var(--color-amber-glow)' } : {}}
+          >
+            {allReady || displayPlayers.length <= 1 || !isOnline
+              ? '▶ NEXT ROUND'
+              : `NEXT ROUND (${displayPlayers.filter(p => roundBattles[p.userId]?.ready).length}/${displayPlayers.length} ready)`
+            }
+          </button>
+        </div>
+      </div>
+
       {/* ── Scavenger Objectives Board ── */}
       {displayPlayers.some(p => p.activeObjectiveId != null || p.completedObjectiveIds?.length > 0) && (
         <div>
@@ -380,91 +458,6 @@ export default function CampaignPage({ campaignId }) {
           </div>
         </div>
       )}
-
-      {/* ── Wasteland Item Deck ── */}
-      <div>
-        <div className="flex items-center gap-3 mb-3 border-b border-pip-mid/50 pb-2 flex-wrap gap-y-2">
-          <h2 className="text-pip text-sm tracking-widest font-bold flex-1">
-            WASTELAND ITEM DECK
-          </h2>
-          <span className="text-muted text-xs">
-            {wasteland.deckIds.length}/{wasteland.total} remaining
-            {wasteland.keptCount > 0 && ` · ${wasteland.keptCount} kept`}
-          </span>
-          <button
-            onClick={wasteland.reshuffle}
-            className="flex items-center gap-1 text-xs text-muted hover:text-amber border border-muted/30 hover:border-amber/60 rounded px-2 py-1 transition-colors"
-          ><Shuffle size={11} /> RESHUFFLE</button>
-          <button
-            onClick={wasteland.fullReset}
-            className="text-xs text-muted hover:text-danger border border-muted/30 hover:border-danger/60 rounded px-2 py-1 transition-colors"
-          >FULL RESET</button>
-        </div>
-
-        {/* Type filter */}
-        <div className="flex flex-wrap gap-1.5 mb-3">
-          {TYPE_FILTER_OPTIONS.map(f => (
-            <button
-              key={f.id}
-              onClick={() => wasteland.setTypeFilter(f.id)}
-              className={`text-xs px-2.5 py-1 border rounded transition-colors ${
-                wasteland.typeFilter === f.id
-                  ? 'border-pip text-pip bg-pip-dim/20 font-bold'
-                  : 'border-muted/30 text-muted hover:text-pip hover:border-pip'
-              }`}
-            >{f.label}</button>
-          ))}
-          <button
-            onClick={wasteland.draw}
-            disabled={wasteland.deckIds.length === 0}
-            className="ml-auto text-xs border border-amber text-amber font-bold hover:bg-amber-dim/30 rounded px-4 py-1 transition-colors disabled:opacity-40"
-            style={{ boxShadow: '0 0 6px var(--color-amber-glow)' }}
-          >DRAW ITEM</button>
-        </div>
-
-        {/* Drawn cards */}
-        {wasteland.drawn.length > 0 && (
-          <div className="space-y-2 mb-2">
-            {wasteland.drawn.map((item, i) => (
-              <div key={`${item.id}-${item.drawnAt}`} className={`flex items-center gap-3 border rounded px-3 py-2 ${
-                item.kept ? 'border-pip/40 bg-pip-dim/10 opacity-70' : 'border-amber/40 bg-panel-light'
-              }`}>
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-2 flex-wrap">
-                    <span className={`text-xs font-bold ${item.kept ? 'text-pip' : 'text-amber'}`}>{item.name}</span>
-                    <span className={`text-xs px-1.5 py-0.5 border border-current/30 rounded ${SUBTYPE_COLOR[item.subType] || 'text-muted'}`}>{item.subType}</span>
-                    {item.caps != null && <span className="text-muted text-xs">{item.caps}c</span>}
-                    {item.kept && <span className="text-pip text-xs font-bold">✓ KEPT</span>}
-                  </div>
-                </div>
-                {!item.kept ? (
-                  <div className="flex gap-1.5 shrink-0">
-                    <button
-                      onClick={() => wasteland.keep(i)}
-                      className="text-xs border border-pip text-pip hover:bg-pip-dim rounded px-2 py-1 transition-colors font-bold"
-                    >KEEP</button>
-                    <button
-                      onClick={() => wasteland.discard(i)}
-                      className="text-xs border border-muted/40 text-muted hover:text-pip hover:border-pip rounded px-2 py-1 transition-colors"
-                    >RETURN</button>
-                  </div>
-                ) : (
-                  <button
-                    onClick={() => wasteland.dismiss(i)}
-                    className="text-xs border border-muted/30 text-muted hover:text-pip rounded px-2 py-1 transition-colors shrink-0"
-                  >DISMISS</button>
-                )}
-              </div>
-            ))}
-          </div>
-        )}
-
-        {wasteland.deckIds.length === 0 && wasteland.drawn.filter(d => !d.kept).length === 0 && (
-          <p className="text-center py-4 text-muted text-xs border border-dashed border-muted/30 rounded">
-            Deck empty — click RESHUFFLE to return discarded items, or FULL RESET to start fresh
-          </p>
-        )}
-      </div>
 
       {/* ── Active Explore Consequences ── */}
       {(state.activeEvents || []).length > 0 && (

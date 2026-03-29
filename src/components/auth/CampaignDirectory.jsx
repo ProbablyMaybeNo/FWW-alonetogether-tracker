@@ -18,6 +18,7 @@ export default function CampaignDirectory({ onEnterCampaign, onSolo }) {
   const [joinError, setJoinError] = useState('')
   const [showAccount, setShowAccount] = useState(false)
   const [deleteConfirm, setDeleteConfirm] = useState(null)
+  const [deleteError, setDeleteError] = useState('')
   const [createSettings, setCreateSettings] = useState({
     settlementMode: 'alone-together',
     useEventCards: false,
@@ -112,19 +113,23 @@ export default function CampaignDirectory({ onEnterCampaign, onSolo }) {
   }
 
   async function handleLeaveOrDelete(camp) {
+    setDeleteError('')
     try {
       if (camp.created_by === user.id) {
         // Creator: delete entire campaign (cascade handles players/data)
-        await supabase.from('campaigns').delete().eq('id', camp.id)
+        const { error } = await supabase.from('campaigns').delete().eq('id', camp.id)
+        if (error) throw error
       } else {
         // Member: just leave
-        await supabase.from('campaign_players')
+        const { error } = await supabase.from('campaign_players')
           .delete().eq('campaign_id', camp.id).eq('user_id', user.id)
+        if (error) throw error
       }
       setDeleteConfirm(null)
       fetchCampaigns()
     } catch (e) {
       console.error('leave/delete campaign error:', e)
+      setDeleteError(e?.message ?? 'Failed to remove campaign.')
     }
   }
 
@@ -272,7 +277,7 @@ export default function CampaignDirectory({ onEnterCampaign, onSolo }) {
             </div>
             <div className="flex gap-2 justify-center">
               <button
-                onClick={() => { setNewCampaign(null); setPanel(null); setCreateName(''); enterCampaign(newCampaign) }}
+                onClick={() => { setNewCampaign(null); setPanel(null); setCreateName(''); localStorage.removeItem('fww-tour-done'); enterCampaign(newCampaign) }}
                 className="px-5 py-2 border border-pip text-pip text-xs rounded hover:bg-pip-dim/20 transition-colors"
               >
                 ENTER CAMPAIGN
@@ -333,11 +338,11 @@ export default function CampaignDirectory({ onEnterCampaign, onSolo }) {
                 {deleteConfirm === camp.id ? (
                   <div className="flex items-center gap-3 px-4 py-3 flex-wrap">
                     <span className="text-danger text-xs flex-1">
-                      {camp.created_by === user.id ? 'Delete this campaign for ALL players?' : 'Leave this campaign?'}
+                      {deleteError || (camp.created_by === user.id ? 'Delete this campaign for ALL players?' : 'Leave this campaign?')}
                     </span>
                     <div className="flex gap-2">
                       <button onClick={() => handleLeaveOrDelete(camp)} className="px-3 py-1.5 text-xs border border-danger text-danger rounded hover:bg-danger/10 transition-colors">CONFIRM</button>
-                      <button onClick={() => setDeleteConfirm(null)} className="px-3 py-1.5 text-xs border border-pip/30 text-pip rounded hover:text-amber hover:border-amber transition-colors">CANCEL</button>
+                      <button onClick={() => { setDeleteConfirm(null); setDeleteError('') }} className="px-3 py-1.5 text-xs border border-pip/30 text-pip rounded hover:text-amber hover:border-amber transition-colors">CANCEL</button>
                     </div>
                   </div>
                 ) : (
