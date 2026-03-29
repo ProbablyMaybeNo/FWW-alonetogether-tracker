@@ -90,7 +90,7 @@ const SPECIAL_STRUCTURE_NAMES = ['Listening Post', 'Ranger Outpost', 'Scout Camp
 
 const SETTLEMENT_SUB_TABS = [
   { id: 'structures', label: 'STRUCTURES' },
-  { id: 'deck',       label: 'ITEM DECK' },
+  { id: 'deck',       label: 'ITEM + BOOST DECKS' },
   { id: 'explore',    label: 'EXPLORE' },
 ]
 
