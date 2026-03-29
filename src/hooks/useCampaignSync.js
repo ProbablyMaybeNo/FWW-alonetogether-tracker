@@ -4,6 +4,21 @@ import { usePersistedState } from './usePersistedState'
 
 const DEBOUNCE_MS = 500
 
+// Free starting structures given to every player on first join
+// 2x Generator-Small, 1x Stores, 1x Maintenance Shed, 1x Listening Post
+const FREE_STRUCTURE_IDS = [1, 1, 53, 54, 50]
+
+function buildFreeStartingStructures() {
+  return FREE_STRUCTURE_IDS.map(id => ({
+    instanceId: Date.now() + Math.random(),
+    structureId: id,
+    usedThisRound: false,
+    powered: false,
+    condition: 'Undamaged',
+    notes: '',
+  }))
+}
+
 // Map between app state keys and player_data DB columns
 function stateToDb(state) {
   return {
@@ -117,7 +132,15 @@ export function useCampaignSync({ campaignId, userId } = {}) {
             return null
           })()
           if (pending) localStorage.removeItem('fww-pending-settings')
-          const initialState = pending ? { ...solo.state, settings: pending } : solo.state
+          const baseState = pending ? { ...solo.state, settings: pending } : solo.state
+          const hasExistingStructures = (baseState.settlement?.structures?.length ?? 0) > 0
+          const initialState = hasExistingStructures ? baseState : {
+            ...baseState,
+            settlement: {
+              ...baseState.settlement,
+              structures: buildFreeStartingStructures(),
+            },
+          }
           setStateLocal(initialState)
         }
 
