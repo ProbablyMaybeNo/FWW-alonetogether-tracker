@@ -8,10 +8,53 @@ import { SCAVENGER_OBJECTIVES } from '../../data/scavengerObjectives'
 
 
 const PHASES = [
-  { num: 1, name: 'THE ROAD AHEAD',           subtitle: 'Build your starting roster. 750 cap limit.' },
-  { num: 2, name: 'GATHER SUPPLIES',           subtitle: 'Track Fate only. Permanent deaths.' },
-  { num: 3, name: 'STAKING A CLAIM',           subtitle: 'Spend caps on structures and recruits only.' },
-  { num: 4, name: 'FIGHTING FOR THE FRONTIER', subtitle: 'Open campaign loop. Fight, build, grow.' },
+  {
+    num: 1,
+    name: 'THE ROAD AHEAD',
+    subtitle: 'Build Roster',
+    battles: 'None',
+    rules: [
+      '750 cap limit. Leader must be purchased first.',
+      'Max 3 Unique models. Max 1 heavy weapon per 250 caps.',
+      'Basic loadout + up to 150 caps of armor only.',
+      'No Perks on non-Leader models.',
+    ],
+  },
+  {
+    num: 2,
+    name: 'GATHER SUPPLIES',
+    subtitle: 'Loot & Survive',
+    battles: '2–3',
+    rules: [
+      'Track FATE only — no Injury, Battle, or Removed counts.',
+      'Permanent deaths apply.',
+      'All non-Dead conditions reset at Phase 3 start.',
+      'Caps and loot carry forward.',
+    ],
+  },
+  {
+    num: 3,
+    name: 'STAKING A CLAIM',
+    subtitle: 'Build Settlement',
+    battles: 'None',
+    rules: [
+      'Spend caps on structures and recruits only.',
+      'Free start: 2× Small Generator, Stores, Maintenance Shed, Listening Post.',
+      'Unspent caps carry into Phase 4.',
+    ],
+  },
+  {
+    num: 4,
+    name: 'FIGHTING FOR THE FRONTIER',
+    subtitle: 'Open Campaign Loop',
+    battles: 'Until end',
+    rules: [
+      'Repeat Settlement Round Sequence (Steps 1–5) each round.',
+      'Force: 500 caps default, 1,000 cap hard ceiling.',
+      '+50 cap bonus every battle.',
+      'Final Score = Caps + living roster value.',
+    ],
+  },
 ]
 
 
@@ -189,12 +232,23 @@ export default function CampaignPage({ campaignId }) {
         <div className="flex items-start justify-between flex-wrap gap-4">
           {/* Phase name — AT only */}
           {isAT && (
-            <div>
+            <div className="flex-1 min-w-0">
               <div className="flex items-center gap-3 mb-1">
                 <span className="text-amber text-xl font-bold tracking-widest">PHASE {phase}</span>
                 <span className="text-pip text-base font-bold tracking-wider">— {phaseInfo.name}</span>
               </div>
-              <p className="text-muted text-xs italic">{phaseInfo.subtitle}</p>
+              <div className="flex flex-wrap gap-x-4 gap-y-0.5 mb-2">
+                <span className="text-muted text-xs"><span className="text-pip/70 uppercase tracking-wider text-[10px]">Objective:</span> {phaseInfo.subtitle}</span>
+                <span className="text-muted text-xs"><span className="text-pip/70 uppercase tracking-wider text-[10px]">Battles:</span> {phaseInfo.battles}</span>
+              </div>
+              <ul className="space-y-0.5">
+                {phaseInfo.rules.map((r, i) => (
+                  <li key={i} className="text-muted/80 text-xs flex gap-1.5">
+                    <span className="text-amber/50 shrink-0">›</span>
+                    <span>{r}</span>
+                  </li>
+                ))}
+              </ul>
             </div>
           )}
           <div className="flex items-center gap-4 flex-wrap">
