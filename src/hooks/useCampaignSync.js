@@ -119,7 +119,23 @@ export function useCampaignSync({ campaignId, userId } = {}) {
         }
 
         if (pd) {
-          setStateLocal(dbToState(pd))
+          const loaded = dbToState(pd)
+          // Backfill free structures if settlement is still empty
+          const hasStructures = (loaded.settlement?.structures?.length ?? 0) > 0
+          if (!hasStructures) {
+            const patched = {
+              ...loaded,
+              settlement: { ...loaded.settlement, structures: buildFreeStartingStructures() },
+            }
+            setStateLocal(patched)
+            // Persist immediately so it sticks on DB
+            supabase.from('player_data').upsert(
+              { ...stateToDb(patched), campaign_id: campaignId, user_id: userId },
+              { onConflict: 'campaign_id,user_id' }
+            ).then(({ error }) => { if (error) console.error('backfill structures save error:', error) })
+          } else {
+            setStateLocal(loaded)
+          }
         } else {
           // First join: check for pending settings saved during campaign creation
           const pending = (() => {
