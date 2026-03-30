@@ -695,14 +695,14 @@ function BoostHandPanel({ state, setState }) {
 
   return (
     <div className="mt-6 border rounded" style={{ borderColor: 'rgba(168,85,247,0.5)', boxShadow: '0 0 10px rgba(168,85,247,0.12)' }}>
-      <div className="flex items-start gap-2 px-4 py-3 border-b" style={{ borderColor: 'rgba(168,85,247,0.25)' }}>
-        <Sparkles size={13} style={{ color: '#a855f7', marginTop: 2 }} />
-        <div className="flex-1 min-w-0">
+      <div className="px-4 py-3 border-b" style={{ borderColor: 'rgba(168,85,247,0.25)' }}>
+        <div className="flex items-center gap-2 mb-0.5">
+          <Sparkles size={13} style={{ color: '#a855f7' }} />
           <h3 className="text-sm font-bold tracking-wider" style={{ color: '#a855f7', textShadow: '0 0 8px rgba(168,85,247,0.5)' }}>
             BOOST HAND ({boostHand.length})
           </h3>
-          <p className="text-muted text-xs mt-0.5">Secret — visible only to you · Max = leader's highest stat · Returns to Recovery Pool at round end</p>
         </div>
+        <p className="text-muted text-xs">Secret — visible only to you · Max = leader's highest stat · Returns to Recovery Pool at round end</p>
       </div>
       <div className="p-4">
         {boostHand.length === 0 ? (
