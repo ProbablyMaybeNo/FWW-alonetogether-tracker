@@ -127,7 +127,7 @@ export default function AppShell({ campaignId, onExport, onImportClick, onLeaveC
           {/* ACTIONS */}
           <div className="px-4 py-1.5 text-muted/50 text-xs tracking-widest border-b border-pip-dim/20 mt-2 mb-1">ACTIONS</div>
           <NavItem icon={HelpCircle} label="GETTING STARTED" onClick={() => { onStartTour?.(); closeMenu() }} />
-          <NavItem icon={Camera} label="SNAPSHOTS" onClick={() => { setShowSnapshots(true); closeMenu() }} />
+          <NavItem icon={Camera} label="SAVES" onClick={() => { setShowSnapshots(true); closeMenu() }} />
           <NavItem icon={Download} label="EXPORT" onClick={() => { onExport?.(); closeMenu() }} />
           <NavItem icon={Upload} label="IMPORT" onClick={() => { onImportClick?.(); closeMenu() }} />
           {isSupabaseConfigured && campaignId && (

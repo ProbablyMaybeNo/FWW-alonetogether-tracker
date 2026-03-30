@@ -5,7 +5,7 @@ import { useAuth } from '../../context/AuthContext'
 import { supabase } from '../../lib/supabase'
 
 const STORAGE_KEY = 'fww-snapshots'
-const MAX_SNAPSHOTS = 15
+const MAX_SAVES = 15
 
 function loadSnapshots() {
   try {
@@ -28,7 +28,7 @@ export default function SnapshotModal({ campaignId, onClose }) {
 
   async function handleSave() {
     setSaving(true)
-    const name = nameInput.trim() || `Snapshot ${new Date().toLocaleString()}`
+    const name = nameInput.trim() || `Save ${new Date().toLocaleString()}`
 
     // Fetch all players' data from Supabase if online
     let allPlayers = []
@@ -68,7 +68,7 @@ export default function SnapshotModal({ campaignId, onClose }) {
       players,
     }
 
-    const updated = [snap, ...snapshots].slice(0, MAX_SNAPSHOTS)
+    const updated = [snap, ...snapshots].slice(0, MAX_SAVES)
     setSnapshots(updated)
     saveSnapshots(updated)
     setNameInput('')
@@ -130,7 +130,7 @@ export default function SnapshotModal({ campaignId, onClose }) {
         {/* Header */}
         <div className="flex items-center justify-between px-5 py-4 border-b border-pip-mid/30 shrink-0">
           <div>
-            <div className="text-pip text-sm font-bold tracking-widest">SNAPSHOTS</div>
+            <div className="text-pip text-sm font-bold tracking-widest">SAVES</div>
             <div className="text-muted text-xs mt-0.5">
               {campaignId ? 'Saves your data + all other players in the campaign' : 'Save your roster & settlement state to restore later'}
             </div>
@@ -149,7 +149,7 @@ export default function SnapshotModal({ campaignId, onClose }) {
               value={nameInput}
               onChange={e => setNameInput(e.target.value)}
               onKeyDown={e => e.key === 'Enter' && handleSave()}
-              placeholder="Snapshot name (optional)"
+              placeholder="Save name (optional)"
               className="flex-1 text-xs py-2 px-3"
             />
             <button
@@ -173,7 +173,7 @@ export default function SnapshotModal({ campaignId, onClose }) {
         {/* Snapshot list */}
         <div className="flex-1 overflow-y-auto px-5 py-3 space-y-2">
           {snapshots.length === 0 ? (
-            <p className="text-muted text-xs text-center py-6 italic">No snapshots saved yet.</p>
+            <p className="text-muted text-xs text-center py-6 italic">No saves yet.</p>
           ) : (
             snapshots.map(snap => (
               <div key={snap.id} className="border border-pip-dim/40 rounded bg-panel-light px-3 py-2.5">
@@ -224,7 +224,7 @@ export default function SnapshotModal({ campaignId, onClose }) {
         </div>
 
         <div className="px-5 py-3 border-t border-pip-mid/20 shrink-0">
-          <p className="text-muted/50 text-xs">Stored locally in your browser. Up to {MAX_SNAPSHOTS} snapshots.</p>
+          <p className="text-muted/50 text-xs">Stored locally in your browser. Up to {MAX_SAVES} saves.</p>
         </div>
       </div>
     </div>
