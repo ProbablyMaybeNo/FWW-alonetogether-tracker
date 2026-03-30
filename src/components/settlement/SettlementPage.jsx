@@ -847,7 +847,10 @@ function StructuresPanel({
         <div className={`border rounded bg-panel p-2 text-center ${usedSlots >= maxSlots ? 'border-danger/60' : 'border-pip-mid/60'}`}>
           <div className={`text-xs font-bold ${usedSlots >= maxSlots ? 'text-danger' : 'text-pip'}`}>{usedSlots}/{maxSlots}</div>
           <div className="text-xs text-muted">SLOTS</div>
-          <div className="text-pip text-xs mt-1">LAND {landCount}</div>
+        </div>
+        <div className="border border-pip-mid/60 rounded bg-panel p-2 text-center">
+          <div className="text-xs font-bold text-pip">{landCount}</div>
+          <div className="text-xs text-muted">LAND</div>
         </div>
         <div className="border border-amber/50 rounded bg-panel p-2 text-center">
           <div className="text-sm font-bold text-amber">{totalCost}c</div>
