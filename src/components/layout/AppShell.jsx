@@ -1,9 +1,10 @@
 import { useState, useEffect, useRef } from 'react'
-import { Menu, X, User, Download, Upload, LogOut, LayoutGrid, HelpCircle, Settings, UserPlus } from 'lucide-react'
+import { Menu, X, User, Download, Upload, LogOut, LayoutGrid, HelpCircle, Settings, UserPlus, Camera } from 'lucide-react'
 import { useAuth } from '../../context/AuthContext'
 import { supabase } from '../../lib/supabase'
 import AccountModal from '../modals/AccountModal'
 import CampaignModal from '../modals/CampaignModal'
+import SnapshotModal from '../modals/SnapshotModal'
 import { TABS } from './TabShell'
 
 export default function AppShell({ campaignId, onExport, onImportClick, onLeaveCampaign, onReset, activeTab, onTabChange, settings = {}, onStartTour }) {
@@ -12,6 +13,7 @@ export default function AppShell({ campaignId, onExport, onImportClick, onLeaveC
   const [showAccount, setShowAccount] = useState(false)
   const [showCampaign, setShowCampaign] = useState(false)
   const [showAddPlayer, setShowAddPlayer] = useState(false)
+  const [showSnapshots, setShowSnapshots] = useState(false)
   const [showUserMenu, setShowUserMenu] = useState(false)
   const userMenuRef = useRef(null)
 
@@ -125,6 +127,7 @@ export default function AppShell({ campaignId, onExport, onImportClick, onLeaveC
           {/* ACTIONS */}
           <div className="px-4 py-1.5 text-muted/50 text-xs tracking-widest border-b border-pip-dim/20 mt-2 mb-1">ACTIONS</div>
           <NavItem icon={HelpCircle} label="GETTING STARTED" onClick={() => { onStartTour?.(); closeMenu() }} />
+          <NavItem icon={Camera} label="SNAPSHOTS" onClick={() => { setShowSnapshots(true); closeMenu() }} />
           <NavItem icon={Download} label="EXPORT" onClick={() => { onExport?.(); closeMenu() }} />
           <NavItem icon={Upload} label="IMPORT" onClick={() => { onImportClick?.(); closeMenu() }} />
           {isSupabaseConfigured && campaignId && (
@@ -155,6 +158,7 @@ export default function AppShell({ campaignId, onExport, onImportClick, onLeaveC
           onReset={onReset}
         />
       )}
+      {showSnapshots && <SnapshotModal campaignId={campaignId} onClose={() => setShowSnapshots(false)} />}
       {showAddPlayer && campaignId && (
         <AddPlayerModal
           campaignId={campaignId}
