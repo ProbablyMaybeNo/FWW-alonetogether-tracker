@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { Plus, Trash2, RotateCcw, Zap, Droplets, Building2, Coins, Recycle, Shuffle, X, Sparkles } from 'lucide-react'
+import { Plus, Trash2, RotateCcw, Zap, Droplets, Building2, Coins, Recycle, Shuffle, X, Sparkles, LayoutGrid, Map } from 'lucide-react'
 import { useCampaign } from '../../context/CampaignContext'
 import { calcPowerGenerated, calcPowerConsumed, calcWaterGenerated, calcWaterConsumed, getStructureRef, calcSettlementTotalCaps, calcDefenseRating } from '../../utils/calculations'
 import AddStructureModal from './AddStructureModal'
@@ -828,7 +828,7 @@ function StructuresPanel({
       )}
 
       {/* Dashboard */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-7 gap-3 mb-4">
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 mb-4">
         <div className="border border-pip-mid/60 rounded bg-panel p-2 text-center">
           <Zap size={14} className="mx-auto mb-1 text-pip" />
           <div className="text-sm font-bold text-pip">{pwrGen - pwrUsed}</div>
@@ -845,11 +845,13 @@ function StructuresPanel({
           <div className="text-xs text-muted">STRUCTURES</div>
         </div>
         <div className={`border rounded bg-panel p-2 text-center ${usedSlots >= maxSlots ? 'border-danger/60' : 'border-pip-mid/60'}`}>
-          <div className={`text-xs font-bold ${usedSlots >= maxSlots ? 'text-danger' : 'text-pip'}`}>{usedSlots}/{maxSlots}</div>
+          <LayoutGrid size={14} className={`mx-auto mb-1 ${usedSlots >= maxSlots ? 'text-danger' : 'text-pip'}`} />
+          <div className={`text-sm font-bold ${usedSlots >= maxSlots ? 'text-danger' : 'text-pip'}`}>{usedSlots}/{maxSlots}</div>
           <div className="text-xs text-muted">SLOTS</div>
         </div>
         <div className="border border-pip-mid/60 rounded bg-panel p-2 text-center">
-          <div className="text-xs font-bold text-pip">{landCount}</div>
+          <Map size={14} className="mx-auto mb-1 text-pip" />
+          <div className="text-sm font-bold text-pip">{landCount}</div>
           <div className="text-xs text-muted">LAND</div>
         </div>
         <div className="border border-amber/50 rounded bg-panel p-2 text-center">
