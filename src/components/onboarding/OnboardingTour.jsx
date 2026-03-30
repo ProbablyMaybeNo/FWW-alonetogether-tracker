@@ -50,7 +50,7 @@ function WelcomeBody({ settings }) {
         <div className="flex gap-2">
           <span className="text-pip shrink-0">▸</span>
           <span className="text-pip leading-relaxed">
-            <span className="text-amber font-bold">Campaign state is shared.</span> Phase, round number, and battle count sync live across all players — anyone can advance the round and everyone updates instantly.
+            <span className="text-amber font-bold">Campaign state is shared.</span> Phase, round number, and battle count sync live across all players instantly.
           </span>
         </div>
         <div className="flex gap-2">
@@ -92,7 +92,7 @@ const ALL_STEPS = [
     target: '[data-tour="tab-campaign"]',
     placement: 'below',
     title: 'CAMPAIGN TAB',
-    body: 'Shared across all players. Track campaign phase (1–4), current round, and battle count. Hit NEW ROUND to step through the round sequence.',
+    body: 'Shared across all players. Track campaign phase (1–4), current round, and battle count. When the campaign creator advances to the next round, everything resets automatically — units rest, structure uses clear, unavailable units return when applicable, boost hands return to the recovery pool, and item pools update.',
   },
   {
     id: 'player',

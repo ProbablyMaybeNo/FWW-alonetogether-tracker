@@ -70,12 +70,17 @@ export default function CampaignPage({ campaignId }) {
   const [battleOpponent, setBattleOpponent] = useState('')
   const [battleResult, setBattleResult] = useState('win')
   const [battleSubmitting, setBattleSubmitting] = useState(false)
+  // Creator battle recording on behalf of another player
+  const [creatorRecordFor, setCreatorRecordFor] = useState('')
+  const [creatorOpponent, setCreatorOpponent] = useState('')
+  const [creatorResult, setCreatorResult] = useState('win')
 
   const phase = state?.phase ?? 1
   const round = state?.round ?? 0
   const battleCount = state?.battleCount ?? 0
   const phaseInfo = PHASES[phase - 1] || PHASES[0]
   const isAT = !state?.settings?.settlementMode || state.settings.settlementMode === 'alone-together'
+  const isCreator = !!(user?.id && sharedState?.createdBy && user.id === sharedState.createdBy)
 
   useEffect(() => {
     if (!isOnline || !campaignId) return
@@ -220,10 +225,45 @@ export default function CampaignPage({ campaignId }) {
   }
 
   async function handleNextRound() {
+    if (!isCreator) return
     if (!allReady && displayPlayers.length > 1) return
     const newRound = round + 1
     if (isOnline) updateShared('round', newRound)
     else setState(prev => ({ ...prev, round: newRound }))
+  }
+
+  async function handleCreatorRecordBattle(e) {
+    e.preventDefault()
+    if (!creatorRecordFor || !creatorOpponent || !isCreator) return
+    setBattleSubmitting(true)
+    const mirrorResult = creatorResult === 'win' ? 'loss' : creatorResult === 'loss' ? 'win' : 'draw'
+    const currentBattles = sharedState?.battles ?? {}
+    const roundKey = String(round)
+    const roundData = { ...(currentBattles[roundKey] ?? {}) }
+
+    const myRecord = roundData[creatorRecordFor] ?? { ready: true, noBattles: false, matches: [] }
+    roundData[creatorRecordFor] = {
+      ...myRecord, ready: true, noBattles: false,
+      matches: [...(myRecord.matches ?? []), { opponentId: creatorOpponent, result: creatorResult }],
+    }
+    const oppRecord = roundData[creatorOpponent] ?? { ready: true, noBattles: false, matches: [] }
+    roundData[creatorOpponent] = {
+      ...oppRecord, ready: true,
+      matches: [...(oppRecord.matches ?? []), { opponentId: creatorRecordFor, result: mirrorResult }],
+    }
+    await updateShared('battles', { ...currentBattles, [roundKey]: roundData })
+    setCreatorRecordFor('')
+    setCreatorOpponent('')
+    setBattleSubmitting(false)
+  }
+
+  async function handleCreatorNoBattles(playerId) {
+    if (!isCreator) return
+    const currentBattles = sharedState?.battles ?? {}
+    const roundKey = String(round)
+    const roundData = { ...(currentBattles[roundKey] ?? {}) }
+    roundData[playerId] = { ready: true, noBattles: true, matches: [] }
+    await updateShared('battles', { ...currentBattles, [roundKey]: roundData })
   }
 
   if (!state) return <div className="p-8 text-center text-muted text-xs tracking-wider">LOADING...</div>
@@ -413,10 +453,10 @@ export default function CampaignPage({ campaignId }) {
           })}
         </div>
 
-        {/* Record battle form */}
+        {/* Record battle form — my own battles */}
         {isOnline && user && (
           <div className="border border-pip-mid/30 rounded bg-panel p-3 space-y-3">
-            <div className="text-muted text-xs tracking-wider">RECORD BATTLE</div>
+            <div className="text-muted text-xs tracking-wider">RECORD MY BATTLE</div>
             <form onSubmit={handleRecordBattle} className="flex gap-2 flex-wrap items-end">
               <div className="flex-1 min-w-32">
                 <label className="text-muted text-xs block mb-1">OPPONENT</label>
@@ -465,23 +505,86 @@ export default function CampaignPage({ campaignId }) {
           </div>
         )}
 
-        {/* Next Round button */}
+        {/* Creator: record battles for any player */}
+        {isOnline && isCreator && displayPlayers.length > 1 && (
+          <div className="border border-amber/30 rounded bg-panel p-3 space-y-3" style={{ boxShadow: '0 0 6px rgba(251,191,36,0.08)' }}>
+            <div className="text-amber text-xs tracking-wider font-bold">RECORD BATTLE FOR PLAYER <span className="text-muted font-normal">(Campaign Creator)</span></div>
+            <form onSubmit={handleCreatorRecordBattle} className="flex gap-2 flex-wrap items-end">
+              <div className="min-w-32">
+                <label className="text-muted text-xs block mb-1">PLAYER</label>
+                <select value={creatorRecordFor} onChange={e => setCreatorRecordFor(e.target.value)} className="w-full text-xs py-1 px-2">
+                  <option value="">Select player...</option>
+                  {displayPlayers.map(p => (
+                    <option key={p.userId} value={p.userId}>{p.username}</option>
+                  ))}
+                </select>
+              </div>
+              <div className="flex-1 min-w-32">
+                <label className="text-muted text-xs block mb-1">OPPONENT</label>
+                <select value={creatorOpponent} onChange={e => setCreatorOpponent(e.target.value)} className="w-full text-xs py-1 px-2">
+                  <option value="">Select opponent...</option>
+                  {displayPlayers.filter(p => p.userId !== creatorRecordFor).map(p => (
+                    <option key={p.userId} value={p.userId}>{p.username}</option>
+                  ))}
+                </select>
+              </div>
+              <div>
+                <label className="text-muted text-xs block mb-1">RESULT</label>
+                <div className="flex gap-1">
+                  {['win','loss','draw'].map(r => (
+                    <button key={r} type="button" onClick={() => setCreatorResult(r)}
+                      className={`text-xs px-3 py-1 border rounded transition-colors font-bold ${
+                        creatorResult === r
+                          ? r === 'win' ? 'border-pip text-pip bg-pip-dim/20'
+                            : r === 'loss' ? 'border-danger text-danger bg-danger/10'
+                            : 'border-muted text-muted bg-muted/10'
+                          : 'border-muted/30 text-muted hover:text-pip hover:border-pip'
+                      }`}
+                    >{r.toUpperCase()}</button>
+                  ))}
+                </div>
+              </div>
+              <button type="submit" disabled={!creatorRecordFor || !creatorOpponent || battleSubmitting}
+                className="text-xs border border-amber text-amber font-bold px-4 py-1.5 rounded hover:bg-amber/10 transition-colors disabled:opacity-40"
+              >{battleSubmitting ? '...' : 'RECORD'}</button>
+            </form>
+            {/* Quick NO BATTLES buttons for any not-yet-ready player */}
+            {displayPlayers.filter(p => !roundBattles[p.userId]?.ready).length > 0 && (
+              <div className="flex flex-wrap gap-2 pt-1 border-t border-pip-dim/20">
+                <span className="text-muted text-xs self-center">No battles:</span>
+                {displayPlayers.filter(p => !roundBattles[p.userId]?.ready).map(p => (
+                  <button key={p.userId} onClick={() => handleCreatorNoBattles(p.userId)}
+                    className="text-xs text-muted border border-muted/30 rounded px-2 py-1 hover:text-pip hover:border-pip transition-colors"
+                  >{p.username}</button>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* Next Round button — creator only */}
         <div className="mt-4 flex items-center gap-3">
-          <button
-            onClick={handleNextRound}
-            disabled={!allReady && displayPlayers.length > 1 && isOnline}
-            className={`flex-1 py-3 text-sm font-bold tracking-widest border rounded transition-all ${
-              allReady || displayPlayers.length <= 1 || !isOnline
-                ? 'border-amber text-amber hover:bg-amber/10'
-                : 'border-muted/30 text-muted opacity-40 cursor-not-allowed'
-            }`}
-            style={allReady || displayPlayers.length <= 1 || !isOnline ? { boxShadow: '0 0 12px var(--color-amber-glow)' } : {}}
-          >
-            {allReady || displayPlayers.length <= 1 || !isOnline
-              ? '▶ NEXT ROUND'
-              : `NEXT ROUND (${displayPlayers.filter(p => roundBattles[p.userId]?.ready).length}/${displayPlayers.length} ready)`
-            }
-          </button>
+          {isCreator || !isOnline ? (
+            <button
+              onClick={handleNextRound}
+              disabled={!allReady && displayPlayers.length > 1 && isOnline}
+              className={`flex-1 py-3 text-sm font-bold tracking-widest border rounded transition-all ${
+                allReady || displayPlayers.length <= 1 || !isOnline
+                  ? 'border-amber text-amber hover:bg-amber/10'
+                  : 'border-muted/30 text-muted opacity-40 cursor-not-allowed'
+              }`}
+              style={allReady || displayPlayers.length <= 1 || !isOnline ? { boxShadow: '0 0 12px var(--color-amber-glow)' } : {}}
+            >
+              {allReady || displayPlayers.length <= 1 || !isOnline
+                ? '▶ NEXT ROUND'
+                : `NEXT ROUND (${displayPlayers.filter(p => roundBattles[p.userId]?.ready).length}/${displayPlayers.length} ready)`
+              }
+            </button>
+          ) : (
+            <div className="flex-1 py-3 text-xs text-muted text-center border border-muted/20 rounded tracking-wider">
+              {displayPlayers.filter(p => roundBattles[p.userId]?.ready).length}/{displayPlayers.length} players reported — waiting for campaign creator to advance round
+            </div>
+          )}
         </div>
       </div>
 

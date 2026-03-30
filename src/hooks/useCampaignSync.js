@@ -80,6 +80,7 @@ function campaignDbToState(row) {
     phase1CapLimit: row.phase1_cap_limit ?? 750,
     exploreLocations: row.explore_locations ?? {},
     battles: row.battles ?? {},
+    createdBy: row.created_by ?? null,
   }
 }
 
@@ -163,7 +164,7 @@ export function useCampaignSync({ campaignId, userId } = {}) {
         // Load shared campaign data
         const { data: camp, error: campErr } = await supabase
           .from('campaigns')
-          .select('phase, round, battle_count, phase1_cap_limit, explore_locations, battles')
+          .select('phase, round, battle_count, phase1_cap_limit, explore_locations, battles, created_by')
           .eq('id', campaignId)
           .single()
 
