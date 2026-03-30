@@ -14,10 +14,14 @@ const PHASES = [
     subtitle: 'Build Roster',
     battles: 'None',
     rules: [
-      '750 cap limit. Leader must be purchased first.',
-      'Max 3 Unique models. Max 1 heavy weapon per 250 caps.',
-      'Basic loadout + up to 150 caps of armor only.',
-      'No Perks on non-Leader models.',
+      '750 Caps',
+      'Max 3 Uniques',
+      'Leader must be 1 unique and determines faction',
+      '1 Leader Perk and/or Heroic',
+      '1 heavy weapon per 250 caps',
+      'Basic loadouts only',
+      '+150 armor only caps fund',
+      'No Perks, Equipment, or Boosts (Except for leader)',
     ],
   },
   {
@@ -82,15 +86,20 @@ export default function CampaignPage({ campaignId }) {
     if (!supabase || !campaignId) return
     setLoadingPlayers(true)
     try {
-      const { data: players } = await supabase
+      const { data: players, error: playersErr } = await supabase
         .from('campaign_players')
-        .select('user_id, is_gm, profiles(username)')
+        .select('user_id')
         .eq('campaign_id', campaignId)
+      if (playersErr) {
+        console.error('fetchAllPlayers players error:', playersErr)
+        throw playersErr
+      }
 
-      const { data: playerData } = await supabase
+      const { data: playerData, error: playerDataErr } = await supabase
         .from('player_data')
         .select('user_id, caps, roster, settlement, quest_cards, completed_objectives, active_scavenger_objective, player_info')
         .eq('campaign_id', campaignId)
+      if (playerDataErr) console.error('fetchAllPlayers player_data error:', playerDataErr)
 
       const dataMap = {}
       ;(playerData || []).forEach(pd => { dataMap[pd.user_id] = pd })
@@ -101,8 +110,7 @@ export default function CampaignPage({ campaignId }) {
         const structures = pd.settlement?.structures || []
         return {
           userId: p.user_id,
-          username: p.profiles?.username || 'Player',
-          isGm: p.is_gm,
+          username: pd.player_info?.name || 'Player',
           isMe: p.user_id === user?.id,
           caps: pd.caps ?? 0,
           faction: pd.player_info?.faction || '—',
@@ -129,7 +137,6 @@ export default function CampaignPage({ campaignId }) {
     userId: user?.id,
     username: state.player?.name || 'You',
     isMe: true,
-    isGm: false,
     caps: state.caps ?? 0,
     faction: state.player?.faction || '—',
     subFaction: state.player?.leader || '',
@@ -224,67 +231,69 @@ export default function CampaignPage({ campaignId }) {
   return (
     <div className="p-4 space-y-6 max-w-5xl mx-auto">
 
-      {/* ── Phase / Round Banner ── */}
+      {/* ── Phase Banner ── */}
       <div
-        className="bg-panel-light border border-amber/40 rounded-lg px-5 py-4"
+        className="bg-panel-light border border-amber/40 rounded-lg px-4 py-3"
         style={{ boxShadow: '0 0 12px var(--color-amber-glow)' }}
       >
-        <div className="flex items-start justify-between flex-wrap gap-4">
-          {/* Phase name — AT only */}
-          {isAT && (
-            <div className="flex-1 min-w-0">
-              <div className="flex items-center gap-3 mb-1">
-                <span className="text-amber text-xl font-bold tracking-widest">PHASE {phase}</span>
-                <span className="text-pip text-base font-bold tracking-wider">— {phaseInfo.name}</span>
-              </div>
-              <div className="flex flex-wrap gap-x-4 gap-y-0.5 mb-2">
-                <span className="text-muted text-xs"><span className="text-pip/70 uppercase tracking-wider text-[10px]">Objective:</span> {phaseInfo.subtitle}</span>
-                <span className="text-muted text-xs"><span className="text-pip/70 uppercase tracking-wider text-[10px]">Battles:</span> {phaseInfo.battles}</span>
-              </div>
-              <ul className="space-y-0.5">
-                {phaseInfo.rules.map((r, i) => (
-                  <li key={i} className="text-muted/80 text-xs flex gap-1.5">
-                    <span className="text-amber/50 shrink-0">›</span>
-                    <span>{r}</span>
-                  </li>
-                ))}
-              </ul>
+        {/* Phase name — AT only */}
+        {isAT && (
+          <div className="min-w-0">
+            <div className="flex items-center gap-3 mb-1">
+              <span className="text-amber text-xl font-bold tracking-widest">PHASE {phase}</span>
+              <span className="text-pip text-base font-bold tracking-wider">— {phaseInfo.name}</span>
             </div>
-          )}
-          <div className="flex items-center gap-4 flex-wrap">
-            {/* Phase stepper — AT only */}
-            {isAT && (
-              <div className="flex items-center gap-2">
-                <button
-                  onClick={() => handlePhaseChange(-1)} disabled={phase <= 1}
-                  className="p-1.5 border border-muted rounded text-muted hover:text-pip hover:border-pip disabled:opacity-30 transition-colors"
-                ><ChevronLeft size={14} /></button>
-                <span className="text-pip text-xs w-20 text-center tracking-wider">PHASE {phase} / 4</span>
-                <button
-                  onClick={() => handlePhaseChange(1)} disabled={phase >= 4}
-                  className="p-1.5 border border-muted rounded text-muted hover:text-pip hover:border-pip disabled:opacity-30 transition-colors"
-                ><ChevronRight size={14} /></button>
-              </div>
-            )}
-            {/* Round */}
-            <div className={`flex items-center gap-2 ${isAT ? 'border-l border-pip-dim/30 pl-4' : ''}`}>
-              <span className="text-pip text-xs tracking-wider">ROUND</span>
-              <input
-                type="number" min="0" value={round}
-                onChange={e => handleRoundChange(e.target.value)}
-                className="text-sm py-1 px-2 w-16 text-center font-bold"
-              />
+            <div className="flex flex-wrap gap-x-4 gap-y-0.5 mb-1">
+              <span className="text-muted text-xs"><span className="text-pip/70 uppercase tracking-wider text-[10px]">Objective:</span> {phaseInfo.subtitle}</span>
+              <span className="text-muted text-xs"><span className="text-pip/70 uppercase tracking-wider text-[10px]">Battles:</span> {phaseInfo.battles}</span>
             </div>
-            {/* Battles */}
-            <div className="flex items-center gap-2 border-l border-pip-dim/30 pl-4">
-              <span className="text-pip text-xs tracking-wider">BATTLES</span>
-              <span className="text-pip font-bold text-lg">{battleCount}</span>
-              <button
-                onClick={handleBattleInc}
-                className="text-xs border border-muted/50 text-muted hover:text-pip hover:border-pip rounded px-2 py-0.5 transition-colors"
-              >+1</button>
+            <div className="flex flex-wrap gap-x-3 gap-y-0.5 mt-1">
+              {phaseInfo.rules.map((r, i) => (
+                <span key={i} className="text-muted/80 text-xs">
+                  <span className="text-amber/60 mr-1">›</span>{r}
+                </span>
+              ))}
             </div>
           </div>
+        )}
+        {!isAT && (
+          <div className="text-pip text-xs tracking-wider">Campaign Mode</div>
+        )}
+      </div>
+
+      {/* ── Round / Battles Controls ── */}
+      <div className="flex items-center gap-4 flex-wrap">
+        {/* Phase stepper — AT only */}
+        {isAT && (
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => handlePhaseChange(-1)} disabled={phase <= 1}
+              className="p-1.5 border border-muted rounded text-muted hover:text-pip hover:border-pip disabled:opacity-30 transition-colors"
+            ><ChevronLeft size={14} /></button>
+            <span className="text-pip text-xs w-20 text-center tracking-wider">PHASE {phase} / 4</span>
+            <button
+              onClick={() => handlePhaseChange(1)} disabled={phase >= 4}
+              className="p-1.5 border border-muted rounded text-muted hover:text-pip hover:border-pip disabled:opacity-30 transition-colors"
+            ><ChevronRight size={14} /></button>
+          </div>
+        )}
+        {/* Round */}
+        <div className={`flex items-center gap-2 ${isAT ? 'border-l border-pip-dim/30 pl-4' : ''}`}>
+          <span className="text-pip text-xs tracking-wider">ROUND</span>
+          <input
+            type="number" min="0" value={round}
+            onChange={e => handleRoundChange(e.target.value)}
+            className="text-sm py-1 px-2 w-16 text-center font-bold"
+          />
+        </div>
+        {/* Battles */}
+        <div className="flex items-center gap-2 border-l border-pip-dim/30 pl-4">
+          <span className="text-pip text-xs tracking-wider">BATTLES</span>
+          <span className="text-pip font-bold text-lg">{battleCount}</span>
+          <button
+            onClick={handleBattleInc}
+            className="text-xs border border-muted/50 text-muted hover:text-pip hover:border-pip rounded px-2 py-0.5 transition-colors"
+          >+1</button>
         </div>
       </div>
 
@@ -319,7 +328,6 @@ export default function CampaignPage({ campaignId }) {
                 <tr key={p.userId || i} className={`border-b border-pip-dim/20 hover:bg-panel-light transition-colors ${p.isMe ? 'bg-pip-dim/10' : ''}`}>
                   <td className="py-2.5 pr-3">
                     <span className={`font-bold ${p.isMe ? 'text-pip' : 'text-pip'}`}>{p.username}</span>
-                    {p.isGm && <span className="ml-1 text-amber text-xs px-1 border border-amber/50 rounded">GM</span>}
                   </td>
                   <td className="py-2.5 pr-3 text-pip">
                     {p.faction}

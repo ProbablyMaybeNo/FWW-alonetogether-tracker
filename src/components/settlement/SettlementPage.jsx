@@ -799,7 +799,7 @@ function StructuresPanel({
         <Coins size={14} className="text-amber" />
         <span className="text-xs text-muted">CAPS:</span>
         <span className="text-amber font-bold text-sm">{(caps).toLocaleString()}c</span>
-        <span className="text-muted text-xs ml-2">(manage on Overview)</span>
+        <span className="text-muted text-xs ml-2">(Manage in Player)</span>
       </div>
 
       {/* Lost Model Recovery Alert */}

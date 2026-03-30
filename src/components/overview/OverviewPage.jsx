@@ -1,35 +1,30 @@
 import { useState } from 'react'
-import { Users, Building2, Zap, Droplets, ScrollText, ChevronLeft, ChevronRight, Target, Plus, Minus, Map } from 'lucide-react'
+import { Users, Building2, Zap, Droplets, ScrollText, Target, Plus, Minus, Map } from 'lucide-react'
 import { useCampaign } from '../../context/CampaignContext'
 import { calcPowerGenerated, calcPowerConsumed, calcWaterGenerated, calcWaterConsumed, calcRosterTotalCaps, getStructureRef } from '../../utils/calculations'
 import CardDrawer from './CardDrawer'
 import ActiveEvents from './ActiveEvents'
-import NewRoundModal from './NewRoundModal'
 import { SCAVENGER_OBJECTIVES } from '../../data/scavengerObjectives'
 
-const PHASES = [
-  { num: 1, name: 'THE ROAD AHEAD',        subtitle: 'Build your starting roster. 750 cap limit.' },
-  { num: 2, name: 'GATHER SUPPLIES',        subtitle: 'Track Fate only. Permanent deaths. No injuries tracked.' },
-  { num: 3, name: 'STAKING A CLAIM',        subtitle: 'Spend caps on structures and recruits only.' },
-  { num: 4, name: 'FIGHTING FOR THE FRONTIER', subtitle: 'Open campaign loop. Fight, build, grow.' },
+const FACTIONS = [
+  'Arcadia Renegades', 'Brotherhood of Steel', "Caesar's Legion",
+  'Children of Atom', 'Creatures', 'Cult of the Mothman', 'Enclave',
+  'Gunners', 'Institute', 'New California Republic', 'RPG Archetypes',
+  'Raiders', 'Railroad', 'Robots', 'Super Mutants', 'Survivors',
+  'The Harbormen', 'The Scorched', 'Trappers', 'Zetan',
 ]
 
 const UNAVAILABLE_FATES = ['Lost', 'Captured', 'Delayed', 'Injured', 'Shaken']
 
 export default function OverviewPage({ onTabChange }) {
-  const { state, setState, updateShared, isOnline } = useCampaign()
+  const { state, setState, isOnline } = useCampaign()
   const [editingCaps, setEditingCaps] = useState(false)
   const [capsInput, setCapsInput] = useState('')
   const [capsAdjust, setCapsAdjust] = useState('')
-  const [showNewRound, setShowNewRound] = useState(false)
 
   const { roster, settlement, player, round } = state
   const structures = settlement.structures || []
   const caps = state.caps ?? 0
-  const phase = state.phase ?? 1
-  const phaseInfo = PHASES[phase - 1] || PHASES[0]
-  const exploreCards = state.exploreCardsThisRound ?? 0
-  const isAT = !state.settings?.settlementMode || state.settings.settlementMode === 'alone-together'
 
   // Settlement stats
   const pwrGen = calcPowerGenerated(structures)
@@ -62,19 +57,6 @@ export default function OverviewPage({ onTabChange }) {
     setState(prev => ({ ...prev, player: { ...prev.player, [field]: value } }))
   }
 
-  function handleRoundChange(value) {
-    const num = parseInt(value, 10)
-    const newRound = isNaN(num) ? 0 : num
-    if (isOnline) { updateShared('round', newRound) }
-    else { setState(prev => ({ ...prev, round: newRound })) }
-  }
-
-  function handlePhaseChange(delta) {
-    const newPhase = Math.max(1, Math.min(4, (state.phase ?? 1) + delta))
-    if (isOnline) { updateShared('phase', newPhase) }
-    else { setState(prev => ({ ...prev, phase: newPhase })) }
-  }
-
   function handleCapsEdit() {
     setCapsInput(String(caps))
     setEditingCaps(true)
@@ -95,66 +77,39 @@ export default function OverviewPage({ onTabChange }) {
 
   function handleBattleCountInc() {
     const newCount = (state.battleCount ?? 0) + 1
-    if (isOnline) { updateShared('battleCount', newCount) }
-    else { setState(prev => ({ ...prev, battleCount: newCount })) }
+    setState(prev => ({ ...prev, battleCount: newCount }))
   }
 
   return (
     <div className="p-4 space-y-5 max-w-5xl mx-auto">
 
-      {/* Phase Banner — AT only */}
-      {isAT && (
-        <div className="bg-panel-light border border-amber/40 rounded-lg px-5 py-3" style={{ boxShadow: '0 0 12px var(--color-amber-glow)' }}>
-          <div className="flex items-center gap-2 mb-0.5">
-            <span className="text-amber text-base font-bold tracking-widest">PHASE {phase}</span>
-            <span className="text-pip text-base font-bold tracking-wider">— {phaseInfo.name}</span>
-          </div>
-          <p className="text-pip text-xs italic">{phaseInfo.subtitle}</p>
-        </div>
-      )}
-
-      {/* Round / NEW ROUND row */}
-      <div className="flex items-center justify-between gap-4 flex-wrap">
-        <div className="flex items-center gap-2 flex-wrap">
-          {isAT && (
-            <>
-              <button onClick={() => handlePhaseChange(-1)} disabled={phase <= 1} className="p-1.5 border border-pip/40 rounded text-pip hover:text-pip hover:border-pip disabled:opacity-30 transition-colors">
-                <ChevronLeft size={14} />
-              </button>
-              <span className="text-pip text-xs tracking-wider font-bold">PHASE {phase} / 4</span>
-              <button onClick={() => handlePhaseChange(1)} disabled={phase >= 4} className="p-1.5 border border-pip/40 rounded text-pip hover:text-pip hover:border-pip disabled:opacity-30 transition-colors">
-                <ChevronRight size={14} />
-              </button>
-            </>
-          )}
-          <span className={`text-pip text-xs ${isAT ? 'ml-3' : ''}`}>ROUND</span>
-          <input type="number" min="0" value={round} onChange={(e) => handleRoundChange(e.target.value)} className="text-xs py-1 px-2 w-16" />
-          {exploreCards > 0 && (
-            <span className="text-pip text-xs ml-2">Explore: <span className="text-pip font-bold">{exploreCards}</span></span>
-          )}
-        </div>
-        <button
-          onClick={() => setShowNewRound(true)}
-          className="px-4 py-2 border border-pip text-pip rounded text-sm tracking-wider hover:bg-pip-dim transition-colors font-bold"
-          style={{ boxShadow: '0 0 8px var(--color-pip-glow)' }}
-        >
-          NEW ROUND
-        </button>
-      </div>
-
       {/* Player Info */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
-        {[
-          { label: 'PLAYER', field: 'name' },
-          { label: 'SETTLEMENT', field: 'settlement' },
-          { label: 'FACTION', field: 'faction' },
-          { label: 'SUB-FACTION', field: 'leader' },
-        ].map(({ label, field }) => (
-          <div key={field} className="flex flex-col">
-            <label className="text-xs text-pip mb-1 tracking-wider">{label}</label>
-            <input type="text" value={player[field] || ''} onChange={(e) => handlePlayerChange(field, e.target.value)} className="text-xs py-1 px-2" />
-          </div>
-        ))}
+        <div className="flex flex-col">
+          <label className="text-xs text-pip mb-1 tracking-wider">PLAYER</label>
+          <input type="text" value={player['name'] || ''} onChange={(e) => handlePlayerChange('name', e.target.value)} className="text-xs py-1 px-2" />
+        </div>
+        <div className="flex flex-col">
+          <label className="text-xs text-pip mb-1 tracking-wider">SETTLEMENT</label>
+          <input type="text" value={player['settlement'] || ''} onChange={(e) => handlePlayerChange('settlement', e.target.value)} className="text-xs py-1 px-2" />
+        </div>
+        <div className="flex flex-col">
+          <label className="text-xs text-pip mb-1 tracking-wider">FACTION</label>
+          <select
+            value={player['faction'] || ''}
+            onChange={(e) => handlePlayerChange('faction', e.target.value)}
+            className="text-xs py-1 px-2"
+          >
+            <option value="">Select faction...</option>
+            {FACTIONS.map(f => (
+              <option key={f} value={f}>{f}</option>
+            ))}
+          </select>
+        </div>
+        <div className="flex flex-col">
+          <label className="text-xs text-pip mb-1 tracking-wider">SUB-FACTION</label>
+          <input type="text" value={player['leader'] || ''} onChange={(e) => handlePlayerChange('leader', e.target.value)} className="text-xs py-1 px-2" />
+        </div>
       </div>
 
       {/* Caps */}
@@ -202,12 +157,18 @@ export default function OverviewPage({ onTabChange }) {
           <h2 className="text-pip text-xs tracking-widest font-bold">SETTLEMENT</h2>
           <button onClick={() => onTabChange?.('settlement')} className="ml-auto text-xs text-pip hover:text-pip transition-colors">OPEN →</button>
         </div>
-        <div className="grid grid-cols-3 sm:grid-cols-5 divide-x divide-pip-dim/20">
+        <div className="grid grid-cols-3 sm:grid-cols-6 divide-x divide-pip-dim/20">
           <StatTile label="STRUCTURES" value={structures.length} onClick={() => onTabChange?.('settlement')} />
           <StatTile
-            label={`SLOTS (LAND ${landCount})`}
+            label="SLOTS"
             value={`${usedSlots}/${maxSlots}`}
             color={usedSlots >= maxSlots ? 'danger' : 'pip'}
+          />
+          <StatTile
+            label={`LAND (${landCount})`}
+            value={landCount}
+            color="pip"
+            onClick={() => onTabChange?.('settlement')}
           />
           <StatTile
             label={`POWER ${pwrGen}gen/${pwrUsed}use`}
@@ -295,7 +256,6 @@ export default function OverviewPage({ onTabChange }) {
         <ActiveEvents />
       </div>
 
-      <NewRoundModal isOpen={showNewRound} onClose={() => setShowNewRound(false)} />
     </div>
   )
 }

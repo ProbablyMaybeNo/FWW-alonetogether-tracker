@@ -25,6 +25,25 @@ function calcArmorBudget(roster) {
 
 const ABSENT_FATES = ['Delayed', 'Lost', 'Captured', 'Dead', 'Pending']
 
+const EQUIP_TYPE_COLOR = {
+  'Armor':           { border: 'border-blue-400/50',        text: 'text-blue-400'        },
+  'Heavy Weapon':    { border: 'border-danger/50',           text: 'text-danger'          },
+  'Melee':           { border: 'border-amber/50',            text: 'text-amber'           },
+  'Rifle':           { border: 'border-pip/50',              text: 'text-pip'             },
+  'Pistol':          { border: 'border-pip/40',              text: 'text-pip/80'          },
+  'Grenade':         { border: 'border-orange-400/50',       text: 'text-orange-400'      },
+  'Mine':            { border: 'border-orange-400/40',       text: 'text-orange-400/80'   },
+  'Chem':            { border: 'border-purple-400/50',       text: 'text-purple-400'      },
+  'Drink':           { border: 'border-cyan-400/40',         text: 'text-cyan-400'        },
+  'Food':            { border: 'border-green-400/40',        text: 'text-green-400'       },
+  'Clothing':        { border: 'border-pink-400/40',         text: 'text-pink-400'        },
+  'Mod':             { border: 'border-amber/40',            text: 'text-amber/80'        },
+  'Utility':         { border: 'border-muted/40',            text: 'text-muted'           },
+  'Leader':          { border: 'border-amber/60',            text: 'text-amber'           },
+  'Perk':            { border: 'border-amber/50',            text: 'text-amber/90'        },
+  'Automatron Part': { border: 'border-gray-400/40',         text: 'text-gray-400'        },
+}
+
 export default function RosterPage() {
   const { state, setState } = useCampaign()
   const [showAddUnit, setShowAddUnit] = useState(false)
@@ -144,17 +163,6 @@ export default function RosterPage() {
         u.slotId === slotId
           ? { ...u, perks: (u.perks || []).filter((_, i) => i !== perkIndex) }
           : u
-      ),
-    }))
-  }
-
-  function handleAdvanceToPhase3() {
-    if (!confirm('This will clear all non-Dead fate results and reset Injuries and Addictions for all units. Dead units remain dead. Continue?')) return
-    setState(prev => ({
-      ...prev,
-      phase: 3,
-      roster: prev.roster.map(u =>
-        u.fate === 'Dead' ? u : { ...u, fate: 'Active', addiction: '' }
       ),
     }))
   }
@@ -324,9 +332,12 @@ export default function RosterPage() {
                   <div className="px-3 pb-2 pt-1.5 border-t border-pip-dim/20 space-y-1">
                     {(items.length > 0 || perks.length > 0) && (
                       <div className="flex flex-wrap gap-1">
-                        {items.slice(0, 3).map((item, idx) => (
-                          <span key={idx} className="text-xs px-1.5 py-0.5 bg-panel-light border border-pip-dim/40 rounded text-pip truncate max-w-[140px]" title={item.name}>{item.name}</span>
-                        ))}
+                        {items.slice(0, 3).map((item, idx) => {
+                          const ec = EQUIP_TYPE_COLOR[item.subType] || { border: 'border-pip-dim/40', text: 'text-pip' }
+                          return (
+                            <span key={idx} className={`text-xs px-1.5 py-0.5 bg-panel-light border ${ec.border} rounded ${ec.text} truncate max-w-[140px]`} title={item.name}>{item.name}</span>
+                          )
+                        })}
                         {items.length > 3 && (
                           <span className="text-xs px-1.5 py-0.5 text-muted">+{items.length - 3} items</span>
                         )}
@@ -388,16 +399,19 @@ export default function RosterPage() {
                         {/* Equipment section — available in Phase 2 */}
                         <div className="text-xs text-pip tracking-widest font-bold border-b border-pip-dim/20 pb-1">EQUIPMENT</div>
                         <div className="space-y-1">
-                          {items.map((item, idx) => (
-                            <div key={idx} className="flex items-center justify-between border border-pip-dim/30 rounded px-3 py-1.5 bg-panel">
-                              <span className="text-pip text-xs font-bold">{item.name}</span>
-                              <div className="flex items-center gap-3">
-                                <span className="text-muted text-xs">{item.subType}</span>
-                                <span className="text-amber text-xs font-bold">{item.caps}c</span>
-                                <button onClick={() => handleRemoveItem(unit.slotId, idx)} className="text-muted hover:text-danger transition-colors"><Trash2 size={12} /></button>
+                          {items.map((item, idx) => {
+                            const ec = EQUIP_TYPE_COLOR[item.subType] || { text: 'text-muted' }
+                            return (
+                              <div key={idx} className="flex items-center justify-between border border-pip-dim/30 rounded px-3 py-1.5 bg-panel">
+                                <span className="text-pip text-xs font-bold">{item.name}</span>
+                                <div className="flex items-center gap-3">
+                                  <span className={`text-xs ${ec.text}`}>{item.subType}</span>
+                                  <span className="text-amber text-xs font-bold">{item.caps}c</span>
+                                  <button onClick={() => handleRemoveItem(unit.slotId, idx)} className="text-muted hover:text-danger transition-colors"><Trash2 size={12} /></button>
+                                </div>
                               </div>
-                            </div>
-                          ))}
+                            )
+                          })}
                           <button onClick={() => setShowAddItem(unit.slotId)} className="w-full flex items-center justify-center gap-2 py-2 border border-dashed border-pip-mid/50 text-pip rounded text-xs hover:border-pip hover:bg-pip-dim/20 transition-colors font-bold tracking-wider">
                             <Plus size={12} /> ADD EQUIPMENT
                           </button>
@@ -555,16 +569,19 @@ export default function RosterPage() {
                             <div className="text-xs text-pip tracking-widest font-bold">EQUIPMENT {items.length > 0 && <span className="text-amber">({items.length})</span>}</div>
                             <span className="text-xs text-amber font-bold">{itemCaps > 0 ? `${itemCaps}c equipped` : ''}</span>
                           </div>
-                          {items.map((item, idx) => (
-                            <div key={idx} className="flex items-center justify-between border border-pip-dim/30 rounded px-3 py-2 bg-panel">
-                              <span className="text-pip text-sm font-bold flex-1">{item.name}</span>
-                              <div className="flex items-center gap-3 shrink-0">
-                                <span className="text-muted text-xs">{item.subType}</span>
-                                <span className="text-amber text-sm font-bold">{item.caps}c</span>
-                                <button onClick={() => handleRemoveItem(unit.slotId, idx)} className="text-muted hover:text-danger transition-colors"><Trash2 size={13} /></button>
+                          {items.map((item, idx) => {
+                            const ec = EQUIP_TYPE_COLOR[item.subType] || { text: 'text-muted' }
+                            return (
+                              <div key={idx} className="flex items-center justify-between border border-pip-dim/30 rounded px-3 py-2 bg-panel">
+                                <span className="text-pip text-sm font-bold flex-1">{item.name}</span>
+                                <div className="flex items-center gap-3 shrink-0">
+                                  <span className={`text-xs ${ec.text}`}>{item.subType}</span>
+                                  <span className="text-amber text-sm font-bold">{item.caps}c</span>
+                                  <button onClick={() => handleRemoveItem(unit.slotId, idx)} className="text-muted hover:text-danger transition-colors"><Trash2 size={13} /></button>
+                                </div>
                               </div>
-                            </div>
-                          ))}
+                            )
+                          })}
                           <button
                             onClick={() => setShowAddItem(unit.slotId)}
                             className="w-full flex items-center justify-center gap-2 py-2.5 border border-dashed border-pip-mid/50 text-pip rounded text-sm hover:border-pip hover:bg-pip-dim/20 transition-colors font-bold tracking-wider"
@@ -602,19 +619,6 @@ export default function RosterPage() {
               </div>
             )
           })}
-        </div>
-      )}
-
-      {/* Phase 2: Advance button */}
-      {phase === 2 && (
-        <div className="mt-6 flex justify-center">
-          <button
-            onClick={handleAdvanceToPhase3}
-            className="px-6 py-3 border border-amber text-amber rounded text-sm hover:bg-amber-dim/30 transition-colors font-bold tracking-wider"
-            style={{ boxShadow: '0 0 8px var(--color-amber-glow)' }}
-          >
-            ADVANCE TO PHASE 3
-          </button>
         </div>
       )}
 

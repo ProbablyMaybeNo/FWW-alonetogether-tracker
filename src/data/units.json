@@ -2910,5 +2910,21 @@
     "faction": "Zetan",
     "type": "GENERIC",
     "caps": 0
+  },
+  {
+    "id": 417,
+    "name": "MUTANT HOUND",
+    "faction": "Super Mutants",
+    "caps": 63,
+    "type": "STANDARD",
+    "atValid": true
+  },
+  {
+    "id": 418,
+    "name": "MUTANT HOUND FIEND",
+    "faction": "Super Mutants",
+    "caps": 71,
+    "type": "STANDARD",
+    "atValid": true
   }
 ]
