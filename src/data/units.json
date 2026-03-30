@@ -219,21 +219,21 @@
   {
     "id": 32,
     "name": "SOLE SURVIVOR",
-    "faction": "Brotherhood of Steel",
+    "faction": "Survivors",
     "type": "UNIQUE",
     "caps": 89
   },
   {
     "id": 33,
     "name": "SOLE SURVIVOR LONER",
-    "faction": "Brotherhood of Steel",
+    "faction": "Survivors",
     "type": "UNIQUE",
     "caps": 112
   },
   {
     "id": 34,
     "name": "SOLE SURVIVOR TECH",
-    "faction": "Brotherhood of Steel",
+    "faction": "Survivors",
     "type": "UNIQUE",
     "caps": 89
   },
