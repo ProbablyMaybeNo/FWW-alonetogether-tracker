@@ -828,7 +828,7 @@ function StructuresPanel({
       )}
 
       {/* Dashboard */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-7 gap-2 mb-4">
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-7 gap-3 mb-4">
         <div className="border border-pip-mid/60 rounded bg-panel p-2 text-center">
           <Zap size={14} className="mx-auto mb-1 text-pip" />
           <div className="text-sm font-bold text-pip">{pwrGen - pwrUsed}</div>
