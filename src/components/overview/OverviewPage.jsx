@@ -2,8 +2,6 @@ import { useState } from 'react'
 import { Users, Building2, Zap, Droplets, ScrollText, Target, Plus, Minus, Map } from 'lucide-react'
 import { useCampaign } from '../../context/CampaignContext'
 import { calcPowerGenerated, calcPowerConsumed, calcWaterGenerated, calcWaterConsumed, calcRosterTotalCaps, getStructureRef } from '../../utils/calculations'
-import CardDrawer from './CardDrawer'
-import ActiveEvents from './ActiveEvents'
 import { SCAVENGER_OBJECTIVES } from '../../data/scavengerObjectives'
 
 const FACTIONS = [
@@ -215,10 +213,10 @@ export default function OverviewPage({ onTabChange }) {
             <div className="text-pip text-xs mt-0.5">BATTLES</div>
             <button onClick={handleBattleCountInc} className="mt-1 text-xs text-pip hover:text-pip border border-pip/30 hover:border-pip rounded px-2 py-0.5 transition-colors">+1</button>
           </div>
-          <StatTile label="QUESTS ACTIVE" value={activeQuestCount} onClick={() => onTabChange?.('objectives')} />
-          <StatTile label="QUESTS DONE" value={completedQuestCount} color="amber" onClick={() => onTabChange?.('objectives')} />
-          <StatTile label="OBJECTIVES" value={completedObjectivesCount} color="amber" onClick={() => onTabChange?.('objectives')} />
-          <StatTile label="PURPOSES" value={completedSecretPurposes} color="amber" onClick={() => onTabChange?.('objectives')} />
+          <StatTile label="QUESTS ACTIVE" value={activeQuestCount} onClick={() => onTabChange?.('battles')} />
+          <StatTile label="QUESTS DONE" value={completedQuestCount} color="amber" onClick={() => onTabChange?.('battles')} />
+          <StatTile label="OBJECTIVES" value={completedObjectivesCount} color="amber" onClick={() => onTabChange?.('battles')} />
+          <StatTile label="PURPOSES" value={completedSecretPurposes} color="amber" onClick={() => onTabChange?.('battles')} />
         </div>
       </div>
 
@@ -235,25 +233,31 @@ export default function OverviewPage({ onTabChange }) {
         <div className="mt-2 flex items-center gap-3 text-xs">
           <span className="text-pip">Completed:</span>
           <span className="text-pip font-bold text-sm">{completedObjectivesCount}</span>
-          <button onClick={() => onTabChange?.('objectives')} className="ml-auto text-xs text-pip hover:text-pip border border-pip/30 hover:border-pip rounded px-2 py-0.5 transition-colors">
-            MANAGE →
+          <button onClick={() => onTabChange?.('battles')} className="ml-auto text-xs text-pip hover:text-pip border border-pip/30 hover:border-pip rounded px-2 py-0.5 transition-colors">
+            BATTLES →
           </button>
         </div>
       </div>
 
-      {/* ── EXPLORE CONSEQUENCES ── */}
-      <div>
-        <div className="flex items-center gap-2 mb-3 border-b border-pip-mid/40 pb-2">
+      {/* ── BATTLES (explore draws & active events) ── */}
+      <div className="border border-pip-mid/40 rounded-lg bg-panel p-4">
+        <div className="flex items-center gap-2 mb-2">
           <ScrollText size={14} className="text-pip" />
-          <h2 className="text-pip text-sm tracking-widest font-bold">EXPLORE CONSEQUENCES</h2>
+          <h2 className="text-pip text-sm tracking-widest font-bold">BATTLES</h2>
           {(state.activeEvents || []).length > 0 && (
-            <span className="text-amber font-bold text-xs">({state.activeEvents.length} active)</span>
+            <span className="text-amber font-bold text-xs">({state.activeEvents.length} active events)</span>
           )}
         </div>
-        <div className="mb-4">
-          <CardDrawer deckType="explore" title="DRAW EXPLORE CARD" />
-        </div>
-        <ActiveEvents />
+        <p className="text-muted text-xs mb-3">
+          Draw explore/settlement event cards and manage active consequences on the <strong className="text-pip">BATTLES</strong> tab.
+        </p>
+        <button
+          type="button"
+          onClick={() => onTabChange?.('battles')}
+          className="text-xs border border-amber text-amber font-bold px-4 py-2 rounded hover:bg-amber/10"
+        >
+          OPEN BATTLES →
+        </button>
       </div>
 
     </div>

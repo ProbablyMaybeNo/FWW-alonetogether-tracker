@@ -1,0 +1,50 @@
+[
+  {
+    "id": 1,
+    "name": "Countryside"
+  },
+  {
+    "id": 6,
+    "name": "Industrial / Military"
+  },
+  {
+    "id": 12,
+    "name": "Municipal Buildings"
+  },
+  {
+    "id": 2,
+    "name": "Occupied Countryside"
+  },
+  {
+    "id": 3,
+    "name": "Occupied Countryside"
+  },
+  {
+    "id": 10,
+    "name": "Overpass"
+  },
+  {
+    "id": 11,
+    "name": "Red Rocket"
+  },
+  {
+    "id": 5,
+    "name": "Settlement / Farm"
+  },
+  {
+    "id": 9,
+    "name": "Swamp"
+  },
+  {
+    "id": 7,
+    "name": "Town"
+  },
+  {
+    "id": 8,
+    "name": "Waterside"
+  },
+  {
+    "id": 4,
+    "name": "Wilderness"
+  }
+]

@@ -1,11 +1,11 @@
-import { Globe, User, Users, Building2, Target, Zap } from 'lucide-react'
+import { Globe, User, Users, Building2, Swords, Zap } from 'lucide-react'
 
 const TABS = [
   { id: 'campaign',    label: 'CAMPAIGN',     icon: Globe },
   { id: 'player',      label: 'PLAYER',       icon: User },
   { id: 'roster',      label: 'ROSTER',       icon: Users },
   { id: 'settlement',  label: 'SETTLEMENT',   icon: Building2 },
-  { id: 'objectives',  label: 'OBJECTIVES',   icon: Target },
+  { id: 'battles',     label: 'BATTLES',      icon: Swords },
   { id: 'events',      label: 'EVENTS',       icon: Zap },
 ]
 

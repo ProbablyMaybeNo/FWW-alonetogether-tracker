@@ -1,10 +1,11 @@
 import { useState, useEffect, useCallback } from 'react'
 import { defaultInhabitantsState } from '../utils/inhabitantsState'
+import { defaultBattlePageState } from '../utils/battlePageState'
 
 const STORAGE_KEY = 'fww-campaign'
 
 const DEFAULT_STATE = {
-  version: 7,
+  version: 8,
   player: {
     name: '',
     settlement: '',
@@ -47,6 +48,7 @@ const DEFAULT_STATE = {
   boostDeck: [],         // array of boost IDs remaining in boost deck
   boostDiscard: [],      // array of boost IDs in boost discard pile
   inhabitantsState: defaultInhabitantsState(), // solo: campaign-level inhabitant decks live in local save; online uses campaigns.inhabitants_state
+  battlePageState: defaultBattlePageState(),
 }
 
 function migrateUnit(u) {
@@ -178,6 +180,15 @@ function migrateState(stored) {
       ...stored,
       version: 7,
       inhabitantsState: stored.inhabitantsState ?? defaultInhabitantsState(),
+    }
+  }
+
+  if (stored.version === 7) {
+    return {
+      ...DEFAULT_STATE,
+      ...stored,
+      version: 8,
+      battlePageState: stored.battlePageState ?? defaultBattlePageState(),
     }
   }
 

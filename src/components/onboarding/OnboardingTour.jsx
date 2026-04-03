@@ -116,11 +116,11 @@ const ALL_STEPS = [
     body: 'Your personal settlement. Add structures, power them with Generators, then USE them each round to trigger their effects. Track damage, repair, and reinforce. Monitor power, water, and defense totals. The ITEM DECK tab holds your personal Settlement Item Deck — draw cards sequentially when looting or using structures that produce items.',
   },
   {
-    id: 'objectives',
-    target: '[data-tour="tab-objectives"]',
+    id: 'battles',
+    target: '[data-tour="tab-battles"]',
     placement: 'below',
-    title: 'OBJECTIVES TAB',
-    body: 'Track scavenger objectives, active quest cards, secret purposes, and completed campaign milestones. Mark them complete as you progress through your campaign.',
+    title: 'BATTLES TAB',
+    body: 'Run table games: pick opponents, set scenario (environment, battlefield, purpose), shuffle and draw Creature / Stranger / Danger / Explore / Event decks (names for now), local population from your unit list, shared wasteland item deck, inhabitant decks, and handbook explore draws. Objectives & quests live here under a sub-tab.',
   },
   {
     id: 'events',

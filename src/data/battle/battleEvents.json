@@ -1,0 +1,310 @@
+[
+  {
+    "id": "A_HIDDEN_OBSERVER",
+    "name": "A HIDDEN OBSERVER"
+  },
+  {
+    "id": "A_NEUTRAL_PARTY",
+    "name": "A NEUTRAL PARTY"
+  },
+  {
+    "id": "A_NEW_PRESENCE",
+    "name": "A NEW PRESENCE"
+  },
+  {
+    "id": "A_PREDATORS_ROAR",
+    "name": "A PREDATORS ROAR"
+  },
+  {
+    "id": "ACIDIC_AIR",
+    "name": "ACIDIC AIR"
+  },
+  {
+    "id": "AMONG_THE_STARS",
+    "name": "AMONG THE STARS"
+  },
+  {
+    "id": "AN_UNINVITED_GUEST",
+    "name": "AN UNINVITED GUEST"
+  },
+  {
+    "id": "BEAR_FORCE_ONE",
+    "name": "BEAR FORCE ONE"
+  },
+  {
+    "id": "BLACK_MOUNTAIN_RADIO",
+    "name": "BLACK MOUNTAIN RADIO"
+  },
+  {
+    "id": "BLASTS_OF_WIND",
+    "name": "BLASTS OF WIND"
+  },
+  {
+    "id": "BLUSTERY_WIND",
+    "name": "BLUSTERY WIND"
+  },
+  {
+    "id": "BOOM",
+    "name": "BOOM"
+  },
+  {
+    "id": "BOOMER_SHELLING",
+    "name": "BOOMER SHELLING"
+  },
+  {
+    "id": "BRAHMIN_STAMPEDE",
+    "name": "BRAHMIN STAMPEDE"
+  },
+  {
+    "id": "CAPPY_CLUE",
+    "name": "CAPPY CLUE"
+  },
+  {
+    "id": "CHURNED_LAND",
+    "name": "CHURNED LAND"
+  },
+  {
+    "id": "CLEANSING_RAIN",
+    "name": "CLEANSING RAIN"
+  },
+  {
+    "id": "CLEAR",
+    "name": "CLEAR"
+  },
+  {
+    "id": "CONTESTED_GROUND",
+    "name": "CONTESTED GROUND"
+  },
+  {
+    "id": "DAMP_AIR",
+    "name": "DAMP AIR"
+  },
+  {
+    "id": "DIAMOND_CITY_RADIO",
+    "name": "DIAMOND CITY RADIO"
+  },
+  {
+    "id": "DIAMOND_CITY_RADIO_(CRAWL_OUT)",
+    "name": "DIAMOND CITY RADIO (CRAWL OUT)"
+  },
+  {
+    "id": "DISTANT_GUNFIRE",
+    "name": "DISTANT GUNFIRE"
+  },
+  {
+    "id": "DOWNPOUR",
+    "name": "DOWNPOUR"
+  },
+  {
+    "id": "DRAW_PARTNER",
+    "name": "DRAW PARTNER"
+  },
+  {
+    "id": "DUST_CLOUD",
+    "name": "DUST CLOUD"
+  },
+  {
+    "id": "DUST_STORM",
+    "name": "DUST STORM"
+  },
+  {
+    "id": "EERIE_MIST",
+    "name": "EERIE MIST"
+  },
+  {
+    "id": "FOREST_FIRE",
+    "name": "FOREST FIRE"
+  },
+  {
+    "id": "FRESH",
+    "name": "FRESH"
+  },
+  {
+    "id": "GREAT_WAR_MINEFIELD",
+    "name": "GREAT WAR MINEFIELD"
+  },
+  {
+    "id": "GUSTS_OF_WIND",
+    "name": "GUSTS OF WIND"
+  },
+  {
+    "id": "HEAT_HAZE",
+    "name": "HEAT HAZE"
+  },
+  {
+    "id": "HEAVY_RAIN",
+    "name": "HEAVY RAIN"
+  },
+  {
+    "id": "HELIOS_ONE",
+    "name": "HELIOS ONE"
+  },
+  {
+    "id": "LIGHTNING_STORM",
+    "name": "LIGHTNING STORM"
+  },
+  {
+    "id": "LOST_SUPPLIES",
+    "name": "LOST SUPPLIES"
+  },
+  {
+    "id": "LOW_SUN",
+    "name": "LOW SUN"
+  },
+  {
+    "id": "LUCKY_FIND",
+    "name": "LUCKY FIND"
+  },
+  {
+    "id": "LURKING_FOG_CRAWLER",
+    "name": "LURKING FOG CRAWLER"
+  },
+  {
+    "id": "MIST_SPRAYERS",
+    "name": "MIST SPRAYERS"
+  },
+  {
+    "id": "MISTAKEN_IDENTITY",
+    "name": "MISTAKEN IDENTITY"
+  },
+  {
+    "id": "MIXING_STATION",
+    "name": "MIXING STATION"
+  },
+  {
+    "id": "MOLERAT_TUNNEL",
+    "name": "MOLERAT TUNNEL"
+  },
+  {
+    "id": "NUKA_COLA_THEME_SONG",
+    "name": "NUKA COLA THEME SONG"
+  },
+  {
+    "id": "OPPORTUNIST_GUNRUNNER",
+    "name": "OPPORTUNIST GUNRUNNER"
+  },
+  {
+    "id": "OVERCAST",
+    "name": "OVERCAST"
+  },
+  {
+    "id": "PASSING_SWARM",
+    "name": "PASSING SWARM"
+  },
+  {
+    "id": "QUIET",
+    "name": "QUIET"
+  },
+  {
+    "id": "RAD_STORM",
+    "name": "RAD STORM"
+  },
+  {
+    "id": "RADIO_NEW_VEGAS",
+    "name": "RADIO NEW VEGAS"
+  },
+  {
+    "id": "RAIDER_RADIO_1",
+    "name": "RAIDER RADIO 1"
+  },
+  {
+    "id": "RAIDER_RADIO_2",
+    "name": "RAIDER RADIO 2"
+  },
+  {
+    "id": "RAIDER_RADIO_3",
+    "name": "RAIDER RADIO 3"
+  },
+  {
+    "id": "RAIDER_RADIO_4",
+    "name": "RAIDER RADIO 4"
+  },
+  {
+    "id": "RECENT_PRINTS",
+    "name": "RECENT PRINTS"
+  },
+  {
+    "id": "RECRUITMENT_BEACON",
+    "name": "RECRUITMENT BEACON"
+  },
+  {
+    "id": "RELENTLESS_RAIN",
+    "name": "RELENTLESS RAIN"
+  },
+  {
+    "id": "ROCKETS",
+    "name": "ROCKETS"
+  },
+  {
+    "id": "RUGGED_RUBBLE",
+    "name": "RUGGED RUBBLE"
+  },
+  {
+    "id": "RUNAWAY_BRAHMIN",
+    "name": "RUNAWAY BRAHMIN"
+  },
+  {
+    "id": "SIREN",
+    "name": "SIREN"
+  },
+  {
+    "id": "SLIPPERY",
+    "name": "SLIPPERY"
+  },
+  {
+    "id": "SNACK_CART",
+    "name": "SNACK CART"
+  },
+  {
+    "id": "SOLID_GROUND",
+    "name": "SOLID GROUND"
+  },
+  {
+    "id": "SOUVENIR_CART",
+    "name": "SOUVENIR CART"
+  },
+  {
+    "id": "STATIC_BUILD-UP",
+    "name": "STATIC BUILD-UP"
+  },
+  {
+    "id": "SUN_GLARE",
+    "name": "SUN GLARE"
+  },
+  {
+    "id": "SUPER_MUTANT_BROADCAST",
+    "name": "SUPER MUTANT BROADCAST"
+  },
+  {
+    "id": "SUPPLY_DROP",
+    "name": "SUPPLY DROP"
+  },
+  {
+    "id": "SWARM_OF_FLIES",
+    "name": "SWARM OF FLIES"
+  },
+  {
+    "id": "SYNTHS",
+    "name": "SYNTHS"
+  },
+  {
+    "id": "TUMBLEWEEDS",
+    "name": "TUMBLEWEEDS"
+  },
+  {
+    "id": "TURRET_AWAKES",
+    "name": "TURRET AWAKES"
+  },
+  {
+    "id": "UNBEARABLE_HEAT",
+    "name": "UNBEARABLE HEAT"
+  },
+  {
+    "id": "VERTIBIRDS_OVERHEAD",
+    "name": "VERTIBIRDS OVERHEAD"
+  },
+  {
+    "id": "WET_GROUND",
+    "name": "WET GROUND"
+  }
+]

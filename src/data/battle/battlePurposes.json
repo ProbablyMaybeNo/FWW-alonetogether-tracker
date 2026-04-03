@@ -1,0 +1,42 @@
+[
+  {
+    "id": 6,
+    "name": "Clear"
+  },
+  {
+    "id": 7,
+    "name": "Contact"
+  },
+  {
+    "id": 5,
+    "name": "Eliminate"
+  },
+  {
+    "id": 4,
+    "name": "Find"
+  },
+  {
+    "id": 1,
+    "name": "Passing Through"
+  },
+  {
+    "id": 10,
+    "name": "Raid"
+  },
+  {
+    "id": 2,
+    "name": "Scavenge"
+  },
+  {
+    "id": 3,
+    "name": "Scout"
+  },
+  {
+    "id": 8,
+    "name": "Search Party"
+  },
+  {
+    "id": 9,
+    "name": "Secure"
+  }
+]

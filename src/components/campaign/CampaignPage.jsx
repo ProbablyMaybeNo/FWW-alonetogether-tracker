@@ -5,7 +5,6 @@ import { useAuth } from '../../context/AuthContext'
 import { supabase } from '../../lib/supabase'
 import { calcRosterTotalCaps } from '../../utils/calculations'
 import { SCAVENGER_OBJECTIVES } from '../../data/scavengerObjectives'
-import InhabitantsDeckSection from './InhabitantsDeckSection'
 import { defaultInhabitantsState } from '../../utils/inhabitantsState'
 
 
@@ -424,8 +423,6 @@ export default function CampaignPage({ campaignId }) {
         </div>
       </div>
 
-      <InhabitantsDeckSection round={round} />
-
       {/* ── Battles ── */}
       <div>
         <div className="flex items-center gap-3 mb-3 border-b border-pip-mid/50 pb-2">
@@ -639,32 +636,6 @@ export default function CampaignPage({ campaignId }) {
                 </div>
               )
             }).filter(Boolean)}
-          </div>
-        </div>
-      )}
-
-      {/* ── Active Explore Consequences ── */}
-      {(state.activeEvents || []).length > 0 && (
-        <div>
-          <h2 className="text-pip text-sm tracking-widest font-bold mb-2 border-b border-pip-mid/50 pb-1">
-            ACTIVE EXPLORE CONSEQUENCES
-          </h2>
-          <p className="text-muted text-xs mb-3 italic">
-            Shuffle these into the Event Deck before your next battle (Campaign Handbook p.5).
-          </p>
-          <div className="space-y-2">
-            {(state.activeEvents || []).map((ev, i) => (
-              <div key={i} className="flex items-center justify-between gap-3 border border-info/40 rounded bg-info-dim/10 px-3 py-2">
-                <div className="flex-1 min-w-0">
-                  <span className="text-info text-xs font-bold">{ev.title || ev.name || 'Consequence'}</span>
-                  {ev.text && <p className="text-muted text-xs mt-0.5">{ev.text}</p>}
-                </div>
-                <button
-                  onClick={() => setState(prev => ({ ...prev, activeEvents: (prev.activeEvents || []).filter((_, j) => j !== i) }))}
-                  className="text-xs border border-muted/30 text-muted hover:text-pip rounded px-2 py-1 transition-colors shrink-0"
-                >DONE</button>
-              </div>
-            ))}
           </div>
         </div>
       )}

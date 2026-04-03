@@ -1,0 +1,366 @@
+[
+  {
+    "id": "A_HELPFUL_DISTRACTION",
+    "name": "A HELPFUL DISTRACTION"
+  },
+  {
+    "id": "ABANDONED_MINE",
+    "name": "ABANDONED MINE"
+  },
+  {
+    "id": "ABANDONED_REFINERY",
+    "name": "ABANDONED REFINERY"
+  },
+  {
+    "id": "ARMOR_SHOP",
+    "name": "ARMOR SHOP"
+  },
+  {
+    "id": "ATLANTIC_OFFICES",
+    "name": "ATLANTIC OFFICES"
+  },
+  {
+    "id": "BEANTOWN_BREWERY",
+    "name": "BEANTOWN BREWERY"
+  },
+  {
+    "id": "BOXING_GYM",
+    "name": "BOXING GYM"
+  },
+  {
+    "id": "BROKEN_STEEL",
+    "name": "BROKEN STEEL"
+  },
+  {
+    "id": "BUNKER",
+    "name": "BUNKER"
+  },
+  {
+    "id": "CAMPSITE_LEFTOVERS",
+    "name": "CAMPSITE LEFTOVERS"
+  },
+  {
+    "id": "CARAVAN_GAME",
+    "name": "CARAVAN GAME"
+  },
+  {
+    "id": "CRASHED_VERTIBIRD",
+    "name": "CRASHED VERTIBIRD"
+  },
+  {
+    "id": "CRAZY_INVENTOR",
+    "name": "CRAZY INVENTOR"
+  },
+  {
+    "id": "CUNNINGHAM'S_DINER",
+    "name": "CUNNINGHAM'S DINER"
+  },
+  {
+    "id": "CUSTOM_WORKBENCH",
+    "name": "CUSTOM WORKBENCH"
+  },
+  {
+    "id": "DAMAGED_WEAPONRY",
+    "name": "DAMAGED WEAPONRY"
+  },
+  {
+    "id": "DAYLIGHT_ROBBERY",
+    "name": "DAYLIGHT ROBBERY"
+  },
+  {
+    "id": "DINO_BITE_GIFT_SHOP",
+    "name": "DINO BITE GIFT SHOP"
+  },
+  {
+    "id": "DOCK_YARD_DEALER",
+    "name": "DOCK YARD DEALER"
+  },
+  {
+    "id": "DUSTY_BURROWS",
+    "name": "DUSTY BURROWS"
+  },
+  {
+    "id": "DUSTY_WORKBENCH",
+    "name": "DUSTY WORKBENCH"
+  },
+  {
+    "id": "EASY_PICKINGS",
+    "name": "EASY PICKINGS"
+  },
+  {
+    "id": "EL_DORADO_GAS",
+    "name": "EL DORADO GAS"
+  },
+  {
+    "id": "ELLIE'S_MARINA",
+    "name": "ELLIE'S MARINA"
+  },
+  {
+    "id": "ENEMY_CAMP_DISCOVERED",
+    "name": "ENEMY CAMP DISCOVERED"
+  },
+  {
+    "id": "EXPERIMENTAL_CHEM_STATION",
+    "name": "EXPERIMENTAL CHEM STATION"
+  },
+  {
+    "id": "EYEBOT_ADVERTISEMENT",
+    "name": "EYEBOT ADVERTISEMENT"
+  },
+  {
+    "id": "FALLON'S_DEPARTMENT_STORE",
+    "name": "FALLON'S DEPARTMENT STORE"
+  },
+  {
+    "id": "FANEUIL_HALL",
+    "name": "FANEUIL HALL"
+  },
+  {
+    "id": "FENS_SUBWAY_STATION",
+    "name": "FENS SUBWAY STATION"
+  },
+  {
+    "id": "FIELD_TESTING",
+    "name": "FIELD TESTING"
+  },
+  {
+    "id": "FIEND_GANG",
+    "name": "FIEND GANG"
+  },
+  {
+    "id": "FIRE_DEPARTMENT",
+    "name": "FIRE DEPARTMENT"
+  },
+  {
+    "id": "FIRE_STATION",
+    "name": "FIRE STATION"
+  },
+  {
+    "id": "FLYING_ANT_SWARM",
+    "name": "FLYING ANT SWARM"
+  },
+  {
+    "id": "FREESIDE",
+    "name": "FREESIDE"
+  },
+  {
+    "id": "GHOST",
+    "name": "GHOST"
+  },
+  {
+    "id": "GLOWING_ONE_GAUNTLET",
+    "name": "GLOWING ONE GAUNTLET"
+  },
+  {
+    "id": "GRAY_TEAM",
+    "name": "GRAY TEAM"
+  },
+  {
+    "id": "GUN_FOR_HIRE",
+    "name": "GUN FOR HIRE"
+  },
+  {
+    "id": "GUNNER'S_PLAZA",
+    "name": "GUNNER'S PLAZA"
+  },
+  {
+    "id": "HARBOURMASTER_HOTEL",
+    "name": "HARBOURMASTER HOTEL"
+  },
+  {
+    "id": "HARDWARE_STORE",
+    "name": "HARDWARE STORE"
+  },
+  {
+    "id": "HEUSER_LIBRARY",
+    "name": "HEUSER LIBRARY"
+  },
+  {
+    "id": "INFESTED_BARN",
+    "name": "INFESTED BARN"
+  },
+  {
+    "id": "LAKE_EDGE",
+    "name": "LAKE EDGE"
+  },
+  {
+    "id": "LANDOWNER'S_OFFER",
+    "name": "LANDOWNER'S OFFER"
+  },
+  {
+    "id": "LAYING_TRAPS",
+    "name": "LAYING TRAPS"
+  },
+  {
+    "id": "LEGION_SQUAD",
+    "name": "LEGION SQUAD"
+  },
+  {
+    "id": "LOCAL_PATROLS",
+    "name": "LOCAL PATROLS"
+  },
+  {
+    "id": "MASS_FUSION_BUILDING",
+    "name": "MASS FUSION BUILDING"
+  },
+  {
+    "id": "MASS_PIKE_INTERCHANGE",
+    "name": "MASS PIKE INTERCHANGE"
+  },
+  {
+    "id": "MERCHANT_CARAVAN",
+    "name": "MERCHANT CARAVAN"
+  },
+  {
+    "id": "MILTON_GENERAL_HOSPITAL",
+    "name": "MILTON GENERAL HOSPITAL"
+  },
+  {
+    "id": "MINEFIELD_CLEARANCE",
+    "name": "MINEFIELD CLEARANCE"
+  },
+  {
+    "id": "MINERS'_CAMP",
+    "name": "MINERS' CAMP"
+  },
+  {
+    "id": "MONGREL_SHOWDOWN",
+    "name": "MONGREL SHOWDOWN"
+  },
+  {
+    "id": "MUNICIPAL_POOL",
+    "name": "MUNICIPAL POOL"
+  },
+  {
+    "id": "NATIONAL_GUARD_BARRACKS",
+    "name": "NATIONAL GUARD BARRACKS"
+  },
+  {
+    "id": "NEW_SETTLEMENT",
+    "name": "NEW SETTLEMENT"
+  },
+  {
+    "id": "NOTHING",
+    "name": "NOTHING"
+  },
+  {
+    "id": "OLD_MORMON_FORT",
+    "name": "OLD MORMON FORT"
+  },
+  {
+    "id": "PHARMACY",
+    "name": "PHARMACY"
+  },
+  {
+    "id": "PHYSICAL_TRAINER",
+    "name": "PHYSICAL TRAINER"
+  },
+  {
+    "id": "QUINCY_POLICE_STATION",
+    "name": "QUINCY POLICE STATION"
+  },
+  {
+    "id": "RAD_FIRE",
+    "name": "RAD FIRE"
+  },
+  {
+    "id": "RAIDER_CAMP",
+    "name": "RAIDER CAMP"
+  },
+  {
+    "id": "RECENT_CAMPFIRE",
+    "name": "RECENT CAMPFIRE"
+  },
+  {
+    "id": "RECENT_TRACKS",
+    "name": "RECENT TRACKS"
+  },
+  {
+    "id": "REGENT_ELEMENTARY",
+    "name": "REGENT ELEMENTARY"
+  },
+  {
+    "id": "REPCONN_TEST_SITE",
+    "name": "REPCONN TEST SITE"
+  },
+  {
+    "id": "ROAR_OF_THE_DEATHCLAW",
+    "name": "ROAR OF THE DEATHCLAW"
+  },
+  {
+    "id": "RUSTY_TRAILER",
+    "name": "RUSTY TRAILER"
+  },
+  {
+    "id": "SCORCHED_EARTH",
+    "name": "SCORCHED EARTH"
+  },
+  {
+    "id": "SEARCHLIGHT_AIRPORT",
+    "name": "SEARCHLIGHT AIRPORT"
+  },
+  {
+    "id": "SHOOTING_RANGE",
+    "name": "SHOOTING RANGE"
+  },
+  {
+    "id": "SILENT_WITNESSES",
+    "name": "SILENT WITNESSES"
+  },
+  {
+    "id": "SILVER_PEAK_MINE",
+    "name": "SILVER PEAK MINE"
+  },
+  {
+    "id": "SLOT_CANYON_AMBUSH",
+    "name": "SLOT CANYON AMBUSH"
+  },
+  {
+    "id": "SUPER_MUTANT_CAMP",
+    "name": "SUPER MUTANT CAMP"
+  },
+  {
+    "id": "SWAP_MART",
+    "name": "SWAP MART"
+  },
+  {
+    "id": "SYNTH_PATROL",
+    "name": "SYNTH PATROL"
+  },
+  {
+    "id": "THE_HELPFUL_SCRIBE",
+    "name": "THE HELPFUL SCRIBE"
+  },
+  {
+    "id": "THE_PAW_SPA_PET_SHOP",
+    "name": "THE PAW SPA PET SHOP"
+  },
+  {
+    "id": "THICKET_EXCAVATIONS",
+    "name": "THICKET EXCAVATIONS"
+  },
+  {
+    "id": "TRAPPED_CENTAUR",
+    "name": "TRAPPED CENTAUR"
+  },
+  {
+    "id": "UNEXPECTED_PRESENCE_AT_THE_REFINERY",
+    "name": "UNEXPECTED PRESENCE AT THE REFINERY"
+  },
+  {
+    "id": "VAULT_22",
+    "name": "VAULT 22"
+  },
+  {
+    "id": "VAULT_RAIDERS",
+    "name": "VAULT RAIDERS"
+  },
+  {
+    "id": "WEATHER_OBSERVATORY",
+    "name": "WEATHER OBSERVATORY"
+  },
+  {
+    "id": "WHAT'S_THAT_DOGMEAT?",
+    "name": "WHAT'S THAT DOGMEAT?"
+  }
+]

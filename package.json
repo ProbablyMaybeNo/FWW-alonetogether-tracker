@@ -11,6 +11,7 @@
     "export:quest-text-review": "node scripts/export-quest-card-text-review.mjs",
     "export:quest-manual": "node scripts/export-quest-cards-manual-edit.mjs",
     "import:quest-manual": "node scripts/import-quest-cards-manual-edit.mjs",
+    "generate:battle-decks": "node scripts/generate-battle-decks.mjs",
     "lint": "eslint .",
     "preview": "vite preview"
   },

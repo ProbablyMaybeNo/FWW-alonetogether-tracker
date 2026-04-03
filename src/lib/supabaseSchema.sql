@@ -23,6 +23,7 @@ create table if not exists campaigns (
   explore_locations jsonb default '{}'::jsonb,
   battles jsonb default '{}'::jsonb,
   inhabitants_state jsonb default '{"decks":[],"session":{"round":0,"items":[]},"pendingDraw":null}'::jsonb,
+  battle_page_state jsonb default '{}'::jsonb,
   created_at timestamptz default now(),
   updated_at timestamptz default now()
 );

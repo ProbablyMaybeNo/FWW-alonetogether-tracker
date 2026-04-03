@@ -1,0 +1,274 @@
+[
+  {
+    "id": "ABHORRENT_SMELL",
+    "name": "ABHORRENT SMELL"
+  },
+  {
+    "id": "ACID_LEAK",
+    "name": "ACID LEAK"
+  },
+  {
+    "id": "BACK_PROBLEMS",
+    "name": "BACK PROBLEMS"
+  },
+  {
+    "id": "BLOWN_AWAY",
+    "name": "BLOWN AWAY"
+  },
+  {
+    "id": "BROKEN_LANCE",
+    "name": "BROKEN LANCE"
+  },
+  {
+    "id": "BURIED_GRENADE",
+    "name": "BURIED GRENADE"
+  },
+  {
+    "id": "CLOCKWORK_TRAP",
+    "name": "CLOCKWORK TRAP"
+  },
+  {
+    "id": "CONTAINMENT_LEAK",
+    "name": "CONTAINMENT LEAK"
+  },
+  {
+    "id": "CREATURE",
+    "name": "CREATURE"
+  },
+  {
+    "id": "DAMAGED_WEAPON",
+    "name": "DAMAGED WEAPON"
+  },
+  {
+    "id": "DINNER_PLANS",
+    "name": "DINNER PLANS"
+  },
+  {
+    "id": "DISORIENTED",
+    "name": "DISORIENTED"
+  },
+  {
+    "id": "DISTURBED_WILDLIFE",
+    "name": "DISTURBED WILDLIFE"
+  },
+  {
+    "id": "DIZZY",
+    "name": "DIZZY"
+  },
+  {
+    "id": "DOUBTS",
+    "name": "DOUBTS"
+  },
+  {
+    "id": "ELECTRONIC_TRAP",
+    "name": "ELECTRONIC TRAP"
+  },
+  {
+    "id": "FINAL_BLOW",
+    "name": "FINAL BLOW"
+  },
+  {
+    "id": "FIRE_TRAP",
+    "name": "FIRE TRAP"
+  },
+  {
+    "id": "FOUL_ODOR",
+    "name": "FOUL ODOR"
+  },
+  {
+    "id": "FROST_TRAP",
+    "name": "FROST TRAP"
+  },
+  {
+    "id": "GASOLINE_LEAK",
+    "name": "GASOLINE LEAK"
+  },
+  {
+    "id": "GHOULISH_SCRATCH",
+    "name": "GHOULISH SCRATCH"
+  },
+  {
+    "id": "GLOWING_ONE_CORPSE",
+    "name": "GLOWING ONE CORPSE"
+  },
+  {
+    "id": "GOOD_FORTUNE",
+    "name": "GOOD FORTUNE"
+  },
+  {
+    "id": "HIDDEN_FRAGMENTATION_MINE",
+    "name": "HIDDEN FRAGMENTATION MINE"
+  },
+  {
+    "id": "IMAGINARY_NIGHTKIN",
+    "name": "IMAGINARY NIGHTKIN"
+  },
+  {
+    "id": "INCAPACITOR",
+    "name": "INCAPACITOR"
+  },
+  {
+    "id": "INSTANT_SYNTH",
+    "name": "INSTANT SYNTH"
+  },
+  {
+    "id": "JAGGED_EDGE",
+    "name": "JAGGED EDGE"
+  },
+  {
+    "id": "LEVER_ACTION",
+    "name": "LEVER ACTION"
+  },
+  {
+    "id": "LIVE_WIRE",
+    "name": "LIVE WIRE"
+  },
+  {
+    "id": "LOOSE_RUBBLE",
+    "name": "LOOSE RUBBLE"
+  },
+  {
+    "id": "MEDICAL_WASTE",
+    "name": "MEDICAL WASTE"
+  },
+  {
+    "id": "NO_DIRECTION",
+    "name": "NO DIRECTION"
+  },
+  {
+    "id": "NOT_A_TOY",
+    "name": "NOT A TOY"
+  },
+  {
+    "id": "NUKA_RACERS_TRACK",
+    "name": "NUKA RACERS TRACK"
+  },
+  {
+    "id": "OPEN_CAGES",
+    "name": "OPEN CAGES"
+  },
+  {
+    "id": "POWER_SURGE",
+    "name": "POWER SURGE"
+  },
+  {
+    "id": "RADIATION_BURST",
+    "name": "RADIATION BURST"
+  },
+  {
+    "id": "REMOTE_CONTROL",
+    "name": "REMOTE CONTROL"
+  },
+  {
+    "id": "RICKETY_RIDE",
+    "name": "RICKETY RIDE"
+  },
+  {
+    "id": "RIGGED_MAILBOX",
+    "name": "RIGGED MAILBOX"
+  },
+  {
+    "id": "RIGGED_SHOTGUN",
+    "name": "RIGGED SHOTGUN"
+  },
+  {
+    "id": "RIGGED_STASH",
+    "name": "RIGGED STASH"
+  },
+  {
+    "id": "RIGGED_TO_BLOW",
+    "name": "RIGGED TO BLOW"
+  },
+  {
+    "id": "ROGUE_EYEBOT",
+    "name": "ROGUE EYEBOT"
+  },
+  {
+    "id": "ROGUE_ROBOT",
+    "name": "ROGUE ROBOT"
+  },
+  {
+    "id": "ROTTEN_MEATBAG",
+    "name": "ROTTEN MEATBAG"
+  },
+  {
+    "id": "SECURITRON_VOICE",
+    "name": "SECURITRON VOICE"
+  },
+  {
+    "id": "SERRATED_EDGE",
+    "name": "SERRATED EDGE"
+  },
+  {
+    "id": "SHOCKING",
+    "name": "SHOCKING"
+  },
+  {
+    "id": "SINKING_SAND",
+    "name": "SINKING SAND"
+  },
+  {
+    "id": "SNAGGED",
+    "name": "SNAGGED"
+  },
+  {
+    "id": "SOMETHING_STIRS",
+    "name": "SOMETHING STIRS"
+  },
+  {
+    "id": "SPORE_CARRIER_HAND",
+    "name": "SPORE CARRIER HAND"
+  },
+  {
+    "id": "STEEL_TRAP",
+    "name": "STEEL TRAP"
+  },
+  {
+    "id": "STING_IN_THE_TAIL",
+    "name": "STING IN THE TAIL"
+  },
+  {
+    "id": "SUSPICIOUS_SLIME",
+    "name": "SUSPICIOUS SLIME"
+  },
+  {
+    "id": "THAT’S_NO_SLOTH",
+    "name": "THAT’S NO SLOTH"
+  },
+  {
+    "id": "THE_QUICK_AND_THE_DUD",
+    "name": "THE QUICK AND THE DUD"
+  },
+  {
+    "id": "TRIP_GRENADE",
+    "name": "TRIP GRENADE"
+  },
+  {
+    "id": "UNDER_PRESSURE",
+    "name": "UNDER PRESSURE"
+  },
+  {
+    "id": "UNLUCKY_STRAY_SHOT",
+    "name": "UNLUCKY STRAY SHOT"
+  },
+  {
+    "id": "UNREAL",
+    "name": "UNREAL"
+  },
+  {
+    "id": "UNSTABLE_FUSION_CORE",
+    "name": "UNSTABLE FUSION CORE"
+  },
+  {
+    "id": "UNSTABLE_GROUND",
+    "name": "UNSTABLE GROUND"
+  },
+  {
+    "id": "UNUSUAL_NOISES",
+    "name": "UNUSUAL NOISES"
+  },
+  {
+    "id": "WAS_THAT_MOVEMENT?",
+    "name": "WAS THAT MOVEMENT?"
+  }
+]

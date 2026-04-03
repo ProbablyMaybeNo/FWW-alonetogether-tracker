@@ -1,0 +1,178 @@
+[
+  {
+    "id": "ARTILLERIST",
+    "name": "ARTILLERIST"
+  },
+  {
+    "id": "BUSHMASTER",
+    "name": "BUSHMASTER"
+  },
+  {
+    "id": "CHEM_DEALER",
+    "name": "CHEM DEALER"
+  },
+  {
+    "id": "CRIMSON_CARAVAN_TRADER",
+    "name": "CRIMSON CARAVAN TRADER"
+  },
+  {
+    "id": "DISORIENTED_FARMER",
+    "name": "DISORIENTED FARMER"
+  },
+  {
+    "id": "ENTOMOLOGIST",
+    "name": "ENTOMOLOGIST"
+  },
+  {
+    "id": "ESCAPED_CAPTIVES",
+    "name": "ESCAPED CAPTIVES"
+  },
+  {
+    "id": "EVAN",
+    "name": "EVAN"
+  },
+  {
+    "id": "EX-INSTITUTE_ENGINEER",
+    "name": "EX-INSTITUTE ENGINEER"
+  },
+  {
+    "id": "EYEBOT_FANATIC",
+    "name": "EYEBOT FANATIC"
+  },
+  {
+    "id": "FIELD_MEDIC",
+    "name": "FIELD MEDIC"
+  },
+  {
+    "id": "FIRE_MARSHAL",
+    "name": "FIRE MARSHAL"
+  },
+  {
+    "id": "FOLLOWER_OF_THE_APOCALYPSE",
+    "name": "FOLLOWER OF THE APOCALYPSE"
+  },
+  {
+    "id": "FRIENDLY_FISHERMAN",
+    "name": "FRIENDLY FISHERMAN"
+  },
+  {
+    "id": "GHOUL_GANG",
+    "name": "GHOUL GANG"
+  },
+  {
+    "id": "GREAT_KHAN",
+    "name": "GREAT KHAN"
+  },
+  {
+    "id": "GUN_RUNNER",
+    "name": "GUN RUNNER"
+  },
+  {
+    "id": "GUNNERS_DESERTER",
+    "name": "GUNNERS DESERTER"
+  },
+  {
+    "id": "INACTIVE_SENTRY_BOT",
+    "name": "INACTIVE SENTRY BOT"
+  },
+  {
+    "id": "INFORMER",
+    "name": "INFORMER"
+  },
+  {
+    "id": "KID_IN_A_FRIDGE",
+    "name": "KID IN A FRIDGE"
+  },
+  {
+    "id": "KINGS_GANG_MEMBER",
+    "name": "KINGS GANG MEMBER"
+  },
+  {
+    "id": "LEGION_SNITCH",
+    "name": "LEGION SNITCH"
+  },
+  {
+    "id": "MESSAGE_CARRIER",
+    "name": "MESSAGE CARRIER"
+  },
+  {
+    "id": "MOONSHINER",
+    "name": "MOONSHINER"
+  },
+  {
+    "id": "MOTHER_MAYA",
+    "name": "MOTHER MAYA"
+  },
+  {
+    "id": "NIRA",
+    "name": "N.I.R.A."
+  },
+  {
+    "id": "NUKA_WORLD_TRADER",
+    "name": "NUKA WORLD TRADER"
+  },
+  {
+    "id": "OLD_LADY_GIBSON",
+    "name": "OLD LADY GIBSON"
+  },
+  {
+    "id": "PENSIONER",
+    "name": "PENSIONER"
+  },
+  {
+    "id": "PET_VENDOR",
+    "name": "PET VENDOR"
+  },
+  {
+    "id": "POWDER_GANGER",
+    "name": "POWDER GANGER"
+  },
+  {
+    "id": "PROTECTRON",
+    "name": "PROTECTRON"
+  },
+  {
+    "id": "SCARED_TRADER",
+    "name": "SCARED TRADER"
+  },
+  {
+    "id": "SHAKEN_NCR_TROOPER",
+    "name": "SHAKEN NCR TROOPER"
+  },
+  {
+    "id": "SIERRA_PETROVITA",
+    "name": "SIERRA PETROVITA"
+  },
+  {
+    "id": "STEALTHED_BOY",
+    "name": "STEALTHED BOY"
+  },
+  {
+    "id": "THE_DUNMORES",
+    "name": "THE DUNMORES"
+  },
+  {
+    "id": "THE_SEER",
+    "name": "THE SEER"
+  },
+  {
+    "id": "THE_TOPS_COLLECTOR",
+    "name": "THE TOPS COLLECTOR"
+  },
+  {
+    "id": "VAULT_DWELLER",
+    "name": "VAULT DWELLER"
+  },
+  {
+    "id": "WANDERING_MERCHANT",
+    "name": "WANDERING MERCHANT"
+  },
+  {
+    "id": "WEAPONS_DEALER",
+    "name": "WEAPONS DEALER"
+  },
+  {
+    "id": "WOUNDED_FARMER",
+    "name": "WOUNDED FARMER"
+  }
+]
