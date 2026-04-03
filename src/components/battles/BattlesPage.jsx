@@ -6,8 +6,6 @@ import { supabase } from '../../lib/supabase'
 import { normalizeBattlePageState, defaultBattlePageState } from '../../utils/battlePageState'
 import ObjectivesPage from '../objectives/ObjectivesPage'
 import InhabitantsDeckSection from '../campaign/InhabitantsDeckSection'
-import CardDrawer from '../overview/CardDrawer'
-import ActiveEvents from '../overview/ActiveEvents'
 import BattleDeckPanel from './BattleDeckPanel'
 import LocalPopulationDeckPanel from './LocalPopulationDeckPanel'
 import WastelandItemBattleDeck from './WastelandItemBattleDeck'
@@ -17,10 +15,8 @@ import battleDangers from '../../data/battle/battleDangers.json'
 import battleExplores from '../../data/battle/battleExplores.json'
 import battleEvents from '../../data/battle/battleEvents.json'
 import battleEnvironments from '../../data/battle/battleEnvironments.json'
-import battleBattlefields from '../../data/battle/battleBattlefields.json'
 import battleScenarios from '../../data/battle/battleScenarios.json'
 import unitsData from '../../data/units.json'
-import { SECRET_PURPOSES } from '../../data/secretPurposes'
 
 const GAME_MODES = [
   { id: 'skirmish', label: 'SKIRMISH', desc: 'Standard multiplayer skirmish battle' },
@@ -174,7 +170,6 @@ export default function BattlesPage({ campaignId, onTabChange }) {
     : (soloRecord?.matches ?? [])
 
   const envVal = battlePage.scenario?.environmentId
-  const bfVal = battlePage.scenario?.battlefieldId
   const currentMode = battlePage.setup?.gameMode ?? 'skirmish'
 
   // Setup checklist items
@@ -182,7 +177,6 @@ export default function BattlesPage({ campaignId, onTabChange }) {
     { key: 'mode', label: 'Game Mode', done: !!currentMode },
     { key: 'opponent', label: 'Opponent', done: (battlePage.setup?.opponentUserIds?.length ?? 0) > 0 },
     { key: 'env', label: 'Environment', done: !!envVal },
-    { key: 'battlefield', label: 'Battlefield', done: !!bfVal },
     { key: 'scenario', label: 'Scenario', done: !!battlePage.scenario?.scenarioId },
   ]
 
@@ -412,82 +406,43 @@ export default function BattlesPage({ campaignId, onTabChange }) {
 
       {/* ── SCENARIOS TAB ── */}
       {subTab === 'scenario' && (
-        <div className="space-y-4">
-          <div className="border border-pip-dim/40 rounded-lg bg-panel p-4 space-y-4">
-            <h2 className="text-amber text-xs font-bold tracking-widest">SCENARIO SETUP</h2>
-
-            {/* Battlefield */}
-            <div>
-              <label className="text-muted text-[10px] block mb-1">BATTLEFIELD</label>
-              <select
-                value={bfVal ?? ''}
-                onChange={e => setScenarioField('battlefieldId', e.target.value ? Number(e.target.value) : null)}
-                className="w-full text-xs"
-              >
-                <option value="">— Select battlefield —</option>
-                {battleBattlefields.map(c => (
-                  <option key={c.id} value={c.id}>{c.name}</option>
-                ))}
-              </select>
-            </div>
-
-            {/* Secret Purpose — AT mode only */}
-            {isAT && (
-              <div>
-                <label className="text-muted text-[10px] block mb-1">SECRET PURPOSE <span className="text-pip">(Alone Together)</span></label>
-                <select
-                  value={battlePage.scenario?.purposeId ?? ''}
-                  onChange={e => setScenarioField('purposeId', e.target.value ? Number(e.target.value) : null)}
-                  className="w-full text-xs"
-                >
-                  <option value="">— Select secret purpose —</option>
-                  {SECRET_PURPOSES.map(p => (
-                    <option key={p.id} value={p.id}>{p.name}</option>
-                  ))}
-                </select>
-              </div>
+        <div className="border border-pip-dim/40 rounded-lg bg-panel overflow-hidden">
+          <div className="px-4 py-2 bg-panel-light border-b border-pip-dim/30 flex items-center gap-3">
+            <h2 className="text-amber text-xs font-bold tracking-widest flex-1">ALL SCENARIOS ({battleScenarios.length})</h2>
+            {selectedScenario && (
+              <span className="text-amber text-[10px] font-bold">Selected: {selectedScenario.name}</span>
             )}
           </div>
-
-          {/* Scenario list */}
-          <div className="border border-pip-dim/40 rounded-lg bg-panel overflow-hidden">
-            <div className="px-4 py-2 bg-panel-light border-b border-pip-dim/30 flex items-center gap-3">
-              <h2 className="text-amber text-xs font-bold tracking-widest flex-1">ALL SCENARIOS ({battleScenarios.length})</h2>
-              {selectedScenario && (
-                <span className="text-amber text-[10px] font-bold">Selected: {selectedScenario.name}</span>
-              )}
-            </div>
-            <div className="p-3 space-y-2">
-              <input
-                type="text"
-                value={scenarioSearch}
-                onChange={e => setScenarioSearch(e.target.value)}
-                placeholder="Search scenarios..."
-                className="w-full text-xs"
-              />
-              <div className="max-h-80 overflow-y-auto space-y-0.5">
-                {filteredScenarios.map(scenario => {
-                  const isSelected = battlePage.scenario?.scenarioId === scenario.id
-                  return (
-                    <button
-                      key={scenario.id}
-                      type="button"
-                      onClick={() => {
-                        setScenarioField('scenarioId', isSelected ? null : scenario.id)
-                        setSelectedScenario(isSelected ? null : scenario)
-                      }}
-                      className={`w-full text-left px-3 py-2 rounded flex items-center justify-between gap-3 transition-colors text-xs ${
-                        isSelected
-                          ? 'bg-pip-dim/20 border border-pip/40 text-pip'
-                          : 'hover:bg-panel-light text-pip border border-transparent'
-                      }`}
-                    >
-                      <span className="font-bold">{scenario.name}</span>
-                      <span className="text-muted text-[10px] shrink-0">{scenario.source}</span>
-                    </button>
-                  )
-                })}
-              </div>
+          <div className="p-3 space-y-2">
+            <input
+              type="text"
+              value={scenarioSearch}
+              onChange={e => setScenarioSearch(e.target.value)}
+              placeholder="Search scenarios..."
+              className="w-full text-xs"
+            />
+            <div className="max-h-[60vh] overflow-y-auto space-y-0.5">
+              {filteredScenarios.map(scenario => {
+                const isSelected = battlePage.scenario?.scenarioId === scenario.id
+                return (
+                  <button
+                    key={scenario.id}
+                    type="button"
+                    onClick={() => {
+                      setScenarioField('scenarioId', isSelected ? null : scenario.id)
+                      setSelectedScenario(isSelected ? null : scenario)
+                    }}
+                    className={`w-full text-left px-3 py-2 rounded flex items-center justify-between gap-3 transition-colors text-xs ${
+                      isSelected
+                        ? 'bg-pip-dim/20 border border-pip/40 text-pip'
+                        : 'hover:bg-panel-light text-pip border border-transparent'
+                    }`}
+                  >
+                    <span className="font-bold">{scenario.name}</span>
+                    <span className="text-muted text-[10px] shrink-0">{scenario.source}</span>
+                  </button>
+                )
+              })}
             </div>
           </div>
         </div>
@@ -507,21 +462,6 @@ export default function BattlesPage({ campaignId, onTabChange }) {
           <LocalPopulationDeckPanel battlePage={battlePage} patchBattle={patchBattle} unitsData={unitsData} />
           <WastelandItemBattleDeck battlePage={battlePage} patchBattle={patchBattle} isOnline={isOnline} />
           <InhabitantsDeckSection round={round} />
-          <div>
-            <h2 className="text-amber text-sm tracking-widest font-bold mb-2 border-b border-pip-mid/50 pb-1">
-              HANDBOOK EXPLORE / SETTLEMENT DRAWS
-            </h2>
-            <p className="text-muted text-xs mb-3 italic">
-              Track event cards on your roster; draws here add to active consequences for the handbook explore deck.
-            </p>
-            <div className="grid md:grid-cols-2 gap-3 mb-4">
-              <CardDrawer deckType="explore" title="DRAW EXPLORE CARD" />
-              {state?.settings?.useEventCards && (
-                <CardDrawer deckType="settlement" title="DRAW SETTLEMENT EVENT" />
-              )}
-            </div>
-            <ActiveEvents />
-          </div>
         </div>
       )}
     </div>

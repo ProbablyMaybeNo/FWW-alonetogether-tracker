@@ -23,7 +23,7 @@ export function defaultBattlePageState() {
       explore: { drawPile: [], discardPile: [] },
       event: { drawPile: [], discardPile: [] },
     },
-    localPopulation: { drawPile: [], discardPile: [] },
+    localPopulation: { pool: [], drawPile: [], discardPile: [] },
     wastelandItems: {
       contributionsByUser: {},
       drawPile: [],
@@ -54,6 +54,7 @@ export function normalizeBattlePageState(raw) {
       event: mergeDeck('event'),
     },
     localPopulation: {
+      pool: Array.isArray(raw.localPopulation?.pool) ? raw.localPopulation.pool : [],
       drawPile: Array.isArray(raw.localPopulation?.drawPile) ? raw.localPopulation.drawPile : [],
       discardPile: Array.isArray(raw.localPopulation?.discardPile) ? raw.localPopulation.discardPile : [],
     },

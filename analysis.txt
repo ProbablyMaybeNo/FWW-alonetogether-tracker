@@ -1,0 +1,61 @@
+ANALYSIS SUMMARY:
+=================
+
+1. MISSING UNITS (151 units in webscraper, not in tracker):
+- Total: 151 units
+- Sample units: ALIEN DRONE, ALIEN INQUISITOR, ALIEN INVADER, ALLEN LEE, ANGLER, 
+  ARIES, AUBRIE, AUTOMATRON, BILGE, BUTCHER (variants), CAPTAIN AVERY, CULTIST (variants),
+  CX404, DIMA, DOGMEAT (ORIGINAL), FARADAY, FERAL GHOUL (variants), FLOATER (variants),
+  GRAFTON MONSTER, GULPER (variants), HANK, HIGH CONFESSOR TEKTUS, HERMIT CRAB (variants),
+  IMPOSTER SHEEPSQUATCH, JOHNNY WESTON, LASER TURRET, LEV, LIZZIE, LUCY, MEG GROBERG,
+  MEGA SLOTH, MOLDAVER, MOTHMAN (variants), MR FUZZY, N.I.R.A., NISHA, NUKALURK (variants),
+  ODESSA VALDEZ, OLD LONGFELLOW, P.A.M, PAIGE, RADTOAD, RAHMANI (variants),
+  SCORCHBEAST (variants), SCORCHED (variants), SEEKER, SHEEPSQUATCH (variants),
+  SHIN (variants), SNALLYGASTER, SURVIVALIST (variants), THE FLATWOODS MONSTER,
+  THE GHOUL, THE MARINER, THE WISE MOTHMAN, VAULT DWELLER (variants),
+  WENDIGO (variants), WILLIAM, WRATHWING, ZEALOT (variants), ZETAN (variants)
+
+2. FACTION DIFFERENCES (Units present in both but with different factions):
+   Comparing webscraper's "factions" array vs tracker's single "faction" string
+   
+   Examples of discrepancies:
+   - 1ST RECON SHARPSHOOTER: ["New California Republic"] vs "NCR"
+   - ACK ACK: ["Raiders"] vs "Gunners"
+   - ARCADE GANNON: ["Enclave","Survivors"] vs "Survivors" (dropped Enclave)
+   - ASSAULTRON: ["Enclave","Robots"] vs "Robots" (dropped Enclave)
+   - AVERY: ["Raiders"] vs "NCR"
+   - BANDIT: ["RPG Archetypes"] vs "Raiders"
+   - BEDLAM: ["Raiders","Forged"] vs "Nuka World / Raiders"
+   - BOONE: ["New California Republic","Survivors"] vs "NCR"
+   - CENTAUR: ["Super Mutants"] vs "Creatures"
+   - CHEM MAKER: ["RPG Archetypes"] vs "Survivors"
+   - CHIEF HANLON: ["New California Republic"] vs "NCR"
+   - CITO: ["Survivors"] vs "Nuka World / Survivors"
+   - COLTER: ["Raiders"] vs "Nuka World / Raiders"
+   - CONRAD KELLOGG: ["Institute"] vs "Survivors"
+   - CURIE: ["Robots","Survivors"] vs "Survivors" (dropped Robots)
+   - DEATHCLAW: ["Creatures","Enclave"] vs "Creatures" (dropped Enclave)
+   
+   Note: Webscraper uses full faction names (e.g., "New California Republic"),
+         Tracker uses codes and mixed conventions (e.g., "NCR", "Nuka World / Raiders")
+
+3. UNIQUE/TYPE STATUS DIFFERENCES:
+   Comparing webscraper's "unique" (null/true/false) vs tracker's "type" (UNIQUE/GENERIC)
+   
+   Examples:
+   - ALPHA MONGREL: unique=null (webscraper) vs type=UNIQUE/true (tracker)
+   - ARMORED TRAINEE: unique=false vs type=UNIQUE/true
+   - ASSAULTRON: unique=null vs type=UNIQUE/true
+   - BANDIT: unique=null vs type=UNIQUE/true
+   - BATTERED ASSAULTRON: unique=null vs type=UNIQUE/true
+   - BATTERED GEN 1 SYNTH: unique=null vs type=UNIQUE/true
+   - BATTERED PROTECTRON: unique=null vs type=UNIQUE/true
+   - BATTERED SENTRY BOT: unique=null vs type=UNIQUE/true
+   - BEHEMOTH: unique=null vs type=UNIQUE/true
+   - BLOATED GLOWING ONE: unique=null vs type=UNIQUE/true
+   - BLOATFLY: unique=null vs type=UNIQUE/true
+   - BRUTE: unique=null vs type=UNIQUE/false (but tracker marks as UNIQUE)
+   
+   Note: Tracker's type field uses UNIQUE/GENERIC strings but is being converted
+         to boolean true/false for comparison. Many null values in webscraper
+         are converted to true/false in tracker.

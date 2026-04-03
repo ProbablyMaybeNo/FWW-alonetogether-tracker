@@ -367,8 +367,8 @@ export default function CampaignPage({ campaignId, onTabChange }) {
 
       {/* ── Round / Battles Controls ── */}
       <div className="flex items-center gap-4 flex-wrap">
-        {/* Phase stepper — AT mode */}
-        {isAT && (
+        {/* Phase stepper — AT + creator only */}
+        {isAT && isCreator && (
           <div className="flex items-center gap-2">
             <button
               onClick={() => handlePhaseChange(-1)} disabled={phase <= 1}
@@ -381,23 +381,32 @@ export default function CampaignPage({ campaignId, onTabChange }) {
             ><ChevronRight size={14} /></button>
           </div>
         )}
-        {/* Round */}
+        {isAT && !isCreator && (
+          <span className="text-pip text-xs tracking-wider">PHASE {phase} / 4</span>
+        )}
+        {/* Round — editable by creator or solo */}
         <div className={`flex items-center gap-2 ${isAT ? 'border-l border-pip-dim/30 pl-4' : ''}`}>
           <span className="text-pip text-xs tracking-wider">ROUND</span>
-          <input
-            type="number" min="0" value={round}
-            onChange={e => void handleRoundChange(e.target.value)}
-            className="text-sm py-1 px-2 w-16 text-center font-bold"
-          />
+          {isCreator || !isOnline ? (
+            <input
+              type="number" min="0" value={round}
+              onChange={e => void handleRoundChange(e.target.value)}
+              className="text-sm py-1 px-2 w-16 text-center font-bold"
+            />
+          ) : (
+            <span className="text-amber font-bold text-lg w-16 text-center">{round}</span>
+          )}
         </div>
         {/* Battles */}
         <div className="flex items-center gap-2 border-l border-pip-dim/30 pl-4">
           <span className="text-pip text-xs tracking-wider">BATTLES</span>
           <span className="text-pip font-bold text-lg">{battleCount}</span>
-          <button
-            onClick={handleBattleInc}
-            className="text-xs border border-muted/50 text-muted hover:text-pip hover:border-pip rounded px-2 py-0.5 transition-colors"
-          >+1</button>
+          {(isCreator || !isOnline) && (
+            <button
+              onClick={handleBattleInc}
+              className="text-xs border border-muted/50 text-muted hover:text-pip hover:border-pip rounded px-2 py-0.5 transition-colors"
+            >+1</button>
+          )}
         </div>
       </div>
 

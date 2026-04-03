@@ -1,5 +1,5 @@
-import { useState, useMemo } from 'react'
-import { Shuffle, ChevronDown, ChevronUp, Search } from 'lucide-react'
+import { useState } from 'react'
+import { Shuffle, ChevronDown, ChevronUp } from 'lucide-react'
 import { shuffleIndices } from '../../utils/inhabitantsState'
 import { buildShuffledIndexPile } from '../../utils/battlePageState'
 
@@ -13,8 +13,6 @@ import { buildShuffledIndexPile } from '../../utils/battlePageState'
 export default function BattleDeckPanel({ title, deckKey, cards, battlePage, patchBattle }) {
   const [pendingIndex, setPendingIndex] = useState(null)
   const [showCardList, setShowCardList] = useState(false)
-  const [cardSearch, setCardSearch] = useState('')
-  // selectedIndices: Set of array indices selected for deck building
   const [selectedIndices, setSelectedIndices] = useState(() => new Set(cards.map((_, i) => i)))
 
   const ds = battlePage.deckStates[deckKey] || { drawPile: [], discardPile: [] }
@@ -25,12 +23,7 @@ export default function BattleDeckPanel({ title, deckKey, cards, battlePage, pat
   const disc = discardPile.length
   const isEmpty = remaining === 0 && disc === 0
 
-  const filteredCards = useMemo(() =>
-    cardSearch
-      ? cards.map((c, i) => ({ ...c, idx: i })).filter(c => c.name.toLowerCase().includes(cardSearch.toLowerCase()))
-      : cards.map((c, i) => ({ ...c, idx: i })),
-    [cards, cardSearch]
-  )
+  const allCardEntries = cards.map((c, i) => ({ ...c, idx: i }))
 
   function resolveDrawPile(drawP, discP) {
     let dp = [...drawP]
@@ -234,26 +227,15 @@ export default function BattleDeckPanel({ title, deckKey, cards, battlePage, pat
       {/* Card list — collapsible */}
       {showCardList && (
         <div className="border border-pip-dim/30 rounded bg-panel-dark p-2 space-y-2 mt-1">
-          <div className="flex items-center gap-2">
-            <div className="relative flex-1">
-              <Search size={10} className="absolute left-2 top-1/2 -translate-y-1/2 text-muted" />
-              <input
-                type="text"
-                value={cardSearch}
-                onChange={e => setCardSearch(e.target.value)}
-                placeholder="Filter cards..."
-                className="w-full text-[10px] pl-6 py-1"
-              />
+          {isEmpty && (
+            <div className="flex items-center gap-2">
+              <span className="text-muted text-[10px] flex-1">{selectedIndices.size}/{total} selected</span>
+              <button type="button" onClick={selectAll} className="text-[10px] border border-pip/30 text-pip rounded px-2 py-0.5 hover:bg-pip-dim/20">SELECT ALL</button>
+              <button type="button" onClick={selectNone} className="text-[10px] border border-muted/30 text-muted rounded px-2 py-0.5 hover:text-pip">NONE</button>
             </div>
-            {isEmpty && (
-              <div className="flex gap-1 shrink-0">
-                <button type="button" onClick={selectAll} className="text-[10px] text-muted hover:text-pip px-1">ALL</button>
-                <button type="button" onClick={selectNone} className="text-[10px] text-muted hover:text-pip px-1">NONE</button>
-              </div>
-            )}
-          </div>
+          )}
           <div className="max-h-48 overflow-y-auto space-y-0.5">
-            {filteredCards.map(card => {
+            {allCardEntries.map(card => {
               const isInDiscard = discardPile.includes(card.idx)
               const isInDraw = drawPile.includes(card.idx)
               const isSelected = selectedIndices.has(card.idx)
@@ -282,9 +264,6 @@ export default function BattleDeckPanel({ title, deckKey, cards, battlePage, pat
               )
             })}
           </div>
-          {isEmpty && (
-            <p className="text-muted text-[10px]">{selectedIndices.size} / {total} selected</p>
-          )}
         </div>
       )}
     </div>
