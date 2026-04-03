@@ -5,7 +5,6 @@ import { useAuth } from '../../context/AuthContext'
 import { supabase } from '../../lib/supabase'
 import { normalizeBattlePageState, defaultBattlePageState } from '../../utils/battlePageState'
 import ObjectivesPage from '../objectives/ObjectivesPage'
-import InhabitantsDeckSection from '../campaign/InhabitantsDeckSection'
 import BattleDeckPanel from './BattleDeckPanel'
 import LocalPopulationDeckPanel from './LocalPopulationDeckPanel'
 import WastelandItemBattleDeck from './WastelandItemBattleDeck'
@@ -461,7 +460,6 @@ export default function BattlesPage({ campaignId, onTabChange }) {
           </div>
           <LocalPopulationDeckPanel battlePage={battlePage} patchBattle={patchBattle} unitsData={unitsData} />
           <WastelandItemBattleDeck battlePage={battlePage} patchBattle={patchBattle} isOnline={isOnline} />
-          <InhabitantsDeckSection round={round} />
         </div>
       )}
     </div>

@@ -34,13 +34,8 @@ export default function LocalPopulationDeckPanel({ battlePage, patchBattle, unit
   }, [unitsData, factionFilter, search])
 
   function addUnit(unitId) {
-    patchBattle(b => ({
-      ...b,
-      localPopulation: {
-        ...b.localPopulation,
-        pool: [...(b.localPopulation.pool || []), unitId],
-      },
-    }))
+    const newPool = [...pool, unitId]
+    patchBattle(b => ({ ...b, localPopulation: { ...b.localPopulation, pool: newPool } }))
   }
 
   function removeFromPool(poolIdx) {
@@ -62,16 +57,12 @@ export default function LocalPopulationDeckPanel({ battlePage, patchBattle, unit
   }
 
   function addRandom(count = 1) {
-    const available = unitsData.map(u => u.id)
-    const shuffled = available.sort(() => Math.random() - 0.5)
-    const picked = shuffled.slice(0, count)
-    patchBattle(b => ({
-      ...b,
-      localPopulation: {
-        ...b.localPopulation,
-        pool: [...(b.localPopulation.pool || []), ...picked],
-      },
-    }))
+    const picked = [...unitsData]
+      .sort(() => Math.random() - 0.5)
+      .slice(0, count)
+      .map(u => u.id)
+    const newPool = [...pool, ...picked]
+    patchBattle(b => ({ ...b, localPopulation: { ...b.localPopulation, pool: newPool } }))
   }
 
   function handleShufflePool() {
