@@ -7,19 +7,20 @@
   --color-pip-glow: #00e67640;
   --color-pip-mid: #00b85a;
 
-  /* Neon orange replaces amber — highlight/important */
-  --color-amber: #ffb700;
-  --color-amber-dim: #4a2800;
-  --color-amber-glow: rgba(255, 183, 0, 0.55);
+  /* Neon yellow/amber — matched to pip brightness */
+  --color-amber: #ffd700;
+  --color-amber-dim: #4a2e00;
+  --color-amber-glow: rgba(255, 215, 0, 0.55);
 
   /* Neon red — danger/warning */
   --color-danger: #ff3c3c;
   --color-danger-dim: #4a0f0f;
   --color-danger-glow: #ff3c3c30;
 
-  /* Neon blue — info/links */
-  --color-info: #00b4ff;
-  --color-info-dim: #00334d;
+  /* Neon cyan/blue — matched to pip brightness */
+  --color-info: #00e5ff;
+  --color-info-dim: #003844;
+  --color-info-glow: rgba(0, 229, 255, 0.45);
 
   /* Label green — medium-dim for hierarchy between pip and dim */
   --color-pip-label: #4db87a;
@@ -119,5 +120,15 @@ button {
 @layer utilities {
   .text-label {
     color: var(--color-pip-label);
+  }
+
+  /* Glowing terminal text — amber */
+  .text-amber {
+    text-shadow: 0 0 8px rgba(255, 215, 0, 0.7), 0 0 2px rgba(255, 215, 0, 0.4);
+  }
+
+  /* Glowing terminal text — info/cyan */
+  .text-info {
+    text-shadow: 0 0 8px rgba(0, 229, 255, 0.65), 0 0 2px rgba(0, 229, 255, 0.35);
   }
 }
