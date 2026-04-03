@@ -22,6 +22,7 @@ create table if not exists campaigns (
   phase1_cap_limit int default 750 not null,
   explore_locations jsonb default '{}'::jsonb,
   battles jsonb default '{}'::jsonb,
+  inhabitants_state jsonb default '{"decks":[],"session":{"round":0,"items":[]},"pendingDraw":null}'::jsonb,
   created_at timestamptz default now(),
   updated_at timestamptz default now()
 );

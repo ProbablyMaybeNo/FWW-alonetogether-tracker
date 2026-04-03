@@ -5,6 +5,8 @@ import { useAuth } from '../../context/AuthContext'
 import { supabase } from '../../lib/supabase'
 import { calcRosterTotalCaps } from '../../utils/calculations'
 import { SCAVENGER_OBJECTIVES } from '../../data/scavengerObjectives'
+import InhabitantsDeckSection from './InhabitantsDeckSection'
+import { defaultInhabitantsState } from '../../utils/inhabitantsState'
 
 
 const PHASES = [
@@ -63,7 +65,7 @@ const PHASES = [
 
 
 export default function CampaignPage({ campaignId }) {
-  const { state, setState, updateShared, isOnline, sharedState } = useCampaign()
+  const { state, setState, updateShared, isOnline, sharedState, saveInhabitantsState } = useCampaign()
   const { user } = useAuth()
   const [allPlayers, setAllPlayers] = useState([])
   const [loadingPlayers, setLoadingPlayers] = useState(false)
@@ -81,6 +83,15 @@ export default function CampaignPage({ campaignId }) {
   const phaseInfo = PHASES[phase - 1] || PHASES[0]
   const isAT = !state?.settings?.settlementMode || state.settings.settlementMode === 'alone-together'
   const isCreator = !!(user?.id && sharedState?.createdBy && user.id === sharedState.createdBy)
+
+  async function resetInhabitantsSession(nextRound = round) {
+    const base = { ...defaultInhabitantsState(), ...state?.inhabitantsState }
+    await saveInhabitantsState({
+      ...base,
+      session: { round: nextRound, items: [] },
+      pendingDraw: null,
+    })
+  }
 
   useEffect(() => {
     if (!isOnline || !campaignId) return
@@ -164,11 +175,12 @@ export default function CampaignPage({ campaignId }) {
     else setState(prev => ({ ...prev, phase: newPhase }))
   }
 
-  function handleRoundChange(val) {
+  async function handleRoundChange(val) {
     const n = parseInt(val, 10)
     const newRound = isNaN(n) ? 0 : n
-    if (isOnline) updateShared('round', newRound)
+    if (isOnline) await updateShared('round', newRound)
     else setState(prev => ({ ...prev, round: newRound }))
+    await resetInhabitantsSession(newRound)
   }
 
   function handleBattleInc() {
@@ -211,6 +223,7 @@ export default function CampaignPage({ campaignId }) {
     }
 
     await updateShared('battles', { ...currentBattles, [roundKey]: roundData })
+    await resetInhabitantsSession(round)
     setBattleOpponent('')
     setBattleSubmitting(false)
   }
@@ -222,14 +235,16 @@ export default function CampaignPage({ campaignId }) {
     const roundData = { ...(currentBattles[roundKey] ?? {}) }
     roundData[user.id] = { ready: true, noBattles: true, matches: [] }
     await updateShared('battles', { ...currentBattles, [roundKey]: roundData })
+    await resetInhabitantsSession(round)
   }
 
   async function handleNextRound() {
     if (!isCreator) return
     if (!allReady && displayPlayers.length > 1) return
     const newRound = round + 1
-    if (isOnline) updateShared('round', newRound)
+    if (isOnline) await updateShared('round', newRound)
     else setState(prev => ({ ...prev, round: newRound }))
+    await resetInhabitantsSession(newRound)
   }
 
   async function handleCreatorRecordBattle(e) {
@@ -252,6 +267,7 @@ export default function CampaignPage({ campaignId }) {
       matches: [...(oppRecord.matches ?? []), { opponentId: creatorRecordFor, result: mirrorResult }],
     }
     await updateShared('battles', { ...currentBattles, [roundKey]: roundData })
+    await resetInhabitantsSession(round)
     setCreatorRecordFor('')
     setCreatorOpponent('')
     setBattleSubmitting(false)
@@ -264,6 +280,7 @@ export default function CampaignPage({ campaignId }) {
     const roundData = { ...(currentBattles[roundKey] ?? {}) }
     roundData[playerId] = { ready: true, noBattles: true, matches: [] }
     await updateShared('battles', { ...currentBattles, [roundKey]: roundData })
+    await resetInhabitantsSession(round)
   }
 
   if (!state) return <div className="p-8 text-center text-muted text-xs tracking-wider">LOADING...</div>
@@ -322,7 +339,7 @@ export default function CampaignPage({ campaignId }) {
           <span className="text-pip text-xs tracking-wider">ROUND</span>
           <input
             type="number" min="0" value={round}
-            onChange={e => handleRoundChange(e.target.value)}
+            onChange={e => void handleRoundChange(e.target.value)}
             className="text-sm py-1 px-2 w-16 text-center font-bold"
           />
         </div>
@@ -406,6 +423,8 @@ export default function CampaignPage({ campaignId }) {
           ))}
         </div>
       </div>
+
+      <InhabitantsDeckSection round={round} />
 
       {/* ── Battles ── */}
       <div>

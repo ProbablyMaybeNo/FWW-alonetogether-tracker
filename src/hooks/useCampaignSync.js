@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback, useRef } from 'react'
 import { supabase } from '../lib/supabase'
 import { usePersistedState } from './usePersistedState'
+import { normalizeInhabitantsState } from '../utils/inhabitantsState'
 
 const DEBOUNCE_MS = 500
 
@@ -81,6 +82,7 @@ function campaignDbToState(row) {
     exploreLocations: row.explore_locations ?? {},
     battles: row.battles ?? {},
     createdBy: row.created_by ?? null,
+    inhabitantsState: normalizeInhabitantsState(row.inhabitants_state),
   }
 }
 
@@ -164,7 +166,7 @@ export function useCampaignSync({ campaignId, userId } = {}) {
         // Load shared campaign data
         const { data: camp, error: campErr } = await supabase
           .from('campaigns')
-          .select('phase, round, battle_count, phase1_cap_limit, explore_locations, battles, created_by')
+          .select('phase, round, battle_count, phase1_cap_limit, explore_locations, battles, created_by, inhabitants_state')
           .eq('id', campaignId)
           .single()
 
@@ -287,6 +289,7 @@ export function useCampaignSync({ campaignId, userId } = {}) {
       phase1CapLimit: 'phase1_cap_limit',
       exploreLocations: 'explore_locations',
       battles: 'battles',
+      inhabitantsState: 'inhabitants_state',
     }
     const col = colMap[field] ?? field
 
@@ -306,6 +309,40 @@ export function useCampaignSync({ campaignId, userId } = {}) {
     }
   }, [campaignId, isOnline])
 
+  const saveInhabitantsState = useCallback(async (nextInhabitantsState) => {
+    const normalized = normalizeInhabitantsState(nextInhabitantsState)
+    if (!isOnline) {
+      solo.setState(prev => ({ ...prev, inhabitantsState: normalized }))
+      return
+    }
+    try {
+      const { error } = await supabase.rpc('patch_campaign_inhabitants_state', {
+        p_campaign_id: campaignId,
+        p_state: normalized,
+      })
+      if (!error) {
+        setSharedState(prev => ({ ...prev, inhabitantsState: normalized }))
+        setSyncError(null)
+        return
+      }
+      throw error
+    } catch (e) {
+      console.warn('patch_campaign_inhabitants_state RPC missing or failed; trying direct campaigns update (creator-only RLS):', e)
+      try {
+        const { error: e2 } = await supabase
+          .from('campaigns')
+          .update({ inhabitants_state: normalized })
+          .eq('id', campaignId)
+        if (e2) throw e2
+        setSharedState(prev => ({ ...prev, inhabitantsState: normalized }))
+        setSyncError(null)
+      } catch (e3) {
+        console.error('saveInhabitantsState:', e3)
+        setSyncError(e3.message ?? String(e3))
+      }
+    }
+  }, [campaignId, isOnline, solo])
+
   // Cleanup debounce on unmount
   useEffect(() => {
     return () => {
@@ -319,6 +356,7 @@ export function useCampaignSync({ campaignId, userId } = {}) {
       ...solo,
       sharedState: null,
       updateShared: () => {},
+      saveInhabitantsState,
       syncing: false,
       syncError: null,
       isOnline: false,
@@ -339,6 +377,7 @@ export function useCampaignSync({ campaignId, userId } = {}) {
     importData: solo.importData,
     sharedState,
     updateShared,
+    saveInhabitantsState,
     syncing,
     syncError,
     isOnline: true,
