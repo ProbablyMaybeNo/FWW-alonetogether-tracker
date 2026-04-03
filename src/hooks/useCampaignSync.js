@@ -165,6 +165,11 @@ export function useCampaignSync({ campaignId, userId } = {}) {
             },
           }
           setStateLocal(initialState)
+          // Create the player_data row immediately so it exists on next load
+          supabase.from('player_data').upsert(
+            { ...stateToDb(initialState), campaign_id: campaignId, user_id: userId },
+            { onConflict: 'campaign_id,user_id' }
+          ).then(({ error }) => { if (error) console.error('initial player_data create error:', error) })
         }
 
         // Load shared campaign data
