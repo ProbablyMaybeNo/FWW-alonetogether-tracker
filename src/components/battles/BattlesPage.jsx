@@ -11,7 +11,6 @@ import WastelandItemBattleDeck from './WastelandItemBattleDeck'
 import battleCreatures from '../../data/battle/battleCreatures.json'
 import battleStrangers from '../../data/battle/battleStrangers.json'
 import battleDangers from '../../data/battle/battleDangers.json'
-import battleExplores from '../../data/battle/battleExplores.json'
 import battleEvents from '../../data/battle/battleEvents.json'
 import battleEnvironments from '../../data/battle/battleEnvironments.json'
 import battleScenarios from '../../data/battle/battleScenarios.json'
@@ -455,8 +454,7 @@ export default function BattlesPage({ campaignId, onTabChange }) {
             <BattleDeckPanel title="CREATURE" deckKey="creature" cards={battleCreatures} battlePage={battlePage} patchBattle={patchBattle} />
             <BattleDeckPanel title="STRANGER" deckKey="stranger" cards={battleStrangers} battlePage={battlePage} patchBattle={patchBattle} />
             <BattleDeckPanel title="DANGER" deckKey="danger" cards={battleDangers} battlePage={battlePage} patchBattle={patchBattle} />
-            <BattleDeckPanel title="EXPLORE (BATTLE)" deckKey="explore" cards={battleExplores} battlePage={battlePage} patchBattle={patchBattle} />
-            <BattleDeckPanel title="EVENT (BATTLEFIELD)" deckKey="event" cards={battleEvents} battlePage={battlePage} patchBattle={patchBattle} />
+<BattleDeckPanel title="EVENT (BATTLEFIELD)" deckKey="event" cards={battleEvents} battlePage={battlePage} patchBattle={patchBattle} />
           </div>
           <LocalPopulationDeckPanel battlePage={battlePage} patchBattle={patchBattle} unitsData={unitsData} />
           <WastelandItemBattleDeck battlePage={battlePage} patchBattle={patchBattle} isOnline={isOnline} />

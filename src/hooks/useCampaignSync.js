@@ -144,8 +144,8 @@ export function useCampaignSync({ campaignId, userId } = {}) {
             setStateLocal(loaded)
           }
         } else {
-          // First join: check for pending settings saved during campaign creation
-          const pending = (() => {
+          // First join: check for pending settings / player info saved during campaign creation
+          const pendingSettings = (() => {
             try {
               const raw = localStorage.getItem('fww-pending-settings')
               if (!raw) return null
@@ -154,8 +154,26 @@ export function useCampaignSync({ campaignId, userId } = {}) {
             } catch {}
             return null
           })()
-          if (pending) localStorage.removeItem('fww-pending-settings')
-          const baseState = pending ? { ...solo.state, settings: pending } : solo.state
+          if (pendingSettings) localStorage.removeItem('fww-pending-settings')
+
+          const pendingPlayer = (() => {
+            try {
+              const raw = localStorage.getItem('fww-pending-player')
+              if (!raw) return null
+              const parsed = JSON.parse(raw)
+              if (parsed.campaignId === campaignId) return parsed.player
+            } catch {}
+            return null
+          })()
+          if (pendingPlayer) localStorage.removeItem('fww-pending-player')
+
+          // Strip campaign-level fields from solo state — these come from campaigns table, not local play
+          const { phase: _p, round: _r, battleCount: _bc, ...soloPersonal } = solo.state
+          const baseState = {
+            ...soloPersonal,
+            ...(pendingSettings ? { settings: pendingSettings } : {}),
+            ...(pendingPlayer ? { player: pendingPlayer } : {}),
+          }
           const hasExistingStructures = (baseState.settlement?.structures?.length ?? 0) > 0
           const initialState = hasExistingStructures ? baseState : {
             ...baseState,
@@ -372,16 +390,14 @@ export function useCampaignSync({ campaignId, userId } = {}) {
       solo.setState(prev => ({ ...prev, battlePageState: normalized }))
       return
     }
+    // Optimistic update — reflect immediately before async save
+    setSharedState(prev => ({ ...prev, battlePageState: normalized }))
     try {
       const { error } = await supabase.rpc('patch_campaign_battle_page_state', {
         p_campaign_id: campaignId,
         p_state: normalized,
       })
-      if (!error) {
-        setSharedState(prev => ({ ...prev, battlePageState: normalized }))
-        setSyncError(null)
-        return
-      }
+      if (!error) { setSyncError(null); return }
       throw error
     } catch (e) {
       console.warn('patch_campaign_battle_page_state RPC missing or failed; trying direct campaigns update:', e)
@@ -391,7 +407,6 @@ export function useCampaignSync({ campaignId, userId } = {}) {
           .update({ battle_page_state: normalized })
           .eq('id', campaignId)
         if (e2) throw e2
-        setSharedState(prev => ({ ...prev, battlePageState: normalized }))
         setSyncError(null)
       } catch (e3) {
         console.error('saveBattlePageState:', e3)
@@ -405,16 +420,14 @@ export function useCampaignSync({ campaignId, userId } = {}) {
       solo.setState(prev => ({ ...prev, battles: nextBattles }))
       return
     }
+    // Optimistic update
+    setSharedState(prev => ({ ...prev, battles: nextBattles }))
     try {
       const { error } = await supabase.rpc('patch_campaign_battles', {
         p_campaign_id: campaignId,
         p_battles: nextBattles,
       })
-      if (!error) {
-        setSharedState(prev => ({ ...prev, battles: nextBattles }))
-        setSyncError(null)
-        return
-      }
+      if (!error) { setSyncError(null); return }
       throw error
     } catch (e) {
       console.warn('patch_campaign_battles RPC missing or failed; trying direct update:', e)
@@ -424,7 +437,6 @@ export function useCampaignSync({ campaignId, userId } = {}) {
           .update({ battles: nextBattles })
           .eq('id', campaignId)
         if (e2) throw e2
-        setSharedState(prev => ({ ...prev, battles: nextBattles }))
         setSyncError(null)
       } catch (e3) {
         console.error('saveCampaignBattles:', e3)
