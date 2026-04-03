@@ -361,9 +361,9 @@ function NarrativeSection({ state, setState, round }) {
           <table className="w-full text-xs border-collapse">
             <thead>
               <tr className="border-b border-pip-dim/30">
-                <th className="text-left text-info px-4 py-2 tracking-wider font-normal opacity-70 w-12">RND</th>
-                <th className="text-left text-info px-4 py-2 tracking-wider font-normal opacity-70 w-36">TITLE</th>
-                <th className="text-left text-info px-4 py-2 tracking-wider font-normal opacity-70">NARRATIVE</th>
+                <th className="text-left text-info px-4 py-2 tracking-wider font-normal w-12">RND</th>
+                <th className="text-left text-info px-4 py-2 tracking-wider font-normal w-36">TITLE</th>
+                <th className="text-left text-info px-4 py-2 tracking-wider font-normal">NARRATIVE</th>
                 <th className="w-8 px-2 py-2"></th>
               </tr>
             </thead>
@@ -400,7 +400,7 @@ function StatTile({ label, value, color = 'pip', onClick }) {
       onClick={onClick}
     >
       <div className={`${colorClass} text-base font-bold`}>{value}</div>
-      <div className="text-info text-xs mt-0.5 leading-tight opacity-80">{label}</div>
+      <div className="text-info text-xs mt-0.5 leading-tight">{label}</div>
     </div>
   )
 }

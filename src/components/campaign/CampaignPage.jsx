@@ -81,9 +81,9 @@ function NarrativeModal({ player, onClose }) {
               <table className="w-full text-xs border-collapse">
                 <thead>
                   <tr className="border-b border-pip-dim/30 bg-panel-light">
-                    <th className="text-left text-info px-4 py-2 tracking-wider font-normal opacity-70 w-8">RND</th>
-                    <th className="text-left text-info px-4 py-2 tracking-wider font-normal opacity-70 w-32">TITLE</th>
-                    <th className="text-left text-info px-4 py-2 tracking-wider font-normal opacity-70">NARRATIVE</th>
+                    <th className="text-left text-info px-4 py-2 tracking-wider font-normal w-8">RND</th>
+                    <th className="text-left text-info px-4 py-2 tracking-wider font-normal w-32">TITLE</th>
+                    <th className="text-left text-info px-4 py-2 tracking-wider font-normal">NARRATIVE</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -432,9 +432,9 @@ export default function CampaignPage({ campaignId, onTabChange }) {
             <thead>
               <tr className="border-b border-pip-mid/40">
                 {['PLAYER', 'FACTION', 'CAPS', 'ACTIVE', 'DEAD', 'ROSTER VALUE', 'STRUCTURES', 'QUESTS', 'OBJECTIVES', 'PERKS'].map(h => (
-                  <th key={h} className={`text-info tracking-wider py-2 pr-3 font-normal opacity-70 ${h === 'PLAYER' || h === 'FACTION' ? 'text-left' : 'text-right'}`}>{h}</th>
+                  <th key={h} className={`text-info tracking-wider py-2 pr-3 font-normal ${h === 'PLAYER' || h === 'FACTION' ? 'text-left' : 'text-right'}`}>{h}</th>
                 ))}
-                <th key="JOURNAL" className="text-info tracking-wider py-2 pr-3 font-normal opacity-70 text-right">JOURNAL</th>
+                <th key="JOURNAL" className="text-info tracking-wider py-2 pr-3 font-normal text-right">JOURNAL</th>
               </tr>
             </thead>
             <tbody>
