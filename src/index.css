@@ -21,6 +21,9 @@
   --color-info: #00b4ff;
   --color-info-dim: #00334d;
 
+  /* Label green — medium-dim for hierarchy between pip and dim */
+  --color-pip-label: #4db87a;
+
   /* Backgrounds — dark terminal aesthetic preserved */
   --color-terminal: #080c08;
   --color-panel: #0e130e;
@@ -115,6 +118,6 @@ button {
 
 @layer utilities {
   .text-label {
-    color: var(--color-info);
+    color: var(--color-pip-label);
   }
 }

@@ -3,7 +3,7 @@ import { useCampaign } from '../../context/CampaignContext'
 import { SECRET_PURPOSES } from '../../data/secretPurposes'
 import { SCAVENGER_OBJECTIVES } from '../../data/scavengerObjectives'
 import questCardDeck from '../../data/questCardDeck.json'
-import { Plus, X, Check, Shuffle, ChevronDown, ChevronRight, BookOpen } from 'lucide-react'
+import { X, Check, Shuffle, ChevronDown, ChevronRight, BookOpen } from 'lucide-react'
 import questCardContent from '../../data/questCardContent.json'
 
 function useCardContent(cardName, cardId) {
@@ -105,7 +105,7 @@ function DrawnCardContent({ cardName, cardId }) {
 const SUB_TABS = [
   { id: 'secret',    label: 'SECRET PURPOSES' },
   { id: 'scavenger', label: 'SCAVENGER OBJECTIVES' },
-  { id: 'quests',    label: 'QUEST CARDS' },
+  { id: 'quests',    label: 'QUESTS' },
 ]
 
 export default function ObjectivesPage() {
@@ -113,7 +113,7 @@ export default function ObjectivesPage() {
 
   return (
     <div className="p-4 max-w-5xl mx-auto">
-      <h2 className="text-pip text-sm tracking-widest mb-4 border-b border-pip-mid/50 pb-2 font-bold">OBJECTIVES</h2>
+      <h2 className="text-amber text-sm tracking-widest mb-4 border-b border-pip-mid/50 pb-2 font-bold">OBJECTIVES</h2>
 
       {/* Sub-tabs */}
       <div className="flex gap-1 mb-6">
@@ -122,7 +122,7 @@ export default function ObjectivesPage() {
             key={t.id}
             onClick={() => setSubTab(t.id)}
             className={`flex-1 py-2 text-xs rounded border transition-colors font-bold tracking-wider ${
-              subTab === t.id ? 'border-pip bg-panel-light text-pip' : 'border-pip/30 text-pip hover:text-amber hover:border-amber'
+              subTab === t.id ? 'border-amber bg-panel-light text-amber' : 'border-pip/30 text-pip hover:text-amber hover:border-amber'
             }`}
           >
             {t.label}
@@ -178,7 +178,7 @@ function SecretPurposes() {
       <div className="flex items-center gap-3 flex-wrap">
         <button
           onClick={handleDraw}
-          className="flex items-center gap-2 px-4 py-2 border border-pip rounded text-pip text-xs font-bold hover:bg-pip-dim/30 transition-colors"
+          className="flex items-center gap-2 px-4 py-2 border border-amber rounded text-amber text-xs font-bold hover:bg-amber/10 transition-colors"
         >
           <Shuffle size={12} /> DRAW RANDOM
         </button>
@@ -357,6 +357,14 @@ function ScavengerObjectives() {
                       MARK COMPLETE
                     </button>
                   )}
+                  {isActive && (
+                    <button
+                      onClick={() => setState(prev => ({ ...prev, activeScavengerObjective: null }))}
+                      className="px-3 py-1 border border-muted/40 text-muted text-xs rounded hover:border-danger hover:text-danger transition-colors"
+                    >
+                      CANCEL
+                    </button>
+                  )}
                 </div>
               )}
             </div>
@@ -370,8 +378,6 @@ function ScavengerObjectives() {
 /* ── Quest Cards ── */
 function QuestCardsPanel() {
   const { state, setState } = useCampaign()
-  const [newName, setNewName] = useState('')
-  const [newPart, setNewPart] = useState('1')
   const [drawnCard, setDrawnCard] = useState(null)
   const [showDeckBrowser, setShowDeckBrowser] = useState(false)
   const [deckSearch, setDeckSearch] = useState('')
@@ -420,22 +426,6 @@ function QuestCardsPanel() {
       drawnQuestIds: (prev.drawnQuestIds || []).filter(id => id !== drawnCard.id),
     }))
     setDrawnCard(null)
-  }
-
-  function handleAddManual() {
-    if (!newName.trim() || activeCount >= 3) return
-    setState(prev => ({
-      ...prev,
-      questCards: [...(prev.questCards || []), {
-        id: Date.now(),
-        name: newName.trim(),
-        part: newPart,
-        status: 'Active',
-        startedRound: prev.round ?? 0,
-      }],
-    }))
-    setNewName('')
-    setNewPart('1')
   }
 
   function handleToggleStatus(id) {
@@ -502,7 +492,7 @@ function QuestCardsPanel() {
           <button
             onClick={handleDrawRandom}
             disabled={remainingDeck.length === 0}
-            className="flex items-center gap-2 px-4 py-2 border border-pip rounded text-pip text-xs hover:bg-pip-dim/30 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+            className="flex items-center gap-2 px-4 py-2 border border-amber rounded text-amber text-xs font-bold hover:bg-amber/10 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
           >
             <Shuffle size={12} /> DRAW RANDOM ({remainingDeck.length})
           </button>
@@ -576,7 +566,7 @@ function QuestCardsPanel() {
                 disabled={activeCount >= 3}
                 className="flex-1 py-1.5 border border-pip text-pip text-xs rounded hover:bg-pip-dim/30 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
               >
-                ADD TO QUEST LOG
+                START QUEST
               </button>
               <button
                 onClick={handleDiscardDrawnCard}
@@ -597,28 +587,33 @@ function QuestCardsPanel() {
 
       {/* Quest Log */}
       <div>
-        <h3 className="text-pip text-xs tracking-wider mb-2 border-b border-pip-dim/30 pb-1">QUEST LOG</h3>
+        <h3 className="text-amber text-xs tracking-wider mb-2 border-b border-pip-dim/30 pb-1 font-bold">QUEST LOG</h3>
 
         {quests.length === 0 ? (
-          <p className="text-pip text-xs text-center py-4">No quests in log. Draw a card or add manually below.</p>
+          <p className="text-pip text-xs text-center py-4">No quests started. Draw a random card or browse the deck above.</p>
         ) : (
           <div className="space-y-2">
-            {quests.map(q => (
+            {[...quests.filter(q => q.status === 'Active'), ...quests.filter(q => q.status === 'Complete')].map(q => (
               <div
                 key={q.id}
                 className={`flex items-center gap-3 border rounded px-3 py-2 transition-colors ${
-                  q.status === 'Complete' ? 'border-pip-dim/20 bg-panel-alt opacity-60' : 'border-pip-dim/40 bg-panel'
+                  q.status === 'Complete' ? 'border-amber/30 bg-amber/5' : 'border-pip-dim/40 bg-panel'
                 }`}
               >
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 flex-wrap">
-                    <span className={`text-sm ${q.status === 'Complete' ? 'text-pip-dim line-through' : 'text-pip'}`}>{q.name}</span>
+                    <span className={`text-sm ${q.status === 'Complete' ? 'text-amber/70' : 'text-pip'}`}>{q.name}</span>
                     <span className={`text-xs px-2 py-0.5 rounded border ${
                       q.part && q.part !== '1' ? 'border-amber/50 text-amber' : 'border-pip/40 text-pip'
                     }`}>
                       Part {q.part || '1'}
                     </span>
                     <span className="text-pip text-xs">R{q.startedRound ?? 0}</span>
+                    {q.status === 'Complete' && (
+                      <span className="text-xs px-2 py-0.5 rounded border border-amber/50 text-amber bg-amber/10 font-bold">
+                        ✓ COMPLETE
+                      </span>
+                    )}
                   </div>
                 </div>
                 <button
@@ -646,40 +641,6 @@ function QuestCardsPanel() {
         )}
       </div>
 
-      {/* Manual Add */}
-      <div>
-        <h3 className="text-pip text-xs tracking-wider mb-2 border-b border-pip-dim/30 pb-1">ADD MANUALLY</h3>
-        <div className="flex gap-2 flex-wrap">
-          <input
-            type="text"
-            value={newName}
-            onChange={(e) => setNewName(e.target.value)}
-            onKeyDown={(e) => { if (e.key === 'Enter') handleAddManual() }}
-            placeholder="Quest name..."
-            className="flex-1 text-xs"
-          />
-          <div className="flex gap-1">
-            {['1', '2', '3', '2A', '2B'].map(p => (
-              <button
-                key={p}
-                onClick={() => setNewPart(p)}
-                className={`px-2 py-1 text-xs border rounded transition-colors ${
-                  newPart === p ? 'border-pip text-pip bg-pip-dim/20' : 'border-pip/30 text-pip hover:text-amber hover:border-amber'
-                }`}
-              >
-                {p}
-              </button>
-            ))}
-          </div>
-          <button
-            onClick={handleAddManual}
-            disabled={activeCount >= 3}
-            className="px-3 py-1 border border-pip-dim text-pip text-sm rounded hover:bg-pip-dim/30 disabled:opacity-30 disabled:cursor-not-allowed"
-          >
-            <Plus size={14} />
-          </button>
-        </div>
-      </div>
     </div>
   )
 }

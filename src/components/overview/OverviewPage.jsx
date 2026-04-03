@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Users, Building2, Zap, Droplets, ScrollText, Target, Plus, Minus, Map } from 'lucide-react'
+import { Users, Building2, Zap, Droplets, ScrollText, Target, Plus, Minus, Map, X } from 'lucide-react'
 import { useCampaign } from '../../context/CampaignContext'
 import { calcPowerGenerated, calcPowerConsumed, calcWaterGenerated, calcWaterConsumed, calcRosterTotalCaps, getStructureRef } from '../../utils/calculations'
 import { SCAVENGER_OBJECTIVES } from '../../data/scavengerObjectives'
@@ -84,15 +84,15 @@ export default function OverviewPage({ onTabChange }) {
       {/* Player Info */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
         <div className="flex flex-col">
-          <label className="text-xs text-pip mb-1 tracking-wider">PLAYER</label>
+          <label className="text-xs text-info mb-1 tracking-wider">PLAYER</label>
           <input type="text" value={player['name'] || ''} onChange={(e) => handlePlayerChange('name', e.target.value)} className="text-xs py-1 px-2" />
         </div>
         <div className="flex flex-col">
-          <label className="text-xs text-pip mb-1 tracking-wider">SETTLEMENT</label>
+          <label className="text-xs text-info mb-1 tracking-wider">SETTLEMENT</label>
           <input type="text" value={player['settlement'] || ''} onChange={(e) => handlePlayerChange('settlement', e.target.value)} className="text-xs py-1 px-2" />
         </div>
         <div className="flex flex-col">
-          <label className="text-xs text-pip mb-1 tracking-wider">FACTION</label>
+          <label className="text-xs text-info mb-1 tracking-wider">FACTION</label>
           <select
             value={player['faction'] || ''}
             onChange={(e) => handlePlayerChange('faction', e.target.value)}
@@ -105,14 +105,14 @@ export default function OverviewPage({ onTabChange }) {
           </select>
         </div>
         <div className="flex flex-col">
-          <label className="text-xs text-pip mb-1 tracking-wider">SUB-FACTION</label>
+          <label className="text-xs text-info mb-1 tracking-wider">SUB-FACTION</label>
           <input type="text" value={player['leader'] || ''} onChange={(e) => handlePlayerChange('leader', e.target.value)} className="text-xs py-1 px-2" />
         </div>
       </div>
 
       {/* Caps */}
       <div className="border border-amber/60 rounded-lg bg-panel p-4" style={{ boxShadow: '0 0 10px var(--color-amber-glow)' }}>
-        <div className="text-xs text-pip mb-3 tracking-widest font-bold">SETTLEMENT CAPS</div>
+        <div className="text-xs text-amber mb-3 tracking-widest font-bold">SETTLEMENT CAPS</div>
         <div className="flex items-center gap-4 flex-wrap">
           {editingCaps ? (
             <input type="number" min="0" value={capsInput}
@@ -142,7 +142,7 @@ export default function OverviewPage({ onTabChange }) {
             </button>
           </div>
           <div className="ml-auto text-right">
-            <div className="text-xs text-pip">CAMPAIGN SCORE</div>
+            <div className="text-xs text-info">CAMPAIGN SCORE</div>
             <div className="text-amber font-bold text-xl">{campaignScore.toLocaleString()}c</div>
           </div>
         </div>
@@ -152,7 +152,7 @@ export default function OverviewPage({ onTabChange }) {
       <div className="border border-pip-mid/40 rounded-lg bg-panel overflow-hidden">
         <div className="px-4 py-2 bg-panel-light border-b border-pip-mid/30 flex items-center gap-2">
           <Building2 size={13} className="text-pip" />
-          <h2 className="text-pip text-xs tracking-widest font-bold">SETTLEMENT</h2>
+          <h2 className="text-amber text-xs tracking-widest font-bold">SETTLEMENT</h2>
           <button onClick={() => onTabChange?.('settlement')} className="ml-auto text-xs text-pip hover:text-pip transition-colors">OPEN →</button>
         </div>
         <div className="grid grid-cols-3 sm:grid-cols-6 divide-x divide-pip-dim/20">
@@ -190,7 +190,7 @@ export default function OverviewPage({ onTabChange }) {
       <div className="border border-pip-mid/40 rounded-lg bg-panel overflow-hidden">
         <div className="px-4 py-2 bg-panel-light border-b border-pip-mid/30 flex items-center gap-2">
           <Users size={13} className="text-pip" />
-          <h2 className="text-pip text-xs tracking-widest font-bold">ROSTER</h2>
+          <h2 className="text-amber text-xs tracking-widest font-bold">ROSTER</h2>
           <button onClick={() => onTabChange?.('roster')} className="ml-auto text-xs text-pip hover:text-pip transition-colors">OPEN →</button>
         </div>
         <div className="grid grid-cols-2 sm:grid-cols-4 divide-x divide-pip-dim/20">
@@ -205,7 +205,7 @@ export default function OverviewPage({ onTabChange }) {
       <div className="border border-pip-mid/40 rounded-lg bg-panel overflow-hidden">
         <div className="px-4 py-2 bg-panel-light border-b border-pip-mid/30 flex items-center gap-2">
           <Map size={13} className="text-pip" />
-          <h2 className="text-pip text-xs tracking-widest font-bold">CAMPAIGN</h2>
+          <h2 className="text-amber text-xs tracking-widest font-bold">CAMPAIGN</h2>
         </div>
         <div className="grid grid-cols-3 sm:grid-cols-5 divide-x divide-pip-dim/20">
           <div className="p-3 text-center">
@@ -224,7 +224,7 @@ export default function OverviewPage({ onTabChange }) {
       <div className="border border-pip-mid/40 rounded bg-panel p-3">
         <div className="flex items-center gap-2 mb-2">
           <Target size={13} className="text-pip" />
-          <span className="text-xs text-pip tracking-widest font-bold">ACTIVE SCAVENGER OBJECTIVE</span>
+          <span className="text-xs text-amber tracking-widest font-bold">ACTIVE SCAVENGER OBJECTIVE</span>
         </div>
         {activeObjective
           ? <span className="text-amber text-sm font-bold">{activeObjective.name}</span>
@@ -243,7 +243,7 @@ export default function OverviewPage({ onTabChange }) {
       <div className="border border-pip-mid/40 rounded-lg bg-panel p-4">
         <div className="flex items-center gap-2 mb-2">
           <ScrollText size={14} className="text-pip" />
-          <h2 className="text-pip text-sm tracking-widest font-bold">BATTLES</h2>
+          <h2 className="text-amber text-sm tracking-widest font-bold">BATTLES</h2>
           {(state.activeEvents || []).length > 0 && (
             <span className="text-amber font-bold text-xs">({state.activeEvents.length} active events)</span>
           )}
@@ -260,6 +260,134 @@ export default function OverviewPage({ onTabChange }) {
         </button>
       </div>
 
+      <NarrativeSection state={state} setState={setState} round={state.round ?? 0} />
+
+    </div>
+  )
+}
+
+function NarrativeSection({ state, setState, round }) {
+  const [showAddModal, setShowAddModal] = useState(false)
+  const [newTitle, setNewTitle] = useState('')
+  const [newContent, setNewContent] = useState('')
+
+  const entries = state.narrativeLog || []
+
+  function handleAdd() {
+    if (!newTitle.trim() && !newContent.trim()) return
+    const entry = {
+      id: Date.now(),
+      title: newTitle.trim() || 'Untitled',
+      content: newContent.trim(),
+      round: round ?? 0,
+    }
+    setState(prev => ({ ...prev, narrativeLog: [...(prev.narrativeLog || []), entry] }))
+    setNewTitle('')
+    setNewContent('')
+    setShowAddModal(false)
+  }
+
+  function handleRemove(id) {
+    setState(prev => ({ ...prev, narrativeLog: (prev.narrativeLog || []).filter(e => e.id !== id) }))
+  }
+
+  return (
+    <div className="border border-pip-mid/40 rounded-lg bg-panel overflow-hidden">
+      <div className="px-4 py-2 bg-panel-light border-b border-pip-mid/30 flex items-center gap-2">
+        <span className="text-amber text-xs tracking-widest font-bold flex-1">NARRATIVE LOG</span>
+        <button
+          onClick={() => setShowAddModal(true)}
+          className="flex items-center gap-1 text-xs border border-pip text-pip rounded px-3 py-1 hover:bg-pip-dim/20 transition-colors font-bold"
+        >
+          + ADD ENTRY
+        </button>
+      </div>
+
+      {/* Add modal */}
+      {showAddModal && (
+        <div className="fixed inset-0 bg-black/85 flex items-center justify-center z-50 p-4" onClick={() => setShowAddModal(false)}>
+          <div className="max-w-lg w-full" onClick={e => e.stopPropagation()}>
+            <div className="bg-panel border border-pip rounded-lg p-4 space-y-3">
+              <div className="flex items-center justify-between">
+                <span className="text-pip text-sm font-bold tracking-wider">NEW NARRATIVE ENTRY</span>
+                <span className="text-muted text-xs">Round {round ?? 0}</span>
+              </div>
+              <div>
+                <label className="text-muted text-xs block mb-1 tracking-wider">TITLE</label>
+                <input
+                  type="text"
+                  value={newTitle}
+                  onChange={e => setNewTitle(e.target.value)}
+                  placeholder="Entry title..."
+                  className="w-full text-xs"
+                  autoFocus
+                />
+              </div>
+              <div>
+                <label className="text-muted text-xs block mb-1 tracking-wider">NARRATIVE</label>
+                <textarea
+                  value={newContent}
+                  onChange={e => setNewContent(e.target.value)}
+                  placeholder="Describe what happened this round..."
+                  rows={5}
+                  className="w-full text-xs resize-none"
+                />
+              </div>
+              <div className="flex gap-2 pt-1">
+                <button
+                  onClick={handleAdd}
+                  disabled={!newTitle.trim() && !newContent.trim()}
+                  className="flex-1 py-2 border border-amber text-amber text-xs font-bold rounded hover:bg-amber/10 disabled:opacity-40 transition-colors"
+                >
+                  ADD TO LOG
+                </button>
+                <button
+                  onClick={() => setShowAddModal(false)}
+                  className="px-4 py-2 border border-muted/30 text-muted text-xs rounded hover:text-pip transition-colors"
+                >
+                  CANCEL
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Entries table */}
+      {entries.length === 0 ? (
+        <p className="text-muted text-xs text-center py-6">No narrative entries yet. Record your campaign story.</p>
+      ) : (
+        <div className="overflow-x-auto">
+          <table className="w-full text-xs border-collapse">
+            <thead>
+              <tr className="border-b border-pip-dim/30">
+                <th className="text-left text-info px-4 py-2 tracking-wider font-normal opacity-70 w-12">RND</th>
+                <th className="text-left text-info px-4 py-2 tracking-wider font-normal opacity-70 w-36">TITLE</th>
+                <th className="text-left text-info px-4 py-2 tracking-wider font-normal opacity-70">NARRATIVE</th>
+                <th className="w-8 px-2 py-2"></th>
+              </tr>
+            </thead>
+            <tbody>
+              {[...entries].reverse().map((entry, i) => (
+                <tr key={entry.id ?? i} className="border-b border-pip-dim/20 hover:bg-panel-light transition-colors">
+                  <td className="px-4 py-2 text-pip font-bold">{entry.round ?? '—'}</td>
+                  <td className="px-4 py-2 text-amber font-bold">{entry.title}</td>
+                  <td className="px-4 py-2 text-pip leading-relaxed whitespace-pre-wrap">{entry.content}</td>
+                  <td className="px-2 py-2">
+                    <button
+                      onClick={() => handleRemove(entry.id)}
+                      className="text-muted hover:text-danger p-0.5 transition-colors"
+                      title="Remove entry"
+                    >
+                      <X size={12} />
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
     </div>
   )
 }
@@ -272,7 +400,7 @@ function StatTile({ label, value, color = 'pip', onClick }) {
       onClick={onClick}
     >
       <div className={`${colorClass} text-base font-bold`}>{value}</div>
-      <div className="text-pip text-xs mt-0.5 leading-tight">{label}</div>
+      <div className="text-info text-xs mt-0.5 leading-tight opacity-80">{label}</div>
     </div>
   )
 }

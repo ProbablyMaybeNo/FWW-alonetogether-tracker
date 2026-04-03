@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { ChevronLeft, ChevronRight } from 'lucide-react'
+import { ChevronLeft, ChevronRight, X, BookOpen } from 'lucide-react'
 import { useCampaign } from '../../context/CampaignContext'
 import { useAuth } from '../../context/AuthContext'
 import { supabase } from '../../lib/supabase'
@@ -63,8 +63,49 @@ const PHASES = [
 ]
 
 
-export default function CampaignPage({ campaignId }) {
-  const { state, setState, updateShared, isOnline, sharedState, saveInhabitantsState } = useCampaign()
+function NarrativeModal({ player, onClose }) {
+  if (!player) return null
+  const entries = player.narrativeLog || []
+  return (
+    <div className="fixed inset-0 bg-black/85 flex items-center justify-center z-50 p-4" onClick={onClose}>
+      <div className="max-w-2xl w-full max-h-[80vh] flex flex-col" onClick={e => e.stopPropagation()}>
+        <div className="bg-panel border border-pip rounded-lg overflow-hidden flex flex-col max-h-[80vh]">
+          <div className="flex items-center justify-between px-4 py-3 border-b border-pip-dim/30 bg-panel-light">
+            <span className="text-pip text-sm font-bold tracking-wider">{player.username} — NARRATIVE LOG</span>
+            <button onClick={onClose} className="text-muted hover:text-danger p-1"><X size={14} /></button>
+          </div>
+          <div className="overflow-y-auto flex-1">
+            {entries.length === 0 ? (
+              <p className="text-muted text-xs text-center py-8">No narrative entries yet.</p>
+            ) : (
+              <table className="w-full text-xs border-collapse">
+                <thead>
+                  <tr className="border-b border-pip-dim/30 bg-panel-light">
+                    <th className="text-left text-info px-4 py-2 tracking-wider font-normal opacity-70 w-8">RND</th>
+                    <th className="text-left text-info px-4 py-2 tracking-wider font-normal opacity-70 w-32">TITLE</th>
+                    <th className="text-left text-info px-4 py-2 tracking-wider font-normal opacity-70">NARRATIVE</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {entries.map((entry, i) => (
+                    <tr key={entry.id ?? i} className="border-b border-pip-dim/20 hover:bg-panel-light">
+                      <td className="px-4 py-2 text-pip font-bold">{entry.round ?? '—'}</td>
+                      <td className="px-4 py-2 text-amber font-bold">{entry.title}</td>
+                      <td className="px-4 py-2 text-pip leading-relaxed">{entry.content}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+export default function CampaignPage({ campaignId, onTabChange }) {
+  const { state, setState, updateShared, isOnline, sharedState, saveInhabitantsState, saveCampaignBattles } = useCampaign()
   const { user } = useAuth()
   const [allPlayers, setAllPlayers] = useState([])
   const [loadingPlayers, setLoadingPlayers] = useState(false)
@@ -75,6 +116,7 @@ export default function CampaignPage({ campaignId }) {
   const [creatorRecordFor, setCreatorRecordFor] = useState('')
   const [creatorOpponent, setCreatorOpponent] = useState('')
   const [creatorResult, setCreatorResult] = useState('win')
+  const [narrativePlayer, setNarrativePlayer] = useState(null)
 
   const phase = state?.phase ?? 1
   const round = state?.round ?? 0
@@ -112,7 +154,7 @@ export default function CampaignPage({ campaignId }) {
 
       const { data: playerData, error: playerDataErr } = await supabase
         .from('player_data')
-        .select('user_id, caps, roster, settlement, quest_cards, completed_objectives, active_scavenger_objective, player_info')
+        .select('user_id, caps, roster, settlement, quest_cards, completed_objectives, active_scavenger_objective, player_info, narrative_log')
         .eq('campaign_id', campaignId)
       if (playerDataErr) console.error('fetchAllPlayers player_data error:', playerDataErr)
 
@@ -139,6 +181,7 @@ export default function CampaignPage({ campaignId }) {
           completedObjectiveIds: pd.completed_objectives || [],
           activeObjectiveId: pd.active_scavenger_objective ?? null,
           totalPerks: roster.reduce((s, u) => s + (u.perks || []).length, 0),
+          narrativeLog: pd.narrative_log || [],
         }
       }))
     } catch (e) {
@@ -164,6 +207,7 @@ export default function CampaignPage({ campaignId }) {
     completedObjectiveIds: state.completedObjectives || [],
     activeObjectiveId: state.activeScavengerObjective ?? null,
     totalPerks: (state.roster || []).reduce((s, u) => s + (u.perks || []).length, 0),
+    narrativeLog: state.narrativeLog || [],
   } : null
 
   const displayPlayers = (isOnline && allPlayers.length > 0) ? allPlayers : (myStats ? [myStats] : [])
@@ -221,7 +265,7 @@ export default function CampaignPage({ campaignId }) {
       matches: [...(oppRecord.matches ?? []), { opponentId: user.id, result: mirrorResult }],
     }
 
-    await updateShared('battles', { ...currentBattles, [roundKey]: roundData })
+    await saveCampaignBattles({ ...currentBattles, [roundKey]: roundData })
     await resetInhabitantsSession(round)
     setBattleOpponent('')
     setBattleSubmitting(false)
@@ -233,7 +277,7 @@ export default function CampaignPage({ campaignId }) {
     const roundKey = String(round)
     const roundData = { ...(currentBattles[roundKey] ?? {}) }
     roundData[user.id] = { ready: true, noBattles: true, matches: [] }
-    await updateShared('battles', { ...currentBattles, [roundKey]: roundData })
+    await saveCampaignBattles({ ...currentBattles, [roundKey]: roundData })
     await resetInhabitantsSession(round)
   }
 
@@ -265,7 +309,7 @@ export default function CampaignPage({ campaignId }) {
       ...oppRecord, ready: true,
       matches: [...(oppRecord.matches ?? []), { opponentId: creatorRecordFor, result: mirrorResult }],
     }
-    await updateShared('battles', { ...currentBattles, [roundKey]: roundData })
+    await saveCampaignBattles({ ...currentBattles, [roundKey]: roundData })
     await resetInhabitantsSession(round)
     setCreatorRecordFor('')
     setCreatorOpponent('')
@@ -278,7 +322,7 @@ export default function CampaignPage({ campaignId }) {
     const roundKey = String(round)
     const roundData = { ...(currentBattles[roundKey] ?? {}) }
     roundData[playerId] = { ready: true, noBattles: true, matches: [] }
-    await updateShared('battles', { ...currentBattles, [roundKey]: roundData })
+    await saveCampaignBattles({ ...currentBattles, [roundKey]: roundData })
     await resetInhabitantsSession(round)
   }
 
@@ -286,6 +330,7 @@ export default function CampaignPage({ campaignId }) {
 
   return (
     <div className="p-4 space-y-6 max-w-5xl mx-auto">
+      <NarrativeModal player={narrativePlayer} onClose={() => setNarrativePlayer(null)} />
 
       {/* ── Phase Banner ── */}
       <div
@@ -297,7 +342,7 @@ export default function CampaignPage({ campaignId }) {
           <div className="min-w-0">
             <div className="flex items-center gap-3 mb-1">
               <span className="text-amber text-xl font-bold tracking-widest">PHASE {phase}</span>
-              <span className="text-pip text-base font-bold tracking-wider">— {phaseInfo.name}</span>
+              <span className="text-amber/80 text-base font-bold tracking-wider">— {phaseInfo.name}</span>
             </div>
             <div className="flex flex-wrap gap-x-4 gap-y-0.5 mb-1">
               <span className="text-muted text-xs"><span className="text-pip/70 uppercase tracking-wider text-[10px]">Objective:</span> {phaseInfo.subtitle}</span>
@@ -319,8 +364,8 @@ export default function CampaignPage({ campaignId }) {
 
       {/* ── Round / Battles Controls ── */}
       <div className="flex items-center gap-4 flex-wrap">
-        {/* Phase stepper — AT only */}
-        {isAT && (
+        {/* Phase stepper — AT + creator only */}
+        {isAT && isCreator && (
           <div className="flex items-center gap-2">
             <button
               onClick={() => handlePhaseChange(-1)} disabled={phase <= 1}
@@ -333,30 +378,40 @@ export default function CampaignPage({ campaignId }) {
             ><ChevronRight size={14} /></button>
           </div>
         )}
-        {/* Round */}
+        {/* Phase display — non-creator sees read-only */}
+        {isAT && !isCreator && (
+          <span className="text-pip text-xs tracking-wider">PHASE {phase} / 4</span>
+        )}
+        {/* Round — editable by creator only */}
         <div className={`flex items-center gap-2 ${isAT ? 'border-l border-pip-dim/30 pl-4' : ''}`}>
           <span className="text-pip text-xs tracking-wider">ROUND</span>
-          <input
-            type="number" min="0" value={round}
-            onChange={e => void handleRoundChange(e.target.value)}
-            className="text-sm py-1 px-2 w-16 text-center font-bold"
-          />
+          {isCreator || !isOnline ? (
+            <input
+              type="number" min="0" value={round}
+              onChange={e => void handleRoundChange(e.target.value)}
+              className="text-sm py-1 px-2 w-16 text-center font-bold"
+            />
+          ) : (
+            <span className="text-amber font-bold text-lg w-16 text-center">{round}</span>
+          )}
         </div>
         {/* Battles */}
         <div className="flex items-center gap-2 border-l border-pip-dim/30 pl-4">
           <span className="text-pip text-xs tracking-wider">BATTLES</span>
           <span className="text-pip font-bold text-lg">{battleCount}</span>
-          <button
-            onClick={handleBattleInc}
-            className="text-xs border border-muted/50 text-muted hover:text-pip hover:border-pip rounded px-2 py-0.5 transition-colors"
-          >+1</button>
+          {(isCreator || !isOnline) && (
+            <button
+              onClick={handleBattleInc}
+              className="text-xs border border-muted/50 text-muted hover:text-pip hover:border-pip rounded px-2 py-0.5 transition-colors"
+            >+1</button>
+          )}
         </div>
       </div>
 
       {/* ── Player Table ── */}
       <div>
         <div className="flex items-center gap-3 mb-3 border-b border-pip-mid/50 pb-2">
-          <h2 className="text-pip text-sm tracking-widest font-bold flex-1">
+          <h2 className="text-amber text-sm tracking-widest font-bold flex-1">
             PLAYERS ({displayPlayers.length})
           </h2>
           {isOnline && (
@@ -375,8 +430,9 @@ export default function CampaignPage({ campaignId }) {
             <thead>
               <tr className="border-b border-pip-mid/40">
                 {['PLAYER', 'FACTION', 'CAPS', 'ACTIVE', 'DEAD', 'ROSTER VALUE', 'STRUCTURES', 'QUESTS', 'OBJECTIVES', 'PERKS'].map(h => (
-                  <th key={h} className={`text-muted tracking-wider py-2 pr-3 font-normal ${h === 'PLAYER' || h === 'FACTION' ? 'text-left' : 'text-right'}`}>{h}</th>
+                  <th key={h} className={`text-info tracking-wider py-2 pr-3 font-normal opacity-70 ${h === 'PLAYER' || h === 'FACTION' ? 'text-left' : 'text-right'}`}>{h}</th>
                 ))}
+                <th key="JOURNAL" className="text-info tracking-wider py-2 pr-3 font-normal opacity-70 text-right">JOURNAL</th>
               </tr>
             </thead>
             <tbody>
@@ -397,6 +453,15 @@ export default function CampaignPage({ campaignId }) {
                   <td className="py-2.5 pr-3 text-right text-pip">{p.activeQuests}</td>
                   <td className="py-2.5 pr-3 text-right text-pip">{p.completedObjectives}</td>
                   <td className="py-2.5 text-right text-pip">{p.totalPerks}</td>
+                  <td className="py-2 text-right">
+                    <button
+                      onClick={() => setNarrativePlayer(p)}
+                      className="p-1.5 border border-pip/30 rounded text-muted hover:text-amber hover:border-amber transition-colors"
+                      title="View narrative log"
+                    >
+                      <BookOpen size={12} />
+                    </button>
+                  </td>
                 </tr>
               ))}
             </tbody>
@@ -423,191 +488,85 @@ export default function CampaignPage({ campaignId }) {
         </div>
       </div>
 
-      {/* ── Battles ── */}
-      <div>
-        <div className="flex items-center gap-3 mb-3 border-b border-pip-mid/50 pb-2">
-          <h2 className="text-pip text-sm tracking-widest font-bold flex-1">BATTLES — ROUND {round}</h2>
+      {/* ── Round Status ── */}
+      <div className="border border-pip-mid/40 rounded-lg bg-panel p-4">
+        <div className="flex items-center gap-3 flex-wrap mb-3">
+          <h2 className="text-amber text-sm tracking-widest font-bold flex-1">
+            ROUND {round} STATUS
+          </h2>
           <span className="text-muted text-xs">
             {displayPlayers.filter(p => roundBattles[p.userId]?.ready).length}/{displayPlayers.length} reported
           </span>
+          {isOnline && (
+            <button
+              onClick={() => onTabChange?.('battles')}
+              className="text-xs border border-pip/50 text-pip rounded px-3 py-1.5 hover:bg-pip-dim/20 transition-colors"
+            >
+              RECORD ON BATTLES TAB →
+            </button>
+          )}
         </div>
 
-        {/* Battle log */}
-        <div className="space-y-1.5 mb-4">
+        {/* Compact player ready status */}
+        <div className="flex flex-wrap gap-2 mb-4">
           {displayPlayers.map(p => {
             const record = roundBattles[p.userId]
             return (
-              <div key={p.userId} className={`border rounded px-3 py-2 ${record?.ready ? 'border-pip-dim/40 bg-panel' : 'border-muted/20 bg-panel opacity-60'}`}>
-                <div className="flex items-center gap-2 flex-wrap">
-                  <span className="text-xs font-bold text-pip">{p.username}</span>
-                  {record?.ready ? (
-                    record.noBattles ? (
-                      <span className="text-muted text-xs">No battles this round</span>
-                    ) : (
-                      <div className="flex gap-2 flex-wrap">
-                        {(record.matches ?? []).map((m, i) => {
-                          const opp = displayPlayers.find(x => x.userId === m.opponentId)
-                          return (
-                            <span key={i} className={`text-xs px-2 py-0.5 border rounded font-bold ${
-                              m.result === 'win' ? 'border-pip/40 text-pip' :
-                              m.result === 'loss' ? 'border-danger/40 text-danger' :
-                              'border-muted/40 text-muted'
-                            }`}>
-                              {m.result.toUpperCase()} vs {opp?.username ?? m.opponentId}
-                            </span>
-                          )
-                        })}
-                      </div>
-                    )
+              <div
+                key={p.userId}
+                className={`flex items-center gap-2 border rounded px-3 py-1.5 text-xs ${
+                  record?.ready
+                    ? 'border-pip/40 bg-pip-dim/10 text-pip'
+                    : 'border-pip/20 text-pip/40'
+                }`}
+              >
+                <span className="font-bold">{p.username}</span>
+                {record?.ready ? (
+                  record.noBattles ? (
+                    <span className="text-muted">— no battles</span>
                   ) : (
-                    <span className="text-muted text-xs italic">Not yet reported</span>
-                  )}
-                  {record?.ready && <span className="ml-auto text-pip text-xs">✓</span>}
-                </div>
+                    <span className="text-pip">
+                      {(record.matches ?? []).map(m => m.result.toUpperCase()).join(', ')}
+                    </span>
+                  )
+                ) : (
+                  <span className="text-muted italic">pending</span>
+                )}
+                {record?.ready && <span className="text-pip ml-1">✓</span>}
               </div>
             )
           })}
         </div>
 
-        {/* Record battle form — my own battles */}
-        {isOnline && user && (
-          <div className="border border-pip-mid/30 rounded bg-panel p-3 space-y-3">
-            <div className="text-muted text-xs tracking-wider">RECORD MY BATTLE</div>
-            <form onSubmit={handleRecordBattle} className="flex gap-2 flex-wrap items-end">
-              <div className="flex-1 min-w-32">
-                <label className="text-muted text-xs block mb-1">OPPONENT</label>
-                <select
-                  value={battleOpponent}
-                  onChange={e => setBattleOpponent(e.target.value)}
-                  className="w-full text-xs py-1 px-2"
-                >
-                  <option value="">Select opponent...</option>
-                  {displayPlayers.filter(p => !p.isMe).map(p => (
-                    <option key={p.userId} value={p.userId}>{p.username}</option>
-                  ))}
-                </select>
-              </div>
-              <div>
-                <label className="text-muted text-xs block mb-1">RESULT</label>
-                <div className="flex gap-1">
-                  {['win','loss','draw'].map(r => (
-                    <button
-                      key={r}
-                      type="button"
-                      onClick={() => setBattleResult(r)}
-                      className={`text-xs px-3 py-1 border rounded transition-colors font-bold ${
-                        battleResult === r
-                          ? r === 'win' ? 'border-pip text-pip bg-pip-dim/20'
-                            : r === 'loss' ? 'border-danger text-danger bg-danger/10'
-                            : 'border-muted text-muted bg-muted/10'
-                          : 'border-muted/30 text-muted hover:text-pip hover:border-pip'
-                      }`}
-                    >{r.toUpperCase()}</button>
-                  ))}
-                </div>
-              </div>
-              <button
-                type="submit"
-                disabled={!battleOpponent || battleSubmitting}
-                className="text-xs border border-amber text-amber font-bold px-4 py-1.5 rounded hover:bg-amber/10 transition-colors disabled:opacity-40"
-              >{battleSubmitting ? '...' : 'RECORD'}</button>
-            </form>
-            {!roundBattles[user.id]?.ready && (
-              <button
-                onClick={handleNoBattles}
-                className="text-xs text-muted border border-muted/30 rounded px-3 py-1.5 hover:text-pip hover:border-pip transition-colors"
-              >NO BATTLES THIS ROUND</button>
-            )}
-          </div>
-        )}
-
-        {/* Creator: record battles for any player */}
-        {isOnline && isCreator && displayPlayers.length > 1 && (
-          <div className="border border-amber/30 rounded bg-panel p-3 space-y-3" style={{ boxShadow: '0 0 6px rgba(251,191,36,0.08)' }}>
-            <div className="text-amber text-xs tracking-wider font-bold">RECORD BATTLE FOR PLAYER <span className="text-muted font-normal">(Campaign Creator)</span></div>
-            <form onSubmit={handleCreatorRecordBattle} className="flex gap-2 flex-wrap items-end">
-              <div className="min-w-32">
-                <label className="text-muted text-xs block mb-1">PLAYER</label>
-                <select value={creatorRecordFor} onChange={e => setCreatorRecordFor(e.target.value)} className="w-full text-xs py-1 px-2">
-                  <option value="">Select player...</option>
-                  {displayPlayers.map(p => (
-                    <option key={p.userId} value={p.userId}>{p.username}</option>
-                  ))}
-                </select>
-              </div>
-              <div className="flex-1 min-w-32">
-                <label className="text-muted text-xs block mb-1">OPPONENT</label>
-                <select value={creatorOpponent} onChange={e => setCreatorOpponent(e.target.value)} className="w-full text-xs py-1 px-2">
-                  <option value="">Select opponent...</option>
-                  {displayPlayers.filter(p => p.userId !== creatorRecordFor).map(p => (
-                    <option key={p.userId} value={p.userId}>{p.username}</option>
-                  ))}
-                </select>
-              </div>
-              <div>
-                <label className="text-muted text-xs block mb-1">RESULT</label>
-                <div className="flex gap-1">
-                  {['win','loss','draw'].map(r => (
-                    <button key={r} type="button" onClick={() => setCreatorResult(r)}
-                      className={`text-xs px-3 py-1 border rounded transition-colors font-bold ${
-                        creatorResult === r
-                          ? r === 'win' ? 'border-pip text-pip bg-pip-dim/20'
-                            : r === 'loss' ? 'border-danger text-danger bg-danger/10'
-                            : 'border-muted text-muted bg-muted/10'
-                          : 'border-muted/30 text-muted hover:text-pip hover:border-pip'
-                      }`}
-                    >{r.toUpperCase()}</button>
-                  ))}
-                </div>
-              </div>
-              <button type="submit" disabled={!creatorRecordFor || !creatorOpponent || battleSubmitting}
-                className="text-xs border border-amber text-amber font-bold px-4 py-1.5 rounded hover:bg-amber/10 transition-colors disabled:opacity-40"
-              >{battleSubmitting ? '...' : 'RECORD'}</button>
-            </form>
-            {/* Quick NO BATTLES buttons for any not-yet-ready player */}
-            {displayPlayers.filter(p => !roundBattles[p.userId]?.ready).length > 0 && (
-              <div className="flex flex-wrap gap-2 pt-1 border-t border-pip-dim/20">
-                <span className="text-muted text-xs self-center">No battles:</span>
-                {displayPlayers.filter(p => !roundBattles[p.userId]?.ready).map(p => (
-                  <button key={p.userId} onClick={() => handleCreatorNoBattles(p.userId)}
-                    className="text-xs text-muted border border-muted/30 rounded px-2 py-1 hover:text-pip hover:border-pip transition-colors"
-                  >{p.username}</button>
-                ))}
-              </div>
-            )}
-          </div>
-        )}
-
         {/* Next Round button — creator only */}
-        <div className="mt-4 flex items-center gap-3">
-          {isCreator || !isOnline ? (
-            <button
-              onClick={handleNextRound}
-              disabled={!allReady && displayPlayers.length > 1 && isOnline}
-              className={`flex-1 py-3 text-sm font-bold tracking-widest border rounded transition-all ${
-                allReady || displayPlayers.length <= 1 || !isOnline
-                  ? 'border-amber text-amber hover:bg-amber/10'
-                  : 'border-muted/30 text-muted opacity-40 cursor-not-allowed'
-              }`}
-              style={allReady || displayPlayers.length <= 1 || !isOnline ? { boxShadow: '0 0 12px var(--color-amber-glow)' } : {}}
-            >
-              {allReady || displayPlayers.length <= 1 || !isOnline
-                ? '▶ NEXT ROUND'
-                : `NEXT ROUND (${displayPlayers.filter(p => roundBattles[p.userId]?.ready).length}/${displayPlayers.length} ready)`
-              }
-            </button>
-          ) : (
-            <div className="flex-1 py-3 text-xs text-muted text-center border border-muted/20 rounded tracking-wider">
-              {displayPlayers.filter(p => roundBattles[p.userId]?.ready).length}/{displayPlayers.length} players reported — waiting for campaign creator to advance round
-            </div>
-          )}
-        </div>
+        {(isCreator || !isOnline) && (
+          <button
+            onClick={handleNextRound}
+            disabled={!allReady && displayPlayers.length > 1 && isOnline}
+            className={`w-full py-3 text-sm font-bold tracking-widest border rounded transition-all ${
+              allReady || displayPlayers.length <= 1 || !isOnline
+                ? 'border-amber text-amber hover:bg-amber/10'
+                : 'border-muted/30 text-muted opacity-40 cursor-not-allowed'
+            }`}
+            style={allReady || displayPlayers.length <= 1 || !isOnline ? { boxShadow: '0 0 12px var(--color-amber-glow)' } : {}}
+          >
+            {allReady || displayPlayers.length <= 1 || !isOnline
+              ? '▶ NEXT ROUND'
+              : `NEXT ROUND (${displayPlayers.filter(p => roundBattles[p.userId]?.ready).length}/${displayPlayers.length} ready)`
+            }
+          </button>
+        )}
+        {isOnline && !isCreator && (
+          <div className="text-xs text-muted text-center py-2 tracking-wider">
+            {displayPlayers.filter(p => roundBattles[p.userId]?.ready).length}/{displayPlayers.length} players reported — waiting for campaign creator to advance round
+          </div>
+        )}
       </div>
 
       {/* ── Scavenger Objectives Board ── */}
       {displayPlayers.some(p => p.activeObjectiveId != null || p.completedObjectiveIds?.length > 0) && (
         <div>
-          <h2 className="text-pip text-sm tracking-widest font-bold mb-3 border-b border-pip-mid/50 pb-1">
+          <h2 className="text-amber text-sm tracking-widest font-bold mb-3 border-b border-pip-mid/50 pb-1">
             SCAVENGER OBJECTIVES
           </h2>
           <div className="space-y-1">

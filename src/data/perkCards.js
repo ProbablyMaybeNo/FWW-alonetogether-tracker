@@ -88,6 +88,45 @@ export function parseSymbols(text) {
   })
 }
 
+export const PERK_CAPS = {
+  'ACE OPERATOR': 9, 'ACTION BOY / GIRL': 5, 'ADAMANTIUM SKELETON': 8,
+  'ANIMAL FRIEND': 8, 'ANIMAL FRIEND II': 6, 'ANIMAL FRIEND III': 4,
+  'ARMORER': 3, 'ATTACK DOG': 7, 'BASHER': 5, 'BERSERKER': 9,
+  'BIG LEAGUES': 5, 'BLACKSMITH': 3, 'BLITZ': 5, 'BLITZER': 8,
+  'BLOODY MESS': 3, 'BODYGUARD': 16, 'BRAWLER': 12, 'CHEM RESISTANT': 3,
+  'CHEMIST': 6, 'CHOSEN DISCIPLE': 7, 'COLLABORATIVE': 15,
+  'COMMAND: ACT': 17, 'COMMAND: ATTACK': 16, 'COMMAND: COUNTER': 4,
+  'COMMAND: FIND': 8, 'COMMAND: GUIDED STRIKE': 12, 'COMMAND: HEEL': 10,
+  'COMMAND: IMPETUOUS': 5, 'COMMAND: PACK ASSAULT': 2, 'COMMAND: PACK ATTACK': 7,
+  'COMMAND: PROTECT': 4, 'COMMAND: SCATTER': 15, 'COMMAND: SPEED': 16,
+  'COMMAND: TAKE IT': 10, 'COMMANDER': 13, 'COMPANION': 10,
+  'CONCENTRATED FIRE': 5, 'CREATURE TRAINER': 4, 'DEFENDER': 12,
+  'DEMOLITION EXPERT': 5, 'DWELLER': 17, 'ENTANGLE': 8, 'FINESSE': 10,
+  'FIRE RESISTANT': 7, 'FUSILIER': 14, 'GHOULISH': 10,
+  'GUN NUT - HEAVY': 3, 'GUN NUT - PISTOL': 3, 'GUN NUT - RIFLE': 3,
+  'GUNSLINGER': 5, 'HACK ROBOT': 5, 'HACKER': 4, 'HEAVY GUNNER': 3,
+  'HIT THE DECK': 3, 'HUNTER': 13, 'HUNTSMAN': 7, 'IMPATIENT': 6,
+  'IRRESPONSIBLE': 10, 'LEAD BELLY': 5, 'LIFE GIVER': 7, 'LIGHT STEP': 5,
+  'LOCAL LEADER': 5, 'LOCAL LEADER II': 5, 'LOCKSMITH': 4, 'LONE WANDERER': 22,
+  'MEDIC': 4, 'MEND ROBOT': 5, 'MOVING TARGET': 6, 'MYSTERIOUS STRANGER': 4,
+  'MYSTERIOUS STRANGER II': 13, 'MYSTERIOUS STRANGER III': 3, 'NERD RAGE': 6,
+  'NINJA': 6, 'NUCLEAR PHYSICIST': 10, 'OLD TIMER': 11, 'PACK ALPHA': 28,
+  'PACK LEADER': 23, 'PAIN TRAIN': 1, 'PENETRATOR': 15,
+  'PROGRAM: ACT': 13, 'PROGRAM: AGGRESSIVE': 8, 'PROGRAM: ATTACK': 16,
+  'PROGRAM: COORDINATED': 2, 'PROGRAM: HACK': 8, 'PROGRAM: INTERCEPT': 4,
+  'PROGRAM: PICK': 8, 'PROGRAM: RETURN': 10, 'PROGRAM: SPEED': 14,
+  'PROGRAM: SPREAD': 12, 'PROGRAM: SYNCHRONIZED': 11, 'PROGRAM: VOLLEY': 16,
+  'PYROMANIAC': 10, 'QUICK THINKING': 2, 'RAD RESISTANT': 3, 'REFRACTOR': 9,
+  'RIFLEMAN': 5, 'ROBOTICS EXPERT': 4, 'SHOTGUN SURGEON': 6, 'SNEAK': 5,
+  'STEADY AIM': 8, 'STRONG CONSTITUTION': 5, 'STUN RESISTANT': 13, 'TECH': 14,
+  'THIEF': 11, 'TOUGHNESS': 9, 'TRAVEL LIGHT': 7, 'VETERAN': 12, 'WARDEN': 11,
+  'WASTELAND SEARCHER': 12, 'WEAPON HANDLING': 5,
+}
+
+export function getPerkCaps(perkName) {
+  return PERK_CAPS[perkName?.toUpperCase()] ?? null
+}
+
 export const PERK_CARDS = [
   { id: 9901, name: 'MYSTERIOUS STRANGER II', text: 'If [[star|Star]] / [[blast|Blast]] rolled during V.A.T.S. roll, place Mysterious Stranger up to Red away. AUTO-HIT: Resolve [[physical_damage|Physical Damage]] 2+ [[black_die|Black Die]][[yellow_die|Yellow Die]] on any model in Mysterious Stranger\'s LoS (engaged or not). Then remove Mysterious Stranger. Max. one Mysterious Stranger Perk per activation. REQUIRES: Mysterious Stranger Perk.', requires: 'Mysterious Stranger Perk' },
   { id: 9902, name: 'PACK LEADER', text: 'Model gains the Dog Handler [[dog_handler|Dog Handler]] ability. If a model already has [[dog_handler|Dog Handler]], it affects one additional dog. This perk can be equipped multiple times. DOG HANDLER [[aura|Aura]]: [[type_dog_black|Dogs]] can [[search|Search]] using PER. If dog handler model is Heroic, [[type_dog_black|Dogs]] nearby also Heroic for their activation. This perk cannot be equipped by [[type_dog_black|Dogs]] / [[type_creature_black|Creatures]] / [[type_robot_black|Robots]]' },

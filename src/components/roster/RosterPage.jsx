@@ -9,7 +9,7 @@ import AddUnitModal from './AddUnitModal'
 import AddItemModal from './AddItemModal'
 import FateRollModal from './FateRollModal'
 import PerkPickerModal from './PerkPickerModal'
-import { PERK_CARDS, parseSymbols } from '../../data/perkCards'
+import { getPerkCaps, PERK_CARDS, parseSymbols } from '../../data/perkCards'
 
 // Armor budget calc: items on units that have subType === 'Armor' via equippedItems (uses items.json ref)
 // We need to look at item pool items with location 'stores' assigned to units — but equipped items are separate
@@ -210,7 +210,7 @@ export default function RosterPage() {
       {/* Phase 1 Restrictions Panel */}
       {phase === 1 && (
         <div className="mb-4 border border-pip-mid/50 rounded bg-panel-alt px-4 py-3">
-          <div className="text-pip text-xs font-bold tracking-widest mb-2">PHASE 1 RESTRICTIONS</div>
+          <div className="text-amber text-xs font-bold tracking-widest mb-2">PHASE 1 RESTRICTIONS</div>
           <div className="flex flex-wrap gap-4 text-xs items-center">
             <span>
               Roster Caps:{' '}
@@ -261,7 +261,7 @@ export default function RosterPage() {
       )}
 
       <div className="flex items-center justify-between mb-4">
-        <h2 className="text-pip text-sm tracking-widest font-bold">UNIT ROSTER ({roster.length})</h2>
+        <h2 className="text-amber text-sm tracking-widest font-bold">UNIT ROSTER ({roster.length})</h2>
         <button
           onClick={() => setShowAddUnit(true)}
           className="flex items-center gap-2 px-3 py-2 border border-pip text-pip text-sm rounded hover:bg-pip-dim hover:border-pip-mid transition-colors font-bold"
@@ -315,7 +315,7 @@ export default function RosterPage() {
                   onClick={() => setExpandedSlot(expanded ? null : unit.slotId)}
                 >
                   {expanded ? <ChevronDown size={14} className="text-muted shrink-0" /> : <ChevronRight size={14} className="text-muted shrink-0" />}
-                  <span className="text-pip text-sm font-bold flex-1 min-w-0 truncate">{unit.unitName}</span>
+                  <span className="text-amber text-sm font-bold flex-1 min-w-0 truncate">{unit.unitName}</span>
                   {unit.isLeader && <span className="text-amber text-xs px-1.5 py-0.5 border border-amber/60 rounded hidden sm:inline font-bold">LDR</span>}
                   {unit.heroic && <Star size={12} className="text-amber shrink-0" />}
                   {unit.hasPowerArmor && (
@@ -383,7 +383,7 @@ export default function RosterPage() {
                     {phase === 2 ? (
                       // ── Phase 2 minimal view ──
                       <div className="px-4 py-3 space-y-3">
-                        <div className="text-xs text-pip tracking-widest font-bold border-b border-pip-dim/20 pb-1">FATE</div>
+                        <div className="text-xs text-amber tracking-widest font-bold border-b border-pip-dim/20 pb-1">FATE</div>
                         <div className="flex gap-2 items-center">
                           <select value={unit.fate} onChange={(e) => handleUpdateUnit(unit.slotId, 'fate', e.target.value)} className="flex-1 text-xs py-1 px-2">
                             {STATUS_OPTIONS.map(s => <option key={s} value={s}>{s}</option>)}
@@ -397,7 +397,7 @@ export default function RosterPage() {
                         </div>
 
                         {/* Equipment section — available in Phase 2 */}
-                        <div className="text-xs text-pip tracking-widest font-bold border-b border-pip-dim/20 pb-1">EQUIPMENT</div>
+                        <div className="text-xs text-amber tracking-widest font-bold border-b border-pip-dim/20 pb-1">EQUIPMENT</div>
                         <div className="space-y-1">
                           {items.map((item, idx) => {
                             const ec = EQUIP_TYPE_COLOR[item.subType] || { text: 'text-muted' }
@@ -423,7 +423,7 @@ export default function RosterPage() {
 
                         {/* ── STATS ── */}
                         <div className="px-4 py-3 space-y-2">
-                          <div className="text-xs text-pip tracking-widest font-bold">STATS</div>
+                          <div className="text-xs text-amber tracking-widest font-bold">STATS</div>
                           <div className="grid grid-cols-3 sm:grid-cols-6 gap-2">
                             <div className="bg-panel rounded px-2 py-1.5 text-center">
                               <div className="text-amber font-bold text-sm">{unit.baseCaps}c</div>
@@ -473,7 +473,7 @@ export default function RosterPage() {
 
                         {/* ── FATE & DAMAGE ── */}
                         <div className="px-4 py-3 space-y-2">
-                          <div className="text-xs text-pip tracking-widest font-bold">FATE & DAMAGE</div>
+                          <div className="text-xs text-amber tracking-widest font-bold">FATE & DAMAGE</div>
                           <div className="flex gap-2 flex-wrap items-start">
                             <div className="flex gap-1 items-center flex-1 min-w-[180px]">
                               <select value={unit.fate} onChange={(e) => handleUpdateUnit(unit.slotId, 'fate', e.target.value)} className="flex-1 text-xs py-1.5 px-2">
@@ -529,7 +529,7 @@ export default function RosterPage() {
 
                         {/* ── CONDITIONS & STATUS ── */}
                         <div className="px-4 py-3 space-y-2">
-                          <div className="text-xs text-pip tracking-widest font-bold">CONDITIONS & STATUS</div>
+                          <div className="text-xs text-amber tracking-widest font-bold">CONDITIONS & STATUS</div>
                           <div className="flex gap-2 flex-wrap">
                             {[
                               { key: 'condPoisoned', label: 'POISONED' },
@@ -566,7 +566,7 @@ export default function RosterPage() {
                         {/* ── EQUIPMENT ── */}
                         <div className="px-4 py-3 space-y-2">
                           <div className="flex items-center justify-between">
-                            <div className="text-xs text-pip tracking-widest font-bold">EQUIPMENT {items.length > 0 && <span className="text-amber">({items.length})</span>}</div>
+                            <div className="text-xs text-amber tracking-widest font-bold">EQUIPMENT {items.length > 0 && <span className="text-amber">({items.length})</span>}</div>
                             <span className="text-xs text-amber font-bold">{itemCaps > 0 ? `${itemCaps}c equipped` : ''}</span>
                           </div>
                           {items.map((item, idx) => {
@@ -604,7 +604,7 @@ export default function RosterPage() {
 
                         {/* ── NOTES & ACTIONS ── */}
                         <div className="px-4 py-3 space-y-2">
-                          <div className="text-xs text-pip tracking-widest font-bold">NOTES</div>
+                          <div className="text-xs text-amber tracking-widest font-bold">NOTES</div>
                           <input type="text" value={unit.notes || ''} onChange={(e) => handleUpdateUnit(unit.slotId, 'notes', e.target.value)} className="w-full text-xs py-1.5 px-2" placeholder="Any notes about this unit..." />
                           <div className="flex justify-end pt-1">
                             <button onClick={() => handleRemoveUnit(unit.slotId)} className="flex items-center gap-1 text-xs text-muted hover:text-danger border border-muted/30 hover:border-danger/50 rounded px-3 py-1.5 transition-colors">
@@ -624,6 +624,13 @@ export default function RosterPage() {
 
       {/* ── BOOST HAND ── */}
       <BoostHandPanel state={state} setState={setState} />
+
+      <PerksBrowser
+        roster={roster}
+        caps={state.caps ?? 0}
+        onAddPerk={(slotId, perkName) => handleAddPerk(slotId, perkName)}
+        onCapChange={setState}
+      />
 
       <AddUnitModal isOpen={showAddUnit} onClose={() => setShowAddUnit(false)} onAdd={handleAddUnit} caps={state.caps ?? 0} />
       {showAddItem && (
@@ -861,6 +868,144 @@ function PerkPanel({ unit, phase, battleCount, onAddPerk, onRemovePerk }) {
         equippedPerks={perks}
         canAdd={canAdd}
       />
+    </div>
+  )
+}
+
+function PerksBrowser({ roster, caps, onAddPerk, onCapChange }) {
+  const [search, setSearch] = useState('')
+  const [selectedPerk, setSelectedPerk] = useState(null)
+  const [selectedUnitSlot, setSelectedUnitSlot] = useState('')
+  const [confirmError, setConfirmError] = useState('')
+
+  const filteredPerks = PERK_CARDS.filter(p =>
+    !search || p.name.toLowerCase().includes(search.toLowerCase())
+  )
+
+  const activeRoster = roster.filter(u => u.fate !== 'Dead' && u.fate !== 'Pending')
+  const cost = selectedPerk ? (getPerkCaps(selectedPerk.name) ?? null) : null
+
+  function handleConfirm() {
+    if (!selectedPerk || !selectedUnitSlot) return
+    const unit = roster.find(u => u.slotId === selectedUnitSlot)
+    if (!unit) return
+
+    if (cost !== null && caps < cost) {
+      setConfirmError(`Insufficient caps (need ${cost}c, have ${caps}c)`)
+      return
+    }
+
+    onAddPerk(selectedUnitSlot, selectedPerk.name)
+    if (cost !== null) {
+      onCapChange(prev => ({ ...prev, caps: Math.max(0, (prev.caps ?? 0) - cost) }))
+    }
+    setConfirmError('')
+    setSelectedUnitSlot('')
+  }
+
+  return (
+    <div className="border border-pip-mid/40 rounded-lg bg-panel overflow-hidden mt-6">
+      <div className="px-4 py-2 bg-panel-light border-b border-pip-mid/30">
+        <h2 className="text-pip text-xs tracking-widest font-bold">PERK BROWSER</h2>
+        <p className="text-muted text-[10px] mt-0.5">Browse all perks, read their effects, and assign to a unit.</p>
+      </div>
+
+      <div className="grid md:grid-cols-2 gap-0 divide-y md:divide-y-0 md:divide-x divide-pip-dim/20">
+        {/* Left: perk list */}
+        <div className="p-3 space-y-2">
+          <input
+            type="text"
+            value={search}
+            onChange={e => setSearch(e.target.value)}
+            placeholder="Search perks..."
+            className="w-full text-xs"
+          />
+          <div className="max-h-72 overflow-y-auto space-y-0.5 pr-1">
+            {filteredPerks.map(perk => {
+              const perkCost = getPerkCaps(perk.name)
+              const isSelected = selectedPerk?.id === perk.id
+              return (
+                <button
+                  key={perk.id}
+                  onClick={() => { setSelectedPerk(perk); setSelectedUnitSlot(''); setConfirmError('') }}
+                  className={`w-full text-left px-2 py-1.5 rounded flex items-center justify-between gap-2 transition-colors text-xs ${
+                    isSelected
+                      ? 'bg-pip-dim/20 border border-pip/40 text-pip'
+                      : 'hover:bg-panel-light text-pip border border-transparent'
+                  }`}
+                >
+                  <span className="font-bold truncate">{perk.name}</span>
+                  {perkCost !== null && (
+                    <span className="shrink-0 text-amber font-bold text-[10px]">{perkCost}c</span>
+                  )}
+                </button>
+              )
+            })}
+          </div>
+        </div>
+
+        {/* Right: perk detail + assign */}
+        <div className="p-3 space-y-3">
+          {selectedPerk ? (
+            <>
+              <div>
+                <div className="flex items-start justify-between gap-2 mb-2">
+                  <span className="text-amber font-bold text-sm">{selectedPerk.name}</span>
+                  {cost !== null && (
+                    <span className="text-amber font-bold text-sm shrink-0">{cost}c</span>
+                  )}
+                  {cost === null && (
+                    <span className="text-muted text-xs shrink-0">cost unknown</span>
+                  )}
+                </div>
+                <div className="border border-pip-dim/20 rounded bg-panel-light p-3">
+                  <p className="text-pip text-xs leading-relaxed">{parseSymbols(selectedPerk.text)}</p>
+                  {selectedPerk.requires && (
+                    <p className="text-amber text-xs mt-2">Requires: {selectedPerk.requires}</p>
+                  )}
+                </div>
+              </div>
+
+              <div className="space-y-2 pt-1 border-t border-pip-dim/20">
+                <div>
+                  <label className="text-muted text-[10px] block mb-1 tracking-wider">ASSIGN TO UNIT</label>
+                  <select
+                    value={selectedUnitSlot}
+                    onChange={e => { setSelectedUnitSlot(e.target.value); setConfirmError('') }}
+                    className="w-full text-xs"
+                  >
+                    <option value="">Select unit...</option>
+                    {activeRoster.map(u => (
+                      <option key={u.slotId} value={u.slotId}>{u.name}</option>
+                    ))}
+                  </select>
+                </div>
+
+                {cost !== null && (
+                  <div className="text-xs text-muted">
+                    Cost: <span className="text-amber font-bold">{cost}c</span>
+                    {' '}(you have <span className={caps < cost ? 'text-danger font-bold' : 'text-pip font-bold'}>{caps}c</span>)
+                  </div>
+                )}
+
+                {confirmError && (
+                  <p className="text-danger text-xs">{confirmError}</p>
+                )}
+
+                <button
+                  onClick={handleConfirm}
+                  disabled={!selectedUnitSlot || (cost !== null && caps < cost)}
+                  className="w-full py-2 border border-amber text-amber text-xs font-bold rounded hover:bg-amber/10 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+                >
+                  {cost !== null ? `ASSIGN PERK (${cost}c)` : 'ASSIGN PERK'}
+                </button>
+              </div>
+            </>
+          ) : (
+            <p className="text-muted text-xs text-center py-8">Select a perk from the list to read its effect.</p>
+          )}
+        </div>
+      </div>
     </div>
   )
 }

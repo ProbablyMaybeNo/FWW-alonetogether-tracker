@@ -25,7 +25,7 @@ export default function TabShell({ activeTab, onTabChange, settings = {} }) {
             className={`flex-1 flex items-center justify-center gap-2 py-3 px-2 text-xs transition-all duration-150 relative
               ${active
                 ? 'text-pip font-bold bg-panel-light'
-                : 'text-pip hover:text-amber hover:bg-panel-alt'
+                : 'text-pip/50 hover:text-amber hover:bg-panel-alt'
               }`}
           >
             {active && (
@@ -34,7 +34,7 @@ export default function TabShell({ activeTab, onTabChange, settings = {} }) {
                 style={{ boxShadow: '0 0 8px var(--color-pip), 0 0 16px var(--color-pip-glow)' }}
               />
             )}
-            <Icon size={14} className={active ? 'text-pip' : ''} />
+            <Icon size={14} className={active ? 'text-pip' : 'text-pip/50'} />
             <span className="hidden sm:inline tracking-wider">{tab.label}</span>
           </button>
         )

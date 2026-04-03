@@ -6,7 +6,7 @@ export function defaultBattlePageState() {
     sessionActive: false,
     sessionStartedAt: null,
     setup: {
-      gameMode: 'basic-skirmish',
+      gameMode: 'skirmish',
       opponentUserIds: [],
       label: '',
     },
@@ -14,6 +14,7 @@ export function defaultBattlePageState() {
       environmentId: null,
       battlefieldId: null,
       purposeId: null,
+      scenarioId: null,
     },
     deckStates: {
       creature: { drawPile: [], discardPile: [] },

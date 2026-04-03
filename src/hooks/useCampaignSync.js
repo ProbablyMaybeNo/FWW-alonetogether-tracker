@@ -45,6 +45,7 @@ function stateToDb(state) {
     boost_hand: state.boostHand ?? [],
     boost_deck: state.boostDeck ?? [],
     boost_discard: state.boostDiscard ?? [],
+    narrative_log: state.narrativeLog ?? [],
   }
 }
 
@@ -71,6 +72,7 @@ function dbToState(row) {
     boostHand: row.boost_hand ?? [],
     boostDeck: row.boost_deck ?? [],
     boostDiscard: row.boost_discard ?? [],
+    narrativeLog: row.narrative_log ?? [],
   }
 }
 
@@ -210,9 +212,9 @@ export function useCampaignSync({ campaignId, userId } = {}) {
         table: 'player_data',
         filter: `campaign_id=eq.${campaignId}`,
       }, (payload) => {
-        // Only update our own local state if it's our row coming back
-        if (payload.new?.user_id === userId && payload.eventType === 'UPDATE') {
-          // Ignore — we wrote this ourselves, avoid feedback loop
+        // Bump player list version so CampaignPage refetches (only for other players)
+        if (payload.new?.user_id !== userId) {
+          setSharedState(prev => ({ ...prev, _playerListVersion: Date.now() }))
         }
       })
       // Someone joined or left
@@ -279,15 +281,30 @@ export function useCampaignSync({ campaignId, userId } = {}) {
     })
   }, [isOnline, saveToSupabase, solo])
 
-  // Update shared campaign fields (phase, round, etc.) — host/GM use
+  // Update shared campaign fields (phase, round, etc.)
   const updateShared = useCallback(async (field, value) => {
     if (!isOnline) return
 
-    // Map camelCase to snake_case
+    // phase/round/battleCount use a member-accessible RPC (bypasses creator-only RLS)
+    if (field === 'phase' || field === 'round' || field === 'battleCount') {
+      const param = { p_campaign_id: campaignId }
+      if (field === 'phase') param.p_phase = value
+      if (field === 'round') param.p_round = value
+      if (field === 'battleCount') param.p_battle_count = value
+      try {
+        const { error } = await supabase.rpc('patch_campaign_progress', param)
+        if (error) throw error
+        setSharedState(prev => ({ ...prev, [field]: value }))
+        setSyncError(null)
+      } catch (e) {
+        console.error('patch_campaign_progress error:', e)
+        setSyncError(e.message)
+      }
+      return
+    }
+
+    // Other fields — direct update (creator-only via RLS)
     const colMap = {
-      phase: 'phase',
-      round: 'round',
-      battleCount: 'battle_count',
       phase1CapLimit: 'phase1_cap_limit',
       exploreLocations: 'explore_locations',
       battles: 'battles',
@@ -303,8 +320,6 @@ export function useCampaignSync({ campaignId, userId } = {}) {
         .eq('id', campaignId)
 
       if (error) throw error
-
-      // Optimistically update local shared state
       setSharedState(prev => ({ ...prev, [field]: value }))
     } catch (e) {
       console.error('updateShared error:', e)
@@ -380,6 +395,39 @@ export function useCampaignSync({ campaignId, userId } = {}) {
     }
   }, [campaignId, isOnline, solo])
 
+  const saveCampaignBattles = useCallback(async (nextBattles) => {
+    if (!isOnline) {
+      solo.setState(prev => ({ ...prev, battles: nextBattles }))
+      return
+    }
+    try {
+      const { error } = await supabase.rpc('patch_campaign_battles', {
+        p_campaign_id: campaignId,
+        p_battles: nextBattles,
+      })
+      if (!error) {
+        setSharedState(prev => ({ ...prev, battles: nextBattles }))
+        setSyncError(null)
+        return
+      }
+      throw error
+    } catch (e) {
+      console.warn('patch_campaign_battles RPC missing or failed; trying direct update:', e)
+      try {
+        const { error: e2 } = await supabase
+          .from('campaigns')
+          .update({ battles: nextBattles })
+          .eq('id', campaignId)
+        if (e2) throw e2
+        setSharedState(prev => ({ ...prev, battles: nextBattles }))
+        setSyncError(null)
+      } catch (e3) {
+        console.error('saveCampaignBattles:', e3)
+        setSyncError(e3.message ?? String(e3))
+      }
+    }
+  }, [campaignId, isOnline, solo])
+
   // Cleanup debounce on unmount
   useEffect(() => {
     return () => {
@@ -395,6 +443,7 @@ export function useCampaignSync({ campaignId, userId } = {}) {
       updateShared: () => {},
       saveInhabitantsState,
       saveBattlePageState,
+      saveCampaignBattles,
       syncing: false,
       syncError: null,
       isOnline: false,
@@ -417,6 +466,7 @@ export function useCampaignSync({ campaignId, userId } = {}) {
     updateShared,
     saveInhabitantsState,
     saveBattlePageState,
+    saveCampaignBattles,
     syncing,
     syncError,
     isOnline: true,
