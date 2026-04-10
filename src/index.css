@@ -1,5 +1,12 @@
 @import "tailwindcss";
 
+@font-face {
+  font-family: 'Alagard';
+  src: url('/alagard.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
 @theme {
   /* Primary neon green — brighter, more vibrant */
   --color-pip: #00e676;

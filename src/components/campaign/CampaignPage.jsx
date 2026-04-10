@@ -104,7 +104,7 @@ function NarrativeModal({ player, onClose }) {
   )
 }
 
-const NARRATIVE_FONT = "'Cinzel Decorative', 'Cinzel', Georgia, serif"
+const NARRATIVE_FONT = "'Alagard', 'Cinzel Decorative', Georgia, serif"
 const NARRATIVE_GLOW = '0 0 8px rgba(255,255,255,0.9), 0 0 20px rgba(255,255,255,0.5), 0 0 40px rgba(255,255,255,0.2)'
 
 function PlayerRoundNarrativeModal({ player, round, onClose }) {
