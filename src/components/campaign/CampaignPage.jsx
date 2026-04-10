@@ -149,6 +149,7 @@ export default function CampaignPage({ campaignId, onTabChange }) {
   const [narrativePlayer, setNarrativePlayer] = useState(null)
   const [showAddCampNarrative, setShowAddCampNarrative] = useState(false)
   const [newCampEntry, setNewCampEntry] = useState({ round: '', title: '', content: '' })
+  const [campNarrativeError, setCampNarrativeError] = useState('')
   const [playerRoundNarrative, setPlayerRoundNarrative] = useState(null) // { player, round }
 
   const phase = state?.phase ?? 1
@@ -164,19 +165,25 @@ export default function CampaignPage({ campaignId, onTabChange }) {
 
   async function handleAddCampNarrative(e) {
     e.preventDefault()
+    setCampNarrativeError('')
     const r = parseInt(newCampEntry.round, 10)
-    if (!newCampEntry.content.trim() || isNaN(r)) return
+    if (!newCampEntry.content.trim()) { setCampNarrativeError('Narrative content is required.'); return }
+    if (isNaN(r)) { setCampNarrativeError('Round number is required.'); return }
     const entry = {
       id: Date.now(),
       round: r,
       title: newCampEntry.title.trim(),
       content: newCampEntry.content.trim(),
-      display: campaignNarratives.length === 0, // auto-display if first entry
+      display: campaignNarratives.length === 0,
       createdAt: new Date().toISOString(),
     }
-    await saveCampaignNarratives([...campaignNarratives, entry])
-    setNewCampEntry({ round: '', title: '', content: '' })
-    setShowAddCampNarrative(false)
+    try {
+      await saveCampaignNarratives([...campaignNarratives, entry])
+      setNewCampEntry({ round: String(round), title: '', content: '' })
+      setShowAddCampNarrative(false)
+    } catch (err) {
+      setCampNarrativeError(err?.message ?? 'Failed to save — check Supabase column exists.')
+    }
   }
 
   async function handleToggleDisplay(id) {
@@ -704,6 +711,9 @@ export default function CampaignPage({ campaignId, onTabChange }) {
                 className="w-full text-sm py-2 px-3 resize-none"
               />
             </div>
+            {campNarrativeError && (
+              <div className="text-danger text-xs border border-danger/40 bg-danger/10 px-3 py-2 rounded">{campNarrativeError}</div>
+            )}
             <div className="flex gap-2">
               <button type="submit" className="px-4 py-2 border border-pip text-pip text-xs rounded hover:bg-pip-dim/20 transition-colors">
                 ADD ENTRY
