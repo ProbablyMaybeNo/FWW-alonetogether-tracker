@@ -62,6 +62,8 @@ create table if not exists player_data (
   boost_hand jsonb default '[]'::jsonb,
   boost_deck jsonb default '[]'::jsonb,
   boost_discard jsonb default '[]'::jsonb,
+  settings jsonb,
+  narrative_log jsonb default '[]'::jsonb,
   updated_at timestamptz default now(),
   unique(campaign_id, user_id)
 );
@@ -171,3 +173,27 @@ create trigger campaigns_updated_at
 create trigger player_data_updated_at
   before update on player_data
   for each row execute function update_updated_at();
+
+-- ── 8. RPCs ──
+
+-- Allow any campaign member to update phase/round/battle_count
+-- (creator can also do this via direct UPDATE, but members need this RPC)
+create or replace function patch_campaign_progress(
+  p_campaign_id uuid,
+  p_phase int default null,
+  p_round int default null,
+  p_battle_count int default null
+)
+returns void language plpgsql security definer as $$
+begin
+  update campaigns set
+    phase = coalesce(p_phase, phase),
+    round = coalesce(p_round, round),
+    battle_count = coalesce(p_battle_count, battle_count)
+  where id = p_campaign_id
+    and exists (
+      select 1 from campaign_players
+      where campaign_id = p_campaign_id and user_id = auth.uid()
+    );
+end;
+$$;
