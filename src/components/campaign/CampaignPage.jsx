@@ -104,8 +104,38 @@ function NarrativeModal({ player, onClose }) {
   )
 }
 
+const NARRATIVE_FONT = "'Cinzel Decorative', 'Cinzel', Georgia, serif"
+const NARRATIVE_GLOW = '0 0 8px rgba(255,255,255,0.9), 0 0 20px rgba(255,255,255,0.5), 0 0 40px rgba(255,255,255,0.2)'
+
+function PlayerRoundNarrativeModal({ player, round, onClose }) {
+  if (!player) return null
+  const entries = (player.narrativeLog || []).filter(e => e.round === round)
+  return (
+    <div className="fixed inset-0 bg-black/85 flex items-center justify-center z-50 p-4" onClick={onClose}>
+      <div className="max-w-xl w-full" onClick={e => e.stopPropagation()}>
+        <div className="bg-panel border border-pip rounded-lg overflow-hidden">
+          <div className="flex items-center justify-between px-4 py-3 border-b border-pip-dim/30 bg-panel-light">
+            <span className="text-pip text-sm font-bold tracking-wider">{player.username} — ROUND {round}</span>
+            <button onClick={onClose} className="text-muted hover:text-danger p-1"><X size={14} /></button>
+          </div>
+          <div className="p-4 space-y-3 max-h-[60vh] overflow-y-auto">
+            {entries.length === 0 ? (
+              <p className="text-muted text-xs text-center py-6">No narrative entries for this round.</p>
+            ) : entries.map((e, i) => (
+              <div key={e.id ?? i} className="space-y-1">
+                {e.title && <div className="text-amber text-xs font-bold tracking-wider">{e.title}</div>}
+                <p className="text-pip text-sm leading-relaxed">{e.content}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
 export default function CampaignPage({ campaignId, onTabChange }) {
-  const { state, setState, updateShared, isOnline, sharedState, saveInhabitantsState, saveCampaignBattles, syncError } = useCampaign()
+  const { state, setState, updateShared, isOnline, sharedState, saveInhabitantsState, saveCampaignBattles, saveCampaignNarratives, syncError } = useCampaign()
   const { user } = useAuth()
   const [allPlayers, setAllPlayers] = useState([])
   const [loadingPlayers, setLoadingPlayers] = useState(false)
@@ -117,6 +147,9 @@ export default function CampaignPage({ campaignId, onTabChange }) {
   const [creatorOpponent, setCreatorOpponent] = useState('')
   const [creatorResult, setCreatorResult] = useState('win')
   const [narrativePlayer, setNarrativePlayer] = useState(null)
+  const [showAddCampNarrative, setShowAddCampNarrative] = useState(false)
+  const [newCampEntry, setNewCampEntry] = useState({ round: '', title: '', content: '' })
+  const [playerRoundNarrative, setPlayerRoundNarrative] = useState(null) // { player, round }
 
   const phase = state?.phase ?? 1
   const round = state?.round ?? 0
@@ -125,6 +158,39 @@ export default function CampaignPage({ campaignId, onTabChange }) {
   const isAT = !state?.settings?.settlementMode || state.settings.settlementMode === 'alone-together'
   const isCreator = !isOnline || !sharedState || !sharedState.createdBy ||
     !!(user?.id && user.id === sharedState.createdBy)
+
+  const campaignNarratives = sharedState?.campaignNarratives ?? []
+  const displayedNarrative = campaignNarratives.find(n => n.display) ?? null
+
+  async function handleAddCampNarrative(e) {
+    e.preventDefault()
+    const r = parseInt(newCampEntry.round, 10)
+    if (!newCampEntry.content.trim() || isNaN(r)) return
+    const entry = {
+      id: Date.now(),
+      round: r,
+      title: newCampEntry.title.trim(),
+      content: newCampEntry.content.trim(),
+      display: campaignNarratives.length === 0, // auto-display if first entry
+      createdAt: new Date().toISOString(),
+    }
+    await saveCampaignNarratives([...campaignNarratives, entry])
+    setNewCampEntry({ round: '', title: '', content: '' })
+    setShowAddCampNarrative(false)
+  }
+
+  async function handleToggleDisplay(id) {
+    const updated = campaignNarratives.map(n => ({ ...n, display: n.id === id }))
+    await saveCampaignNarratives(updated)
+  }
+
+  async function handleDeleteCampNarrative(id) {
+    const updated = campaignNarratives.filter(n => n.id !== id)
+    // if deleted entry was displayed, auto-display the most recent remaining one
+    const wasDisplayed = campaignNarratives.find(n => n.id === id)?.display
+    if (wasDisplayed && updated.length > 0) updated[updated.length - 1].display = true
+    await saveCampaignNarratives(updated)
+  }
 
   async function resetInhabitantsSession(nextRound = round) {
     const base = { ...defaultInhabitantsState(), ...state?.inhabitantsState }
@@ -337,6 +403,11 @@ export default function CampaignPage({ campaignId, onTabChange }) {
   return (
     <div className="p-4 space-y-6 max-w-5xl mx-auto">
       <NarrativeModal player={narrativePlayer} onClose={() => setNarrativePlayer(null)} />
+      <PlayerRoundNarrativeModal
+        player={playerRoundNarrative?.player}
+        round={playerRoundNarrative?.round}
+        onClose={() => setPlayerRoundNarrative(null)}
+      />
 
       {syncError && (
         <div className="border border-danger/50 bg-danger/10 rounded px-3 py-2 text-danger text-xs tracking-wider">
@@ -579,6 +650,171 @@ export default function CampaignPage({ campaignId, onTabChange }) {
         {isOnline && !isCreator && (
           <div className="text-xs text-muted text-center py-2 tracking-wider">
             {displayPlayers.filter(p => roundBattles[p.userId]?.ready).length}/{displayPlayers.length} players reported — waiting for campaign creator to advance round
+          </div>
+        )}
+      </div>
+
+      {/* ── Campaign Narrative ── */}
+      <div className="space-y-4">
+        <div className="flex items-center gap-3 border-b border-pip-mid/50 pb-2">
+          <h2 className="text-amber text-sm tracking-widest font-bold flex-1">CAMPAIGN NARRATIVE</h2>
+          {isCreator && (
+            <button
+              onClick={() => setShowAddCampNarrative(v => !v)}
+              className="text-xs border border-pip/50 text-pip rounded px-3 py-1 hover:bg-pip-dim/20 transition-colors"
+            >
+              {showAddCampNarrative ? 'CANCEL' : '+ ADD ENTRY'}
+            </button>
+          )}
+        </div>
+
+        {/* Add entry form — creator only */}
+        {isCreator && showAddCampNarrative && (
+          <form onSubmit={handleAddCampNarrative} className="border border-amber/30 rounded bg-panel p-4 space-y-3">
+            <div className="grid grid-cols-2 gap-3">
+              <div>
+                <label className="text-label text-xs block mb-1 tracking-wider">ROUND</label>
+                <input
+                  type="number" min="1" value={newCampEntry.round}
+                  onChange={e => setNewCampEntry(p => ({ ...p, round: e.target.value }))}
+                  placeholder={String(round)}
+                  className="w-full text-sm py-1.5 px-2"
+                />
+              </div>
+              <div>
+                <label className="text-label text-xs block mb-1 tracking-wider">TITLE (optional)</label>
+                <input
+                  value={newCampEntry.title}
+                  onChange={e => setNewCampEntry(p => ({ ...p, title: e.target.value }))}
+                  placeholder="The Siege of Sanctuary..."
+                  className="w-full text-sm py-1.5 px-2"
+                />
+              </div>
+            </div>
+            <div>
+              <label className="text-label text-xs block mb-1 tracking-wider">NARRATIVE</label>
+              <textarea
+                value={newCampEntry.content}
+                onChange={e => setNewCampEntry(p => ({ ...p, content: e.target.value }))}
+                placeholder="What happened this round..."
+                rows={4}
+                className="w-full text-sm py-2 px-3 resize-none"
+              />
+            </div>
+            <div className="flex gap-2">
+              <button type="submit" className="px-4 py-2 border border-pip text-pip text-xs rounded hover:bg-pip-dim/20 transition-colors">
+                ADD ENTRY
+              </button>
+            </div>
+          </form>
+        )}
+
+        {/* Display box — shown entry in scripty glowing font */}
+        {displayedNarrative ? (
+          <div
+            className="border border-white/20 rounded-lg p-6 bg-black/40"
+            style={{ boxShadow: '0 0 24px rgba(255,255,255,0.08), inset 0 0 32px rgba(0,0,0,0.3)' }}
+          >
+            <div className="text-xs tracking-widest mb-4 opacity-50" style={{ color: 'white' }}>
+              ROUND {displayedNarrative.round}
+            </div>
+            {displayedNarrative.title && (
+              <div
+                className="mb-3 text-2xl"
+                style={{ fontFamily: NARRATIVE_FONT, color: 'white', textShadow: NARRATIVE_GLOW }}
+              >
+                {displayedNarrative.title}
+              </div>
+            )}
+            <div
+              className="text-base leading-relaxed"
+              style={{ fontFamily: NARRATIVE_FONT, color: 'white', textShadow: NARRATIVE_GLOW, fontWeight: 400 }}
+            >
+              {displayedNarrative.content}
+            </div>
+
+            {/* Player narrative rows for the same round */}
+            {(() => {
+              const r = displayedNarrative.round
+              const playerRows = displayPlayers.filter(p =>
+                (p.narrativeLog || []).some(e => e.round === r)
+              )
+              if (playerRows.length === 0) return null
+              return (
+                <div className="mt-5 border-t border-white/10 pt-4 space-y-1">
+                  <div className="text-xs tracking-widest mb-2 opacity-40" style={{ color: 'white' }}>
+                    PLAYER ACCOUNTS — ROUND {r}
+                  </div>
+                  {playerRows.map(p => {
+                    const entry = (p.narrativeLog || []).find(e => e.round === r)
+                    return (
+                      <div
+                        key={p.userId}
+                        onClick={() => setPlayerRoundNarrative({ player: p, round: r })}
+                        className="flex items-center gap-3 rounded px-3 py-2 cursor-pointer hover:bg-white/5 transition-colors border border-white/5"
+                      >
+                        <span className="text-xs font-bold shrink-0" style={{ color: 'rgba(255,255,255,0.7)' }}>{p.username}</span>
+                        <span className="text-xs truncate opacity-40" style={{ color: 'white' }}>
+                          {entry?.title ? `${entry.title} — ` : ''}{entry?.content?.substring(0, 80)}
+                          {(entry?.content?.length ?? 0) > 80 ? '…' : ''}
+                        </span>
+                        <span className="ml-auto text-xs opacity-30" style={{ color: 'white' }}>›</span>
+                      </div>
+                    )
+                  })}
+                </div>
+              )
+            })()}
+          </div>
+        ) : (
+          <div className="border border-pip-dim/20 rounded-lg p-6 text-center text-muted text-xs tracking-wider">
+            {campaignNarratives.length === 0
+              ? isCreator ? 'No narrative entries yet. Add your first entry above.' : 'No campaign narrative yet.'
+              : 'No entry set to display. Toggle one in the table below.'}
+          </div>
+        )}
+
+        {/* Narrative table — creator only */}
+        {isCreator && campaignNarratives.length > 0 && (
+          <div className="overflow-x-auto">
+            <table className="w-full text-xs border-collapse">
+              <thead>
+                <tr className="border-b border-pip-mid/40">
+                  <th className="text-info tracking-wider py-2 pr-3 font-normal text-left w-12">RND</th>
+                  <th className="text-info tracking-wider py-2 pr-3 font-normal text-left">TITLE / CONTENT</th>
+                  <th className="text-info tracking-wider py-2 pr-3 font-normal text-center w-20">DISPLAY</th>
+                  <th className="text-info tracking-wider py-2 font-normal text-center w-10"></th>
+                </tr>
+              </thead>
+              <tbody>
+                {[...campaignNarratives].reverse().map(n => (
+                  <tr key={n.id} className={`border-b border-pip-dim/20 hover:bg-panel-light transition-colors ${n.display ? 'bg-pip-dim/10' : ''}`}>
+                    <td className="py-2.5 pr-3 text-pip font-bold">{n.round}</td>
+                    <td className="py-2.5 pr-3">
+                      {n.title && <div className="text-amber font-bold mb-0.5">{n.title}</div>}
+                      <div className="text-pip/70 truncate max-w-xs">{n.content}</div>
+                    </td>
+                    <td className="py-2.5 pr-3 text-center">
+                      <button
+                        onClick={() => handleToggleDisplay(n.id)}
+                        className={`w-10 h-5 rounded-full border transition-colors relative ${
+                          n.display ? 'bg-pip border-pip' : 'bg-transparent border-muted/50'
+                        }`}
+                      >
+                        <span className={`absolute top-0.5 w-4 h-4 rounded-full transition-all ${
+                          n.display ? 'right-0.5 bg-black' : 'left-0.5 bg-muted/50'
+                        }`} />
+                      </button>
+                    </td>
+                    <td className="py-2.5 text-center">
+                      <button onClick={() => handleDeleteCampNarrative(n.id)} className="text-muted hover:text-danger transition-colors p-1">
+                        <X size={12} />
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
         )}
       </div>

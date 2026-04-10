@@ -87,6 +87,7 @@ function campaignDbToState(row) {
     createdBy: row.created_by ?? null,
     inhabitantsState: normalizeInhabitantsState(row.inhabitants_state),
     battlePageState: normalizeBattlePageState(row.battle_page_state),
+    campaignNarratives: row.campaign_narratives ?? [],
   }
 }
 
@@ -193,7 +194,7 @@ export function useCampaignSync({ campaignId, userId } = {}) {
         // Load shared campaign data
         const { data: camp, error: campErr } = await supabase
           .from('campaigns')
-          .select('phase, round, battle_count, phase1_cap_limit, explore_locations, battles, created_by, inhabitants_state, battle_page_state')
+          .select('phase, round, battle_count, phase1_cap_limit, explore_locations, battles, created_by, inhabitants_state, battle_page_state, campaign_narratives')
           .eq('id', campaignId)
           .single()
 
@@ -426,6 +427,22 @@ export function useCampaignSync({ campaignId, userId } = {}) {
     }
   }, [campaignId, isOnline, solo])
 
+  const saveCampaignNarratives = useCallback(async (nextNarratives) => {
+    if (!isOnline) return
+    setSharedState(prev => ({ ...prev, campaignNarratives: nextNarratives }))
+    try {
+      const { error } = await supabase
+        .from('campaigns')
+        .update({ campaign_narratives: nextNarratives })
+        .eq('id', campaignId)
+      if (error) throw error
+      setSyncError(null)
+    } catch (e) {
+      console.error('saveCampaignNarratives:', e)
+      setSyncError(e.message ?? String(e))
+    }
+  }, [campaignId, isOnline])
+
   const saveCampaignBattles = useCallback(async (nextBattles) => {
     if (!isOnline) {
       solo.setState(prev => ({ ...prev, battles: nextBattles }))
@@ -472,6 +489,7 @@ export function useCampaignSync({ campaignId, userId } = {}) {
       saveInhabitantsState,
       saveBattlePageState,
       saveCampaignBattles,
+      saveCampaignNarratives,
       syncing: false,
       syncError: null,
       isOnline: false,
@@ -495,6 +513,7 @@ export function useCampaignSync({ campaignId, userId } = {}) {
     saveInhabitantsState,
     saveBattlePageState,
     saveCampaignBattles,
+    saveCampaignNarratives,
     syncing,
     syncError,
     isOnline: true,
