@@ -4,6 +4,29 @@ import { supabase } from '../../lib/supabase'
 import { User, Plus, Users, ChevronRight, Trash2, LogIn } from 'lucide-react'
 import AccountModal from '../modals/AccountModal'
 
+const FACTIONS = [
+  'Arcadia Renegades',
+  'Brotherhood of Steel',
+  "Caesar's Legion",
+  'Children of Atom',
+  'Creatures',
+  'Cult of the Mothman',
+  'Enclave',
+  'Gunners',
+  'Institute',
+  'New California Republic',
+  'Raiders',
+  'Railroad',
+  'Robots',
+  'RPG Archetypes',
+  'Super Mutants',
+  'Survivors',
+  'The Harbormen',
+  'The Scorched',
+  'Trappers',
+  'Zetan',
+]
+
 export default function CampaignDirectory({ onEnterCampaign, onSolo }) {
   const { user, profile, signOut } = useAuth()
   const [campaigns, setCampaigns] = useState([])
@@ -296,13 +319,15 @@ export default function CampaignDirectory({ onEnterCampaign, onSolo }) {
                 </div>
                 <div>
                   <label className="text-label text-xs block mb-1 tracking-wider">FACTION</label>
-                  <input
+                  <select
                     value={createPlayer.faction}
                     onChange={e => setCreatePlayer(p => ({ ...p, faction: e.target.value }))}
-                    placeholder="Brotherhood of Steel"
                     className="w-full text-sm py-1.5 px-2"
                     disabled={createLoading}
-                  />
+                  >
+                    <option value="">— Select Faction —</option>
+                    {FACTIONS.map(f => <option key={f} value={f}>{f}</option>)}
+                  </select>
                 </div>
                 <div>
                   <label className="text-label text-xs block mb-1 tracking-wider">LEADER / SUB-FACTION</label>
@@ -399,13 +424,15 @@ export default function CampaignDirectory({ onEnterCampaign, onSolo }) {
                 </div>
                 <div>
                   <label className="text-label text-xs block mb-1 tracking-wider">FACTION</label>
-                  <input
+                  <select
                     value={joinPlayer.faction}
                     onChange={e => setJoinPlayer(p => ({ ...p, faction: e.target.value }))}
-                    placeholder="Brotherhood of Steel"
                     className="w-full text-sm py-1.5 px-2"
                     disabled={joinLoading}
-                  />
+                  >
+                    <option value="">— Select Faction —</option>
+                    {FACTIONS.map(f => <option key={f} value={f}>{f}</option>)}
+                  </select>
                 </div>
                 <div>
                   <label className="text-label text-xs block mb-1 tracking-wider">LEADER / SUB-FACTION</label>
