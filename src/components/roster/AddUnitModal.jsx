@@ -2,7 +2,7 @@ import { useState, useMemo } from 'react'
 import Modal from '../layout/Modal'
 import unitsData from '../../data/units.json'
 
-export default function AddUnitModal({ isOpen, onClose, onAdd, existingUnitIds, caps = Infinity }) {
+export default function AddUnitModal({ isOpen, onClose, onAdd, existingUnitIds }) {
   const [search, setSearch] = useState('')
   const [factionFilter, setFactionFilter] = useState(() => {
     try { return localStorage.getItem('fww-last-faction') || '' } catch { return '' }
@@ -83,29 +83,22 @@ export default function AddUnitModal({ isOpen, onClose, onAdd, existingUnitIds, 
       <div className="text-xs text-muted mb-2">{filtered.length} units</div>
 
       <div className="max-h-96 overflow-y-auto space-y-1">
-        {filtered.map(unit => {
-          const canAfford = (unit.caps || 0) <= caps
-          return (
-            <div
-              key={unit.id}
-              className={`flex items-center justify-between border rounded px-3 py-2 transition-colors ${
-                canAfford
-                  ? 'border-muted/40 hover:bg-panel-alt cursor-pointer'
-                  : 'border-muted/20 opacity-40 cursor-not-allowed'
-              }`}
-              onClick={() => canAfford && handleAdd(unit)}
-            >
-              <div className="flex-1 min-w-0">
-                <span className={`text-sm ${canAfford ? 'text-pip' : 'text-muted'}`}>{unit.name}</span>
-                <span className="text-muted text-xs ml-2">{unit.faction}</span>
-              </div>
-              <div className="flex items-center gap-3 shrink-0">
-                <span className="text-xs text-muted">{unit.type}</span>
-                <span className={`text-sm font-bold ${canAfford ? 'text-amber' : 'text-danger'}`}>{unit.caps}c</span>
-              </div>
+        {filtered.map(unit => (
+          <div
+            key={unit.id}
+            className="flex items-center justify-between border border-muted/40 rounded px-3 py-2 transition-colors hover:bg-panel-alt cursor-pointer"
+            onClick={() => handleAdd(unit)}
+          >
+            <div className="flex-1 min-w-0">
+              <span className="text-sm text-pip">{unit.name}</span>
+              <span className="text-muted text-xs ml-2">{unit.faction}</span>
             </div>
-          )
-        })}
+            <div className="flex items-center gap-3 shrink-0">
+              <span className="text-xs text-muted">{unit.type}</span>
+              <span className="text-sm font-bold text-amber">{unit.caps}c</span>
+            </div>
+          </div>
+        ))}
       </div>
     </Modal>
   )
