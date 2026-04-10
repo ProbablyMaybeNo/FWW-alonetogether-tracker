@@ -660,7 +660,10 @@ export default function CampaignPage({ campaignId, onTabChange }) {
           <h2 className="text-amber text-sm tracking-widest font-bold flex-1">CAMPAIGN NARRATIVE</h2>
           {isCreator && (
             <button
-              onClick={() => setShowAddCampNarrative(v => !v)}
+              onClick={() => {
+                if (!showAddCampNarrative) setNewCampEntry({ round: String(round), title: '', content: '' })
+                setShowAddCampNarrative(v => !v)
+              }}
               className="text-xs border border-pip/50 text-pip rounded px-3 py-1 hover:bg-pip-dim/20 transition-colors"
             >
               {showAddCampNarrative ? 'CANCEL' : '+ ADD ENTRY'}
