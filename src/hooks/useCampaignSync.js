@@ -203,8 +203,10 @@ export function useCampaignSync({ campaignId, userId } = {}) {
       } catch (e) {
         console.error('useCampaignSync load error:', e)
         setSyncError(e.message)
-        // Fall back to local state
-        setStateLocal(solo.state)
+        // Fall back to personal state — never inherit phase/round/battleCount from solo
+        // (those are campaigns-table fields, not player-data fields)
+        const { phase: _p, round: _r, battleCount: _bc, ...personalState } = solo.state
+        setStateLocal(prev => prev !== null ? prev : personalState)
       } finally {
         setSyncing(false)
       }
@@ -308,19 +310,25 @@ export function useCampaignSync({ campaignId, userId } = {}) {
   const updateShared = useCallback(async (field, value) => {
     if (!isOnline) return
 
-    // phase/round/battleCount use a member-accessible RPC (bypasses creator-only RLS)
+    // phase/round/battleCount — try RPC first, fall back to direct UPDATE (creator-only RLS)
     if (field === 'phase' || field === 'round' || field === 'battleCount') {
+      const colMap = { phase: 'phase', round: 'round', battleCount: 'battle_count' }
+      const col = colMap[field]
       const param = { p_campaign_id: campaignId }
       if (field === 'phase') param.p_phase = value
       if (field === 'round') param.p_round = value
       if (field === 'battleCount') param.p_battle_count = value
       try {
         const { error } = await supabase.rpc('patch_campaign_progress', param)
-        if (error) throw error
+        if (error) {
+          // RPC not available or failed — fall back to direct UPDATE (works for creator via RLS)
+          const { error: e2 } = await supabase.from('campaigns').update({ [col]: value }).eq('id', campaignId)
+          if (e2) throw e2
+        }
         setSharedState(prev => ({ ...prev, [field]: value }))
         setSyncError(null)
       } catch (e) {
-        console.error('patch_campaign_progress error:', e)
+        console.error('updateShared error:', e)
         setSyncError(e.message)
       }
       return

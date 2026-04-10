@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { ChevronLeft, ChevronRight, X, BookOpen } from 'lucide-react'
+import { X, BookOpen } from 'lucide-react'
 import { useCampaign } from '../../context/CampaignContext'
 import { useAuth } from '../../context/AuthContext'
 import { supabase } from '../../lib/supabase'
@@ -105,7 +105,7 @@ function NarrativeModal({ player, onClose }) {
 }
 
 export default function CampaignPage({ campaignId, onTabChange }) {
-  const { state, setState, updateShared, isOnline, sharedState, saveInhabitantsState, saveCampaignBattles } = useCampaign()
+  const { state, setState, updateShared, isOnline, sharedState, saveInhabitantsState, saveCampaignBattles, syncError } = useCampaign()
   const { user } = useAuth()
   const [allPlayers, setAllPlayers] = useState([])
   const [loadingPlayers, setLoadingPlayers] = useState(false)
@@ -123,7 +123,8 @@ export default function CampaignPage({ campaignId, onTabChange }) {
   const battleCount = state?.battleCount ?? 0
   const phaseInfo = PHASES[phase - 1] || PHASES[0]
   const isAT = !state?.settings?.settlementMode || state.settings.settlementMode === 'alone-together'
-  const isCreator = !!(user?.id && sharedState?.createdBy && user.id === sharedState.createdBy)
+  const isCreator = !isOnline || !sharedState || !sharedState.createdBy ||
+    !!(user?.id && user.id === sharedState.createdBy)
 
   async function resetInhabitantsSession(nextRound = round) {
     const base = { ...defaultInhabitantsState(), ...state?.inhabitantsState }
@@ -215,8 +216,10 @@ export default function CampaignPage({ campaignId, onTabChange }) {
     ? allPlayers.map(p => (myStats && p.isMe) ? myStats : p)
     : (myStats ? [myStats] : [])
 
-  function handlePhaseChange(delta) {
-    const newPhase = Math.max(1, Math.min(4, phase + delta))
+  function handlePhaseSet(val) {
+    const n = parseInt(val, 10)
+    if (isNaN(n)) return
+    const newPhase = Math.max(1, Math.min(4, n))
     if (isOnline) updateShared('phase', newPhase)
     else setState(prev => ({ ...prev, phase: newPhase }))
   }
@@ -335,6 +338,12 @@ export default function CampaignPage({ campaignId, onTabChange }) {
     <div className="p-4 space-y-6 max-w-5xl mx-auto">
       <NarrativeModal player={narrativePlayer} onClose={() => setNarrativePlayer(null)} />
 
+      {syncError && (
+        <div className="border border-danger/50 bg-danger/10 rounded px-3 py-2 text-danger text-xs tracking-wider">
+          SYNC ERROR: {syncError}
+        </div>
+      )}
+
       {/* ── Phase Banner ── */}
       <div
         className="bg-panel-light border border-amber/40 rounded-lg px-4 py-3"
@@ -361,38 +370,47 @@ export default function CampaignPage({ campaignId, onTabChange }) {
           </div>
         )}
         {!isAT && (
-          <div className="text-pip text-xs tracking-wider">Campaign Mode</div>
+          <div className="text-pip text-xs tracking-wider opacity-50">Campaign Mode — Phase tracking disabled</div>
         )}
       </div>
 
       {/* ── Round / Battles Controls ── */}
       <div className="flex items-center gap-4 flex-wrap">
-        {/* Phase stepper — AT + creator only */}
+        {/* Phase — AT mode only: editable for creator, read-only for others */}
         {isAT && isCreator && (
           <div className="flex items-center gap-2">
-            <button
-              onClick={() => handlePhaseChange(-1)} disabled={phase <= 1}
-              className="p-1.5 border border-muted rounded text-muted hover:text-pip hover:border-pip disabled:opacity-30 transition-colors"
-            ><ChevronLeft size={14} /></button>
-            <span className="text-pip text-xs w-20 text-center tracking-wider">PHASE {phase} / 4</span>
-            <button
-              onClick={() => handlePhaseChange(1)} disabled={phase >= 4}
-              className="p-1.5 border border-muted rounded text-muted hover:text-pip hover:border-pip disabled:opacity-30 transition-colors"
-            ><ChevronRight size={14} /></button>
+            <span className="text-pip text-xs tracking-wider">PHASE</span>
+            <input
+              type="number" min="1" max="4" value={phase}
+              onChange={e => handlePhaseSet(e.target.value)}
+              className="text-sm py-1 px-2 w-12 text-center font-bold"
+            />
+            <span className="text-pip text-xs">/4</span>
           </div>
         )}
         {isAT && !isCreator && (
           <span className="text-pip text-xs tracking-wider">PHASE {phase} / 4</span>
         )}
-        {/* Round — editable by creator or solo */}
+        {/* Round — +/- stepper for creator or solo, read-only for members */}
         <div className={`flex items-center gap-2 ${isAT ? 'border-l border-pip-dim/30 pl-4' : ''}`}>
           <span className="text-pip text-xs tracking-wider">ROUND</span>
           {isCreator || !isOnline ? (
-            <input
-              type="number" min="0" value={round}
-              onChange={e => void handleRoundChange(e.target.value)}
-              className="text-sm py-1 px-2 w-16 text-center font-bold"
-            />
+            <div className="flex items-center gap-1">
+              <button
+                onClick={() => handleRoundChange(Math.max(0, round - 1))}
+                disabled={round <= 0}
+                className="px-2 py-1 border border-muted rounded text-muted hover:text-pip hover:border-pip disabled:opacity-30 transition-colors text-sm leading-none"
+              >−</button>
+              <input
+                type="number" min="0" value={round}
+                onChange={e => void handleRoundChange(e.target.value)}
+                className="text-sm py-1 px-2 w-14 text-center font-bold"
+              />
+              <button
+                onClick={() => handleRoundChange(round + 1)}
+                className="px-2 py-1 border border-muted rounded text-muted hover:text-pip hover:border-pip transition-colors text-sm leading-none"
+              >+</button>
+            </div>
           ) : (
             <span className="text-amber font-bold text-lg w-16 text-center">{round}</span>
           )}

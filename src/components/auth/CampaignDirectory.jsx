@@ -24,8 +24,17 @@ export default function CampaignDirectory({ onEnterCampaign, onSolo }) {
     useEventCards: false,
     useQuests: true,
   })
+  const [createPlayer, setCreatePlayer] = useState({ name: '', faction: '', leader: '', settlement: '' })
+  const [joinPlayer, setJoinPlayer] = useState({ name: '', faction: '', leader: '', settlement: '' })
 
   useEffect(() => { fetchCampaigns() }, [])
+
+  useEffect(() => {
+    if (profile?.username) {
+      setCreatePlayer(p => ({ ...p, name: p.name || profile.username }))
+      setJoinPlayer(p => ({ ...p, name: p.name || profile.username }))
+    }
+  }, [profile?.username])
 
   async function fetchCampaigns() {
     setLoading(true)
@@ -73,6 +82,10 @@ export default function CampaignDirectory({ onEnterCampaign, onSolo }) {
 
       setNewCampaign(camp)
       localStorage.setItem('fww-pending-settings', JSON.stringify({ campaignId: camp.id, settings: createSettings }))
+      localStorage.setItem('fww-pending-player', JSON.stringify({
+        campaignId: camp.id,
+        player: { ...createPlayer, campaignStart: new Date().toISOString() },
+      }))
       fetchCampaigns()
     } catch (err) {
       setCreateError(err?.message ?? 'Failed to create campaign.')
@@ -104,6 +117,10 @@ export default function CampaignDirectory({ onEnterCampaign, onSolo }) {
       }
 
       localStorage.setItem('fww-last-campaign', JSON.stringify({ id: camp.id, name: camp.name }))
+      localStorage.setItem('fww-pending-player', JSON.stringify({
+        campaignId: camp.id,
+        player: { ...joinPlayer, campaignStart: new Date().toISOString() },
+      }))
       onEnterCampaign(camp.id)
     } catch (err) {
       setJoinError(err?.message ?? 'Failed to join campaign.')
@@ -253,6 +270,53 @@ export default function CampaignDirectory({ onEnterCampaign, onSolo }) {
               </div>
             </div>
 
+            {/* Player Info */}
+            <div className="space-y-2 border-t border-pip-dim/30 pt-3">
+              <div className="text-pip text-xs tracking-widest font-bold">YOUR PLAYER INFO</div>
+              <div className="grid grid-cols-2 gap-2">
+                <div>
+                  <label className="text-label text-xs block mb-1 tracking-wider">PLAYER NAME</label>
+                  <input
+                    value={createPlayer.name}
+                    onChange={e => setCreatePlayer(p => ({ ...p, name: e.target.value }))}
+                    placeholder="Vault Dweller"
+                    className="w-full text-sm py-1.5 px-2"
+                    disabled={createLoading}
+                  />
+                </div>
+                <div>
+                  <label className="text-label text-xs block mb-1 tracking-wider">SETTLEMENT NAME</label>
+                  <input
+                    value={createPlayer.settlement}
+                    onChange={e => setCreatePlayer(p => ({ ...p, settlement: e.target.value }))}
+                    placeholder="Sanctuary"
+                    className="w-full text-sm py-1.5 px-2"
+                    disabled={createLoading}
+                  />
+                </div>
+                <div>
+                  <label className="text-label text-xs block mb-1 tracking-wider">FACTION</label>
+                  <input
+                    value={createPlayer.faction}
+                    onChange={e => setCreatePlayer(p => ({ ...p, faction: e.target.value }))}
+                    placeholder="Brotherhood of Steel"
+                    className="w-full text-sm py-1.5 px-2"
+                    disabled={createLoading}
+                  />
+                </div>
+                <div>
+                  <label className="text-label text-xs block mb-1 tracking-wider">LEADER / SUB-FACTION</label>
+                  <input
+                    value={createPlayer.leader}
+                    onChange={e => setCreatePlayer(p => ({ ...p, leader: e.target.value }))}
+                    placeholder="Elder Maxson"
+                    className="w-full text-sm py-1.5 px-2"
+                    disabled={createLoading}
+                  />
+                </div>
+              </div>
+            </div>
+
             {createError && (
               <div className="text-danger text-xs border border-danger/40 bg-danger/10 px-3 py-2 rounded">{createError}</div>
             )}
@@ -309,6 +373,53 @@ export default function CampaignDirectory({ onEnterCampaign, onSolo }) {
                 autoFocus
               />
             </div>
+            {/* Player Info for join */}
+            <div className="space-y-2 border-t border-pip-dim/30 pt-2">
+              <div className="text-pip text-xs tracking-widest font-bold">YOUR PLAYER INFO</div>
+              <div className="grid grid-cols-2 gap-2">
+                <div>
+                  <label className="text-label text-xs block mb-1 tracking-wider">PLAYER NAME</label>
+                  <input
+                    value={joinPlayer.name}
+                    onChange={e => setJoinPlayer(p => ({ ...p, name: e.target.value }))}
+                    placeholder="Vault Dweller"
+                    className="w-full text-sm py-1.5 px-2"
+                    disabled={joinLoading}
+                  />
+                </div>
+                <div>
+                  <label className="text-label text-xs block mb-1 tracking-wider">SETTLEMENT NAME</label>
+                  <input
+                    value={joinPlayer.settlement}
+                    onChange={e => setJoinPlayer(p => ({ ...p, settlement: e.target.value }))}
+                    placeholder="Sanctuary"
+                    className="w-full text-sm py-1.5 px-2"
+                    disabled={joinLoading}
+                  />
+                </div>
+                <div>
+                  <label className="text-label text-xs block mb-1 tracking-wider">FACTION</label>
+                  <input
+                    value={joinPlayer.faction}
+                    onChange={e => setJoinPlayer(p => ({ ...p, faction: e.target.value }))}
+                    placeholder="Brotherhood of Steel"
+                    className="w-full text-sm py-1.5 px-2"
+                    disabled={joinLoading}
+                  />
+                </div>
+                <div>
+                  <label className="text-label text-xs block mb-1 tracking-wider">LEADER / SUB-FACTION</label>
+                  <input
+                    value={joinPlayer.leader}
+                    onChange={e => setJoinPlayer(p => ({ ...p, leader: e.target.value }))}
+                    placeholder="Elder Maxson"
+                    className="w-full text-sm py-1.5 px-2"
+                    disabled={joinLoading}
+                  />
+                </div>
+              </div>
+            </div>
+
             {joinError && (
               <div className="text-danger text-xs border border-danger/40 bg-danger/10 px-3 py-2 rounded">{joinError}</div>
             )}
