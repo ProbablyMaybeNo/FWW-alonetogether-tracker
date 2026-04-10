@@ -93,7 +93,7 @@ export default function CampaignDirectory({ onEnterCampaign, onSolo }) {
     try {
       const { data: camp, error: campErr } = await supabase
         .from('campaigns')
-        .insert({ name: createName.trim(), created_by: user.id })
+        .insert({ name: createName.trim(), created_by: user.id, phase: 1, round: 1 })
         .select()
         .single()
       if (campErr) throw campErr

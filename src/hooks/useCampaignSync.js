@@ -310,7 +310,7 @@ export function useCampaignSync({ campaignId, userId } = {}) {
   const updateShared = useCallback(async (field, value) => {
     if (!isOnline) return
 
-    // phase/round/battleCount — try RPC first, fall back to direct UPDATE (creator-only RLS)
+    // phase/round/battleCount — optimistic update first, then persist
     if (field === 'phase' || field === 'round' || field === 'battleCount') {
       const colMap = { phase: 'phase', round: 'round', battleCount: 'battle_count' }
       const col = colMap[field]
@@ -318,14 +318,17 @@ export function useCampaignSync({ campaignId, userId } = {}) {
       if (field === 'phase') param.p_phase = value
       if (field === 'round') param.p_round = value
       if (field === 'battleCount') param.p_battle_count = value
+
+      // Optimistic update — UI responds immediately regardless of DB result
+      setSharedState(prev => ({ ...(prev ?? {}), [field]: value }))
+
       try {
         const { error } = await supabase.rpc('patch_campaign_progress', param)
         if (error) {
-          // RPC not available or failed — fall back to direct UPDATE (works for creator via RLS)
+          // RPC not available or failed — fall back to direct UPDATE (creator-only via RLS)
           const { error: e2 } = await supabase.from('campaigns').update({ [col]: value }).eq('id', campaignId)
           if (e2) throw e2
         }
-        setSharedState(prev => ({ ...prev, [field]: value }))
         setSyncError(null)
       } catch (e) {
         console.error('updateShared error:', e)
