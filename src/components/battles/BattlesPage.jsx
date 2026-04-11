@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback, useMemo } from 'react'
-import { Swords, ClipboardList, MapPin, Layers, Globe, Check } from 'lucide-react'
+import { Swords, ClipboardList, MapPin, Layers, Globe, Check, X } from 'lucide-react'
 import { useCampaign } from '../../context/CampaignContext'
 import { useAuth } from '../../context/AuthContext'
 import { supabase } from '../../lib/supabase'
@@ -161,6 +161,33 @@ export default function BattlesPage({ campaignId, onTabChange }) {
     roundData[user.id] = { ready: true, noBattles: true, matches: [] }
     await saveCampaignBattles({ ...currentBattles, [roundKey]: roundData })
     setBattleRecorded(true)
+  }
+
+  async function handleRemoveBattle(index) {
+    const match = myRecordedBattles[index]
+    if (!match) return
+    if (isOnline && user?.id && saveCampaignBattles) {
+      const currentBattles = sharedState?.battles ?? {}
+      const roundKey = String(round)
+      const roundData = { ...(currentBattles[roundKey] ?? {}) }
+
+      const myRecord = { ...(roundData[user.id] ?? { ready: true, noBattles: false, matches: [] }) }
+      const myMatches = [...(myRecord.matches ?? [])]
+      myMatches.splice(index, 1)
+      roundData[user.id] = { ...myRecord, matches: myMatches, ready: myMatches.length > 0, noBattles: false }
+
+      const oppId = match.opponentId
+      const mirrorResult = match.result === 'win' ? 'loss' : match.result === 'loss' ? 'win' : 'draw'
+      if (roundData[oppId]) {
+        const oppRecord = { ...roundData[oppId] }
+        const oppMatches = [...(oppRecord.matches ?? [])]
+        const mirrorIdx = oppMatches.findIndex(m => m.opponentId === user.id && m.result === mirrorResult)
+        if (mirrorIdx !== -1) oppMatches.splice(mirrorIdx, 1)
+        roundData[oppId] = { ...oppRecord, matches: oppMatches, ready: oppMatches.length > 0 || oppRecord.noBattles }
+      }
+
+      await saveCampaignBattles({ ...currentBattles, [roundKey]: roundData })
+    }
   }
 
   const myRecordedBattles = isOnline
@@ -388,8 +415,20 @@ export default function BattlesPage({ campaignId, onTabChange }) {
                 {myRecordedBattles.map((m, i) => {
                   const opp = displayPlayers.find(p => p.userId === m.opponentId)
                   return (
-                    <div key={i} className={`text-xs font-bold ${m.result === 'win' ? 'text-pip' : m.result === 'loss' ? 'text-danger' : 'text-amber'}`}>
-                      {m.result.toUpperCase()} vs {opp?.username ?? 'Opponent'}
+                    <div key={i} className="flex items-center gap-2">
+                      <span className={`text-xs font-bold ${m.result === 'win' ? 'text-pip' : m.result === 'loss' ? 'text-danger' : 'text-amber'}`}>
+                        {m.result.toUpperCase()} vs {opp?.username ?? 'Opponent'}
+                      </span>
+                      {isOnline && (
+                        <button
+                          type="button"
+                          onClick={() => handleRemoveBattle(i)}
+                          className="text-muted hover:text-danger transition-colors p-0.5 rounded hover:bg-danger/10"
+                          title="Remove this battle record"
+                        >
+                          <X size={12} />
+                        </button>
+                      )}
                     </div>
                   )
                 })}
