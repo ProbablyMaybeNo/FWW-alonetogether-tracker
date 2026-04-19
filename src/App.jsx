@@ -178,12 +178,16 @@ function AppContent({ campaignId, onLeaveCampaign }) {
         <OnboardingTour settings={settings} onDone={() => setShowTour(false)} />
       )}
 
-      {activeBattle?.status === 'active' && (
+      {(activeBattle?.status === 'active' || activeBattle?.status === 'roster_build') && (
         <LiveBattleTracker
           activeBattle={activeBattle}
           currentUserId={uid}
           saveActiveBattle={saveActiveBattle}
           roster={state?.roster ?? []}
+          state={state}
+          setState={setState}
+          campaignId={campaignId}
+          isOnline={!!isOnline}
         />
       )}
 

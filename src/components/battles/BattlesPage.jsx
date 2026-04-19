@@ -8,7 +8,7 @@ import ObjectivesPage from '../objectives/ObjectivesPage'
 import BattleDeckPanel from './BattleDeckPanel'
 import LocalPopulationDeckPanel from './LocalPopulationDeckPanel'
 import ItemsDeckPanel from './ItemsDeckPanel'
-import MatchTabWizard from './MatchTabWizard'
+import MatchTab from './MatchTab'
 import battleCreatures from '../../data/battle/battleCreatures.json'
 import battleStrangers from '../../data/battle/battleStrangers.json'
 import battleDangers from '../../data/battle/battleDangers.json'
@@ -35,7 +35,7 @@ const DECK_CHIPS = [
 ]
 
 export default function BattlesPage({ campaignId, onTabChange }) {
-  const { state, saveBattlePageState, isOnline, sharedState, saveCampaignBattles } = useCampaign()
+  const { state, saveBattlePageState, isOnline, sharedState, saveCampaignBattles, saveActiveBattle } = useCampaign()
   const { user } = useAuth()
   const [subTab, setSubTab] = useState('match')
   const [displayPlayers, setDisplayPlayers] = useState([])
@@ -251,9 +251,12 @@ export default function BattlesPage({ campaignId, onTabChange }) {
       {/* ── MATCH TAB ── */}
       {subTab === 'match' && (
         <div className="space-y-4">
-          <MatchTabWizard
-            campaignId={campaignId}
+          <MatchTab
             opponentRows={opponentChoices}
+            isOnline={isOnline}
+            activeBattle={state?.activeBattle ?? null}
+            saveActiveBattle={saveActiveBattle}
+            currentUserId={user?.id ?? 'solo-local'}
             battlePage={battlePage}
           />
 

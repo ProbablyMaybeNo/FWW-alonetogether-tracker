@@ -1,6 +1,8 @@
 import { useState, useCallback, useMemo, useEffect, useRef } from 'react'
 import { ChevronDown, ChevronUp, ChevronLeft, ChevronRight, Skull } from 'lucide-react'
 import { normalizeActiveBattle, shuffleArray, buildInitialParticipants } from '../../utils/activeBattle'
+import RosterBuildPhase from './RosterBuildPhase'
+import { canonicalBattleHostUserId } from '../../utils/postBattlePropagation'
 import { getItemRef } from '../../utils/calculations'
 import { getCardBodyText } from '../../utils/battleDeckCardUtils'
 import { lookupItemMeta } from '../../utils/settlementItemDeckUtils'
@@ -48,9 +50,14 @@ export default function LiveBattleTracker({
   currentUserId,
   saveActiveBattle,
   roster,
+  state,
+  setState,
+  campaignId,
+  isOnline,
 }) {
   const ab = normalizeActiveBattle(activeBattleProp)
   const seedRef = useRef(false)
+  const transitionRef = useRef(false)
   const setup = ab.setup || {}
   const scenario = battleScenarios.find(s => s.id === setup.scenario?.scenarioId)
   const [mobileYour, setMobileYour] = useState(false)
@@ -86,6 +93,43 @@ export default function LiveBattleTracker({
       lastUpdatedBy: currentUserId,
     })
   }, [activeBattleProp, saveActiveBattle, currentUserId])
+
+  // roster_build → active: canonical host transitions once all players submit
+  useEffect(() => {
+    const cur = normalizeActiveBattle(activeBattleProp)
+    if (cur.status !== 'roster_build') {
+      transitionRef.current = false
+      return
+    }
+    const participants = cur.setup.participantUserIds ?? []
+    if (participants.length === 0) return
+    const allReady = participants.every(uid => cur.readyFlags[uid] === 'roster_ready')
+    if (!allReady) return
+    const hostId = canonicalBattleHostUserId(participants)
+    if (hostId !== currentUserId) return
+    if (transitionRef.current) return
+    transitionRef.current = true
+
+    // Merge all wasteland contributions and shuffle
+    const allCardIds = Object.values(cur.wastelandContributions || {}).flat()
+    const wastelandDeck = {
+      drawPile: shuffleArray(allCardIds),
+      discardPile: [],
+      lastDrawn: null,
+    }
+    const startedAt = new Date().toISOString()
+    saveActiveBattle({
+      ...cur,
+      status: 'active',
+      lastUpdatedBy: currentUserId,
+      startedAt,
+      turn: 1,
+      turnHistory: [],
+      participants: buildInitialParticipants(cur),
+      deckStates: { ...cur.deckStates, wastelandItems: wastelandDeck },
+      log: [{ turn: 1, timestamp: startedAt, userId: currentUserId, event: 'Battle started' }],
+    })
+  }, [activeBattleProp, currentUserId, saveActiveBattle])
 
   const rosterBySlot = useMemo(() => {
     const m = new Map()
@@ -593,6 +637,27 @@ export default function LiveBattleTracker({
       </button>
     </div>
   )
+
+  if (ab.status === 'roster_build') {
+    return (
+      <div
+        className="fixed inset-0 z-50 flex flex-col bg-[var(--color-bg)] text-pip"
+        style={{ fontFamily: 'var(--font-family-mono)' }}
+      >
+        {header}
+        <RosterBuildPhase
+          activeBattle={activeBattleProp}
+          currentUserId={currentUserId}
+          roster={roster}
+          saveActiveBattle={saveActiveBattle}
+          state={state}
+          setState={setState}
+          campaignId={campaignId}
+          isOnline={isOnline}
+        />
+      </div>
+    )
+  }
 
   return (
     <div

@@ -25,6 +25,8 @@ export function defaultActiveBattle() {
       battleObjectiveId: null,
       secretPurposeId: null,
       wizardStep: 1,
+      challengerId: null,
+      counterProposal: null,
     },
     readyFlags: {},
     turn: 0,
@@ -43,6 +45,7 @@ export function defaultActiveBattle() {
     outcome: {},
     endedAt: null,
     postBattleAppliedBy: {},
+    wastelandContributions: {},
   }
 }
 
@@ -80,6 +83,10 @@ export function normalizeActiveBattle(raw) {
     postBattleAppliedBy:
       raw.postBattleAppliedBy && typeof raw.postBattleAppliedBy === 'object' && !Array.isArray(raw.postBattleAppliedBy)
         ? raw.postBattleAppliedBy
+        : {},
+    wastelandContributions:
+      raw.wastelandContributions && typeof raw.wastelandContributions === 'object' && !Array.isArray(raw.wastelandContributions)
+        ? raw.wastelandContributions
         : {},
   }
 }
