@@ -7,7 +7,6 @@ import { normalizeBattlePageState } from '../../utils/battlePageState'
 import ObjectivesPage from '../objectives/ObjectivesPage'
 import BattleDeckPanel from './BattleDeckPanel'
 import LocalPopulationDeckPanel from './LocalPopulationDeckPanel'
-import ItemsDeckPanel from './ItemsDeckPanel'
 import MatchTab from './MatchTab'
 import battleCreatures from '../../data/battle/battleCreatures.json'
 import battleStrangers from '../../data/battle/battleStrangers.json'
@@ -31,7 +30,6 @@ const DECK_CHIPS = [
   { id: 'danger', label: 'Danger' },
   { id: 'explore', label: 'Explore' },
   { id: 'event', label: 'Event' },
-  { id: 'items', label: 'Items' },
 ]
 
 export default function BattlesPage({ campaignId, onTabChange }) {
@@ -260,10 +258,6 @@ export default function BattlesPage({ campaignId, onTabChange }) {
           {deckChip === 'event' && (
             <BattleDeckPanel title="EVENT (BATTLEFIELD)" deckKey="event" cards={battleEvents} battlePage={battlePage} patchBattle={patchBattle} />
           )}
-          {deckChip === 'items' && (
-            <ItemsDeckPanel battlePage={battlePage} patchBattle={patchBattle} isOnline={isOnline} />
-          )}
-
           <div className="border-t border-pip-dim/30 pt-4">
             <p className="text-muted text-xs mb-2 tracking-wider">LOCAL POPULATION</p>
             <LocalPopulationDeckPanel battlePage={battlePage} patchBattle={patchBattle} unitsData={unitsData} />

@@ -133,23 +133,24 @@ export default function RosterBuildPhase({
       }
     }
 
-    const base = normalizeActiveBattle(activeBattleProp)
-    await saveActiveBattle({
-      ...base,
-      lastUpdatedBy: currentUserId,
-      battleRosters: {
-        ...base.battleRosters,
-        [currentUserId]: { entries: draftEntries },
-      },
-      readyFlags: {
-        ...base.readyFlags,
-        [currentUserId]: 'roster_ready',
-      },
-      wastelandContributions: {
-        ...(base.wastelandContributions || {}),
-        [currentUserId]: contrib.ids,
-      },
-    })
+    if (isOnline && campaignId && currentUserId && supabase) {
+      await supabase.rpc('patch_roster_submission', {
+        p_campaign_id: campaignId,
+        p_user_id: currentUserId,
+        p_roster: { entries: draftEntries },
+        p_contrib_ids: contrib.ids,
+        p_last_updated_by: currentUserId,
+      })
+    } else {
+      const base = normalizeActiveBattle(activeBattleProp)
+      await saveActiveBattle({
+        ...base,
+        lastUpdatedBy: currentUserId,
+        battleRosters: { ...base.battleRosters, [currentUserId]: { entries: draftEntries } },
+        readyFlags: { ...base.readyFlags, [currentUserId]: 'roster_ready' },
+        wastelandContributions: { ...(base.wastelandContributions || {}), [currentUserId]: contrib.ids },
+      })
+    }
     setSubmitted(true)
   }
 
