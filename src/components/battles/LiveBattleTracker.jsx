@@ -224,11 +224,9 @@ export default function LiveBattleTracker({
     }
     next = appendLog(next, `${uname} removed from battle`)
     patch(next)
-    if (window.confirm(`${uname} has been removed.\n\nOpen loot picker to add loot from the full item list?`)) {
-      setLootModal({ slotId, unitName: uname })
-      setLootSearch('')
-      setLootPickId(null)
-    }
+    setLootModal({ slotId, unitName: uname })
+    setLootSearch('')
+    setLootPickId(null)
   }
 
   function addLootToTray(itemId) {
@@ -284,11 +282,12 @@ export default function LiveBattleTracker({
   }
 
   function confirmEndBattle() {
+    const prevOutcome = (ab.outcome && typeof ab.outcome === 'object') ? ab.outcome : {}
     patch({
       ...ab,
       status: 'ended',
       endedAt: new Date().toISOString(),
-      outcome,
+      outcome: { ...prevOutcome, [currentUserId]: outcome },
       log: [
         ...(ab.log || []),
         {
@@ -363,14 +362,14 @@ export default function LiveBattleTracker({
         </p>
         {!readOnly && !ustate.removed && (
           <div className="flex flex-wrap gap-1">
-            <button type="button" className="min-h-[44px] px-2 py-1 border border-danger/50 text-danger rounded text-[11px]" onClick={() => wound(uid, slotId, 'wound')}>
+            <button type="button" className="min-h-[44px] px-2 py-1 border border-danger/50 text-danger rounded text-xs" onClick={() => wound(uid, slotId, 'wound')}>
               WOUND
             </button>
-            <button type="button" className="min-h-[44px] px-2 py-1 border border-amber/50 text-amber rounded text-[11px]" onClick={() => wound(uid, slotId, 'rad')}>
+            <button type="button" className="min-h-[44px] px-2 py-1 border border-amber/50 text-amber rounded text-xs" onClick={() => wound(uid, slotId, 'rad')}>
               RAD
             </button>
             <select
-              className="min-h-[44px] text-[11px] bg-panel border border-pip-dim/40 rounded px-1"
+              className="min-h-[44px] text-xs bg-panel border border-pip-dim/40 rounded px-1"
               value=""
               onChange={e => {
                 const v = e.target.value
@@ -383,13 +382,13 @@ export default function LiveBattleTracker({
               <option value="injuredArm">Injured Arm</option>
               <option value="injuredLeg">Injured Leg</option>
             </select>
-            <button type="button" className="min-h-[44px] px-2 py-1 border border-muted text-muted rounded text-[11px]" onClick={() => removeUnit(uid, slotId)}>
+            <button type="button" className="min-h-[44px] px-2 py-1 border border-muted text-muted rounded text-xs" onClick={() => removeUnit(uid, slotId)}>
               REMOVE
             </button>
           </div>
         )}
         {(cond.poisoned || cond.injuredArm || cond.injuredLeg) && (
-          <p className="text-[10px] text-amber">
+          <p className="text-xs text-amber">
             {[cond.poisoned && 'Poisoned', cond.injuredArm && 'Injured Arm', cond.injuredLeg && 'Injured Leg'].filter(Boolean).join(' · ')}
           </p>
         )}
@@ -400,7 +399,7 @@ export default function LiveBattleTracker({
   const header = (
     <header className="sticky top-0 z-10 border-b border-pip-dim/40 bg-[var(--color-terminal)]/95 backdrop-blur px-3 py-3 flex flex-wrap items-center justify-between gap-2">
       <div>
-        <p className="text-[10px] text-muted tracking-widest">LIVE BATTLE</p>
+        <p className="text-xs text-muted tracking-widest">LIVE BATTLE</p>
         <p className="text-pip font-bold text-sm">{scenario?.name ?? 'Scenario'}</p>
       </div>
       <div className="flex items-center gap-2 flex-wrap">
@@ -500,7 +499,7 @@ export default function LiveBattleTracker({
         {logOpen ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
       </button>
       {logOpen && (
-        <div className="max-h-40 overflow-y-auto px-3 py-2 text-[10px] font-mono text-pip/90 space-y-1 border-t border-pip-dim/30">
+        <div className="max-h-40 overflow-y-auto px-3 py-2 text-xs font-mono text-pip/90 space-y-1 border-t border-pip-dim/30">
           {(ab.log || []).slice(-80).map((line, i) => (
             <p key={i}>
               <span className="text-muted">T{line.turn}</span> {line.event}
@@ -572,7 +571,7 @@ export default function LiveBattleTracker({
           const entries = ab.battleRosters?.[oid]?.entries || []
           return (
             <div key={oid} className="space-y-2">
-              <p className="text-[10px] text-muted">Player {oid.slice(0, 8)}…</p>
+              <p className="text-xs text-muted">Player {oid.slice(0, 8)}…</p>
               {entries.map(e => renderUnitCard(oid, e, true))}
             </div>
           )

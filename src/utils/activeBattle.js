@@ -40,7 +40,7 @@ export function defaultActiveBattle() {
     },
     battleRosters: {},
     log: [],
-    outcome: null,
+    outcome: {},
     endedAt: null,
   }
 }
@@ -75,6 +75,7 @@ export function normalizeActiveBattle(raw) {
     readyFlags: raw.readyFlags && typeof raw.readyFlags === 'object' ? raw.readyFlags : {},
     turnHistory: Array.isArray(raw.turnHistory) ? raw.turnHistory : [],
     log: Array.isArray(raw.log) ? raw.log : [],
+    outcome: (raw.outcome && typeof raw.outcome === 'object' && !Array.isArray(raw.outcome)) ? raw.outcome : {},
   }
 }
 
