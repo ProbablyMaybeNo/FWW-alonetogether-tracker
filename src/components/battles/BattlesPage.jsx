@@ -7,10 +7,11 @@ import { normalizeBattlePageState, defaultBattlePageState } from '../../utils/ba
 import ObjectivesPage from '../objectives/ObjectivesPage'
 import BattleDeckPanel from './BattleDeckPanel'
 import LocalPopulationDeckPanel from './LocalPopulationDeckPanel'
-import WastelandItemBattleDeck from './WastelandItemBattleDeck'
+import ItemsDeckPanel from './ItemsDeckPanel'
 import battleCreatures from '../../data/battle/battleCreatures.json'
 import battleStrangers from '../../data/battle/battleStrangers.json'
 import battleDangers from '../../data/battle/battleDangers.json'
+import battleExplores from '../../data/battle/battleExplores.json'
 import battleEvents from '../../data/battle/battleEvents.json'
 import battleEnvironments from '../../data/battle/battleEnvironments.json'
 import battleScenarios from '../../data/battle/battleScenarios.json'
@@ -30,6 +31,15 @@ const SUBTABS = [
   { id: 'decks', label: 'DECKS', icon: Layers },
 ]
 
+const DECK_CHIPS = [
+  { id: 'creature', label: 'Creature' },
+  { id: 'stranger', label: 'Stranger' },
+  { id: 'danger', label: 'Danger' },
+  { id: 'explore', label: 'Explore' },
+  { id: 'event', label: 'Event' },
+  { id: 'items', label: 'Items' },
+]
+
 export default function BattlesPage({ campaignId, onTabChange }) {
   const { state, saveBattlePageState, isOnline, sharedState, saveCampaignBattles } = useCampaign()
   const { user } = useAuth()
@@ -43,9 +53,9 @@ export default function BattlesPage({ campaignId, onTabChange }) {
   // Scenario browser state
   const [scenarioSearch, setScenarioSearch] = useState('')
   const [selectedScenario, setSelectedScenario] = useState(null)
+  const [deckChip, setDeckChip] = useState('creature')
 
   const round = state?.round ?? 0
-  const isAT = !state?.settings?.settlementMode || state?.settings?.settlementMode === 'alone-together'
   const battlePage = useMemo(() => normalizeBattlePageState(state?.battlePageState), [state?.battlePageState])
 
   const patchBattle = useCallback(async (updater) => {
@@ -503,16 +513,52 @@ export default function BattlesPage({ campaignId, onTabChange }) {
 
       {/* ── DECKS TAB ── */}
       {subTab === 'decks' && (
-        <div className="space-y-6">
-          <p className="text-muted text-xs">Standard skirmish decks. Shuffle before play; draw and resolve to discard.</p>
-          <div className="grid sm:grid-cols-2 gap-3">
-            <BattleDeckPanel title="CREATURE" deckKey="creature" cards={battleCreatures} battlePage={battlePage} patchBattle={patchBattle} />
-            <BattleDeckPanel title="STRANGER" deckKey="stranger" cards={battleStrangers} battlePage={battlePage} patchBattle={patchBattle} />
-            <BattleDeckPanel title="DANGER" deckKey="danger" cards={battleDangers} battlePage={battlePage} patchBattle={patchBattle} />
-<BattleDeckPanel title="EVENT (BATTLEFIELD)" deckKey="event" cards={battleEvents} battlePage={battlePage} patchBattle={patchBattle} />
+        <div className="space-y-4">
+          <p className="text-muted text-xs">Standard skirmish decks. Build your piles in Build mode, then draw and resolve to discard during play.</p>
+
+          <div className="flex gap-2 overflow-x-auto pb-1 -mx-1 px-1 scrollbar-thin">
+            {DECK_CHIPS.map(c => {
+              const on = deckChip === c.id
+              return (
+                <button
+                  key={c.id}
+                  type="button"
+                  onClick={() => setDeckChip(c.id)}
+                  className={`shrink-0 text-xs font-bold tracking-wider px-3 py-2 rounded-full border transition-shadow ${
+                    on
+                      ? 'border-pip bg-pip text-terminal shadow-[0_0_14px_var(--color-pip-glow)]'
+                      : 'border-pip-dim/50 text-muted hover:border-pip/60 hover:text-pip'
+                  }`}
+                >
+                  {c.label}
+                </button>
+              )
+            })}
           </div>
-          <LocalPopulationDeckPanel battlePage={battlePage} patchBattle={patchBattle} unitsData={unitsData} />
-          <WastelandItemBattleDeck battlePage={battlePage} patchBattle={patchBattle} isOnline={isOnline} />
+
+          {deckChip === 'creature' && (
+            <BattleDeckPanel title="CREATURE" deckKey="creature" cards={battleCreatures} battlePage={battlePage} patchBattle={patchBattle} />
+          )}
+          {deckChip === 'stranger' && (
+            <BattleDeckPanel title="STRANGER" deckKey="stranger" cards={battleStrangers} battlePage={battlePage} patchBattle={patchBattle} />
+          )}
+          {deckChip === 'danger' && (
+            <BattleDeckPanel title="DANGER" deckKey="danger" cards={battleDangers} battlePage={battlePage} patchBattle={patchBattle} />
+          )}
+          {deckChip === 'explore' && (
+            <BattleDeckPanel title="EXPLORE" deckKey="explore" cards={battleExplores} battlePage={battlePage} patchBattle={patchBattle} />
+          )}
+          {deckChip === 'event' && (
+            <BattleDeckPanel title="EVENT (BATTLEFIELD)" deckKey="event" cards={battleEvents} battlePage={battlePage} patchBattle={patchBattle} />
+          )}
+          {deckChip === 'items' && (
+            <ItemsDeckPanel battlePage={battlePage} patchBattle={patchBattle} isOnline={isOnline} />
+          )}
+
+          <div className="border-t border-pip-dim/30 pt-4">
+            <p className="text-muted text-xs mb-2 tracking-wider">LOCAL POPULATION</p>
+            <LocalPopulationDeckPanel battlePage={battlePage} patchBattle={patchBattle} unitsData={unitsData} />
+          </div>
         </div>
       )}
     </div>
