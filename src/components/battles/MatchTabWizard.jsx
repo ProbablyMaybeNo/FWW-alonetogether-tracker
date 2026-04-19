@@ -1,9 +1,10 @@
 import { useState, useEffect, useRef } from 'react'
 import { ChevronLeft, ChevronRight, Swords } from 'lucide-react'
 import { useCampaign } from '../../context/CampaignContext'
+import { useAuth } from '../../context/AuthContext'
 import { supabase } from '../../lib/supabase'
 import { getItemRef } from '../../utils/calculations'
-import { defaultActiveBattle, normalizeActiveBattle, deckStatesFromBattlePage, shuffleArray } from '../../utils/activeBattle'
+import { defaultActiveBattle, normalizeActiveBattle, deckStatesFromBattlePage, shuffleArray, buildInitialParticipants } from '../../utils/activeBattle'
 import {
   createInitialSettlementItemDeck,
   contributeRandomCardsToBattle,
@@ -51,8 +52,9 @@ export default function MatchTabWizard({
   opponentRows,
   battlePage,
 }) {
-  const { state, setState, saveActiveBattle, isOnline, user } = useCampaign()
-  const userId = user?.id ?? 'solo-local'
+  const { state, setState, saveActiveBattle, isOnline, userId: ctxUserId } = useCampaign()
+  const { user } = useAuth()
+  const userId = ctxUserId ?? 'solo-local'
   const [isNarrow, setIsNarrow] = useState(() => typeof window !== 'undefined' && window.innerWidth < 768)
   const [fightMessage, setFightMessage] = useState(null)
   const seededDefault = useRef(false)
@@ -140,8 +142,10 @@ export default function MatchTabWizard({
     applyPatch(ab => {
       const entries = [...(ab.battleRosters[userId]?.entries || [])]
       if (entries.some(e => e.slotId === slotId)) return ab
+      const unit = roster.find(u => u.slotId === slotId)
       entries.push({
         slotId,
+        unitName: unit?.unitName ?? `Unit #${slotId}`,
         omittedStandardItemIds: [],
         addedItemInstanceIds: [],
         addedBoostInstanceIds: [],
@@ -268,20 +272,30 @@ export default function MatchTabWizard({
       lastDrawn: null,
     }
 
+    const participants = buildInitialParticipants(ab)
+    const startedAt = new Date().toISOString()
     const fightPayload = {
       ...ab,
       status: 'active',
-      startedAt: new Date().toISOString(),
+      lastUpdatedBy: userId,
+      startedAt,
+      turn: 1,
+      turnHistory: [],
+      participants,
       setup: {
         ...ab.setup,
         participantUserIds: [userId, ...(ab.setup.opponentUserIds || [])],
       },
       deckStates: mergedDecks,
+      log: [
+        ...(ab.log || []),
+        { turn: 1, timestamp: startedAt, userId, event: 'Battle started' },
+      ],
     }
 
     await saveActiveBattle(fightPayload)
     console.log('FIGHT! triggered', fightPayload)
-    setFightMessage('Battle starting… (Live Battle Tracker — Agent E)')
+    setFightMessage('Battle is live — use the full-screen tracker.')
   }
 
   const selectedScenario = battleScenarios.find(s => s.id === setup.scenario?.scenarioId)

@@ -4,6 +4,7 @@ export function defaultActiveBattle() {
   return {
     version: 1,
     status: 'setup',
+    lastUpdatedBy: null,
     startedAt: null,
     setup: {
       gameMode: 'skirmish',
@@ -60,6 +61,7 @@ export function normalizeActiveBattle(raw) {
   return {
     ...base,
     ...raw,
+    lastUpdatedBy: raw.lastUpdatedBy ?? null,
     setup,
     deckStates: {
       creature: mergeDeck('creature'),
@@ -102,4 +104,38 @@ export function shuffleArray(arr) {
     ;[a[i], a[j]] = [a[j], a[i]]
   }
   return a
+}
+
+/**
+ * Build initial per-player battle tracking from roster entries (live battle start).
+ */
+export function buildInitialParticipants(ab) {
+  const base = normalizeActiveBattle(ab)
+  const participants = {}
+  const rosterMap = base.battleRosters || {}
+  const userIds = new Set([
+    ...Object.keys(rosterMap),
+    ...((base.setup && base.setup.participantUserIds) || []),
+  ])
+  for (const uid of userIds) {
+    const entries = rosterMap[uid]?.entries || []
+    const units = {}
+    for (const e of entries) {
+      const slotId = e.slotId
+      units[slotId] = {
+        slotId,
+        regDamage: 0,
+        radDamage: 0,
+        conditions: { poisoned: false, injuredArm: false, injuredLeg: false },
+        removed: false,
+        lootedItems: [],
+      }
+    }
+    participants[uid] = {
+      units,
+      itemTray: [],
+      objectiveComplete: false,
+    }
+  }
+  return participants
 }

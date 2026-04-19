@@ -12,10 +12,12 @@ import BattlesPage from './components/battles/BattlesPage'
 import LoginPage from './components/auth/LoginPage'
 import CampaignDirectory from './components/auth/CampaignDirectory'
 import OnboardingTour, { isTourComplete } from './components/onboarding/OnboardingTour'
+import LiveBattleTracker from './components/battles/LiveBattleTracker'
 
 function AppContent({ campaignId, onLeaveCampaign }) {
   const [activeTab, setActiveTab] = useState('campaign')
-  const { state, setState, exportData, importData, syncing, sharedState } = useCampaign()
+  const { state, setState, exportData, importData, syncing, sharedState, saveActiveBattle, userId: campaignUserId } = useCampaign()
+  const { user: authUser } = useAuth()
   const settings = state?.settings ?? {}
   const fileRef = useRef(null)
   const [showTour, setShowTour] = useState(() => !isTourComplete())
@@ -129,6 +131,9 @@ function AppContent({ campaignId, onLeaveCampaign }) {
     onLeaveCampaign?.()
   }
 
+  const activeBattle = state?.activeBattle
+  const uid = authUser?.id ?? campaignUserId ?? 'solo-local'
+
   return (
     <div className="min-h-screen flex flex-col">
       <AppShell
@@ -157,6 +162,15 @@ function AppContent({ campaignId, onLeaveCampaign }) {
 
       {showTour && state && (
         <OnboardingTour settings={settings} onDone={() => setShowTour(false)} />
+      )}
+
+      {activeBattle?.status === 'active' && (
+        <LiveBattleTracker
+          activeBattle={activeBattle}
+          currentUserId={uid}
+          saveActiveBattle={saveActiveBattle}
+          roster={state?.roster ?? []}
+        />
       )}
     </div>
   )

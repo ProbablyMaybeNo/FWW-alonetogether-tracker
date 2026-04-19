@@ -234,7 +234,18 @@ export function useCampaignSync({ campaignId, userId } = {}) {
         table: 'campaigns',
         filter: `id=eq.${campaignId}`,
       }, (payload) => {
-        setSharedState(campaignDbToState(payload.new))
+        const newRow = payload.new
+        const ab = newRow.active_battle
+        setSharedState(prev => {
+          const merged = campaignDbToState(newRow)
+          if (
+            ab && typeof ab === 'object' && ab.lastUpdatedBy &&
+            userId && ab.lastUpdatedBy === userId && prev?.activeBattle
+          ) {
+            return { ...merged, activeBattle: prev.activeBattle }
+          }
+          return merged
+        })
       })
       // Another player's data updated
       .on('postgres_changes', {
@@ -512,6 +523,7 @@ export function useCampaignSync({ campaignId, userId } = {}) {
     // Solo mode: return usePersistedState directly
     return {
       ...solo,
+      userId: 'solo-local',
       sharedState: null,
       updateShared: () => {},
       saveInhabitantsState,
@@ -529,6 +541,7 @@ export function useCampaignSync({ campaignId, userId } = {}) {
   const mergedState = state ? { ...state, ...(sharedState ?? {}) } : null
 
   return {
+    userId,
     state: mergedState,
     setState,
     updateState: (updater) => setState(prev => {
