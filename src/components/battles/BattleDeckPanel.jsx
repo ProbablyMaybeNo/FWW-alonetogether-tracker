@@ -133,7 +133,7 @@ export default function BattleDeckPanel({ title, deckKey, cards, battlePage, pat
       {/* Header */}
       <div className="flex flex-wrap items-center gap-2 border-b border-pip-dim/30 pb-2">
         <h3 className="text-pip text-xs font-bold tracking-widest flex-1">{title}</h3>
-        <span className="text-muted text-[10px]">
+        <span className="text-muted text-xs">
           {isEmpty ? `${total} cards` : `${remaining}/${remaining + disc} · disc ${disc}`}
         </span>
         {!isEmpty && (
@@ -141,12 +141,12 @@ export default function BattleDeckPanel({ title, deckKey, cards, battlePage, pat
             <button
               type="button"
               onClick={handleReset}
-              className="text-[10px] text-muted border border-muted/30 rounded px-2 py-1 hover:text-danger hover:border-danger/40"
+              className="text-xs text-muted border border-muted/30 rounded px-2 py-1 hover:text-danger hover:border-danger/40"
             >
               RESET
             </button>
             {battlePage.undo?.deckKey === deckKey && (
-              <button type="button" onClick={handleUndo} className="text-[10px] text-amber border border-amber/40 rounded px-2 py-1">
+              <button type="button" onClick={handleUndo} className="text-xs text-amber border border-amber/40 rounded px-2 py-1">
                 UNDO
               </button>
             )}
@@ -155,7 +155,7 @@ export default function BattleDeckPanel({ title, deckKey, cards, battlePage, pat
         <button
           type="button"
           onClick={() => setShowCardList(v => !v)}
-          className="flex items-center gap-1 text-[10px] text-muted border border-muted/30 rounded px-2 py-1 hover:text-pip"
+          className="flex items-center gap-1 text-xs text-muted border border-muted/30 rounded px-2 py-1 hover:text-pip"
         >
           {showCardList ? <ChevronUp size={10} /> : <ChevronDown size={10} />}
           CARDS
@@ -165,7 +165,7 @@ export default function BattleDeckPanel({ title, deckKey, cards, battlePage, pat
       {/* Setup mode: deck empty, prompt to build */}
       {isEmpty && (
         <div className="space-y-2 pt-1">
-          <p className="text-muted text-[10px]">
+          <p className="text-muted text-xs">
             {selectedIndices.size === total
               ? `All ${total} cards selected.`
               : `${selectedIndices.size} of ${total} cards selected.`}
@@ -204,13 +204,13 @@ export default function BattleDeckPanel({ title, deckKey, cards, battlePage, pat
               DRAW
             </button>
             {remaining === 0 && disc > 0 && (
-              <span className="text-muted text-[10px]">Deck empty — next draw reshuffles discard</span>
+              <span className="text-muted text-xs">Deck empty — next draw reshuffles discard</span>
             )}
           </div>
 
           {pendingCard && (
             <div className="border border-amber/40 rounded p-3 space-y-2" style={{ boxShadow: '0 0 8px var(--color-amber-glow)' }}>
-              <p className="text-muted text-[10px] tracking-wider">DRAWN</p>
+              <p className="text-muted text-xs tracking-wider">DRAWN</p>
               <p className="text-pip font-bold text-sm">{pendingCard.name}</p>
               <button
                 type="button"
@@ -229,9 +229,9 @@ export default function BattleDeckPanel({ title, deckKey, cards, battlePage, pat
         <div className="border border-pip-dim/30 rounded bg-panel-dark p-2 space-y-2 mt-1">
           {isEmpty && (
             <div className="flex items-center gap-2">
-              <span className="text-muted text-[10px] flex-1">{selectedIndices.size}/{total} selected</span>
-              <button type="button" onClick={selectAll} className="text-[10px] border border-pip/30 text-pip rounded px-2 py-0.5 hover:bg-pip-dim/20">SELECT ALL</button>
-              <button type="button" onClick={selectNone} className="text-[10px] border border-muted/30 text-muted rounded px-2 py-0.5 hover:text-pip">NONE</button>
+              <span className="text-muted text-xs flex-1">{selectedIndices.size}/{total} selected</span>
+              <button type="button" onClick={selectAll} className="text-xs border border-pip/30 text-pip rounded px-2 py-0.5 hover:bg-pip-dim/20">SELECT ALL</button>
+              <button type="button" onClick={selectNone} className="text-xs border border-muted/30 text-muted rounded px-2 py-0.5 hover:text-pip">NONE</button>
             </div>
           )}
           <div className="max-h-48 overflow-y-auto space-y-0.5">
@@ -242,7 +242,7 @@ export default function BattleDeckPanel({ title, deckKey, cards, battlePage, pat
               return (
                 <div
                   key={card.idx}
-                  className={`flex items-center gap-2 px-2 py-1 rounded text-[10px] ${
+                  className={`flex items-center gap-2 px-2 py-1 rounded text-xs ${
                     isInDiscard ? 'opacity-40' : ''
                   }`}
                 >

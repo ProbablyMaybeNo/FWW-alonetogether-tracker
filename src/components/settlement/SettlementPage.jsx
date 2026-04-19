@@ -79,6 +79,14 @@ function itemMatchesTypeLabel(item, typeLabel) {
 
 const CONDITION_OPTIONS = ['Undamaged', 'Damaged', 'Badly Damaged', 'Wrecked', 'Reinforced']
 
+function structureConditionDotClass(condition) {
+  if (condition === 'Undamaged' || condition === 'Reinforced') return 'bg-pip shadow-[0_0_6px_var(--color-pip-glow)]'
+  if (condition === 'Damaged') return 'bg-amber shadow-[0_0_6px_rgba(251,191,36,0.45)]'
+  if (condition === 'Badly Damaged') return 'bg-orange-500 shadow-[0_0_6px_rgba(249,115,22,0.45)]'
+  if (condition === 'Wrecked') return 'bg-danger shadow-[0_0_6px_var(--color-danger-glow)]'
+  return 'bg-muted'
+}
+
 // Free Phase 3 starting structures: 2x Generator-Small(1), Stores(53), Maintenance Shed(54), Listening Post(50)
 const PHASE3_FREE_IDS = [1, 1, 53, 54, 50]
 
@@ -623,13 +631,14 @@ export default function SettlementPage() {
 
   return (
     <div className="p-4 max-w-5xl mx-auto">
-      {/* Sub-tab switcher */}
-      <div className="flex gap-1 mb-4">
+      {/* Sub-tab switcher — sticky on mobile */}
+      <div className="sticky top-0 z-20 -mx-4 px-4 py-2 mb-4 bg-panel/95 backdrop-blur-sm border-b border-pip-dim/40 md:static md:z-auto md:mx-0 md:px-0 md:py-0 md:mb-4 md:bg-transparent md:backdrop-blur-none md:border-0 flex gap-1">
         {SETTLEMENT_SUB_TABS.map(t => (
           <button
             key={t.id}
+            type="button"
             onClick={() => setSubTab(t.id)}
-            className={`flex-1 py-2 text-xs rounded border transition-colors font-bold tracking-wider ${
+            className={`flex-1 min-h-[44px] py-2 text-xs rounded border transition-colors font-bold tracking-wider ${
               subTab === t.id
                 ? 'border-pip bg-panel-light text-pip'
                 : 'border-muted/30 text-muted hover:text-pip hover:border-pip'
@@ -984,6 +993,7 @@ function StructuresPanel({
                     ? isSpecial ? 'border-amber/40 bg-panel' : 'border-pip-mid/50 bg-panel'
                     : 'border-pip-dim/30 bg-panel-alt'
               }`}>
+                <div className="hidden md:block">
                 {/* Header row */}
                 <div className="flex items-center gap-2 px-3 pt-2 pb-1">
                   <div className="flex-1 min-w-0">
@@ -1093,6 +1103,88 @@ function StructuresPanel({
                   </select>
                   <input type="text" value={s.notes || ''} onChange={(e) => handleUpdateStructure(s.instanceId, 'notes', e.target.value)}
                     placeholder="Notes..." className="flex-1 text-xs py-0.5 px-1 bg-panel-alt" />
+                </div>
+                </div>
+
+                {/* Mobile: structure card */}
+                <div className="md:hidden px-3 py-3 space-y-3">
+                  <div className="flex items-start justify-between gap-2">
+                    <div className="min-w-0">
+                      <div className="text-pip font-bold text-sm">{ref.name}</div>
+                      <div className="flex items-center gap-2 mt-1 text-xs">
+                        <span className="inline-flex items-center gap-1.5 text-muted">
+                          <span className={`w-2.5 h-2.5 rounded-full shrink-0 ${structureConditionDotClass(s.condition)}`} />
+                          Condition: <span className="text-pip font-bold">{s.condition}</span>
+                        </span>
+                      </div>
+                      <p className="text-xs text-pip mt-1">
+                        PWR: {ref.pwrGen > 0 ? `+${ref.pwrGen}` : '0'}
+                        {ref.pwrReq > 0 && <span className="text-muted"> (req {ref.pwrReq})</span>}
+                        {' '}| Water: {ref.waterGen > 0 ? `+${ref.waterGen}` : '0'}
+                        {ref.waterReq > 0 && <span className="text-muted"> (req {ref.waterReq})</span>}
+                      </p>
+                    </div>
+                    {needsPower && !s.usedThisRound && (
+                      <div className="flex gap-1 shrink-0">
+                        <button
+                          type="button"
+                          onClick={() => { if (!s.powered) handleTogglePowered(s.instanceId) }}
+                          className={`min-h-[44px] min-w-[52px] px-2 rounded border text-xs font-bold ${s.powered ? 'border-pip text-pip bg-pip/10' : 'border-pip-dim/40 text-muted'}`}
+                          style={s.powered ? { boxShadow: '0 0 8px var(--color-pip-glow)' } : undefined}
+                        >
+                          ON
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => { if (s.powered) handleTogglePowered(s.instanceId) }}
+                          className={`min-h-[44px] min-w-[52px] px-2 rounded border text-xs font-bold ${!s.powered ? 'border-muted text-muted bg-panel-alt' : 'border-muted/40 text-dim'}`}
+                        >
+                          OFF
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                  <p className="text-muted text-xs leading-relaxed">{ref.effect}</p>
+                  <div className="flex flex-wrap gap-2">
+                    {s.usedThisRound ? (
+                      <span className="min-h-[44px] px-3 flex items-center rounded border border-pip-dim/20 text-dim text-xs font-bold">USED ✓</span>
+                    ) : (
+                      <button
+                        type="button"
+                        onClick={() => canUse && handleToggleUsed(s.instanceId)}
+                        disabled={!canUse}
+                        className={`min-h-[44px] flex-1 min-w-[5rem] px-2 rounded border text-xs font-bold ${canUse ? (isSpecial ? 'border-amber text-amber' : 'border-pip text-pip') : 'border-pip-dim/20 text-dim opacity-40'}`}
+                      >
+                        USE
+                      </button>
+                    )}
+                    {settings.settlementMode === 'homestead' && (s.condition === 'Damaged' || s.condition === 'Badly Damaged') && (
+                      <button type="button" onClick={() => handleRepairStructure(s.instanceId)} className="min-h-[44px] px-3 border border-amber text-amber rounded text-xs font-bold">
+                        REPAIR
+                      </button>
+                    )}
+                    {settings.settlementMode === 'homestead' && s.condition === 'Undamaged' && !s.usedThisRound && (
+                      <button type="button" onClick={() => handleReinforceStructure(s.instanceId)} className="min-h-[44px] px-3 border border-info text-info rounded text-xs font-bold">
+                        REINFORCE
+                      </button>
+                    )}
+                    {!s.usedThisRound && s.condition === 'Undamaged' && (
+                      <button type="button" onClick={() => handleScrapStructure(s.instanceId)} className="min-h-[44px] px-3 border border-muted text-muted rounded text-xs font-bold">
+                        SCRAP
+                      </button>
+                    )}
+                    <button type="button" onClick={() => handleRemoveStructure(s.instanceId)} className="min-h-[44px] px-3 border border-danger/40 text-danger rounded text-xs font-bold">
+                      REMOVE
+                    </button>
+                  </div>
+                  <div className="flex items-center gap-2 pt-1 border-t border-pip-dim/20">
+                    <select value={s.condition} onChange={(e) => handleUpdateStructure(s.instanceId, 'condition', e.target.value)}
+                      className="text-xs py-2 px-1 bg-panel-alt rounded border border-pip-dim/30 min-h-[44px]">
+                      {CONDITION_OPTIONS.map(c => <option key={c} value={c}>{c}</option>)}
+                    </select>
+                    <input type="text" value={s.notes || ''} onChange={(e) => handleUpdateStructure(s.instanceId, 'notes', e.target.value)}
+                      placeholder="Notes..." className="flex-1 text-xs py-2 px-2 bg-panel-alt rounded border border-pip-dim/30 min-h-[44px]" />
+                  </div>
                 </div>
               </div>
             )

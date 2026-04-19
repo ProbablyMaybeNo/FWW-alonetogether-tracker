@@ -15,6 +15,7 @@ import battleEvents from '../../data/battle/battleEvents.json'
 import battleEnvironments from '../../data/battle/battleEnvironments.json'
 import battleScenarios from '../../data/battle/battleScenarios.json'
 import unitsData from '../../data/units.json'
+import { QUESTS_LAST_PANEL_KEY, QUESTS_OPEN_OBJECTIVES_KEY } from '../layout/TabShell'
 
 const GAME_MODES = [
   { id: 'skirmish', label: 'SKIRMISH', desc: 'Standard multiplayer skirmish battle' },
@@ -52,6 +53,21 @@ export default function BattlesPage({ campaignId, onTabChange }) {
     const next = typeof updater === 'function' ? updater(structuredClone(base)) : { ...base, ...updater }
     await saveBattlePageState(next)
   }, [state?.battlePageState, saveBattlePageState])
+
+  useEffect(() => {
+    try {
+      if (sessionStorage.getItem(QUESTS_OPEN_OBJECTIVES_KEY) === '1') {
+        setSubTab('objectives')
+        sessionStorage.removeItem(QUESTS_OPEN_OBJECTIVES_KEY)
+      }
+    } catch { /* ignore */ }
+  }, [])
+
+  useEffect(() => {
+    if (subTab === 'objectives') {
+      try { localStorage.setItem(QUESTS_LAST_PANEL_KEY, 'objectives') } catch { /* ignore */ }
+    }
+  }, [subTab])
 
   useEffect(() => {
     if (!isOnline || !campaignId || !supabase) {
@@ -215,7 +231,7 @@ export default function BattlesPage({ campaignId, onTabChange }) {
         <Swords size={18} className="text-amber shrink-0" />
         <div className="flex-1 min-w-0">
           <h1 className="text-pip text-sm font-bold tracking-widest">BATTLES</h1>
-          <p className="text-muted text-[10px] mt-0.5">
+          <p className="text-muted text-xs mt-0.5">
             Set up and run your battle. Round <span className="text-pip font-bold">{round}</span>
             {battlePage.sessionActive && <span className="text-amber ml-2 font-bold">● BATTLE ACTIVE</span>}
           </p>
@@ -238,7 +254,7 @@ export default function BattlesPage({ campaignId, onTabChange }) {
               key={t.id}
               type="button"
               onClick={() => setSubTab(t.id)}
-              className={`flex items-center gap-1.5 px-3 py-2 text-[10px] sm:text-xs tracking-wider rounded-t border border-b-0 transition-colors ${
+              className={`flex items-center gap-1.5 px-3 py-2 text-xs tracking-wider rounded-t border border-b-0 transition-colors ${
                 on ? 'border-pip-mid/60 bg-panel-light text-pip font-bold' : 'border-transparent text-muted hover:text-pip'
               }`}
             >
@@ -254,7 +270,7 @@ export default function BattlesPage({ campaignId, onTabChange }) {
           {/* Setup checklist header */}
           <div className="flex flex-wrap items-center gap-2 px-1">
             {setupItems.map(item => (
-              <div key={item.key} className={`flex items-center gap-1 text-[10px] px-2 py-1 rounded border ${
+              <div key={item.key} className={`flex items-center gap-1 text-xs px-2 py-1 rounded border ${
                 item.done ? 'border-amber/40 text-amber' : 'border-muted/20 text-muted'
               }`}>
                 {item.done ? <Check size={10} className="text-amber" /> : <span className="w-2.5 h-2.5 rounded-full border border-muted/40 inline-block" />}
@@ -279,7 +295,7 @@ export default function BattlesPage({ campaignId, onTabChange }) {
                   }`}
                 >
                   <span className="text-xs font-bold">{m.label}</span>
-                  <span className="text-[10px] opacity-70 mt-0.5">{m.desc}</span>
+                  <span className="text-xs opacity-70 mt-0.5">{m.desc}</span>
                 </button>
               ))}
             </div>
@@ -351,14 +367,14 @@ export default function BattlesPage({ campaignId, onTabChange }) {
             {battleRecorded && (
               <div className="flex items-center gap-2 text-xs text-pip border border-pip/40 rounded px-3 py-2 bg-pip-dim/10">
                 <Check size={12} /> Battle recorded for Round {round}
-                <button onClick={() => setBattleRecorded(false)} className="ml-auto text-muted hover:text-pip text-[10px]">record another</button>
+                <button onClick={() => setBattleRecorded(false)} className="ml-auto text-muted hover:text-pip text-xs">record another</button>
               </div>
             )}
 
             {!battleRecorded && (
               <form onSubmit={handleRecordBattle} className="flex gap-2 flex-wrap items-end">
                 <div className="flex-1 min-w-32">
-                  <label className="text-muted text-[10px] block mb-1">OPPONENT</label>
+                  <label className="text-muted text-xs block mb-1">OPPONENT</label>
                   <select
                     value={battleOpponent}
                     onChange={e => setBattleOpponent(e.target.value)}
@@ -376,7 +392,7 @@ export default function BattlesPage({ campaignId, onTabChange }) {
                   </select>
                 </div>
                 <div>
-                  <label className="text-muted text-[10px] block mb-1">RESULT</label>
+                  <label className="text-muted text-xs block mb-1">RESULT</label>
                   <div className="flex gap-1">
                     {['win', 'loss', 'draw'].map(r => (
                       <button
@@ -411,7 +427,7 @@ export default function BattlesPage({ campaignId, onTabChange }) {
 
             {myRecordedBattles.length > 0 && (
               <div className="space-y-1 pt-1 border-t border-pip-dim/20">
-                <span className="text-muted text-[10px] tracking-wider">RECORDED THIS ROUND:</span>
+                <span className="text-muted text-xs tracking-wider">RECORDED THIS ROUND:</span>
                 {myRecordedBattles.map((m, i) => {
                   const opp = displayPlayers.find(p => p.userId === m.opponentId)
                   return (
@@ -447,7 +463,7 @@ export default function BattlesPage({ campaignId, onTabChange }) {
           <div className="px-4 py-2 bg-panel-light border-b border-pip-dim/30 flex items-center gap-3">
             <h2 className="text-amber text-xs font-bold tracking-widest flex-1">ALL SCENARIOS ({battleScenarios.length})</h2>
             {selectedScenario && (
-              <span className="text-amber text-[10px] font-bold">Selected: {selectedScenario.name}</span>
+              <span className="text-amber text-xs font-bold">Selected: {selectedScenario.name}</span>
             )}
           </div>
           <div className="p-3 space-y-2">
@@ -476,7 +492,7 @@ export default function BattlesPage({ campaignId, onTabChange }) {
                     }`}
                   >
                     <span className="font-bold">{scenario.name}</span>
-                    <span className="text-muted text-[10px] shrink-0">{scenario.source}</span>
+                    <span className="text-muted text-xs shrink-0">{scenario.source}</span>
                   </button>
                 )
               })}

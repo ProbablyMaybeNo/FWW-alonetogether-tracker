@@ -242,7 +242,7 @@ export default function InhabitantsDeckSection({ round }) {
       {/* Inhabitants this round */}
       <div className="border-t border-pip-dim/40 pt-4 space-y-2">
         <h3 className="text-pip text-xs tracking-widest font-bold">INHABITANTS THIS ROUND</h3>
-        <p className="text-muted text-[10px] uppercase tracking-wider">Round {round}</p>
+        <p className="text-muted text-xs uppercase tracking-wider">Round {round}</p>
         {(inn.session.items ?? []).length === 0 ? (
           <p className="text-muted text-xs">No inhabitants added yet.</p>
         ) : (
@@ -266,7 +266,7 @@ export default function InhabitantsDeckSection({ round }) {
       </div>
 
       {!isOnline && (
-        <p className="text-muted text-[10px]">Solo mode: inhabitant data is stored in your local save.</p>
+        <p className="text-muted text-xs">Solo mode: inhabitant data is stored in your local save.</p>
       )}
     </div>
   )
@@ -543,7 +543,7 @@ function DeckBuilderModal({ isOpen, onClose, inn, factions, patchInn, existingDe
             ))}
           </div>
         )}
-        <p className="text-muted text-[10px]">Pool size: {pool.length} units</p>
+        <p className="text-muted text-xs">Pool size: {pool.length} units</p>
         <button
           type="button"
           onClick={buildDeck}

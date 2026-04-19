@@ -435,8 +435,8 @@ export default function CampaignPage({ campaignId, onTabChange }) {
               <span className="text-amber/80 text-base font-bold tracking-wider">— {phaseInfo.name}</span>
             </div>
             <div className="flex flex-wrap gap-x-4 gap-y-0.5 mb-1">
-              <span className="text-muted text-xs"><span className="text-pip/70 uppercase tracking-wider text-[10px]">Objective:</span> {phaseInfo.subtitle}</span>
-              <span className="text-muted text-xs"><span className="text-pip/70 uppercase tracking-wider text-[10px]">Battles:</span> {phaseInfo.battles}</span>
+              <span className="text-muted text-xs"><span className="text-pip/70 uppercase tracking-wider text-xs">Objective:</span> {phaseInfo.subtitle}</span>
+              <span className="text-muted text-xs"><span className="text-pip/70 uppercase tracking-wider text-xs">Battles:</span> {phaseInfo.battles}</span>
             </div>
             <div className="flex flex-wrap gap-x-3 gap-y-0.5 mt-1">
               {phaseInfo.rules.map((r, i) => (

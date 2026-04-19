@@ -1,5 +1,6 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useCampaign } from '../../context/CampaignContext'
+import { QUESTS_LAST_PANEL_KEY } from '../layout/TabShell'
 import { getDeckStats } from '../../utils/cardDraw'
 import eventCardsData from '../../data/eventCards.json'
 
@@ -14,6 +15,10 @@ const EVENT_FILTERS = [
 export default function EventsPage() {
   const { state, setState } = useCampaign()
   const [filter, setFilter] = useState('all')
+
+  useEffect(() => {
+    try { localStorage.setItem(QUESTS_LAST_PANEL_KEY, 'events') } catch { /* ignore */ }
+  }, [])
 
   const stats = getDeckStats('settlement', state.eventCards, eventCardsData)
 
