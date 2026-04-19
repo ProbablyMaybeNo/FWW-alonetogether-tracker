@@ -143,23 +143,23 @@ export default function LocalPopulationDeckPanel({ battlePage, patchBattle, unit
       {/* Header */}
       <div className="flex flex-wrap items-center gap-2 border-b border-pip-dim/30 pb-2">
         <h3 className="text-info text-xs font-bold tracking-widest flex-1">LOCAL POPULATION</h3>
-        <span className="text-muted text-[10px]">
+        <span className="text-muted text-xs">
           Pool: {pool.length} · Draw: {drawPile.length} · Disc: {discardPile.length}
         </span>
         {battlePage.undo?.deckKey === 'localPopulation' && (
-          <button type="button" onClick={handleUndo} className="text-[10px] text-amber border border-amber/40 rounded px-2 py-1">UNDO</button>
+          <button type="button" onClick={handleUndo} className="text-xs text-amber border border-amber/40 rounded px-2 py-1">UNDO</button>
         )}
         <button
           type="button"
           onClick={() => setShowPicker(v => !v)}
-          className="flex items-center gap-1 text-[10px] text-muted border border-muted/30 rounded px-2 py-1 hover:text-pip"
+          className="flex items-center gap-1 text-xs text-muted border border-muted/30 rounded px-2 py-1 hover:text-pip"
         >
           <Users size={10} /> {showPicker ? 'HIDE UNITS' : 'ADD UNITS'}
           {showPicker ? <ChevronUp size={10} /> : <ChevronDown size={10} />}
         </button>
       </div>
 
-      <p className="text-muted text-[10px]">
+      <p className="text-muted text-xs">
         Add units manually or randomly to your local population unit pool, then draw randomly from the pool during your games.
       </p>
 
@@ -170,7 +170,7 @@ export default function LocalPopulationDeckPanel({ battlePage, patchBattle, unit
             <select
               value={factionFilter}
               onChange={e => setFactionFilter(e.target.value)}
-              className="text-[10px] py-1 px-2 flex-1 min-w-28"
+              className="text-xs py-1 px-2 flex-1 min-w-28"
             >
               <option value="">All factions</option>
               {factions.map(f => <option key={f} value={f}>{f}</option>)}
@@ -180,12 +180,12 @@ export default function LocalPopulationDeckPanel({ battlePage, patchBattle, unit
               value={search}
               onChange={e => setSearch(e.target.value)}
               placeholder="Search units..."
-              className="text-[10px] py-1 px-2 flex-1 min-w-28"
+              className="text-xs py-1 px-2 flex-1 min-w-28"
             />
             <button
               type="button"
               onClick={() => addRandom(3)}
-              className="text-[10px] border border-amber/50 text-amber rounded px-2 py-1 hover:bg-amber/10 shrink-0"
+              className="text-xs border border-amber/50 text-amber rounded px-2 py-1 hover:bg-amber/10 shrink-0"
             >
               + 3 RANDOM
             </button>
@@ -193,19 +193,19 @@ export default function LocalPopulationDeckPanel({ battlePage, patchBattle, unit
           <div className="max-h-52 overflow-y-auto space-y-0.5">
             {filteredUnits.map(unit => (
               <div key={unit.id} className="flex items-center gap-2 px-2 py-1 rounded hover:bg-panel-light">
-                <span className="text-pip text-[10px] flex-1 font-bold">{unit.name}</span>
-                <span className="text-muted text-[10px] shrink-0">{unit.faction}</span>
+                <span className="text-pip text-xs flex-1 font-bold">{unit.name}</span>
+                <span className="text-muted text-xs shrink-0">{unit.faction}</span>
                 <button
                   type="button"
                   onClick={() => addUnit(unit.id)}
-                  className="shrink-0 text-[10px] border border-pip/30 text-pip rounded px-1.5 py-0.5 hover:bg-pip-dim/20"
+                  className="shrink-0 text-xs border border-pip/30 text-pip rounded px-1.5 py-0.5 hover:bg-pip-dim/20"
                 >
                   <Plus size={10} />
                 </button>
               </div>
             ))}
             {filteredUnits.length === 0 && (
-              <p className="text-muted text-[10px] text-center py-3">No units match filter</p>
+              <p className="text-muted text-xs text-center py-3">No units match filter</p>
             )}
           </div>
         </div>
@@ -215,18 +215,18 @@ export default function LocalPopulationDeckPanel({ battlePage, patchBattle, unit
       {pool.length > 0 && (
         <div className="space-y-1">
           <div className="flex items-center gap-2">
-            <span className="text-muted text-[10px] flex-1 tracking-wider">UNIT POOL ({pool.length})</span>
+            <span className="text-muted text-xs flex-1 tracking-wider">UNIT POOL ({pool.length})</span>
             <button
               type="button"
               onClick={handleShufflePool}
-              className="flex items-center gap-1 text-[10px] border border-amber text-amber rounded px-2 py-1 hover:bg-amber/10"
+              className="flex items-center gap-1 text-xs border border-amber text-amber rounded px-2 py-1 hover:bg-amber/10"
             >
               <Shuffle size={10} /> SHUFFLE INTO DECK
             </button>
             <button
               type="button"
               onClick={handleClearPool}
-              className="text-[10px] border border-muted/30 text-muted rounded px-2 py-1 hover:text-danger hover:border-danger/40"
+              className="text-xs border border-muted/30 text-muted rounded px-2 py-1 hover:text-danger hover:border-danger/40"
             >
               CLEAR
             </button>
@@ -236,7 +236,7 @@ export default function LocalPopulationDeckPanel({ battlePage, patchBattle, unit
               const u = unitById(uid)
               const inDiscard = discardPile.includes(uid)
               return (
-                <div key={i} className={`flex items-center gap-2 px-2 py-1 rounded text-[10px] ${inDiscard ? 'opacity-40' : ''}`}>
+                <div key={i} className={`flex items-center gap-2 px-2 py-1 rounded text-xs ${inDiscard ? 'opacity-40' : ''}`}>
                   <span className={`text-pip font-bold flex-1 ${inDiscard ? 'line-through' : ''}`}>{u?.name ?? uid}</span>
                   <span className="text-muted shrink-0">{u?.faction}</span>
                   {deckIsEmpty && (
@@ -267,11 +267,11 @@ export default function LocalPopulationDeckPanel({ battlePage, patchBattle, unit
             DRAW
           </button>
           {drawPile.length === 0 && discardPile.length > 0 && (
-            <span className="text-muted text-[10px] ml-2">Pool exhausted — next draw reshuffles</span>
+            <span className="text-muted text-xs ml-2">Pool exhausted — next draw reshuffles</span>
           )}
           {pendingUnit && (
             <div className="border border-amber/40 rounded p-3 space-y-2" style={{ boxShadow: '0 0 8px var(--color-amber-glow)' }}>
-              <p className="text-muted text-[10px] tracking-wider">DRAWN</p>
+              <p className="text-muted text-xs tracking-wider">DRAWN</p>
               <p className="text-pip font-bold text-sm">{pendingUnit.name}</p>
               <p className="text-muted text-xs">{pendingUnit.faction}</p>
               <button type="button" onClick={confirmDraw} className="w-full text-xs py-2 border border-pip text-pip rounded font-bold">
@@ -283,7 +283,7 @@ export default function LocalPopulationDeckPanel({ battlePage, patchBattle, unit
       )}
 
       {pool.length === 0 && (
-        <p className="text-muted text-[10px] italic">No units in pool. Use ADD UNITS to build your local population.</p>
+        <p className="text-muted text-xs italic">No units in pool. Use ADD UNITS to build your local population.</p>
       )}
     </div>
   )

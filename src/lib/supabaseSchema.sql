@@ -24,6 +24,7 @@ create table if not exists campaigns (
   battles jsonb default '{}'::jsonb,
   inhabitants_state jsonb default '{"decks":[],"session":{"round":0,"items":[]},"pendingDraw":null}'::jsonb,
   battle_page_state jsonb default '{}'::jsonb,
+  active_battle jsonb default null,
   campaign_narratives jsonb default '[]'::jsonb,
   created_at timestamptz default now(),
   updated_at timestamptz default now()
@@ -65,6 +66,8 @@ create table if not exists player_data (
   boost_discard jsonb default '[]'::jsonb,
   settings jsonb,
   narrative_log jsonb default '[]'::jsonb,
+  settlement_item_deck jsonb default null,
+  battle_roster_presets jsonb default '[]'::jsonb,
   updated_at timestamptz default now(),
   unique(campaign_id, user_id)
 );
@@ -198,3 +201,70 @@ begin
     );
 end;
 $$;
+
+-- Live battle: any campaign member can replace active_battle (app uses RPC; direct UPDATE is creator-only)
+create or replace function public.patch_active_battle(
+  p_campaign_id uuid,
+  p_active_battle jsonb
+)
+returns void
+language plpgsql
+security definer
+set search_path = public
+as $$
+begin
+  if auth.uid() is null then
+    raise exception 'not authenticated';
+  end if;
+
+  if not exists (
+    select 1 from campaign_players
+    where campaign_id = p_campaign_id and user_id = auth.uid()
+  ) then
+    raise exception 'Not a campaign member';
+  end if;
+
+  update campaigns
+  set active_battle = p_active_battle,
+      updated_at = now()
+  where id = p_campaign_id;
+
+  if not found then
+    raise exception 'campaign not found';
+  end if;
+end;
+$$;
+
+grant execute on function public.patch_active_battle(uuid, jsonb) to authenticated;
+
+create or replace function public.patch_settlement_item_deck(
+  p_campaign_id uuid,
+  p_user_id uuid,
+  p_settlement_item_deck jsonb
+)
+returns void
+language plpgsql
+security definer
+set search_path = public
+as $$
+begin
+  if auth.uid() is null then
+    raise exception 'not authenticated';
+  end if;
+
+  if auth.uid() != p_user_id then
+    raise exception 'Can only update own data';
+  end if;
+
+  update player_data
+  set settlement_item_deck = p_settlement_item_deck,
+      updated_at = now()
+  where campaign_id = p_campaign_id and user_id = p_user_id;
+
+  if not found then
+    raise exception 'player_data row not found';
+  end if;
+end;
+$$;
+
+grant execute on function public.patch_settlement_item_deck(uuid, uuid, jsonb) to authenticated;

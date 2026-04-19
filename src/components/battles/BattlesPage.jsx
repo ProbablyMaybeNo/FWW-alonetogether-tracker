@@ -3,36 +3,41 @@ import { Swords, ClipboardList, MapPin, Layers, Globe, Check, X } from 'lucide-r
 import { useCampaign } from '../../context/CampaignContext'
 import { useAuth } from '../../context/AuthContext'
 import { supabase } from '../../lib/supabase'
-import { normalizeBattlePageState, defaultBattlePageState } from '../../utils/battlePageState'
+import { normalizeBattlePageState } from '../../utils/battlePageState'
 import ObjectivesPage from '../objectives/ObjectivesPage'
 import BattleDeckPanel from './BattleDeckPanel'
 import LocalPopulationDeckPanel from './LocalPopulationDeckPanel'
-import WastelandItemBattleDeck from './WastelandItemBattleDeck'
+import ItemsDeckPanel from './ItemsDeckPanel'
+import MatchTabWizard from './MatchTabWizard'
 import battleCreatures from '../../data/battle/battleCreatures.json'
 import battleStrangers from '../../data/battle/battleStrangers.json'
 import battleDangers from '../../data/battle/battleDangers.json'
+import battleExplores from '../../data/battle/battleExplores.json'
 import battleEvents from '../../data/battle/battleEvents.json'
-import battleEnvironments from '../../data/battle/battleEnvironments.json'
 import battleScenarios from '../../data/battle/battleScenarios.json'
 import unitsData from '../../data/units.json'
-
-const GAME_MODES = [
-  { id: 'skirmish', label: 'SKIRMISH', desc: 'Standard multiplayer skirmish battle' },
-  { id: 'wasteland', label: 'INTO THE WASTELAND', desc: 'Explore the open wasteland' },
-  { id: 'vault', label: 'INTO THE VAULT', desc: 'Delve into a vault scenario' },
-]
+import { QUESTS_LAST_PANEL_KEY, QUESTS_OPEN_OBJECTIVES_KEY } from '../layout/TabShell'
 
 const SUBTABS = [
-  { id: 'setup', label: 'SETUP', icon: Swords },
-  { id: 'objectives', label: 'OBJECTIVES', icon: ClipboardList },
-  { id: 'scenario', label: 'SCENARIOS', icon: MapPin },
+  { id: 'match', label: 'MATCH', icon: Swords },
   { id: 'decks', label: 'DECKS', icon: Layers },
+  { id: 'scenario', label: 'SCENARIOS', icon: MapPin },
+  { id: 'objectives', label: 'OBJECTIVES', icon: ClipboardList },
+]
+
+const DECK_CHIPS = [
+  { id: 'creature', label: 'Creature' },
+  { id: 'stranger', label: 'Stranger' },
+  { id: 'danger', label: 'Danger' },
+  { id: 'explore', label: 'Explore' },
+  { id: 'event', label: 'Event' },
+  { id: 'items', label: 'Items' },
 ]
 
 export default function BattlesPage({ campaignId, onTabChange }) {
   const { state, saveBattlePageState, isOnline, sharedState, saveCampaignBattles } = useCampaign()
   const { user } = useAuth()
-  const [subTab, setSubTab] = useState('setup')
+  const [subTab, setSubTab] = useState('match')
   const [displayPlayers, setDisplayPlayers] = useState([])
   // Battle recording state
   const [battleOpponent, setBattleOpponent] = useState('')
@@ -42,9 +47,9 @@ export default function BattlesPage({ campaignId, onTabChange }) {
   // Scenario browser state
   const [scenarioSearch, setScenarioSearch] = useState('')
   const [selectedScenario, setSelectedScenario] = useState(null)
+  const [deckChip, setDeckChip] = useState('creature')
 
   const round = state?.round ?? 0
-  const isAT = !state?.settings?.settlementMode || state?.settings?.settlementMode === 'alone-together'
   const battlePage = useMemo(() => normalizeBattlePageState(state?.battlePageState), [state?.battlePageState])
 
   const patchBattle = useCallback(async (updater) => {
@@ -52,6 +57,21 @@ export default function BattlesPage({ campaignId, onTabChange }) {
     const next = typeof updater === 'function' ? updater(structuredClone(base)) : { ...base, ...updater }
     await saveBattlePageState(next)
   }, [state?.battlePageState, saveBattlePageState])
+
+  useEffect(() => {
+    try {
+      if (sessionStorage.getItem(QUESTS_OPEN_OBJECTIVES_KEY) === '1') {
+        setSubTab('objectives')
+        sessionStorage.removeItem(QUESTS_OPEN_OBJECTIVES_KEY)
+      }
+    } catch { /* ignore */ }
+  }, [])
+
+  useEffect(() => {
+    if (subTab === 'objectives') {
+      try { localStorage.setItem(QUESTS_LAST_PANEL_KEY, 'objectives') } catch { /* ignore */ }
+    }
+  }, [subTab])
 
   useEffect(() => {
     if (!isOnline || !campaignId || !supabase) {
@@ -71,6 +91,8 @@ export default function BattlesPage({ campaignId, onTabChange }) {
       setDisplayPlayers((players || []).map(p => ({
         userId: p.user_id,
         username: map[p.user_id]?.player_info?.name || 'Player',
+        faction: map[p.user_id]?.player_info?.faction || '—',
+        settlement: map[p.user_id]?.player_info?.settlement || '—',
         isMe: p.user_id === user?.id,
       })))
     }
@@ -81,33 +103,22 @@ export default function BattlesPage({ campaignId, onTabChange }) {
   const myRow = useMemo(() => ({
     userId: user?.id ?? 'solo-local',
     username: state?.player?.name || 'You',
+    faction: state?.player?.faction || '—',
+    settlement: state?.player?.settlement || '—',
     isMe: true,
-  }), [user?.id, state?.player?.name])
+  }), [user?.id, state?.player?.name, state?.player?.faction, state?.player?.settlement])
 
-  const opponentChoices = displayPlayers.length > 0 ? displayPlayers : [myRow]
+  const offlineOppRow = useMemo(() => ({
+    userId: 'offline-opp',
+    username: 'Local opponent',
+    faction: '—',
+    settlement: '—',
+    isMe: false,
+  }), [])
 
-  function toggleOpponent(id) {
-    patchBattle(b => {
-      const cur = new Set(b.setup.opponentUserIds || [])
-      if (cur.has(id)) cur.delete(id)
-      else cur.add(id)
-      return { ...b, setup: { ...b.setup, opponentUserIds: [...cur] } }
-    })
-  }
-
-  function setGameMode(mode) {
-    patchBattle(b => ({ ...b, setup: { ...b.setup, gameMode: mode } }))
-  }
-
-  async function handleStartBattle() {
-    await patchBattle(b => ({ ...b, sessionActive: true, sessionStartedAt: Date.now() }))
-  }
-
-  async function handleEndBattle() {
-    const d = defaultBattlePageState()
-    await patchBattle(b => ({ ...d, setup: b.setup, scenario: b.scenario, sessionActive: false, sessionStartedAt: null }))
-    setBattleRecorded(false)
-  }
+  const opponentChoices = !isOnline
+    ? [myRow, offlineOppRow]
+    : (displayPlayers.length > 0 ? displayPlayers : [myRow])
 
   function setScenarioField(field, value) {
     patchBattle(b => ({ ...b, scenario: { ...b.scenario, [field]: value } }))
@@ -194,17 +205,6 @@ export default function BattlesPage({ campaignId, onTabChange }) {
     ? (roundBattles[user?.id]?.matches ?? [])
     : (soloRecord?.matches ?? [])
 
-  const envVal = battlePage.scenario?.environmentId
-  const currentMode = battlePage.setup?.gameMode ?? 'skirmish'
-
-  // Setup checklist items
-  const setupItems = [
-    { key: 'mode', label: 'Game Mode', done: !!currentMode },
-    { key: 'opponent', label: 'Opponent', done: (battlePage.setup?.opponentUserIds?.length ?? 0) > 0 },
-    { key: 'env', label: 'Environment', done: !!envVal },
-    { key: 'scenario', label: 'Scenario', done: !!battlePage.scenario?.scenarioId },
-  ]
-
   const filteredScenarios = battleScenarios.filter(s =>
     !scenarioSearch || s.name.toLowerCase().includes(scenarioSearch.toLowerCase()) || s.source.toLowerCase().includes(scenarioSearch.toLowerCase())
   )
@@ -215,7 +215,7 @@ export default function BattlesPage({ campaignId, onTabChange }) {
         <Swords size={18} className="text-amber shrink-0" />
         <div className="flex-1 min-w-0">
           <h1 className="text-pip text-sm font-bold tracking-widest">BATTLES</h1>
-          <p className="text-muted text-[10px] mt-0.5">
+          <p className="text-muted text-xs mt-0.5">
             Set up and run your battle. Round <span className="text-pip font-bold">{round}</span>
             {battlePage.sessionActive && <span className="text-amber ml-2 font-bold">● BATTLE ACTIVE</span>}
           </p>
@@ -238,7 +238,7 @@ export default function BattlesPage({ campaignId, onTabChange }) {
               key={t.id}
               type="button"
               onClick={() => setSubTab(t.id)}
-              className={`flex items-center gap-1.5 px-3 py-2 text-[10px] sm:text-xs tracking-wider rounded-t border border-b-0 transition-colors ${
+              className={`flex items-center gap-1.5 px-3 py-2 text-xs tracking-wider rounded-t border border-b-0 transition-colors ${
                 on ? 'border-pip-mid/60 bg-panel-light text-pip font-bold' : 'border-transparent text-muted hover:text-pip'
               }`}
             >
@@ -248,101 +248,14 @@ export default function BattlesPage({ campaignId, onTabChange }) {
         })}
       </div>
 
-      {/* ── SETUP TAB ── */}
-      {subTab === 'setup' && (
+      {/* ── MATCH TAB ── */}
+      {subTab === 'match' && (
         <div className="space-y-4">
-          {/* Setup checklist header */}
-          <div className="flex flex-wrap items-center gap-2 px-1">
-            {setupItems.map(item => (
-              <div key={item.key} className={`flex items-center gap-1 text-[10px] px-2 py-1 rounded border ${
-                item.done ? 'border-amber/40 text-amber' : 'border-muted/20 text-muted'
-              }`}>
-                {item.done ? <Check size={10} className="text-amber" /> : <span className="w-2.5 h-2.5 rounded-full border border-muted/40 inline-block" />}
-                {item.label}
-              </div>
-            ))}
-          </div>
-
-          {/* Game Mode */}
-          <div className="border border-pip-dim/40 rounded-lg bg-panel p-4 space-y-3">
-            <h2 className="text-amber text-xs font-bold tracking-widest border-b border-pip-dim/30 pb-2">GAME MODE</h2>
-            <div className="flex flex-wrap gap-2">
-              {GAME_MODES.map(m => (
-                <button
-                  key={m.id}
-                  type="button"
-                  onClick={() => setGameMode(m.id)}
-                  className={`flex flex-col items-start px-3 py-2 rounded border transition-colors text-left ${
-                    currentMode === m.id
-                      ? 'border-amber text-amber bg-amber/10 font-bold'
-                      : 'border-pip-dim/40 text-muted hover:border-pip hover:text-pip'
-                  }`}
-                >
-                  <span className="text-xs font-bold">{m.label}</span>
-                  <span className="text-[10px] opacity-70 mt-0.5">{m.desc}</span>
-                </button>
-              ))}
-            </div>
-          </div>
-
-          {/* Opponents */}
-          <div className="border border-pip-dim/40 rounded-lg bg-panel p-4 space-y-3">
-            <h2 className="text-amber text-xs font-bold tracking-widest border-b border-pip-dim/30 pb-2">OPPONENTS THIS GAME</h2>
-            <div className="flex flex-wrap gap-2">
-              {opponentChoices.map(p => (
-                <label key={p.userId || p.username} className="flex items-center gap-2 text-xs cursor-pointer border border-pip-dim/40 rounded px-2 py-1">
-                  <input
-                    type="checkbox"
-                    checked={(battlePage.setup?.opponentUserIds || []).includes(p.userId)}
-                    onChange={() => toggleOpponent(p.userId)}
-                    disabled={p.isMe}
-                  />
-                  <span className={p.isMe ? 'text-muted' : 'text-pip'}>{p.username}{p.isMe ? ' (you)' : ''}</span>
-                </label>
-              ))}
-            </div>
-          </div>
-
-          {/* Environment (moved from Scenario tab) */}
-          <div className="border border-pip-dim/40 rounded-lg bg-panel p-4 space-y-3">
-            <h2 className="text-amber text-xs font-bold tracking-widest border-b border-pip-dim/30 pb-2">ENVIRONMENT</h2>
-            <select
-              value={envVal ?? ''}
-              onChange={e => setScenarioField('environmentId', e.target.value ? Number(e.target.value) : null)}
-              className="w-full text-xs"
-            >
-              <option value="">— Select environment —</option>
-              {battleEnvironments.map(c => (
-                <option key={c.id} value={c.id}>{c.name}</option>
-              ))}
-            </select>
-          </div>
-
-          {/* Battle Session Toggle */}
-          <div className="border border-pip-dim/40 rounded-lg bg-panel p-4 flex flex-wrap gap-3 items-center">
-            <span className="text-xs text-muted">
-              Session:{' '}
-              <strong className={battlePage.sessionActive ? 'text-amber' : 'text-muted'}>
-                {battlePage.sessionActive ? 'ACTIVE' : 'IDLE'}
-              </strong>
-            </span>
-            <button
-              type="button"
-              onClick={handleStartBattle}
-              disabled={battlePage.sessionActive}
-              className="text-xs border border-pip text-pip font-bold px-4 py-2 rounded hover:bg-pip-dim/20 disabled:opacity-40"
-            >
-              BEGIN BATTLE
-            </button>
-            <button
-              type="button"
-              onClick={handleEndBattle}
-              disabled={!battlePage.sessionActive}
-              className="text-xs border border-danger/50 text-danger font-bold px-4 py-2 rounded hover:bg-danger/10 disabled:opacity-40"
-            >
-              END BATTLE
-            </button>
-          </div>
+          <MatchTabWizard
+            campaignId={campaignId}
+            opponentRows={opponentChoices}
+            battlePage={battlePage}
+          />
 
           {/* Record Battle Outcome */}
           <div className="border border-pip-mid/30 rounded-lg bg-panel p-4 space-y-3">
@@ -351,14 +264,14 @@ export default function BattlesPage({ campaignId, onTabChange }) {
             {battleRecorded && (
               <div className="flex items-center gap-2 text-xs text-pip border border-pip/40 rounded px-3 py-2 bg-pip-dim/10">
                 <Check size={12} /> Battle recorded for Round {round}
-                <button onClick={() => setBattleRecorded(false)} className="ml-auto text-muted hover:text-pip text-[10px]">record another</button>
+                <button onClick={() => setBattleRecorded(false)} className="ml-auto text-muted hover:text-pip text-xs">record another</button>
               </div>
             )}
 
             {!battleRecorded && (
               <form onSubmit={handleRecordBattle} className="flex gap-2 flex-wrap items-end">
                 <div className="flex-1 min-w-32">
-                  <label className="text-muted text-[10px] block mb-1">OPPONENT</label>
+                  <label className="text-muted text-xs block mb-1">OPPONENT</label>
                   <select
                     value={battleOpponent}
                     onChange={e => setBattleOpponent(e.target.value)}
@@ -376,7 +289,7 @@ export default function BattlesPage({ campaignId, onTabChange }) {
                   </select>
                 </div>
                 <div>
-                  <label className="text-muted text-[10px] block mb-1">RESULT</label>
+                  <label className="text-muted text-xs block mb-1">RESULT</label>
                   <div className="flex gap-1">
                     {['win', 'loss', 'draw'].map(r => (
                       <button
@@ -411,7 +324,7 @@ export default function BattlesPage({ campaignId, onTabChange }) {
 
             {myRecordedBattles.length > 0 && (
               <div className="space-y-1 pt-1 border-t border-pip-dim/20">
-                <span className="text-muted text-[10px] tracking-wider">RECORDED THIS ROUND:</span>
+                <span className="text-muted text-xs tracking-wider">RECORDED THIS ROUND:</span>
                 {myRecordedBattles.map((m, i) => {
                   const opp = displayPlayers.find(p => p.userId === m.opponentId)
                   return (
@@ -447,7 +360,7 @@ export default function BattlesPage({ campaignId, onTabChange }) {
           <div className="px-4 py-2 bg-panel-light border-b border-pip-dim/30 flex items-center gap-3">
             <h2 className="text-amber text-xs font-bold tracking-widest flex-1">ALL SCENARIOS ({battleScenarios.length})</h2>
             {selectedScenario && (
-              <span className="text-amber text-[10px] font-bold">Selected: {selectedScenario.name}</span>
+              <span className="text-amber text-xs font-bold">Selected: {selectedScenario.name}</span>
             )}
           </div>
           <div className="p-3 space-y-2">
@@ -476,7 +389,7 @@ export default function BattlesPage({ campaignId, onTabChange }) {
                     }`}
                   >
                     <span className="font-bold">{scenario.name}</span>
-                    <span className="text-muted text-[10px] shrink-0">{scenario.source}</span>
+                    <span className="text-muted text-xs shrink-0">{scenario.source}</span>
                   </button>
                 )
               })}
@@ -487,16 +400,52 @@ export default function BattlesPage({ campaignId, onTabChange }) {
 
       {/* ── DECKS TAB ── */}
       {subTab === 'decks' && (
-        <div className="space-y-6">
-          <p className="text-muted text-xs">Standard skirmish decks. Shuffle before play; draw and resolve to discard.</p>
-          <div className="grid sm:grid-cols-2 gap-3">
-            <BattleDeckPanel title="CREATURE" deckKey="creature" cards={battleCreatures} battlePage={battlePage} patchBattle={patchBattle} />
-            <BattleDeckPanel title="STRANGER" deckKey="stranger" cards={battleStrangers} battlePage={battlePage} patchBattle={patchBattle} />
-            <BattleDeckPanel title="DANGER" deckKey="danger" cards={battleDangers} battlePage={battlePage} patchBattle={patchBattle} />
-<BattleDeckPanel title="EVENT (BATTLEFIELD)" deckKey="event" cards={battleEvents} battlePage={battlePage} patchBattle={patchBattle} />
+        <div className="space-y-4">
+          <p className="text-muted text-xs">Standard skirmish decks. Build your piles in Build mode, then draw and resolve to discard during play.</p>
+
+          <div className="flex gap-2 overflow-x-auto pb-1 -mx-1 px-1 scrollbar-thin">
+            {DECK_CHIPS.map(c => {
+              const on = deckChip === c.id
+              return (
+                <button
+                  key={c.id}
+                  type="button"
+                  onClick={() => setDeckChip(c.id)}
+                  className={`shrink-0 text-xs font-bold tracking-wider px-3 py-2 rounded-full border transition-shadow ${
+                    on
+                      ? 'border-pip bg-pip text-terminal shadow-[0_0_14px_var(--color-pip-glow)]'
+                      : 'border-pip-dim/50 text-muted hover:border-pip/60 hover:text-pip'
+                  }`}
+                >
+                  {c.label}
+                </button>
+              )
+            })}
           </div>
-          <LocalPopulationDeckPanel battlePage={battlePage} patchBattle={patchBattle} unitsData={unitsData} />
-          <WastelandItemBattleDeck battlePage={battlePage} patchBattle={patchBattle} isOnline={isOnline} />
+
+          {deckChip === 'creature' && (
+            <BattleDeckPanel title="CREATURE" deckKey="creature" cards={battleCreatures} battlePage={battlePage} patchBattle={patchBattle} />
+          )}
+          {deckChip === 'stranger' && (
+            <BattleDeckPanel title="STRANGER" deckKey="stranger" cards={battleStrangers} battlePage={battlePage} patchBattle={patchBattle} />
+          )}
+          {deckChip === 'danger' && (
+            <BattleDeckPanel title="DANGER" deckKey="danger" cards={battleDangers} battlePage={battlePage} patchBattle={patchBattle} />
+          )}
+          {deckChip === 'explore' && (
+            <BattleDeckPanel title="EXPLORE" deckKey="explore" cards={battleExplores} battlePage={battlePage} patchBattle={patchBattle} />
+          )}
+          {deckChip === 'event' && (
+            <BattleDeckPanel title="EVENT (BATTLEFIELD)" deckKey="event" cards={battleEvents} battlePage={battlePage} patchBattle={patchBattle} />
+          )}
+          {deckChip === 'items' && (
+            <ItemsDeckPanel battlePage={battlePage} patchBattle={patchBattle} isOnline={isOnline} />
+          )}
+
+          <div className="border-t border-pip-dim/30 pt-4">
+            <p className="text-muted text-xs mb-2 tracking-wider">LOCAL POPULATION</p>
+            <LocalPopulationDeckPanel battlePage={battlePage} patchBattle={patchBattle} unitsData={unitsData} />
+          </div>
         </div>
       )}
     </div>

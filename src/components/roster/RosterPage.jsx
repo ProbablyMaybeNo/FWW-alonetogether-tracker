@@ -44,6 +44,15 @@ const EQUIP_TYPE_COLOR = {
   'Automatron Part': { border: 'border-gray-400/40',         text: 'text-gray-400'        },
 }
 
+function mobileFateBadgeClass(fate) {
+  if (fate === 'Active') return 'bg-pip-dim/50 text-pip border border-pip/60'
+  if (fate === 'Delayed' || fate === 'Shaken') return 'bg-amber-dim/40 text-amber border border-amber/50'
+  if (fate === 'Pending') return 'bg-amber-dim/30 text-amber border border-amber/40'
+  if (fate === 'Injured' || fate === 'Lost' || fate === 'Captured') return 'bg-danger-dim/40 text-danger border border-danger/50'
+  if (fate === 'Dead') return 'bg-muted/30 text-muted border border-muted/40'
+  return 'bg-muted/20 text-muted border border-muted/30'
+}
+
 export default function RosterPage() {
   const { state, setState } = useCampaign()
   const [showAddUnit, setShowAddUnit] = useState(false)
@@ -309,27 +318,28 @@ export default function RosterPage() {
                 unit.fate === 'Active' ? 'border-pip-mid/50' :
                 'border-muted/40'
               }`}>
-                {/* Compact Row */}
-                <div
-                  className="flex items-center gap-2 px-3 py-2 cursor-pointer hover:bg-panel-light transition-colors"
-                  onClick={() => setExpandedSlot(expanded ? null : unit.slotId)}
-                >
-                  {expanded ? <ChevronDown size={14} className="text-muted shrink-0" /> : <ChevronRight size={14} className="text-muted shrink-0" />}
-                  <span className="text-amber text-sm font-bold flex-1 min-w-0 truncate">{unit.unitName}</span>
-                  {unit.isLeader && <span className="text-amber text-xs px-1.5 py-0.5 border border-amber/60 rounded hidden sm:inline font-bold">LDR</span>}
-                  {unit.heroic && <Star size={12} className="text-amber shrink-0" />}
-                  {unit.hasPowerArmor && (
-                    <span className={`text-xs px-1 py-0.5 rounded font-bold hidden sm:inline ${unit.paDegraded ? 'text-amber border border-amber/40' : 'text-pip border border-pip/40'}`}>PA</span>
-                  )}
-                  <span className="text-muted text-xs hidden sm:inline">{unit.faction}</span>
-                  <span className={`text-xs px-2 py-0.5 rounded font-bold ${fateBadge}`}>{unit.fate === 'Pending' ? 'FATE?' : unit.fate.toUpperCase()}</span>
-                  <span className="text-amber text-sm font-bold w-16 text-right">{totalCaps}c</span>
-                  {items.length > 0 && <Package size={12} className="text-muted" />}
-                </div>
+                {/* Desktop: compact row + inline summary */}
+                <div className="hidden md:block">
+                  <div
+                    className="flex items-center gap-2 px-3 py-2 cursor-pointer hover:bg-panel-light transition-colors"
+                    onClick={() => setExpandedSlot(expanded ? null : unit.slotId)}
+                  >
+                    {expanded ? <ChevronDown size={14} className="text-muted shrink-0" /> : <ChevronRight size={14} className="text-muted shrink-0" />}
+                    <span className="text-amber text-sm font-bold flex-1 min-w-0 truncate">{unit.unitName}</span>
+                    {unit.isLeader && <span className="text-amber text-xs px-1.5 py-0.5 border border-amber/60 rounded hidden sm:inline font-bold">LDR</span>}
+                    {unit.heroic && <Star size={12} className="text-amber shrink-0" />}
+                    {unit.hasPowerArmor && (
+                      <span className={`text-xs px-1 py-0.5 rounded font-bold hidden sm:inline ${unit.paDegraded ? 'text-amber border border-amber/40' : 'text-pip border border-pip/40'}`}>PA</span>
+                    )}
+                    <span className="text-muted text-xs hidden sm:inline">{unit.faction}</span>
+                    <span className={`text-xs px-2 py-0.5 rounded font-bold ${fateBadge}`}>{unit.fate === 'Pending' ? 'FATE?' : unit.fate.toUpperCase()}</span>
+                    <span className="text-amber text-sm font-bold w-16 text-right">{totalCaps}c</span>
+                    {items.length > 0 && <Package size={12} className="text-muted" />}
+                  </div>
 
-                {/* Inline Summary — visible when collapsed */}
-                {!expanded && (items.length > 0 || perks.length > 0 || activeConditions.length > 0 || unit.conditions || (unit.regDamage || 0) > 0 || (unit.radDamage || 0) > 0 || (unit.battles || 0) > 0 || (unit.removed || 0) > 0 || unit.addiction) && (
-                  <div className="px-3 pb-2 pt-1.5 border-t border-pip-dim/20 space-y-1">
+                  {/* Inline Summary — visible when collapsed */}
+                  {!expanded && (items.length > 0 || perks.length > 0 || activeConditions.length > 0 || unit.conditions || (unit.regDamage || 0) > 0 || (unit.radDamage || 0) > 0 || (unit.battles || 0) > 0 || (unit.removed || 0) > 0 || unit.addiction) && (
+                    <div className="px-3 pb-2 pt-1.5 border-t border-pip-dim/20 space-y-1">
                     {(items.length > 0 || perks.length > 0) && (
                       <div className="flex flex-wrap gap-1">
                         {items.slice(0, 3).map((item, idx) => {
@@ -375,7 +385,38 @@ export default function RosterPage() {
                       </div>
                     )}
                   </div>
-                )}
+                  )}
+                </div>
+
+                {/* Mobile: card header */}
+                <button
+                  type="button"
+                  className="md:hidden w-full text-left px-3 py-2 border-b border-pip-dim/20 hover:bg-panel-light transition-colors min-h-[44px]"
+                  onClick={() => setExpandedSlot(expanded ? null : unit.slotId)}
+                >
+                  <div className="flex justify-between items-start gap-2">
+                    <div className="min-w-0 flex-1">
+                      <div className="flex items-center gap-2 flex-wrap">
+                        <span className="text-amber text-sm font-bold truncate">{unit.unitName}</span>
+                        <span className={`text-xs px-2 py-0.5 rounded font-bold ${mobileFateBadgeClass(unit.fate)}`} style={unit.fate === 'Active' ? { boxShadow: '0 0 8px var(--color-pip-glow)' } : undefined}>
+                          {unit.fate === 'Pending' ? 'FATE?' : unit.fate.toUpperCase()}
+                        </span>
+                        {unit.isLeader && <span className="text-amber text-xs font-bold border border-amber/60 rounded px-1">LDR</span>}
+                      </div>
+                      <p className="text-xs text-muted mt-1">
+                        HP: reg {unit.regDamage ?? 0} | Rad: {unit.radDamage ?? 0}
+                      </p>
+                      <p className="text-amber text-sm font-bold mt-0.5">
+                        {totalCaps}c <span className="text-muted font-normal">·</span>{' '}
+                        <span className="text-muted text-xs font-normal">
+                          {unitsData.find(d => d.id === unit.unitId)?.type === 'UNIQUE' ? 'Unique' : 'Std'}
+                        </span>
+                        {unit.isLeader && <span className="text-amber text-xs ml-1">· Leader</span>}
+                      </p>
+                    </div>
+                    <ChevronDown size={18} className={`text-muted shrink-0 mt-0.5 transition-transform ${expanded ? 'rotate-180' : ''}`} />
+                  </div>
+                </button>
 
                 {/* Expanded Detail */}
                 {expanded && (
@@ -907,7 +948,7 @@ function PerksBrowser({ roster, caps, onAddPerk, onCapChange }) {
     <div className="border border-pip-mid/40 rounded-lg bg-panel overflow-hidden mt-6">
       <div className="px-4 py-2 bg-panel-light border-b border-pip-mid/30">
         <h2 className="text-pip text-xs tracking-widest font-bold">PERK BROWSER</h2>
-        <p className="text-muted text-[10px] mt-0.5">Browse all perks, read their effects, and assign to a unit.</p>
+        <p className="text-muted text-xs mt-0.5">Browse all perks, read their effects, and assign to a unit.</p>
       </div>
 
       <div className="grid md:grid-cols-2 gap-0 divide-y md:divide-y-0 md:divide-x divide-pip-dim/20">
@@ -936,7 +977,7 @@ function PerksBrowser({ roster, caps, onAddPerk, onCapChange }) {
                 >
                   <span className="font-bold truncate">{perk.name}</span>
                   {perkCost !== null && (
-                    <span className="shrink-0 text-amber font-bold text-[10px]">{perkCost}c</span>
+                    <span className="shrink-0 text-amber font-bold text-xs">{perkCost}c</span>
                   )}
                 </button>
               )
@@ -968,7 +1009,7 @@ function PerksBrowser({ roster, caps, onAddPerk, onCapChange }) {
 
               <div className="space-y-2 pt-1 border-t border-pip-dim/20">
                 <div>
-                  <label className="text-muted text-[10px] block mb-1 tracking-wider">ASSIGN TO UNIT</label>
+                  <label className="text-muted text-xs block mb-1 tracking-wider">ASSIGN TO UNIT</label>
                   <select
                     value={selectedUnitSlot}
                     onChange={e => { setSelectedUnitSlot(e.target.value); setConfirmError('') }}

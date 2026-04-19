@@ -29,6 +29,14 @@ export function defaultBattlePageState() {
       drawPile: [],
       discardPile: [],
     },
+    /** Per deck-type named presets: { [presetName]: number[] (card indices) } */
+    deckPresets: {
+      creature: {},
+      stranger: {},
+      danger: {},
+      explore: {},
+      event: {},
+    },
     undo: null,
   }
 }
@@ -66,7 +74,31 @@ export function normalizeBattlePageState(raw) {
       drawPile: Array.isArray(raw.wastelandItems?.drawPile) ? raw.wastelandItems.drawPile : [],
       discardPile: Array.isArray(raw.wastelandItems?.discardPile) ? raw.wastelandItems.discardPile : [],
     },
+    deckPresets: normalizeDeckPresets(raw.deckPresets),
     undo: raw.undo ?? null,
+  }
+}
+
+function normalizePresetMap(m) {
+  if (!m || typeof m !== 'object') return {}
+  const out = {}
+  for (const [name, arr] of Object.entries(m)) {
+    if (!Array.isArray(arr)) continue
+    const nums = arr.filter(n => typeof n === 'number' && Number.isInteger(n) && n >= 0)
+    if (nums.length) out[name] = nums
+  }
+  return out
+}
+
+function normalizeDeckPresets(raw) {
+  const base = defaultBattlePageState().deckPresets
+  if (!raw || typeof raw !== 'object') return base
+  return {
+    creature: { ...base.creature, ...normalizePresetMap(raw.creature) },
+    stranger: { ...base.stranger, ...normalizePresetMap(raw.stranger) },
+    danger: { ...base.danger, ...normalizePresetMap(raw.danger) },
+    explore: { ...base.explore, ...normalizePresetMap(raw.explore) },
+    event: { ...base.event, ...normalizePresetMap(raw.event) },
   }
 }
 
