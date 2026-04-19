@@ -4,6 +4,8 @@ import { useCampaign } from '../../context/CampaignContext'
 import { calcPowerGenerated, calcPowerConsumed, calcWaterGenerated, calcWaterConsumed, getStructureRef, calcSettlementTotalCaps, calcDefenseRating } from '../../utils/calculations'
 import AddStructureModal from './AddStructureModal'
 import ItemPoolPanel from './ItemPoolPanel'
+import SettlementItemDeckPanel from './SettlementItemDeckPanel'
+import { useSettlementItemDeck } from '../../hooks/useSettlementItemDeck'
 import { BarracksModal, MedicalCenterModal, StoresModal } from './StructureUseModals'
 import { getDeckStats, drawCard } from '../../utils/cardDraw'
 import CardDrawer from '../overview/CardDrawer'
@@ -1744,6 +1746,7 @@ function DeckDrawModal({ draw, onKeep, onClose }) {
 
 /* ── Settlement Item Deck Panel ── */
 function SettlementDeckPanel({ state, setState, structures, deckFilter, setDeckFilter, recentlyDrawn, setRecentlyDrawn, drawManualFromDeck, reshuffleDeck, fullResetDeck, addRecentlyDrawnToPool }) {
+  const settlementItemDeckApi = useSettlementItemDeck()
   const allIds = buildFullDeckIds()
   const deck = state.settlementDeck ?? []
   const discard = state.settlementDiscard ?? []
@@ -1964,9 +1967,25 @@ function SettlementDeckPanel({ state, setState, structures, deckFilter, setDeckF
 
   return (
     <div className="space-y-4">
-      {/* Header */}
+      <SettlementItemDeckPanel
+        drawCount={settlementItemDeckApi.drawCount}
+        discardCount={settlementItemDeckApi.discardCount}
+        catalogTotal={settlementItemDeckApi.catalogTotal}
+        drawCard={settlementItemDeckApi.drawCard}
+        lastDrawn={settlementItemDeckApi.lastDrawn}
+        exhaustAlert={settlementItemDeckApi.exhaustAlert}
+        initNotice={settlementItemDeckApi.initNotice}
+        discardOpen={settlementItemDeckApi.discardOpen}
+        setDiscardOpen={settlementItemDeckApi.setDiscardOpen}
+        discardSearch={settlementItemDeckApi.discardSearch}
+        setDiscardSearch={settlementItemDeckApi.setDiscardSearch}
+        filteredDiscard={settlementItemDeckApi.filteredDiscard}
+        restoreCard={settlementItemDeckApi.restoreCard}
+      />
+
+      {/* Header — filtered subtype deck for structure equipment draws */}
       <div className="flex items-center gap-3 border-b border-pip-mid/50 pb-2 flex-wrap gap-y-2">
-        <h2 className="text-pip text-sm tracking-widest font-bold flex-1">SETTLEMENT ITEM DECK</h2>
+        <h2 className="text-pip text-sm tracking-widest font-bold flex-1">ITEM DECK (EQUIPMENT DRAW)</h2>
         <span className="text-muted text-xs">{deckCount}/{total} remaining · {discardCount} in discard</span>
         {deck.length === 0 && discard.length > 0 && (
           <button

@@ -3,6 +3,7 @@ import { supabase } from '../lib/supabase'
 import { usePersistedState } from './usePersistedState'
 import { normalizeInhabitantsState } from '../utils/inhabitantsState'
 import { normalizeBattlePageState } from '../utils/battlePageState'
+import { normalizeSettlementItemDeck } from '../utils/settlementItemDeckUtils'
 
 const DEBOUNCE_MS = 500
 
@@ -46,6 +47,7 @@ function stateToDb(state) {
     boost_deck: state.boostDeck ?? [],
     boost_discard: state.boostDiscard ?? [],
     narrative_log: state.narrativeLog ?? [],
+    settlement_item_deck: state.settlementItemDeck ?? { drawPile: [], discardPile: [], manuallyRestored: [] },
   }
 }
 
@@ -73,6 +75,7 @@ function dbToState(row) {
     boostDeck: row.boost_deck ?? [],
     boostDiscard: row.boost_discard ?? [],
     narrativeLog: row.narrative_log ?? [],
+    settlementItemDeck: normalizeSettlementItemDeck(row.settlement_item_deck),
   }
 }
 
