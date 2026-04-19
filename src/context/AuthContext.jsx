@@ -101,6 +101,7 @@ export function AuthProvider({ children }) {
     await supabase.auth.signOut()
     setUser(null)
     setProfile(null)
+    try { localStorage.removeItem('fww-last-campaign') } catch { /* ignore */ }
   }
 
   return (
