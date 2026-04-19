@@ -218,6 +218,10 @@ function AuthGate() {
     return null
   })
 
+  useEffect(() => {
+    if (!user) setCampaignId(null)
+  }, [user])
+
   if (!isSupabaseConfigured || soloMode) {
     return (
       <CampaignProvider>
