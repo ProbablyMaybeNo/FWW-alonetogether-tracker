@@ -1,5 +1,5 @@
 import { useState, useCallback, useMemo, useEffect, useRef } from 'react'
-import { ChevronDown, ChevronUp, ChevronLeft, ChevronRight, Skull } from 'lucide-react'
+import { ChevronDown, ChevronUp, ChevronLeft, ChevronRight, Skull, Minimize2, Maximize2, X } from 'lucide-react'
 import { normalizeActiveBattle, shuffleArray, buildInitialParticipants } from '../../utils/activeBattle'
 import RosterBuildPhase from './RosterBuildPhase'
 import { canonicalBattleHostUserId } from '../../utils/postBattlePropagation'
@@ -58,6 +58,8 @@ export default function LiveBattleTracker({
   const ab = normalizeActiveBattle(activeBattleProp)
   const seedRef = useRef(false)
   const transitionRef = useRef(false)
+  const [minimized, setMinimized] = useState(false)
+  const [cancelConfirm, setCancelConfirm] = useState(false)
   const setup = ab.setup || {}
   const scenario = battleScenarios.find(s => s.id === setup.scenario?.scenarioId)
   const [mobileYour, setMobileYour] = useState(false)
@@ -438,18 +440,38 @@ export default function LiveBattleTracker({
   }
 
   const header = (
-    <header className="sticky top-0 z-10 border-b border-pip-dim/40 bg-[var(--color-terminal)]/95 backdrop-blur px-3 py-3 flex flex-wrap items-center justify-between gap-2">
+    <header className="sticky top-0 z-10 border-b border-pip-dim/40 bg-[var(--color-terminal)] px-3 py-3 flex flex-wrap items-center justify-between gap-2">
       <div>
         <p className="text-xs text-muted tracking-widest">LIVE BATTLE</p>
         <p className="text-pip font-bold text-sm">{scenario?.name ?? 'Scenario'}</p>
       </div>
       <div className="flex items-center gap-2 flex-wrap">
-        <span className="text-amber font-mono font-bold text-lg">Turn {ab.turn || 1}</span>
-        <button type="button" className="min-h-[44px] px-3 border border-pip-dim/50 rounded flex items-center gap-1 text-xs" onClick={prevTurn} disabled={(ab.turn || 1) <= 1}>
-          <ChevronLeft size={16} /> PREV
+        {ab.status === 'active' && (
+          <>
+            <span className="text-amber font-mono font-bold text-lg">Turn {ab.turn || 1}</span>
+            <button type="button" className="min-h-[44px] px-3 border border-pip-dim/50 rounded flex items-center gap-1 text-xs" onClick={prevTurn} disabled={(ab.turn || 1) <= 1}>
+              <ChevronLeft size={16} /> PREV
+            </button>
+            <button type="button" className="min-h-[44px] px-3 border border-pip-dim/50 rounded flex items-center gap-1 text-xs" onClick={nextTurn}>
+              NEXT <ChevronRight size={16} />
+            </button>
+          </>
+        )}
+        <button
+          type="button"
+          onClick={() => setMinimized(m => !m)}
+          className="min-h-[44px] px-3 border border-pip-dim/50 rounded flex items-center gap-1 text-xs text-muted hover:text-pip"
+          title="Minimize — browse other tabs"
+        >
+          <Minimize2 size={14} /> MINIMIZE
         </button>
-        <button type="button" className="min-h-[44px] px-3 border border-pip-dim/50 rounded flex items-center gap-1 text-xs" onClick={nextTurn}>
-          NEXT <ChevronRight size={16} />
+        <button
+          type="button"
+          onClick={() => setCancelConfirm(true)}
+          className="min-h-[44px] px-3 border border-danger/40 rounded flex items-center gap-1 text-xs text-danger hover:bg-danger/10"
+          title="Abandon battle"
+        >
+          <X size={14} /> ABANDON
         </button>
       </div>
     </header>
@@ -638,10 +660,23 @@ export default function LiveBattleTracker({
     </div>
   )
 
+  if (minimized) {
+    return (
+      <button
+        type="button"
+        onClick={() => setMinimized(false)}
+        className="fixed bottom-20 md:bottom-4 right-4 z-50 flex items-center gap-2 px-4 py-3 rounded-lg border-2 border-amber/70 bg-[var(--color-terminal)] text-amber font-bold text-xs shadow-[0_0_20px_rgba(245,158,11,0.4)] animate-pulse"
+      >
+        <Maximize2 size={14} />
+        {ab.status === 'roster_build' ? 'BUILDING ROSTERS' : 'BATTLE IN PROGRESS'}
+      </button>
+    )
+  }
+
   if (ab.status === 'roster_build') {
     return (
       <div
-        className="fixed inset-0 z-50 flex flex-col bg-[var(--color-bg)] text-pip"
+        className="fixed inset-0 z-50 flex flex-col bg-[var(--color-terminal)] text-pip"
         style={{ fontFamily: 'var(--font-family-mono)' }}
       >
         {header}
@@ -655,13 +690,25 @@ export default function LiveBattleTracker({
           campaignId={campaignId}
           isOnline={isOnline}
         />
+        {cancelConfirm && (
+          <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/70 p-4">
+            <div className="bg-panel border border-danger/50 rounded-lg max-w-sm w-full p-5 space-y-4">
+              <p className="text-danger font-bold">Abandon battle setup?</p>
+              <p className="text-xs text-muted">This will clear the current battle for all players. This cannot be undone.</p>
+              <div className="flex gap-2">
+                <button type="button" className="flex-1 min-h-[44px] border border-muted/30 rounded text-xs text-muted hover:text-pip" onClick={() => setCancelConfirm(false)}>BACK</button>
+                <button type="button" className="flex-1 min-h-[44px] bg-danger/20 border-2 border-danger text-danger font-bold rounded text-xs" onClick={() => saveActiveBattle(null)}>ABANDON</button>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     )
   }
 
   return (
     <div
-      className="fixed inset-0 z-50 flex flex-col bg-[var(--color-bg)] text-pip"
+      className="fixed inset-0 z-50 flex flex-col bg-[var(--color-terminal)] text-pip"
       style={{ fontFamily: 'var(--font-family-mono)' }}
     >
       {header}
@@ -725,6 +772,19 @@ export default function LiveBattleTracker({
               <button type="button" className="flex-1 min-h-[44px] bg-danger/30 border-2 border-danger text-danger font-bold rounded text-xs" onClick={confirmEndBattle}>
                 CONFIRM END
               </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {cancelConfirm && (
+        <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/70 p-4" role="dialog">
+          <div className="bg-panel border border-danger/50 rounded-lg max-w-sm w-full p-5 space-y-4">
+            <p className="text-danger font-bold">Abandon battle?</p>
+            <p className="text-xs text-muted">This will clear the active battle for all players. Battle progress will be lost.</p>
+            <div className="flex gap-2">
+              <button type="button" className="flex-1 min-h-[44px] border border-muted/30 rounded text-xs text-muted hover:text-pip" onClick={() => setCancelConfirm(false)}>BACK</button>
+              <button type="button" className="flex-1 min-h-[44px] bg-danger/20 border-2 border-danger text-danger font-bold rounded text-xs" onClick={() => saveActiveBattle(null)}>ABANDON</button>
             </div>
           </div>
         </div>

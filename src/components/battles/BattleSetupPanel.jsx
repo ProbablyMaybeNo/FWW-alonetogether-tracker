@@ -29,17 +29,19 @@ export default function BattleSetupPanel({
   const [turnLimit, setTurnLimit] = useState(null)
   const [gameMode, setGameMode] = useState('skirmish')
   const [wastelandItemsCount, setWastelandItemsCount] = useState(6)
+  const [wastelandRaw, setWastelandRaw] = useState('6')
   const [decksEnabled, setDecksEnabled] = useState({
     creature: true, stranger: true, danger: true, explore: true, event: true,
   })
   const [sending, setSending] = useState(false)
 
-  function setWasteland(raw) {
+  function commitWasteland(raw) {
     let v = Number(raw)
-    if (Number.isNaN(v)) v = 6
-    v = Math.min(20, Math.max(2, v))
-    if (v % 2 !== 0) v -= 1
+    if (Number.isNaN(v) || v < 2) v = 2
+    v = Math.min(20, v)
+    if (v % 2 !== 0) v = v - 1
     setWastelandItemsCount(v)
+    setWastelandRaw(String(v))
   }
 
   async function handleSend() {
@@ -152,7 +154,16 @@ export default function BattleSetupPanel({
           </label>
           <label className="space-y-0.5">
             <span className="text-muted">Wasteland cards / player</span>
-            <input type="number" min={2} max={20} step={2} value={wastelandItemsCount} onChange={e => setWasteland(e.target.value)} className="w-20 text-xs" />
+            <input
+              type="number"
+              min={2}
+              max={20}
+              step={2}
+              value={wastelandRaw}
+              onChange={e => setWastelandRaw(e.target.value)}
+              onBlur={e => commitWasteland(e.target.value)}
+              className="w-20 text-xs"
+            />
           </label>
         </div>
       </div>
