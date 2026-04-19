@@ -51,6 +51,8 @@ const DEFAULT_STATE = {
   boostDiscard: [],      // array of boost IDs in boost discard pile
   inhabitantsState: defaultInhabitantsState(), // solo: campaign-level inhabitant decks live in local save; online uses campaigns.inhabitants_state
   battlePageState: defaultBattlePageState(),
+  /** Solo / offline: live battle payload mirrors campaigns.active_battle when online */
+  activeBattle: null,
   narrativeLog: [],
 }
 

@@ -3,6 +3,7 @@ import { supabase } from '../lib/supabase'
 import { usePersistedState } from './usePersistedState'
 import { normalizeInhabitantsState } from '../utils/inhabitantsState'
 import { normalizeBattlePageState } from '../utils/battlePageState'
+import { normalizeActiveBattle } from '../utils/activeBattle'
 import { normalizeSettlementItemDeck } from '../utils/settlementItemDeckUtils'
 
 const DEBOUNCE_MS = 500
@@ -91,6 +92,7 @@ function campaignDbToState(row) {
     inhabitantsState: normalizeInhabitantsState(row.inhabitants_state),
     battlePageState: normalizeBattlePageState(row.battle_page_state),
     campaignNarratives: row.campaign_narratives ?? [],
+    activeBattle: row.active_battle != null ? normalizeActiveBattle(row.active_battle) : null,
   }
 }
 
@@ -197,7 +199,7 @@ export function useCampaignSync({ campaignId, userId } = {}) {
         // Load shared campaign data
         const { data: camp, error: campErr } = await supabase
           .from('campaigns')
-          .select('phase, round, battle_count, phase1_cap_limit, explore_locations, battles, created_by, inhabitants_state, battle_page_state, campaign_narratives')
+          .select('phase, round, battle_count, phase1_cap_limit, explore_locations, battles, created_by, inhabitants_state, battle_page_state, campaign_narratives, active_battle')
           .eq('id', campaignId)
           .single()
 
@@ -430,6 +432,29 @@ export function useCampaignSync({ campaignId, userId } = {}) {
     }
   }, [campaignId, isOnline, solo])
 
+  const saveActiveBattle = useCallback(async (nextActiveBattle) => {
+    const normalized = nextActiveBattle == null ? null : normalizeActiveBattle(nextActiveBattle)
+    if (!isOnline) {
+      solo.setState(prev => ({ ...prev, activeBattle: normalized }))
+      return
+    }
+    setSharedState(prev => ({ ...(prev ?? {}), activeBattle: normalized }))
+    try {
+      const { error } = await supabase.rpc('patch_active_battle', {
+        p_campaign_id: campaignId,
+        p_active_battle: normalized,
+      })
+      if (!error) {
+        setSyncError(null)
+        return
+      }
+      throw error
+    } catch (e) {
+      console.error('saveActiveBattle:', e)
+      setSyncError(e.message ?? String(e))
+    }
+  }, [campaignId, isOnline, solo])
+
   const saveCampaignNarratives = useCallback(async (nextNarratives) => {
     if (!isOnline) return
     setSharedState(prev => ({ ...prev, campaignNarratives: nextNarratives }))
@@ -491,6 +516,7 @@ export function useCampaignSync({ campaignId, userId } = {}) {
       updateShared: () => {},
       saveInhabitantsState,
       saveBattlePageState,
+      saveActiveBattle,
       saveCampaignBattles,
       saveCampaignNarratives,
       syncing: false,
@@ -515,6 +541,7 @@ export function useCampaignSync({ campaignId, userId } = {}) {
     updateShared,
     saveInhabitantsState,
     saveBattlePageState,
+    saveActiveBattle,
     saveCampaignBattles,
     saveCampaignNarratives,
     syncing,
