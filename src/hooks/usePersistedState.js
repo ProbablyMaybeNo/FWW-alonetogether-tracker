@@ -5,7 +5,7 @@ import { defaultBattlePageState } from '../utils/battlePageState'
 const STORAGE_KEY = 'fww-campaign'
 
 const DEFAULT_STATE = {
-  version: 9,
+  version: 10,
   player: {
     name: '',
     settlement: '',
@@ -44,6 +44,8 @@ const DEFAULT_STATE = {
   },
   settlementDeck: [],    // array of item IDs remaining in deck (shuffled order)
   settlementDiscard: [], // array of item IDs that have been drawn
+  settlementItemDeck: { drawPile: [], discardPile: [], manuallyRestored: [] },
+  battleRosterPresets: [],
   boostHand: [],         // array of { instanceId, boostId, name, boostType, usedThisRound } — boosts player holds for battle
   boostDeck: [],         // array of boost IDs remaining in boost deck
   boostDiscard: [],      // array of boost IDs in boost discard pile
@@ -199,6 +201,20 @@ function migrateState(stored) {
       ...stored,
       version: 9,
       narrativeLog: stored.narrativeLog ?? [],
+    }
+  }
+
+  if (stored.version === 9) {
+    return {
+      ...DEFAULT_STATE,
+      ...stored,
+      version: 10,
+      settlementItemDeck: stored.settlementItemDeck ?? {
+        drawPile: [],
+        discardPile: [],
+        manuallyRestored: [],
+      },
+      battleRosterPresets: stored.battleRosterPresets ?? [],
     }
   }
 
