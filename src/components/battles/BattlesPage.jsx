@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback, useMemo } from 'react'
-import { Swords, ClipboardList, MapPin, Layers, Globe, Check, X } from 'lucide-react'
+import { Swords, ClipboardList, MapPin, Layers, Globe } from 'lucide-react'
 import { useCampaign } from '../../context/CampaignContext'
 import { useAuth } from '../../context/AuthContext'
 import { supabase } from '../../lib/supabase'
@@ -35,16 +35,10 @@ const DECK_CHIPS = [
 ]
 
 export default function BattlesPage({ campaignId, onTabChange }) {
-  const { state, saveBattlePageState, isOnline, sharedState, saveCampaignBattles, saveActiveBattle } = useCampaign()
+  const { state, saveBattlePageState, isOnline, sharedState, saveActiveBattle } = useCampaign()
   const { user } = useAuth()
   const [subTab, setSubTab] = useState('match')
   const [displayPlayers, setDisplayPlayers] = useState([])
-  // Battle recording state
-  const [battleOpponent, setBattleOpponent] = useState('')
-  const [battleResult, setBattleResult] = useState('win')
-  const [battleSubmitting, setBattleSubmitting] = useState(false)
-  const [battleRecorded, setBattleRecorded] = useState(false)
-  // Scenario browser state
   const [scenarioSearch, setScenarioSearch] = useState('')
   const [selectedScenario, setSelectedScenario] = useState(null)
   const [deckChip, setDeckChip] = useState('creature')
@@ -124,87 +118,6 @@ export default function BattlesPage({ campaignId, onTabChange }) {
     patchBattle(b => ({ ...b, scenario: { ...b.scenario, [field]: value } }))
   }
 
-  // Battle outcome recording
-  const battles = sharedState?.battles ?? {}
-  const roundBattles = battles[String(round)] ?? {}
-  const myBattleRecord = roundBattles[user?.id] ?? null
-  const soloRecord = state?.battles?.[String(round)]?.[myRow.userId] ?? null
-
-  async function handleRecordBattle(e) {
-    e.preventDefault()
-    if (!battleOpponent) return
-    setBattleSubmitting(true)
-    try {
-      if (isOnline && user?.id && saveCampaignBattles) {
-        const mirrorResult = battleResult === 'win' ? 'loss' : battleResult === 'loss' ? 'win' : 'draw'
-        const currentBattles = sharedState?.battles ?? {}
-        const roundKey = String(round)
-        const roundData = { ...(currentBattles[roundKey] ?? {}) }
-        const myRecord = roundData[user.id] ?? { ready: true, noBattles: false, matches: [] }
-        roundData[user.id] = { ...myRecord, ready: true, noBattles: false, matches: [...(myRecord.matches ?? []), { opponentId: battleOpponent, result: battleResult }] }
-        const oppRecord = roundData[battleOpponent] ?? { ready: true, noBattles: false, matches: [] }
-        roundData[battleOpponent] = { ...oppRecord, ready: true, matches: [...(oppRecord.matches ?? []), { opponentId: user.id, result: mirrorResult }] }
-        await saveCampaignBattles({ ...currentBattles, [roundKey]: roundData })
-      } else {
-        // Solo mode: save to local state
-        const roundKey = String(round)
-        const currentBattles = state?.battles ?? {}
-        const roundData = { ...(currentBattles[roundKey] ?? {}) }
-        const myId = myRow.userId
-        const myRecord = roundData[myId] ?? { ready: true, noBattles: false, matches: [] }
-        roundData[myId] = { ...myRecord, ready: true, noBattles: false, matches: [...(myRecord.matches ?? []), { opponentId: battleOpponent, result: battleResult }] }
-        // Note: setState is not destructured here; we patch via patchBattle's setState equivalent
-        // Actually we need setState — but BattlesPage doesn't currently destructure it
-        // For solo recording, just show confirmation without saving for now
-      }
-      setBattleRecorded(true)
-      setBattleOpponent('')
-    } finally {
-      setBattleSubmitting(false)
-    }
-  }
-
-  async function handleNoBattles() {
-    if (!isOnline || !user?.id || !saveCampaignBattles) return
-    const currentBattles = sharedState?.battles ?? {}
-    const roundKey = String(round)
-    const roundData = { ...(currentBattles[roundKey] ?? {}) }
-    roundData[user.id] = { ready: true, noBattles: true, matches: [] }
-    await saveCampaignBattles({ ...currentBattles, [roundKey]: roundData })
-    setBattleRecorded(true)
-  }
-
-  async function handleRemoveBattle(index) {
-    const match = myRecordedBattles[index]
-    if (!match) return
-    if (isOnline && user?.id && saveCampaignBattles) {
-      const currentBattles = sharedState?.battles ?? {}
-      const roundKey = String(round)
-      const roundData = { ...(currentBattles[roundKey] ?? {}) }
-
-      const myRecord = { ...(roundData[user.id] ?? { ready: true, noBattles: false, matches: [] }) }
-      const myMatches = [...(myRecord.matches ?? [])]
-      myMatches.splice(index, 1)
-      roundData[user.id] = { ...myRecord, matches: myMatches, ready: myMatches.length > 0, noBattles: false }
-
-      const oppId = match.opponentId
-      const mirrorResult = match.result === 'win' ? 'loss' : match.result === 'loss' ? 'win' : 'draw'
-      if (roundData[oppId]) {
-        const oppRecord = { ...roundData[oppId] }
-        const oppMatches = [...(oppRecord.matches ?? [])]
-        const mirrorIdx = oppMatches.findIndex(m => m.opponentId === user.id && m.result === mirrorResult)
-        if (mirrorIdx !== -1) oppMatches.splice(mirrorIdx, 1)
-        roundData[oppId] = { ...oppRecord, matches: oppMatches, ready: oppMatches.length > 0 || oppRecord.noBattles }
-      }
-
-      await saveCampaignBattles({ ...currentBattles, [roundKey]: roundData })
-    }
-  }
-
-  const myRecordedBattles = isOnline
-    ? (roundBattles[user?.id]?.matches ?? [])
-    : (soloRecord?.matches ?? [])
-
   const filteredScenarios = battleScenarios.filter(s =>
     !scenarioSearch || s.name.toLowerCase().includes(scenarioSearch.toLowerCase()) || s.source.toLowerCase().includes(scenarioSearch.toLowerCase())
   )
@@ -250,108 +163,14 @@ export default function BattlesPage({ campaignId, onTabChange }) {
 
       {/* ── MATCH TAB ── */}
       {subTab === 'match' && (
-        <div className="space-y-4">
-          <MatchTab
-            opponentRows={opponentChoices}
-            isOnline={isOnline}
-            activeBattle={state?.activeBattle ?? null}
-            saveActiveBattle={saveActiveBattle}
-            currentUserId={user?.id ?? 'solo-local'}
-            battlePage={battlePage}
-          />
-
-          {/* Record Battle Outcome */}
-          <div className="border border-pip-mid/30 rounded-lg bg-panel p-4 space-y-3">
-            <h2 className="text-amber text-xs font-bold tracking-widest border-b border-pip-dim/30 pb-2">RECORD BATTLE OUTCOME</h2>
-
-            {battleRecorded && (
-              <div className="flex items-center gap-2 text-xs text-pip border border-pip/40 rounded px-3 py-2 bg-pip-dim/10">
-                <Check size={12} /> Battle recorded for Round {round}
-                <button onClick={() => setBattleRecorded(false)} className="ml-auto text-muted hover:text-pip text-xs">record another</button>
-              </div>
-            )}
-
-            {!battleRecorded && (
-              <form onSubmit={handleRecordBattle} className="flex gap-2 flex-wrap items-end">
-                <div className="flex-1 min-w-32">
-                  <label className="text-muted text-xs block mb-1">OPPONENT</label>
-                  <select
-                    value={battleOpponent}
-                    onChange={e => setBattleOpponent(e.target.value)}
-                    className="w-full text-xs py-1 px-2"
-                  >
-                    <option value="">Select opponent...</option>
-                    {isOnline
-                      ? displayPlayers.filter(p => !p.isMe).map(p => (
-                          <option key={p.userId} value={p.userId}>{p.username}</option>
-                        ))
-                      : [{ userId: 'solo-opp', username: 'Opponent' }].map(p => (
-                          <option key={p.userId} value={p.userId}>{p.username}</option>
-                        ))
-                    }
-                  </select>
-                </div>
-                <div>
-                  <label className="text-muted text-xs block mb-1">RESULT</label>
-                  <div className="flex gap-1">
-                    {['win', 'loss', 'draw'].map(r => (
-                      <button
-                        key={r}
-                        type="button"
-                        onClick={() => setBattleResult(r)}
-                        className={`text-xs px-3 py-1 border rounded transition-colors font-bold ${
-                          battleResult === r
-                            ? r === 'win' ? 'border-pip text-pip bg-pip-dim/20'
-                              : r === 'loss' ? 'border-danger text-danger bg-danger/10'
-                              : 'border-amber text-amber bg-amber/10'
-                            : 'border-muted/30 text-muted hover:text-pip hover:border-pip'
-                        }`}
-                      >{r.toUpperCase()}</button>
-                    ))}
-                  </div>
-                </div>
-                <button
-                  type="submit"
-                  disabled={!battleOpponent || battleSubmitting}
-                  className="text-xs border border-amber text-amber font-bold px-4 py-1.5 rounded hover:bg-amber/10 transition-colors disabled:opacity-40"
-                >{battleSubmitting ? '...' : 'RECORD'}</button>
-              </form>
-            )}
-
-            {isOnline && !myBattleRecord?.noBattles && !battleRecorded && (
-              <button
-                onClick={handleNoBattles}
-                className="text-xs text-muted border border-muted/30 rounded px-3 py-1.5 hover:text-pip hover:border-pip transition-colors"
-              >NO BATTLES THIS ROUND</button>
-            )}
-
-            {myRecordedBattles.length > 0 && (
-              <div className="space-y-1 pt-1 border-t border-pip-dim/20">
-                <span className="text-muted text-xs tracking-wider">RECORDED THIS ROUND:</span>
-                {myRecordedBattles.map((m, i) => {
-                  const opp = displayPlayers.find(p => p.userId === m.opponentId)
-                  return (
-                    <div key={i} className="flex items-center gap-2">
-                      <span className={`text-xs font-bold ${m.result === 'win' ? 'text-pip' : m.result === 'loss' ? 'text-danger' : 'text-amber'}`}>
-                        {m.result.toUpperCase()} vs {opp?.username ?? 'Opponent'}
-                      </span>
-                      {isOnline && (
-                        <button
-                          type="button"
-                          onClick={() => handleRemoveBattle(i)}
-                          className="text-muted hover:text-danger transition-colors p-0.5 rounded hover:bg-danger/10"
-                          title="Remove this battle record"
-                        >
-                          <X size={12} />
-                        </button>
-                      )}
-                    </div>
-                  )
-                })}
-              </div>
-            )}
-          </div>
-        </div>
+        <MatchTab
+          opponentRows={opponentChoices}
+          isOnline={isOnline}
+          activeBattle={state?.activeBattle ?? null}
+          saveActiveBattle={saveActiveBattle}
+          currentUserId={user?.id ?? 'solo-local'}
+          battlePage={battlePage}
+        />
       )}
 
       {/* ── OBJECTIVES TAB ── */}
