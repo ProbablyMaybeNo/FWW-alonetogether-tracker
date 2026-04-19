@@ -42,6 +42,7 @@ export function defaultActiveBattle() {
     log: [],
     outcome: {},
     endedAt: null,
+    postBattleAppliedBy: {},
   }
 }
 
@@ -76,6 +77,10 @@ export function normalizeActiveBattle(raw) {
     turnHistory: Array.isArray(raw.turnHistory) ? raw.turnHistory : [],
     log: Array.isArray(raw.log) ? raw.log : [],
     outcome: (raw.outcome && typeof raw.outcome === 'object' && !Array.isArray(raw.outcome)) ? raw.outcome : {},
+    postBattleAppliedBy:
+      raw.postBattleAppliedBy && typeof raw.postBattleAppliedBy === 'object' && !Array.isArray(raw.postBattleAppliedBy)
+        ? raw.postBattleAppliedBy
+        : {},
   }
 }
 

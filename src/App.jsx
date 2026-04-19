@@ -13,10 +13,24 @@ import LoginPage from './components/auth/LoginPage'
 import CampaignDirectory from './components/auth/CampaignDirectory'
 import OnboardingTour, { isTourComplete } from './components/onboarding/OnboardingTour'
 import LiveBattleTracker from './components/battles/LiveBattleTracker'
+import PostBattleSummary from './components/battles/PostBattleSummary'
 
 function AppContent({ campaignId, onLeaveCampaign }) {
   const [activeTab, setActiveTab] = useState('campaign')
-  const { state, setState, exportData, importData, syncing, sharedState, saveActiveBattle, userId: campaignUserId } = useCampaign()
+  const {
+    state,
+    setState,
+    exportData,
+    importData,
+    syncing,
+    sharedState,
+    saveActiveBattle,
+    userId: campaignUserId,
+    updateShared,
+    saveCampaignBattles,
+    saveCampaignNarratives,
+    isOnline,
+  } = useCampaign()
   const { user: authUser } = useAuth()
   const settings = state?.settings ?? {}
   const fileRef = useRef(null)
@@ -170,6 +184,23 @@ function AppContent({ campaignId, onLeaveCampaign }) {
           currentUserId={uid}
           saveActiveBattle={saveActiveBattle}
           roster={state?.roster ?? []}
+        />
+      )}
+
+      {activeBattle?.status === 'ended' && (
+        <PostBattleSummary
+          campaignId={campaignId}
+          activeBattle={activeBattle}
+          currentUserId={uid}
+          saveActiveBattle={saveActiveBattle}
+          setState={setState}
+          updateShared={updateShared}
+          saveCampaignBattles={saveCampaignBattles}
+          saveCampaignNarratives={saveCampaignNarratives}
+          sharedState={sharedState}
+          state={state}
+          isOnline={!!isOnline}
+          onNavigateBattlesTab={() => setActiveTab('battles')}
         />
       )}
     </div>

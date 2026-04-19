@@ -60,7 +60,6 @@ export default function LiveBattleTracker({
   const [lootSearch, setLootSearch] = useState('')
   const [lootPickId, setLootPickId] = useState(null)
   const [endOpen, setEndOpen] = useState(false)
-  const [outcome, setOutcome] = useState('major_victory')
   const [pendingWasteland, setPendingWasteland] = useState(null)
   const [assignTarget, setAssignTarget] = useState('tray')
 
@@ -282,19 +281,17 @@ export default function LiveBattleTracker({
   }
 
   function confirmEndBattle() {
-    const prevOutcome = (ab.outcome && typeof ab.outcome === 'object') ? ab.outcome : {}
     patch({
       ...ab,
       status: 'ended',
       endedAt: new Date().toISOString(),
-      outcome: { ...prevOutcome, [currentUserId]: outcome },
       log: [
         ...(ab.log || []),
         {
           turn: ab.turn || 1,
           timestamp: new Date().toISOString(),
           userId: currentUserId,
-          event: `Battle ended (${outcome})`,
+          event: 'Battle ended — report your outcome',
         },
       ],
     })
@@ -655,16 +652,7 @@ export default function LiveBattleTracker({
         <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/70 p-4" role="dialog">
           <div className="bg-panel border border-danger/50 rounded-lg max-w-md w-full p-4 space-y-4">
             <p className="text-danger font-bold">End the battle?</p>
-            <label className="block text-xs text-muted space-y-1">
-              Your outcome
-              <select className="w-full min-h-[44px] bg-terminal border rounded px-2" value={outcome} onChange={e => setOutcome(e.target.value)}>
-                <option value="major_victory">Major Victory</option>
-                <option value="minor_victory">Minor Victory</option>
-                <option value="draw">Draw</option>
-                <option value="loss">Loss</option>
-                <option value="na">N/A</option>
-              </select>
-            </label>
+            <p className="text-xs text-muted">After this, each player reports their outcome on the summary screen.</p>
             <div className="flex gap-2">
               <button type="button" className="flex-1 min-h-[44px] border border-muted rounded text-xs" onClick={() => setEndOpen(false)}>
                 CANCEL
