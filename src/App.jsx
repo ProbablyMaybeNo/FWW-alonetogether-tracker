@@ -210,17 +210,18 @@ function AppContent({ campaignId, onLeaveCampaign }) {
 function AuthGate() {
   const { user, loading, isSupabaseConfigured } = useAuth()
   const [soloMode, setSoloMode] = useState(false)
-  const [campaignId, setCampaignId] = useState(() => {
-    try {
-      const stored = localStorage.getItem('fww-last-campaign')
-      if (stored) return JSON.parse(stored).id ?? null
-    } catch { /* ignore */ }
-    return null
-  })
+  const [campaignId, setCampaignId] = useState(null)
 
   useEffect(() => {
-    if (!user) setCampaignId(null)
-  }, [user])
+    if (!user) {
+      setCampaignId(null)
+      return
+    }
+    try {
+      const stored = localStorage.getItem('fww-last-campaign')
+      if (stored) setCampaignId(JSON.parse(stored).id ?? null)
+    } catch { /* ignore */ }
+  }, [user?.id])
 
   if (!isSupabaseConfigured || soloMode) {
     return (
