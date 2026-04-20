@@ -24,10 +24,10 @@
   --color-danger-dim: #4a0f0f;
   --color-danger-glow: #ff3c3c30;
 
-  /* Neon cyan/blue — matched to pip brightness */
-  --color-info: #00e5ff;
-  --color-info-dim: #003844;
-  --color-info-glow: rgba(0, 229, 255, 0.45);
+  /* Info — white (Stranger cards, info elements) */
+  --color-info: #ffffff;
+  --color-info-dim: #1a1a1a;
+  --color-info-glow: rgba(255, 255, 255, 0.25);
 
   /* Label green — medium-dim for hierarchy between pip and dim */
   --color-pip-label: #4db87a;
@@ -65,8 +65,8 @@
   --color-panel-light: #192019;
   --color-panel-alt: #161d16;
 
-  /* Secondary/descriptive text — neon cyan */
-  --color-muted: #00e5ff;
+  /* Secondary/descriptive text — white */
+  --color-muted: #ffffff;
   /* Dim — only for truly unavailable/disabled content */
   --color-dim: #006633;
 
@@ -176,14 +176,10 @@ button {
     text-shadow: 0 0 8px rgba(255, 215, 0, 0.7), 0 0 2px rgba(255, 215, 0, 0.4);
   }
 
-  /* Glowing terminal text — info/cyan */
+  /* text-info — white (same as title, used for Stranger cards and info elements) */
   .text-info {
-    text-shadow: 0 0 8px rgba(0, 229, 255, 0.65), 0 0 2px rgba(0, 229, 255, 0.35);
-  }
-
-  /* Secondary/descriptive text — softer cyan glow than text-info */
-  .text-muted {
-    text-shadow: 0 0 6px rgba(0, 229, 255, 0.3);
+    color: #ffffff;
+    text-shadow: none;
   }
 
   /* Deck identity text colors */
