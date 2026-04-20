@@ -1,5 +1,5 @@
 import { useState, useMemo } from 'react'
-import { Shuffle, ChevronDown, ChevronUp } from 'lucide-react'
+import { Shuffle } from 'lucide-react'
 import { shuffleIndices } from '../../utils/inhabitantsState'
 import { buildShuffledIndexPile } from '../../utils/battlePageState'
 import { inferFactionFromCard, cardSearchBlob, getCardBodyText } from '../../utils/battleDeckCardUtils'
@@ -23,7 +23,7 @@ export default function BattleDeckPanel({ title, deckKey, cards, battlePage, pat
   const [pendingIndex, setPendingIndex] = useState(null)
   const [filterText, setFilterText] = useState('')
   const [factionFilter, setFactionFilter] = useState('')
-  const [expanded, setExpanded] = useState(() => new Set())
+  const [expanded, setExpanded] = useState(() => new Set()) // unused until card body data exists
   const [selectedIndices, setSelectedIndices] = useState(() => new Set(cards.map((_, i) => i)))
   const [presetName, setPresetName] = useState('')
   const [randomN, setRandomN] = useState(10)
@@ -192,15 +192,6 @@ export default function BattleDeckPanel({ title, deckKey, cards, battlePage, pat
 
   const presetNames = Object.keys(battlePage.deckPresets?.[deckKey] || {}).sort()
 
-  function toggleExpanded(idx) {
-    setExpanded(prev => {
-      const next = new Set(prev)
-      if (next.has(idx)) next.delete(idx)
-      else next.add(idx)
-      return next
-    })
-  }
-
   const pendingCard = pendingIndex != null ? cards[pendingIndex] : null
   const selectedInFilter = [...selectedIndices].filter(i => filteredIndexSet.has(i)).length
   const buildLocked = !isEmpty
@@ -302,37 +293,22 @@ export default function BattleDeckPanel({ title, deckKey, cards, battlePage, pat
           </div>
           <div className="max-h-[min(52vh,28rem)] overflow-y-auto space-y-1 pr-0.5">
             {filteredRows.map(row => {
-              const isOpen = expanded.has(row.idx)
               const ps = buildLocked ? pileStatus(row.idx) : null
               return (
                 <div
                   key={row.idx}
-                  className="border border-pip-dim/35 rounded bg-panel-dark/80 overflow-hidden"
+                  className="flex items-center gap-2 px-2 py-2 border border-pip-dim/35 rounded bg-panel-dark/80 text-xs"
                 >
-                  <button
-                    type="button"
-                    onClick={() => toggleExpanded(row.idx)}
-                    className="w-full flex items-center gap-2 px-2 py-2 text-left"
-                  >
-                    {ps && (
-                      <span
-                        className={`w-1.5 h-1.5 rounded-full shrink-0 ${
-                          ps === 'draw' ? 'bg-pip' : 'bg-dim'
-                        }`}
-                        title={ps === 'draw' ? 'In draw pile' : 'Discarded'}
-                      />
-                    )}
-                    <span className={`text-pip text-xs font-bold flex-1 min-w-0 ${ps === 'discard' ? 'line-through opacity-60' : ''}`}>{row.name}</span>
-                    <span className={`text-xs px-1.5 py-0.5 rounded border shrink-0 ${badge.className}`}>
-                      {badge.label}/{row.faction}
-                    </span>
-                    {isOpen ? <ChevronUp size={14} className="text-muted shrink-0" /> : <ChevronDown size={14} className="text-muted shrink-0" />}
-                  </button>
-                  {isOpen && (
-                    <div className="px-2 pb-2 pt-0 border-t border-pip-dim/25 text-xs text-pip/90 whitespace-pre-wrap">
-                      {row.body}
-                    </div>
+                  {ps && (
+                    <span
+                      className={`w-1.5 h-1.5 rounded-full shrink-0 ${ps === 'draw' ? 'bg-pip' : 'bg-dim'}`}
+                      title={ps === 'draw' ? 'In draw pile' : 'Discarded'}
+                    />
                   )}
+                  <span className={`text-pip font-bold flex-1 min-w-0 ${ps === 'discard' ? 'line-through opacity-60' : ''}`}>{row.name}</span>
+                  <span className={`px-1.5 py-0.5 rounded border shrink-0 ${badge.className}`}>
+                    {badge.label}/{row.faction}
+                  </span>
                 </div>
               )
             })}
