@@ -308,6 +308,17 @@ export default function LiveBattleTracker({
     })
   }
 
+  function adjustVictoryPoints(delta) {
+    const p = ab.participants?.[currentUserId] || {}
+    patch({
+      ...ab,
+      participants: {
+        ...ab.participants,
+        [currentUserId]: { ...p, victoryPoints: Math.max(0, (p.victoryPoints || 0) + delta) },
+      },
+    })
+  }
+
   function confirmEndBattle() {
     patch({
       ...ab,
@@ -331,6 +342,10 @@ export default function LiveBattleTracker({
 
   const myEntries = ab.battleRosters?.[currentUserId]?.entries || []
   const myPart = ab.participants?.[currentUserId] || { units: {}, itemTray: [] }
+
+  const rosterBuildParticipants = ab.setup?.participantUserIds ?? [currentUserId]
+  const allRostersReady = rosterBuildParticipants.length > 0 &&
+    rosterBuildParticipants.every(uid => ab.readyFlags[uid] === 'roster_ready')
 
   const wastelandDs = ab.deckStates?.wastelandItems || { drawPile: [], discardPile: [], lastDrawn: null }
 
@@ -567,6 +582,25 @@ export default function LiveBattleTracker({
       </button>
       <div className={`space-y-2 ${mobileYour ? 'block' : 'hidden'} md:block`}>
         <h3 className="hidden md:block text-title text-xs font-bold tracking-widest border-b border-pip/30 pb-1">YOUR ROSTER</h3>
+
+        {/* Victory Counter */}
+        <div className="border border-amber/40 rounded-lg p-2 flex items-center justify-between gap-2 bg-amber/5">
+          <span className="text-amber text-xs font-bold tracking-wider">VICTORY PTS</span>
+          <div className="flex items-center gap-2">
+            <button
+              type="button"
+              onClick={() => adjustVictoryPoints(-1)}
+              className="w-8 h-8 border border-amber/50 text-amber rounded font-bold text-base flex items-center justify-center hover:bg-amber/10 min-h-[32px]"
+            >−</button>
+            <span className="text-amber font-bold text-xl w-8 text-center">{myPart.victoryPoints ?? 0}</span>
+            <button
+              type="button"
+              onClick={() => adjustVictoryPoints(1)}
+              className="w-8 h-8 border border-amber/50 text-amber rounded font-bold text-base flex items-center justify-center hover:bg-amber/10 min-h-[32px]"
+            >+</button>
+          </div>
+        </div>
+
         {myEntries.map(e => renderUnitCard(currentUserId, e, false))}
         <div className="text-xs border border-pip/20 rounded p-2 space-y-1">
           <p className="text-muted">Item tray</p>
@@ -614,10 +648,25 @@ export default function LiveBattleTracker({
         {opponentIds.length === 0 && <p className="text-muted text-xs">No opponents listed.</p>}
         {opponentIds.map(oid => {
           const entries = ab.battleRosters?.[oid]?.entries || []
+          const oppVP = ab.participants?.[oid]?.victoryPoints ?? 0
+          const oppReady = ab.readyFlags[oid] === 'roster_ready'
           return (
             <div key={oid} className="space-y-2">
               <p className="text-xs text-muted">Player {oid.slice(0, 8)}…</p>
-              {entries.map(e => renderUnitCard(oid, e, true))}
+
+              {/* Opponent Victory Counter — read-only */}
+              <div className="border border-white/20 rounded-lg p-2 flex items-center justify-between bg-white/5">
+                <span className="text-muted text-xs font-bold tracking-wider">VICTORY PTS</span>
+                <span className="text-title font-bold text-xl">{oppVP}</span>
+              </div>
+
+              {ab.status === 'roster_build' && !oppReady ? (
+                <div className="border border-muted/20 rounded p-3 text-center text-xs text-muted animate-pulse">
+                  Waiting for roster…
+                </div>
+              ) : (
+                entries.map(e => renderUnitCard(oid, e, true))
+              )}
             </div>
           )
         })}
@@ -630,15 +679,45 @@ export default function LiveBattleTracker({
 
   const centerColumn = (
     <div className="space-y-3 min-w-0 order-2 md:order-none">
+      {ab.status === 'roster_build' && (
+        <div className="border border-amber/40 rounded-lg p-4 space-y-3 bg-amber/5">
+          <p className="text-title text-xs font-bold tracking-widest text-center">ROSTER STATUS</p>
+          <div className="flex gap-2 justify-center flex-wrap">
+            {rosterBuildParticipants.map(uid => {
+              const ready = ab.readyFlags[uid] === 'roster_ready'
+              return (
+                <div
+                  key={uid}
+                  className={`px-3 py-2 rounded text-xs border font-bold ${
+                    ready ? 'border-pip bg-pip-dim/30 text-pip' : 'border-muted/30 text-muted/60'
+                  }`}
+                >
+                  {uid === currentUserId ? 'YOU' : 'OPPONENT'} {ready ? '✓ READY' : '…'}
+                </div>
+              )
+            })}
+          </div>
+          <button
+            onClick={beginBattle}
+            disabled={!allRostersReady}
+            className="w-full py-4 rounded-lg font-bold tracking-[0.2em] text-sm border-2 border-amber/80 bg-amber/15 text-amber shadow-[0_0_24px_var(--color-amber-glow)] disabled:opacity-30 disabled:shadow-none disabled:cursor-not-allowed flex items-center justify-center gap-2 transition-all"
+          >
+            <Swords size={18} />
+            {allRostersReady ? 'BEGIN BATTLE' : 'WAITING FOR ROSTERS…'}
+          </button>
+        </div>
+      )}
       {decksBlock}
       {battleLogPanel}
-      <button
-        type="button"
-        className="w-full min-h-[48px] rounded-lg border-2 border-danger bg-danger/20 text-danger font-bold tracking-widest text-sm shadow-[0_0_20px_rgba(239,68,68,0.35)] flex items-center justify-center gap-2"
-        onClick={() => setEndOpen(true)}
-      >
-        <Skull size={18} /> END BATTLE
-      </button>
+      {ab.status === 'active' && (
+        <button
+          type="button"
+          className="w-full min-h-[48px] rounded-lg border-2 border-danger bg-danger/20 text-danger font-bold tracking-widest text-sm shadow-[0_0_20px_rgba(239,68,68,0.35)] flex items-center justify-center gap-2"
+          onClick={() => setEndOpen(true)}
+        >
+          <Skull size={18} /> END BATTLE
+        </button>
+      )}
     </div>
   )
 
@@ -655,60 +734,23 @@ export default function LiveBattleTracker({
     )
   }
 
-  if (ab.status === 'roster_build') {
-    const mySubmitted = !!ab.battleRosters[currentUserId]
-    const allParticipants = ab.setup?.participantUserIds ?? [currentUserId]
-    const allReady = allParticipants.length > 0 &&
-      allParticipants.every(uid => ab.readyFlags[uid] === 'roster_ready')
-
+  if (ab.status === 'roster_build' && !ab.battleRosters[currentUserId]) {
     return (
       <div
         className="fixed inset-0 z-50 flex flex-col bg-[var(--color-terminal)] text-pip"
         style={{ fontFamily: 'var(--font-family-mono)' }}
       >
         {header}
-        {!mySubmitted ? (
-          <RosterBuildPhase
-            activeBattle={activeBattleProp}
-            currentUserId={currentUserId}
-            roster={roster}
-            saveActiveBattle={saveActiveBattle}
-            state={state}
-            setState={setState}
-            campaignId={campaignId}
-            isOnline={isOnline}
-          />
-        ) : (
-          <div className="flex-1 flex flex-col items-center justify-center gap-6 p-6">
-            <p className="text-title text-sm font-bold tracking-widest">WAITING FOR ALL ROSTERS</p>
-            <div className="flex gap-3 flex-wrap justify-center">
-              {allParticipants.map(uid => {
-                const ready = ab.readyFlags[uid] === 'roster_ready'
-                return (
-                  <div
-                    key={uid}
-                    className={`px-4 py-3 rounded-lg border text-xs font-bold tracking-wider ${
-                      ready
-                        ? 'border-pip bg-pip-dim/30 text-pip'
-                        : 'border-muted/30 text-muted/60'
-                    }`}
-                  >
-                    {uid === currentUserId ? 'YOU' : 'OPPONENT'}
-                    <span className="ml-2">{ready ? '✓ READY' : '…'}</span>
-                  </div>
-                )
-              })}
-            </div>
-            <button
-              onClick={beginBattle}
-              disabled={!allReady}
-              className="mt-4 px-8 py-4 rounded-lg font-bold tracking-[0.2em] text-sm border-2 border-amber/80 bg-amber/15 text-amber shadow-[0_0_24px_var(--color-amber-glow)] disabled:opacity-30 disabled:shadow-none disabled:cursor-not-allowed flex items-center gap-2 transition-all"
-            >
-              <Swords size={18} />
-              {allReady ? 'BEGIN BATTLE' : 'WAITING FOR ROSTER…'}
-            </button>
-          </div>
-        )}
+        <RosterBuildPhase
+          activeBattle={activeBattleProp}
+          currentUserId={currentUserId}
+          roster={roster}
+          saveActiveBattle={saveActiveBattle}
+          state={state}
+          setState={setState}
+          campaignId={campaignId}
+          isOnline={isOnline}
+        />
         {cancelConfirm && (
           <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/70 p-4">
             <div className="bg-panel border border-danger/50 rounded-lg max-w-sm w-full p-5 space-y-4">
