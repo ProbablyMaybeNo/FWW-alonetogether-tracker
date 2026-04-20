@@ -26,22 +26,22 @@ function calcArmorBudget(roster) {
 const ABSENT_FATES = ['Delayed', 'Lost', 'Captured', 'Dead', 'Pending']
 
 const EQUIP_TYPE_COLOR = {
-  'Armor':           { border: 'border-blue-400/50',        text: 'text-blue-400'        },
-  'Heavy Weapon':    { border: 'border-danger/50',           text: 'text-danger'          },
-  'Melee':           { border: 'border-amber/50',            text: 'text-amber'           },
-  'Rifle':           { border: 'border-pip/50',              text: 'text-pip'             },
-  'Pistol':          { border: 'border-pip/40',              text: 'text-pip/80'          },
-  'Grenade':         { border: 'border-orange-400/50',       text: 'text-orange-400'      },
-  'Mine':            { border: 'border-orange-400/40',       text: 'text-orange-400/80'   },
-  'Chem':            { border: 'border-purple-400/50',       text: 'text-purple-400'      },
-  'Drink':           { border: 'border-cyan-400/40',         text: 'text-cyan-400'        },
-  'Food':            { border: 'border-green-400/40',        text: 'text-green-400'       },
-  'Clothing':        { border: 'border-pink-400/40',         text: 'text-pink-400'        },
-  'Mod':             { border: 'border-amber/40',            text: 'text-amber/80'        },
-  'Utility':         { border: 'border-muted/40',            text: 'text-muted'           },
-  'Leader':          { border: 'border-amber/60',            text: 'text-amber'           },
-  'Perk':            { border: 'border-amber/50',            text: 'text-amber/90'        },
-  'Automatron Part': { border: 'border-gray-400/40',         text: 'text-gray-400'        },
+  'Armor':           { border: 'border-white/50',            text: 'text-title'           },
+  'Heavy Weapon':    { border: 'border-danger/60',           text: 'text-title'           },
+  'Melee':           { border: 'border-amber/60',            text: 'text-title'           },
+  'Rifle':           { border: 'border-amber/50',            text: 'text-title'           },
+  'Pistol':          { border: 'border-amber/40',            text: 'text-title'           },
+  'Grenade':         { border: 'border-danger/50',           text: 'text-title'           },
+  'Mine':            { border: 'border-danger/40',           text: 'text-title'           },
+  'Chem':            { border: 'border-purple/50',           text: 'text-title'           },
+  'Drink':           { border: 'border-pip/50',              text: 'text-title'           },
+  'Food':            { border: 'border-pip/40',              text: 'text-title'           },
+  'Clothing':        { border: 'border-white/35',            text: 'text-title'           },
+  'Mod':             { border: 'border-amber/45',            text: 'text-title'           },
+  'Utility':         { border: 'border-white/30',            text: 'text-title'           },
+  'Leader':          { border: 'border-amber/70',            text: 'text-title'           },
+  'Perk':            { border: 'border-amber/55',            text: 'text-title'           },
+  'Automatron Part': { border: 'border-white/30',            text: 'text-title'           },
 }
 
 function mobileFateBadgeClass(fate) {
@@ -441,12 +441,12 @@ export default function RosterPage() {
                         <div className="text-xs text-amber tracking-widest font-bold border-b border-pip-dim/20 pb-1">EQUIPMENT</div>
                         <div className="space-y-1">
                           {items.map((item, idx) => {
-                            const ec = EQUIP_TYPE_COLOR[item.subType] || { text: 'text-muted' }
+                            const ec = EQUIP_TYPE_COLOR[item.subType] || { border: 'border-white/25', text: 'text-title' }
                             return (
-                              <div key={idx} className="flex items-center justify-between border border-pip-dim/30 rounded px-3 py-1.5 bg-panel">
-                                <span className="text-pip text-xs font-bold">{item.name}</span>
+                              <div key={idx} className={`flex items-center justify-between border-2 ${ec.border} rounded px-3 py-1.5 bg-panel`}>
+                                <span className="text-title text-xs font-bold">{item.name}</span>
                                 <div className="flex items-center gap-3">
-                                  <span className={`text-xs ${ec.text}`}>{item.subType}</span>
+                                  <span className="text-muted text-xs">{item.subType}</span>
                                   <span className="text-amber text-xs font-bold">{item.caps}c</span>
                                   <button onClick={() => handleRemoveItem(unit.slotId, idx)} className="text-muted hover:text-danger transition-colors"><Trash2 size={12} /></button>
                                 </div>
@@ -611,12 +611,12 @@ export default function RosterPage() {
                             <span className="text-xs text-amber font-bold">{itemCaps > 0 ? `${itemCaps}c equipped` : ''}</span>
                           </div>
                           {items.map((item, idx) => {
-                            const ec = EQUIP_TYPE_COLOR[item.subType] || { text: 'text-muted' }
+                            const ec = EQUIP_TYPE_COLOR[item.subType] || { border: 'border-white/25', text: 'text-title' }
                             return (
-                              <div key={idx} className="flex items-center justify-between border border-pip-dim/30 rounded px-3 py-2 bg-panel">
-                                <span className="text-pip text-sm font-bold flex-1">{item.name}</span>
+                              <div key={idx} className={`flex items-center justify-between border-2 ${ec.border} rounded px-3 py-2 bg-panel`}>
+                                <span className="text-title text-sm font-bold flex-1">{item.name}</span>
                                 <div className="flex items-center gap-3 shrink-0">
-                                  <span className={`text-xs ${ec.text}`}>{item.subType}</span>
+                                  <span className="text-muted text-xs">{item.subType}</span>
                                   <span className="text-amber text-sm font-bold">{item.caps}c</span>
                                   <button onClick={() => handleRemoveItem(unit.slotId, idx)} className="text-muted hover:text-danger transition-colors"><Trash2 size={13} /></button>
                                 </div>

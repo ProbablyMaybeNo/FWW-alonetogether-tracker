@@ -924,8 +924,8 @@ function StructuresPanel({
       )}
 
       {/* Item Pool Panel — above structure list */}
-      <div className="space-y-3 mt-4">
-        <h3 className="text-title text-xs font-bold tracking-widest border-b border-pip-dim/30 pb-1">POOLS</h3>
+      <div className="border-2 border-white/20 rounded-xl p-3 space-y-3 mt-4">
+        <h3 className="text-title text-xs font-bold tracking-widest border-b border-white/20 pb-1">POOLS</h3>
         <ItemPoolPanel structures={structures} />
       </div>
 
@@ -1967,8 +1967,8 @@ function SettlementDeckPanel({ state, setState, structures, deckFilter, setDeckF
 
   return (
     <div className="space-y-4">
-      <div className="space-y-3">
-        <h3 className="text-title text-xs font-bold tracking-widest border-b border-pip-dim/30 pb-1">DECKS</h3>
+      <div className="border-2 border-white/20 rounded-xl p-3 space-y-3">
+        <h3 className="text-title text-xs font-bold tracking-widest border-b border-white/20 pb-1">DECKS</h3>
 
         <div className="border border-deck-item/50 rounded-lg bg-deck-item-dim/20 p-3 space-y-3">
       {/* Header — filtered subtype deck for structure equipment draws */}
@@ -2172,8 +2172,8 @@ function SettlementDeckPanel({ state, setState, structures, deckFilter, setDeckF
 
       </div>{/* end DECKS section */}
 
-      <div className="space-y-3 mt-4">
-        <h3 className="text-title text-xs font-bold tracking-widest border-b border-pip-dim/30 pb-1">POOLS</h3>
+      <div className="border-2 border-white/20 rounded-xl p-3 space-y-3 mt-4">
+        <h3 className="text-title text-xs font-bold tracking-widest border-b border-white/20 pb-1">POOLS</h3>
 
       {/* ── RECOVERY POOL ── */}
       <div className="border rounded bg-panel mt-2" style={{ borderColor: 'rgba(255,145,0,0.55)', boxShadow: '0 0 10px rgba(255,145,0,0.15)' }}>
