@@ -40,7 +40,7 @@ export default function AccountModal({ onClose }) {
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4" style={{ background: 'rgba(0,0,0,0.85)' }}>
       <div className="w-full max-w-sm bg-panel border border-pip-mid/50 rounded font-mono" style={{ boxShadow: '0 0 30px var(--color-pip-glow)' }}>
         <div className="flex items-center justify-between px-4 py-3 border-b border-pip-mid/30">
-          <span className="text-pip text-xs font-bold tracking-widest">ACCOUNT</span>
+          <span className="text-title text-xs font-bold tracking-widest">ACCOUNT</span>
           <button onClick={onClose} className="text-muted hover:text-pip transition-colors"><X size={14} /></button>
         </div>
         <div className="p-5 space-y-4">
@@ -67,7 +67,7 @@ export default function AccountModal({ onClose }) {
               </button>
             ) : (
               <form onSubmit={handleChangePw} className="space-y-2">
-                <div className="text-pip text-xs font-bold tracking-wider mb-2">CHANGE PASSWORD</div>
+                <div className="text-title text-xs font-bold tracking-wider mb-2">CHANGE PASSWORD</div>
                 <input type="password" value={pw} onChange={e => setPw(e.target.value)} placeholder="New password" className="w-full text-sm py-2 px-3" autoFocus />
                 <input type="password" value={pwConfirm} onChange={e => setPwConfirm(e.target.value)} placeholder="Confirm password" className="w-full text-sm py-2 px-3" />
                 {pwError && <div className="text-danger text-xs">{pwError}</div>}

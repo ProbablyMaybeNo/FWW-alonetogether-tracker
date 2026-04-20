@@ -166,7 +166,7 @@ function AppContent({ campaignId, onLeaveCampaign }) {
       <TabShell activeTab={activeTab} onTabChange={setActiveTab} settings={settings} />
 
       <main className="flex-1 overflow-y-auto pb-16 md:pb-0">
-        {activeTab === 'campaign'   && <CampaignPage campaignId={campaignId} />}
+        {activeTab === 'campaign'   && <CampaignPage campaignId={campaignId} onTabChange={setActiveTab} />}
         {activeTab === 'player'     && <PlayerPage onTabChange={setActiveTab} />}
         {activeTab === 'roster'     && <RosterPage />}
         {activeTab === 'settlement' && <SettlementPage />}

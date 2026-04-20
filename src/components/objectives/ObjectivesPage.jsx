@@ -36,7 +36,7 @@ function QuestCardViewer({ cardName, cardId, onClose }) {
         <div className="bg-panel border border-pip rounded p-4 space-y-3">
           {/* Header */}
           <div className="flex items-center justify-between">
-            <span className="text-pip text-xs font-bold tracking-wider uppercase">{cardName}</span>
+            <span className="text-title text-xs font-bold tracking-wider uppercase">{cardName}</span>
             <button onClick={onClose} className="text-pip hover:text-danger p-1"><X size={14} /></button>
           </div>
 
@@ -49,7 +49,7 @@ function QuestCardViewer({ cardName, cardId, onClose }) {
               ) : (
                 <div className="bg-panel-alt border border-amber/30 rounded p-4 min-h-24 space-y-2">
                   {content.backTitle && (
-                    <p className="text-amber text-xs font-bold tracking-wider uppercase">{content.backTitle}</p>
+                    <p className="text-title text-xs font-bold tracking-wider uppercase">{content.backTitle}</p>
                   )}
                   <p className="text-pip text-sm leading-relaxed">{content.backText || '—'}</p>
                 </div>
@@ -87,7 +87,7 @@ function DrawnCardContent({ cardName, cardId }) {
       ) : (
         <div className="bg-panel-alt border border-amber/30 rounded p-3 space-y-1">
           {content.backTitle && (
-            <p className="text-amber text-xs font-bold tracking-wider uppercase">{content.backTitle}</p>
+            <p className="text-title text-xs font-bold tracking-wider uppercase">{content.backTitle}</p>
           )}
           <p className="text-pip text-xs leading-relaxed">{content.backText || '—'}</p>
         </div>
@@ -551,7 +551,7 @@ function QuestCardsPanel() {
         {/* Drawn Card Display */}
         {drawnCard && (
           <div className="border border-amber rounded p-3 bg-amber-dim/5 space-y-2">
-            <div className="text-xs text-amber font-bold tracking-wider">DRAWN CARD</div>
+            <div className="text-xs text-title font-bold tracking-wider">DRAWN CARD</div>
             <div className="text-pip font-bold text-sm">{drawnCard.name}</div>
             {drawnCard.isMultiPart && (
               <div className="text-pip text-xs">

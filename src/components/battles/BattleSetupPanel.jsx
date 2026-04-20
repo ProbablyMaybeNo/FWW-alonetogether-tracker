@@ -93,7 +93,7 @@ export default function BattleSetupPanel({
         <button onClick={onClose} className="text-muted hover:text-pip transition-colors p-1 min-h-[44px] min-w-[44px] flex items-center justify-center">
           <ChevronLeft size={16} />
         </button>
-        <h2 className="text-amber text-xs font-bold tracking-widest flex-1">
+        <h2 className="text-title text-xs font-bold tracking-widest flex-1">
           BATTLE SETUP
           {!isOffline && targetPlayer && (
             <span className="text-pip ml-2">vs {targetPlayer.username}</span>
@@ -102,7 +102,7 @@ export default function BattleSetupPanel({
       </div>
 
       <div className="border border-pip-dim/40 rounded-lg bg-panel-light p-3 space-y-2 text-xs">
-        <h3 className="text-amber font-bold tracking-wider">SCENARIO</h3>
+        <h3 className="text-title font-bold tracking-wider">SCENARIO</h3>
         <div className="grid sm:grid-cols-2 gap-2">
           <label className="space-y-0.5">
             <span className="text-muted">Environment</span>
@@ -136,7 +136,7 @@ export default function BattleSetupPanel({
       </div>
 
       <div className="border border-pip-dim/40 rounded-lg bg-panel-light p-3 space-y-2 text-xs">
-        <h3 className="text-amber font-bold tracking-wider">CONFIGURATION</h3>
+        <h3 className="text-title font-bold tracking-wider">CONFIGURATION</h3>
         <div className="flex flex-wrap gap-3">
           <label className="space-y-0.5">
             <span className="text-muted">Caps limit</span>
@@ -169,7 +169,7 @@ export default function BattleSetupPanel({
       </div>
 
       <div className="border border-pip-dim/40 rounded-lg bg-panel-light p-3 space-y-2 text-xs">
-        <h3 className="text-amber font-bold tracking-wider">DECKS IN PLAY</h3>
+        <h3 className="text-title font-bold tracking-wider">DECKS IN PLAY</h3>
         <div className="flex flex-wrap gap-4">
           {['creature', 'stranger', 'danger', 'explore', 'event'].map(key => (
             <label key={key} className="flex items-center gap-1.5 cursor-pointer min-h-[44px]">

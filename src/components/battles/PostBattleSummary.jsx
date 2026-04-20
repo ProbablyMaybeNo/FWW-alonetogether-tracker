@@ -76,6 +76,33 @@ export default function PostBattleSummary({
     }
   }, [pendingNav, activeBattleProp, onNavigateBattlesTab])
 
+  useEffect(() => {
+    if (!isOnline || !campaignId || !supabase) {
+      setPlayerNames({ [currentUserId]: state?.player?.name || 'You' })
+      return
+    }
+    let cancelled = false
+    async function load() {
+      const { data: playerData } = await supabase
+        .from('player_data')
+        .select('user_id, player_info')
+        .eq('campaign_id', campaignId)
+      if (cancelled) return
+      const m = {}
+      ;(playerData || []).forEach(pd => {
+        m[pd.user_id] = pd.player_info?.name || 'Player'
+      })
+      setPlayerNames(m)
+    }
+    load()
+    return () => { cancelled = true }
+  }, [campaignId, isOnline, currentUserId, state?.player?.name])
+
+  const displayName = useCallback((uid) => {
+    if (uid === currentUserId) return state?.player?.name || playerNames[uid] || 'You'
+    return playerNames[uid] || `Player ${String(uid).slice(0, 8)}…`
+  }, [currentUserId, state?.player?.name, playerNames])
+
   const finalizeBattleCampaign = useCallback(async (snap) => {
     const abSnap = normalizeActiveBattle(snap)
     if (abSnap.status !== 'ended') return
@@ -157,33 +184,6 @@ export default function PostBattleSummary({
     })()
     return () => { cancelled = true }
   }, [iAmHost, activeBattleProp, finalizeBattleCampaign])
-
-  useEffect(() => {
-    if (!isOnline || !campaignId || !supabase) {
-      setPlayerNames({ [currentUserId]: state?.player?.name || 'You' })
-      return
-    }
-    let cancelled = false
-    async function load() {
-      const { data: playerData } = await supabase
-        .from('player_data')
-        .select('user_id, player_info')
-        .eq('campaign_id', campaignId)
-      if (cancelled) return
-      const m = {}
-      ;(playerData || []).forEach(pd => {
-        m[pd.user_id] = pd.player_info?.name || 'Player'
-      })
-      setPlayerNames(m)
-    }
-    load()
-    return () => { cancelled = true }
-  }, [campaignId, isOnline, currentUserId, state?.player?.name])
-
-  const displayName = useCallback((uid) => {
-    if (uid === currentUserId) return state?.player?.name || playerNames[uid] || 'You'
-    return playerNames[uid] || `Player ${String(uid).slice(0, 8)}…`
-  }, [currentUserId, state?.player?.name, playerNames])
 
   const patchOutcome = (value) => {
     const next = normalizeActiveBattle(activeBattleProp)
@@ -274,7 +274,7 @@ export default function PostBattleSummary({
 
   const outcomePicker = (
     <div className="space-y-4">
-      <h3 className="text-pip font-bold tracking-widest text-center">HOW DID IT GO?</h3>
+      <h3 className="text-title font-bold tracking-widest text-center">HOW DID IT GO?</h3>
       {conflict && (
         <p className="text-amber text-xs border border-amber/40 rounded p-2 bg-amber/10">
           You both picked the same competitive outcome — agree on results and resubmit (each pick again).
@@ -308,7 +308,7 @@ export default function PostBattleSummary({
   const summaryBody = (
     <div className="space-y-4 text-xs">
       <div className="text-center border-b border-pip-dim/40 pb-2">
-        <p className="text-pip font-bold tracking-widest">BATTLE COMPLETE</p>
+        <p className="text-title font-bold tracking-widest">BATTLE COMPLETE</p>
         <p className="text-muted mt-1">
           {scenario?.name || 'Scenario'} | Turn {ab.turn ?? 1}
         </p>

@@ -97,7 +97,7 @@ export default function AppShell({ campaignId, onExport, onImportClick, onLeaveC
         style={{ boxShadow: menuOpen ? '4px 0 24px rgba(0,0,0,0.6)' : 'none' }}
       >
         <div className="flex items-center justify-between px-4 py-3 border-b border-pip-mid/30">
-          <span className="text-pip text-xs font-bold tracking-widest">MENU</span>
+          <span className="text-title text-xs font-bold tracking-widest">MENU</span>
           <button onClick={closeMenu} className="text-pip hover:text-amber transition-colors">
             <X size={14} />
           </button>
@@ -222,7 +222,7 @@ function AddPlayerModal({ campaignId, onClose }) {
           <X size={16} />
         </button>
         <div>
-          <div className="text-pip text-sm font-bold tracking-widest mb-1">INVITE PLAYER</div>
+          <div className="text-title text-sm font-bold tracking-widest mb-1">INVITE PLAYER</div>
           <div className="text-muted text-xs">Share this invite code with a new player</div>
         </div>
 
@@ -262,14 +262,14 @@ function AddPlayerModal({ campaignId, onClose }) {
           <button
             onClick={handleOpenEmail}
             disabled={!email || !joinCode}
-            className="flex-1 py-2 border border-pip text-pip text-xs font-bold tracking-wider rounded hover:bg-pip-dim/20 transition-colors disabled:opacity-40"
+            className="flex-1 py-2 border border-pip text-title text-xs font-bold tracking-wider rounded hover:bg-pip-dim/20 transition-colors disabled:opacity-40"
           >
             OPEN EMAIL
           </button>
           <button
             onClick={handleCopyCode}
             disabled={!joinCode}
-            className="px-4 py-2 border border-amber text-amber text-xs font-bold tracking-wider rounded hover:bg-amber/10 transition-colors disabled:opacity-40"
+            className="px-4 py-2 border border-amber text-title text-xs font-bold tracking-wider rounded hover:bg-amber/10 transition-colors disabled:opacity-40"
           >
             {copied ? 'COPIED!' : 'COPY CODE'}
           </button>

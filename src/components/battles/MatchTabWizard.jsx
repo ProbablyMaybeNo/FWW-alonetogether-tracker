@@ -322,7 +322,7 @@ export default function MatchTabWizard({
   if (blockingActive) {
     return (
       <div className="border border-amber/40 rounded-lg bg-panel p-6 text-center space-y-2">
-        <p className="text-amber text-sm font-bold tracking-wider">BATTLE IN PROGRESS</p>
+        <p className="text-title text-sm font-bold tracking-wider">BATTLE IN PROGRESS</p>
         <p className="text-muted text-xs">Finish or clear this battle before editing match setup.</p>
       </div>
     )
@@ -330,7 +330,7 @@ export default function MatchTabWizard({
 
   const scenarioSummary = (
     <div className="border border-pip-dim/40 rounded-lg bg-panel-light p-3 space-y-1 text-xs">
-      <h3 className="text-amber font-bold tracking-wider">SCENARIO SETUP</h3>
+      <h3 className="text-title font-bold tracking-wider">SCENARIO SETUP</h3>
       <div className="grid sm:grid-cols-2 gap-2">
         <label className="space-y-0.5">
           <span className="text-muted">Environment</span>
@@ -406,7 +406,7 @@ export default function MatchTabWizard({
 
   const configBlock = (
     <div className="border border-pip-dim/40 rounded-lg bg-panel-light p-3 space-y-2 text-xs">
-      <h3 className="text-amber font-bold tracking-wider">BATTLE CONFIGURATION</h3>
+      <h3 className="text-title font-bold tracking-wider">BATTLE CONFIGURATION</h3>
       <div className="flex flex-wrap gap-3">
         <label className="space-y-0.5">
           <span className="text-muted">Points limit</span>
@@ -467,7 +467,7 @@ export default function MatchTabWizard({
   const rosterBlock = (
     <div className="border border-pip-dim/40 rounded-lg bg-panel-light p-3 space-y-3 text-xs">
       <div className="flex flex-wrap gap-2 items-baseline justify-between">
-        <h3 className="text-amber font-bold tracking-wider">BATTLE ROSTER</h3>
+        <h3 className="text-title font-bold tracking-wider">BATTLE ROSTER</h3>
         <div className="text-pip">
           Limit: {pointsLimit} · Used: {totalUsed} · Remaining: {Math.max(0, pointsLimit - totalUsed)}
           {overLimit && <span className="text-danger ml-2 font-bold">OVER LIMIT</span>}
@@ -582,7 +582,7 @@ export default function MatchTabWizard({
 
   const objectivesBlock = (
     <div className="border border-pip-dim/40 rounded-lg bg-panel-light p-3 space-y-2 text-xs">
-      <h3 className="text-amber font-bold tracking-wider">OBJECTIVES & DECKS</h3>
+      <h3 className="text-title font-bold tracking-wider">OBJECTIVES & DECKS</h3>
       <label className="block space-y-0.5">
         <span className="text-muted">Battle objective (optional)</span>
         <select
@@ -638,7 +638,7 @@ export default function MatchTabWizard({
 
   const step1 = (
     <div className="border border-pip-dim/40 rounded-lg bg-panel-light p-3 space-y-2 text-xs">
-      <h3 className="text-amber font-bold tracking-wider">OPPONENTS</h3>
+      <h3 className="text-title font-bold tracking-wider">OPPONENTS</h3>
       <p className="text-muted">Select one or more opponents.</p>
       <div className="flex flex-col gap-2">
         {opponentRows.filter(p => !p.isMe).map(p => (

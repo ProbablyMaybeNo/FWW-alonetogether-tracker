@@ -87,7 +87,7 @@ export default function CampaignModal({ campaignId, onClose, onLeaveCampaign, on
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4" style={{ background: 'rgba(0,0,0,0.85)' }}>
       <div className="w-full max-w-sm bg-panel border border-pip-mid/50 rounded font-mono max-h-[90vh] overflow-y-auto" style={{ boxShadow: '0 0 30px var(--color-pip-glow)' }}>
         <div className="flex items-center justify-between px-4 py-3 border-b border-pip-mid/30">
-          <span className="text-pip text-xs font-bold tracking-widest">CAMPAIGN SETTINGS</span>
+          <span className="text-title text-xs font-bold tracking-widest">CAMPAIGN SETTINGS</span>
           <button onClick={onClose} className="text-muted hover:text-pip transition-colors"><X size={14} /></button>
         </div>
 

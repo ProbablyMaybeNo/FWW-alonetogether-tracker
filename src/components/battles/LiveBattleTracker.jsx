@@ -479,7 +479,7 @@ export default function LiveBattleTracker({
 
   const decksBlock = (
     <section className="border border-pip-dim/30 rounded-lg p-3 space-y-3 bg-panel/40">
-      <h3 className="text-amber text-xs font-bold tracking-widest">DECKS</h3>
+      <h3 className="text-title text-xs font-bold tracking-widest">DECKS</h3>
       <div className="space-y-2">
         {DECKS.map(({ key, label, cards }) => {
           const ds = ab.deckStates?.[key] || { drawPile: [], discardPile: [], lastDrawn: null }
@@ -584,7 +584,7 @@ export default function LiveBattleTracker({
         {mobileYour ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
       </button>
       <div className={`space-y-2 ${mobileYour ? 'block' : 'hidden'} md:block`}>
-        <h3 className="hidden md:block text-pip text-xs font-bold tracking-widest border-b border-pip/30 pb-1">YOUR ROSTER</h3>
+        <h3 className="hidden md:block text-title text-xs font-bold tracking-widest border-b border-pip/30 pb-1">YOUR ROSTER</h3>
         {myEntries.map(e => renderUnitCard(currentUserId, e, false))}
         <div className="text-xs border border-pip/20 rounded p-2 space-y-1">
           <p className="text-muted">Item tray</p>

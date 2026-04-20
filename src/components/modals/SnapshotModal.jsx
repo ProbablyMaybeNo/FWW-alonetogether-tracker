@@ -130,7 +130,7 @@ export default function SnapshotModal({ campaignId, onClose }) {
         {/* Header */}
         <div className="flex items-center justify-between px-5 py-4 border-b border-pip-mid/30 shrink-0">
           <div>
-            <div className="text-pip text-sm font-bold tracking-widest">SAVES</div>
+            <div className="text-title text-sm font-bold tracking-widest">SAVES</div>
             <div className="text-muted text-xs mt-0.5">
               {campaignId ? 'Saves your data + all other players in the campaign' : 'Save your roster & settlement state to restore later'}
             </div>
@@ -155,7 +155,7 @@ export default function SnapshotModal({ campaignId, onClose }) {
             <button
               onClick={handleSave}
               disabled={saving}
-              className="flex items-center gap-2 px-4 py-2 border border-pip text-pip text-xs font-bold tracking-wider rounded hover:bg-pip-dim/20 transition-colors disabled:opacity-50"
+              className="flex items-center gap-2 px-4 py-2 border border-pip text-title text-xs font-bold tracking-wider rounded hover:bg-pip-dim/20 transition-colors disabled:opacity-50"
               style={{ boxShadow: '0 0 6px var(--color-pip-glow)' }}
             >
               <Save size={12} /> {saving ? 'SAVING...' : 'SAVE'}

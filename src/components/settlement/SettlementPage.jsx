@@ -842,27 +842,27 @@ function StructuresPanel({
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 mb-4">
         <div className="border border-pip-mid/60 rounded bg-panel p-2 text-center">
           <Zap size={14} className="mx-auto mb-1 text-pip" />
-          <div className="text-sm font-bold text-pip">{pwrGen - pwrUsed}</div>
+          <div className="text-sm font-bold text-title">{pwrGen - pwrUsed}</div>
           <div className="text-xs text-muted">NET PWR ({pwrGen}/{pwrUsed})</div>
         </div>
         <div className="border border-pip-mid/60 rounded bg-panel p-2 text-center">
           <Droplets size={14} className="mx-auto mb-1 text-pip" />
-          <div className="text-sm font-bold text-pip">{waterGen - waterUsed}</div>
+          <div className="text-sm font-bold text-title">{waterGen - waterUsed}</div>
           <div className="text-xs text-muted">NET H2O ({waterGen}/{waterUsed})</div>
         </div>
         <div className="border border-pip-mid/60 rounded bg-panel p-2 text-center">
           <Building2 size={14} className="mx-auto mb-1 text-pip" />
-          <div className="text-sm font-bold text-pip">{structures.length}</div>
+          <div className="text-sm font-bold text-title">{structures.length}</div>
           <div className="text-xs text-muted">STRUCTURES</div>
         </div>
         <div className={`border rounded bg-panel p-2 text-center ${usedSlots >= maxSlots ? 'border-danger/60' : 'border-pip-mid/60'}`}>
           <LayoutGrid size={14} className={`mx-auto mb-1 ${usedSlots >= maxSlots ? 'text-danger' : 'text-pip'}`} />
-          <div className={`text-sm font-bold ${usedSlots >= maxSlots ? 'text-danger' : 'text-pip'}`}>{usedSlots}/{maxSlots}</div>
+          <div className={`text-sm font-bold ${usedSlots >= maxSlots ? 'text-danger' : 'text-title'}`}>{usedSlots}/{maxSlots}</div>
           <div className="text-xs text-muted">SLOTS</div>
         </div>
         <div className="border border-pip-mid/60 rounded bg-panel p-2 text-center">
           <Map size={14} className="mx-auto mb-1 text-pip" />
-          <div className="text-sm font-bold text-pip">{landCount}</div>
+          <div className="text-sm font-bold text-title">{landCount}</div>
           <div className="text-xs text-muted">LAND</div>
         </div>
         <div className="border border-amber/50 rounded bg-panel p-2 text-center">
@@ -872,7 +872,7 @@ function StructuresPanel({
         {settings.settlementMode === 'homestead' && (
           <div className={`border rounded bg-panel p-2 text-center ${maxResources > 0 && resources >= maxResources ? 'border-amber/60' : 'border-pip-mid/60'}`}>
             <Recycle size={14} className="mx-auto mb-1 text-pip" />
-            <div className="text-sm font-bold text-pip flex items-center justify-center gap-1">
+            <div className="text-sm font-bold text-title flex items-center justify-center gap-1">
               {resources}
               {maxResources > 0 && <span className="text-muted text-xs">/{maxResources}</span>}
             </div>
@@ -1675,7 +1675,7 @@ function DeckDrawModal({ draw, onKeep, onClose }) {
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4">
       <div className="bg-panel border border-pip-mid/50 rounded-lg w-full max-w-md space-y-4 p-5" style={{ boxShadow: '0 0 24px rgba(0,0,0,0.8)' }}>
         <div className="flex items-center justify-between">
-          <div className="text-pip text-xs font-bold tracking-widest">{structureName} — DRAW</div>
+          <div className="text-title text-xs font-bold tracking-widest">{structureName} — DRAW</div>
           {done && <button onClick={onClose} className="text-muted hover:text-pip transition-colors"><X size={14} /></button>}
         </div>
 
@@ -2533,7 +2533,7 @@ function ExploreCardModal({ card, isScoutCamp, onRedraw, onAddToEvents, onDismis
         <div className="px-5 py-4 space-y-3">
           <div className="border border-pip-mid/40 rounded p-4 bg-panel-alt space-y-2">
             <div className="flex items-center justify-between">
-              <span className="text-amber text-xs font-bold tracking-wider">#{card.id}</span>
+              <span className="text-title text-xs font-bold tracking-wider">#{card.id}</span>
               {card.type && (
                 <span className={`text-xs px-2 py-0.5 rounded font-bold ${
                   card.type.includes('★') ? 'bg-amber-dim/50 text-amber' : 'bg-pip-dim/30 text-muted'

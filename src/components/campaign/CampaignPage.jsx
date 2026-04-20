@@ -71,7 +71,7 @@ function NarrativeModal({ player, onClose }) {
       <div className="max-w-2xl w-full max-h-[80vh] flex flex-col" onClick={e => e.stopPropagation()}>
         <div className="bg-panel border border-pip rounded-lg overflow-hidden flex flex-col max-h-[80vh]">
           <div className="flex items-center justify-between px-4 py-3 border-b border-pip-dim/30 bg-panel-light">
-            <span className="text-pip text-sm font-bold tracking-wider">{player.username} — NARRATIVE LOG</span>
+            <span className="text-title text-sm font-bold tracking-wider">{player.username} — NARRATIVE LOG</span>
             <button onClick={onClose} className="text-muted hover:text-danger p-1"><X size={14} /></button>
           </div>
           <div className="overflow-y-auto flex-1">
@@ -115,7 +115,7 @@ function PlayerRoundNarrativeModal({ player, round, onClose }) {
       <div className="max-w-xl w-full" onClick={e => e.stopPropagation()}>
         <div className="bg-panel border border-pip rounded-lg overflow-hidden">
           <div className="flex items-center justify-between px-4 py-3 border-b border-pip-dim/30 bg-panel-light">
-            <span className="text-pip text-sm font-bold tracking-wider">{player.username} — ROUND {round}</span>
+            <span className="text-title text-sm font-bold tracking-wider">{player.username} — ROUND {round}</span>
             <button onClick={onClose} className="text-muted hover:text-danger p-1"><X size={14} /></button>
           </div>
           <div className="p-4 space-y-3 max-h-[60vh] overflow-y-auto">
@@ -123,7 +123,7 @@ function PlayerRoundNarrativeModal({ player, round, onClose }) {
               <p className="text-muted text-xs text-center py-6">No narrative entries for this round.</p>
             ) : entries.map((e, i) => (
               <div key={e.id ?? i} className="space-y-1">
-                {e.title && <div className="text-amber text-xs font-bold tracking-wider">{e.title}</div>}
+                {e.title && <div className="text-title text-xs font-bold tracking-wider">{e.title}</div>}
                 <p className="text-pip text-sm leading-relaxed">{e.content}</p>
               </div>
             ))}
@@ -431,7 +431,7 @@ export default function CampaignPage({ campaignId, onTabChange }) {
         {isAT && (
           <div className="min-w-0">
             <div className="flex items-center gap-3 mb-1">
-              <span className="text-amber text-xl font-bold tracking-widest">PHASE {phase}</span>
+              <span className="text-title text-xl font-bold tracking-widest">PHASE {phase}</span>
               <span className="text-amber/80 text-base font-bold tracking-wider">— {phaseInfo.name}</span>
             </div>
             <div className="flex flex-wrap gap-x-4 gap-y-0.5 mb-1">

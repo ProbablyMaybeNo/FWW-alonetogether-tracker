@@ -219,7 +219,7 @@ export default function RosterPage() {
       {/* Phase 1 Restrictions Panel */}
       {phase === 1 && (
         <div className="mb-4 border border-pip-mid/50 rounded bg-panel-alt px-4 py-3">
-          <div className="text-amber text-xs font-bold tracking-widest mb-2">PHASE 1 RESTRICTIONS</div>
+          <div className="text-title text-xs font-bold tracking-widest mb-2">PHASE 1 RESTRICTIONS</div>
           <div className="flex flex-wrap gap-4 text-xs items-center">
             <span>
               Roster Caps:{' '}
@@ -264,7 +264,7 @@ export default function RosterPage() {
 
       {/* Phase 2 banner */}
       {phase === 2 && (
-        <div className="mb-4 border border-amber/60 rounded bg-amber-dim/20 px-4 py-2 text-amber text-xs font-bold tracking-wider">
+        <div className="mb-4 border border-amber/60 rounded bg-amber-dim/20 px-4 py-2 text-title text-xs font-bold tracking-wider">
           PHASE 2 MODE — Track Fate only. Battles and Removed counts are not tracked this phase.
         </div>
       )}

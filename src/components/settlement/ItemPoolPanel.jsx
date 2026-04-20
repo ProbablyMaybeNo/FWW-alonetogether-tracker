@@ -205,7 +205,7 @@ export default function ItemPoolPanel({ structures }) {
         className="flex items-center justify-between px-4 py-3 cursor-pointer hover:bg-panel-alt transition-colors"
         onClick={() => setCollapsed(!collapsed)}
       >
-        <span className="text-pip text-sm font-bold tracking-wider">ITEM POOL</span>
+        <span className="text-title text-sm font-bold tracking-wider">ITEM POOL</span>
         <div className="flex items-center gap-2">
           <span className="text-muted text-xs">{items.length} items</span>
           {collapsed ? <ChevronRight size={14} className="text-muted" /> : <ChevronDown size={14} className="text-muted" />}

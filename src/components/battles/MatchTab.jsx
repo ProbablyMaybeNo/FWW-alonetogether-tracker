@@ -65,7 +65,7 @@ export default function MatchTab({
     return (
       <div className="border border-amber/40 rounded-lg bg-panel p-6 text-center space-y-2">
         <Swords size={20} className="text-amber mx-auto" />
-        <p className="text-amber text-sm font-bold tracking-wider">● {label}</p>
+        <p className="text-title text-sm font-bold tracking-wider">● {label}</p>
         <p className="text-muted text-xs">The battle tracker is open as an overlay.</p>
       </div>
     )
@@ -95,7 +95,7 @@ export default function MatchTab({
         <div className="border border-amber/50 rounded-lg bg-panel p-4 space-y-4">
           <div className="flex items-center gap-2">
             <Clock size={14} className="text-amber" />
-            <span className="text-amber text-xs font-bold tracking-wider">COUNTER-PROPOSAL RECEIVED</span>
+            <span className="text-title text-xs font-bold tracking-wider">COUNTER-PROPOSAL RECEIVED</span>
           </div>
           <div className="space-y-1 text-xs">
             <p className="text-muted">Your caps limit: <span className="text-pip">{ab.setup.pointsLimit}</span></p>
@@ -123,7 +123,7 @@ export default function MatchTab({
       <div className="border border-pip/40 rounded-lg bg-panel p-4 space-y-3">
         <div className="flex items-center gap-2">
           <Clock size={14} className="text-pip" />
-          <span className="text-pip text-xs font-bold tracking-wider">CHALLENGE SENT</span>
+          <span className="text-title text-xs font-bold tracking-wider">CHALLENGE SENT</span>
         </div>
         <div className="space-y-1 text-xs text-muted">
           <p>Opponent: <span className="text-pip font-bold">{opponentRow?.username ?? 'Player'}</span></p>
@@ -149,7 +149,7 @@ export default function MatchTab({
     if (countering) {
       return (
         <div className="border border-amber/40 rounded-lg bg-panel p-4 space-y-3">
-          <h3 className="text-amber text-xs font-bold tracking-wider">PROPOSE COUNTER</h3>
+          <h3 className="text-title text-xs font-bold tracking-wider">PROPOSE COUNTER</h3>
           <label className="block space-y-1">
             <span className="text-muted text-xs">Your proposed caps limit</span>
             <input
@@ -183,7 +183,7 @@ export default function MatchTab({
       <div className="border border-amber/50 rounded-lg bg-panel p-4 space-y-4">
         <div className="flex items-center gap-2">
           <Swords size={14} className="text-amber" />
-          <span className="text-amber text-xs font-bold tracking-wider">CHALLENGE RECEIVED</span>
+          <span className="text-title text-xs font-bold tracking-wider">CHALLENGE RECEIVED</span>
         </div>
         <div className="space-y-1 text-xs text-muted">
           <p>From: <span className="text-pip font-bold">{challengerRow?.username ?? 'Player'}</span></p>
@@ -221,7 +221,7 @@ export default function MatchTab({
     <div className="space-y-3">
       <div className="border border-pip-dim/40 rounded-lg bg-panel overflow-hidden">
         <div className="px-3 py-2 bg-panel-light border-b border-pip-dim/30">
-          <h2 className="text-amber text-xs font-bold tracking-widest">PLAYERS</h2>
+          <h2 className="text-title text-xs font-bold tracking-widest">PLAYERS</h2>
         </div>
         <div className="divide-y divide-pip-dim/20">
           {opponents.length === 0 && isOnline && (

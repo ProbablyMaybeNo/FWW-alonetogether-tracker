@@ -123,7 +123,7 @@ export default function WastelandItemBattleDeck({ battlePage, patchBattle, isOnl
     <div className="border border-amber/40 rounded-lg bg-panel p-3 space-y-3">
       {/* Header */}
       <div className="flex flex-wrap items-center gap-2 border-b border-pip-dim/30 pb-2">
-        <h3 className="text-amber text-xs font-bold tracking-widest flex-1">WASTELAND ITEM DECK</h3>
+        <h3 className="text-title text-xs font-bold tracking-widest flex-1">WASTELAND ITEM DECK</h3>
         <span className="text-muted text-xs">
           Pool: {allContribIds.length} · Draw: {drawPile.length} · Disc: {discardPile.length}
         </span>

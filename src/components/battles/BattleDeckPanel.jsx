@@ -205,7 +205,7 @@ export default function BattleDeckPanel({ title, deckKey, cards, battlePage, pat
   return (
     <div className="border border-pip-dim/40 rounded-lg bg-panel p-3 space-y-2">
       <div className="flex flex-wrap items-center gap-2 border-b border-pip-dim/30 pb-2">
-        <h3 className="text-pip text-xs font-bold tracking-widest flex-1 min-w-0">{title}</h3>
+        <h3 className="text-title text-xs font-bold tracking-widest flex-1 min-w-0">{title}</h3>
         <span className="text-muted text-xs whitespace-nowrap">
           {isEmpty ? `${total} cards` : `${remaining} draw · ${disc} discard`}
         </span>

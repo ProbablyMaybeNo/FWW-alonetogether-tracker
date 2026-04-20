@@ -32,14 +32,22 @@
   /* Label green — medium-dim for hierarchy between pip and dim */
   --color-pip-label: #4db87a;
 
+  /* Title/heading color — near-white with slight green tint; reads as white on terminal */
+  --color-title: #e0e8e0;
+
+  /* Neon purple — boost mechanics, special elements */
+  --color-purple: #c084fc;
+  --color-purple-dim: #2a1240;
+  --color-purple-glow: rgba(192, 132, 252, 0.4);
+
   /* Backgrounds — dark terminal aesthetic preserved */
   --color-terminal: #080c08;
   --color-panel: #111811;
   --color-panel-light: #192019;
   --color-panel-alt: #161d16;
 
-  /* Muted text — clearly subordinate to pip; ~5.2:1 contrast against terminal (WCAG AA) */
-  --color-muted: #3d8c5e;
+  /* Muted text — bright enough to read clearly, visibly subordinate to primary pip */
+  --color-muted: #55c47a;
   /* Dim — only for truly unavailable/disabled content */
   --color-dim: #006633;
 
@@ -127,6 +135,21 @@ button {
 @layer utilities {
   .text-label {
     color: var(--color-pip-label);
+  }
+
+  /* Title/heading — near-white, max readability for structural labels */
+  .text-title {
+    color: var(--color-title);
+  }
+
+  /* Neon purple — boost mechanics */
+  .text-purple {
+    color: var(--color-purple);
+    text-shadow: 0 0 8px var(--color-purple-glow), 0 0 2px rgba(192, 132, 252, 0.5);
+  }
+
+  .border-purple {
+    border-color: var(--color-purple);
   }
 
   /* Glowing terminal text — amber */

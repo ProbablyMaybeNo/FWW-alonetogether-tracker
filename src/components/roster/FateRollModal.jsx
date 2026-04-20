@@ -67,7 +67,7 @@ export default function FateRollModal({ isOpen, onClose, unit, onApply }) {
         {/* Result */}
         {result && (
           <div className="border border-muted/40 rounded bg-panel-alt p-4 space-y-2 text-center">
-            <div className="text-amber text-2xl font-bold tracking-wider">{result.diceResult}</div>
+            <div className="text-title text-2xl font-bold tracking-wider">{result.diceResult}</div>
             <div className={`text-lg font-bold tracking-wide ${
               result.fate === 'Dead' ? 'text-danger' :
               result.fate === 'Fine' ? 'text-pip' : 'text-amber'

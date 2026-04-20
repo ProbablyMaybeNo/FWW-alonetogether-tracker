@@ -158,7 +158,7 @@ export default function RosterBuildPhase({
     return (
       <div className="flex-1 flex flex-col items-center justify-center gap-4 p-8 text-center">
         <Check size={32} className="text-pip" />
-        <p className="text-pip font-bold tracking-wider">ROSTER SUBMITTED</p>
+        <p className="text-title font-bold tracking-wider">ROSTER SUBMITTED</p>
         {waitingFor.length > 0 ? (
           <div className="space-y-3">
             <p className="text-muted text-xs">
@@ -190,7 +190,7 @@ export default function RosterBuildPhase({
   return (
     <div className="flex-1 flex flex-col overflow-hidden">
       <div className="flex items-center justify-between px-4 pt-4 pb-2 border-b border-pip-dim/30">
-        <h2 className="text-amber text-sm font-bold tracking-widest flex items-center gap-2">
+        <h2 className="text-title text-sm font-bold tracking-widest flex items-center gap-2">
           <Users size={16} /> BUILD BATTLE ROSTER
         </h2>
         <div className={`text-xs font-bold ${overLimit ? 'text-danger' : 'text-pip'}`}>

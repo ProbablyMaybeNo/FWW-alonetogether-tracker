@@ -19,9 +19,9 @@ export default function SettlementItemDeckPanel({
   restoreCard,
 }) {
   return (
-    <div className="border border-pip-dim/40 rounded-lg bg-panel p-3 space-y-3">
+    <div className="border border-amber/50 rounded-lg bg-panel p-3 space-y-3">
       <div className="flex flex-wrap items-center gap-2 border-b border-pip-dim/30 pb-2">
-        <h3 className="text-pip text-xs font-bold tracking-widest flex-1">SETTLEMENT ITEM DECK</h3>
+        <h3 className="text-title text-xs font-bold tracking-widest flex-1">SETTLEMENT ITEM DECK</h3>
         <span className="text-muted text-xs">
           Draw Pile: <span className="text-pip font-bold">{drawCount}</span> cards
           <span className="mx-1.5 text-pip-dim">|</span>

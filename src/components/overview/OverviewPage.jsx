@@ -364,7 +364,7 @@ function NarrativeSection({ state, setState, round }) {
           <div className="max-w-lg w-full" onClick={e => e.stopPropagation()}>
             <div className="bg-panel border border-pip rounded-lg p-4 space-y-3">
               <div className="flex items-center justify-between">
-                <span className="text-pip text-sm font-bold tracking-wider">NEW NARRATIVE ENTRY</span>
+                <span className="text-title text-sm font-bold tracking-wider">NEW NARRATIVE ENTRY</span>
                 <span className="text-muted text-xs">Round {round ?? 0}</span>
               </div>
               <div>

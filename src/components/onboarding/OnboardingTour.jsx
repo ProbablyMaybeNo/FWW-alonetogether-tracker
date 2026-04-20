@@ -260,7 +260,7 @@ export default function OnboardingTour({ settings = {}, onDone }) {
 
         {/* Header */}
         <div className="flex items-center justify-between px-4 py-3 border-b border-pip-mid/30">
-          <span className="text-pip text-xs font-bold tracking-widest">{current.title}</span>
+          <span className="text-title text-xs font-bold tracking-widest">{current.title}</span>
           <button onClick={finish} className="text-muted hover:text-pip transition-colors ml-3 shrink-0" title="Skip tour">
             <X size={13} />
           </button>

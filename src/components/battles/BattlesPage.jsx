@@ -125,7 +125,7 @@ export default function BattlesPage({ campaignId, onTabChange }) {
       <div className="border border-pip-mid/40 rounded-lg bg-panel-light px-3 py-2 flex flex-wrap items-center gap-3">
         <Swords size={18} className="text-amber shrink-0" />
         <div className="flex-1 min-w-0">
-          <h1 className="text-pip text-sm font-bold tracking-widest">BATTLES</h1>
+          <h1 className="text-title text-sm font-bold tracking-widest">BATTLES</h1>
           <p className="text-muted text-xs mt-0.5">
             Set up and run your battle. Round <span className="text-pip font-bold">{round}</span>
             {battlePage.sessionActive && <span className="text-amber ml-2 font-bold">● BATTLE ACTIVE</span>}
@@ -178,7 +178,7 @@ export default function BattlesPage({ campaignId, onTabChange }) {
       {subTab === 'scenario' && (
         <div className="border border-pip-dim/40 rounded-lg bg-panel overflow-hidden">
           <div className="px-4 py-2 bg-panel-light border-b border-pip-dim/30 flex items-center gap-3">
-            <h2 className="text-amber text-xs font-bold tracking-widest flex-1">ALL SCENARIOS ({battleScenarios.length})</h2>
+            <h2 className="text-title text-xs font-bold tracking-widest flex-1">ALL SCENARIOS ({battleScenarios.length})</h2>
             {selectedScenario && (
               <span className="text-amber text-xs font-bold">Selected: {selectedScenario.name}</span>
             )}
