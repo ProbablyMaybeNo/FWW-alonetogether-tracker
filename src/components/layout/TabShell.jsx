@@ -72,17 +72,17 @@ export default function TabShell({ activeTab, onTabChange, settings = {} }) {
               onClick={() => handleTabClick(tab.id)}
               className={`flex-1 flex items-center justify-center gap-2 py-3 px-2 text-xs transition-all duration-150 relative
                 ${active
-                  ? 'text-pip font-bold bg-panel-light'
+                  ? 'text-amber font-bold bg-panel-light'
                   : 'text-pip/50 hover:text-amber hover:bg-panel-alt'
                 }`}
             >
               {active && (
                 <span
-                  className="absolute top-0 left-0 right-0 h-0.5 bg-pip"
-                  style={{ boxShadow: '0 0 8px var(--color-pip), 0 0 16px var(--color-pip-glow)' }}
+                  className="absolute top-0 left-0 right-0 h-0.5 bg-amber"
+                  style={{ boxShadow: '0 0 8px var(--color-amber), 0 0 16px var(--color-amber-glow)' }}
                 />
               )}
-              <Icon size={14} className={active ? 'text-pip' : 'text-pip/50'} />
+              <Icon size={14} className={active ? 'text-amber' : 'text-pip/50'} />
               <span className="hidden sm:inline tracking-wider">{tab.label}</span>
             </button>
           )
@@ -111,16 +111,16 @@ export default function TabShell({ activeTab, onTabChange, settings = {} }) {
               onClick={onClick}
               className={`flex flex-1 flex-col items-center justify-center gap-0.5 min-h-[44px] px-1 py-1.5 text-xs transition-colors ${
                 active
-                  ? 'text-pip font-bold'
+                  ? 'text-amber font-bold'
                   : 'text-pip/45'
               }`}
-              style={active ? { textShadow: '0 0 10px var(--color-pip-glow)' } : undefined}
+              style={active ? { textShadow: '0 0 10px var(--color-amber-glow)' } : undefined}
             >
               <Icon
                 size={18}
-                className={active ? 'text-pip' : 'text-pip/45'}
+                className={active ? 'text-amber' : 'text-pip/45'}
                 strokeWidth={active ? 2.25 : 2}
-                style={active ? { filter: 'drop-shadow(0 0 6px var(--color-pip-glow))' } : undefined}
+                style={active ? { filter: 'drop-shadow(0 0 6px var(--color-amber-glow))' } : undefined}
               />
               <span className="leading-none tracking-tight text-xs max-w-[4.5rem] truncate text-center">
                 {tab.shortLabel}

@@ -10,7 +10,7 @@
 @theme {
   /* Primary neon green — brighter, more vibrant */
   --color-pip: #00e676;
-  --color-pip-dim: #1a4d2e;
+  --color-pip-dim: #1f5535;
   --color-pip-glow: #00e67640;
   --color-pip-mid: #00b85a;
 
@@ -34,12 +34,12 @@
 
   /* Backgrounds — dark terminal aesthetic preserved */
   --color-terminal: #080c08;
-  --color-panel: #0e130e;
-  --color-panel-light: #141a14;
-  --color-panel-alt: #121712;
+  --color-panel: #111811;
+  --color-panel-light: #192019;
+  --color-panel-alt: #161d16;
 
-  /* Muted text — same brightness as pip per UX requirement: no greyed-out active text */
-  --color-muted: #00e676;
+  /* Muted text — clearly subordinate to pip; ~5.2:1 contrast against terminal (WCAG AA) */
+  --color-muted: #3d8c5e;
   /* Dim — only for truly unavailable/disabled content */
   --color-dim: #006633;
 
