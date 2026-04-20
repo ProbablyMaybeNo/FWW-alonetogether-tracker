@@ -1001,7 +1001,7 @@ function StructuresPanel({
                 <div className="flex items-center gap-2 px-3 pt-2 pb-1">
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 flex-wrap">
-                      <span className={`text-sm font-bold ${s.usedThisRound ? 'text-title/40' : 'text-title'}`}>{ref.name}</span>
+                      <span className={`text-sm font-bold ${s.usedThisRound ? 'text-amber/40' : 'text-amber'}`}>{ref.name}</span>
                       {isSpecial && !s.usedThisRound && <span className="text-amber text-xs">★</span>}
                       {s.condition === 'Damaged' && <span className="text-amber text-xs font-bold">DMG</span>}
                       {s.condition === 'Badly Damaged' && <span className="text-danger text-xs font-bold">B.DMG</span>}
@@ -1113,7 +1113,7 @@ function StructuresPanel({
                 <div className="md:hidden px-3 py-3 space-y-3">
                   <div className="flex items-start justify-between gap-2">
                     <div className="min-w-0">
-                      <div className="text-title font-bold text-sm">{ref.name}</div>
+                      <div className="text-amber font-bold text-sm">{ref.name}</div>
                       <div className="flex items-center gap-2 mt-1 text-xs">
                         <span className="inline-flex items-center gap-1.5 text-muted">
                           <span className={`w-2.5 h-2.5 rounded-full shrink-0 ${structureConditionDotClass(s.condition)}`} />
