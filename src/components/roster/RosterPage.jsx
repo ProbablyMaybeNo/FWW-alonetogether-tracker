@@ -273,7 +273,7 @@ export default function RosterPage() {
         <h2 className="text-amber text-sm tracking-widest font-bold">UNIT ROSTER ({roster.length})</h2>
         <button
           onClick={() => setShowAddUnit(true)}
-          className="flex items-center gap-2 px-3 py-2 border border-pip text-pip text-sm rounded hover:bg-pip-dim hover:border-pip-mid transition-colors font-bold"
+          className="flex items-center gap-2 px-3 py-2 border border-amber text-amber text-sm rounded hover:bg-amber-dim/20 transition-colors font-bold"
         >
           <Plus size={14} /> ADD UNIT
         </button>

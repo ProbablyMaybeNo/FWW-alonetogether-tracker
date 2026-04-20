@@ -6,7 +6,7 @@ import { inferFactionFromCard, cardSearchBlob, getCardBodyText } from '../../uti
 
 const DECK_BADGE = {
   creature: { className: 'bg-pip-dim/50 text-pip border-pip/40', label: 'Creature' },
-  stranger: { className: 'bg-info-dim/40 text-info border border-info/30', label: 'Stranger' },
+  stranger: { className: 'bg-info-dim/40 text-[#40c4ff] border border-[#40c4ff]/30', label: 'Stranger' },
   danger: { className: 'bg-amber-dim/30 text-amber border border-amber/40', label: 'Danger' },
   explore: { className: 'bg-pip-dim/50 text-pip-label border border-pip-mid/40', label: 'Explore' },
   event: { className: 'bg-amber-dim/20 text-amber border border-amber/35', label: 'Event' },
@@ -244,7 +244,7 @@ export default function BattleDeckPanel({ title, deckKey, cards, battlePage, pat
             <button
               type="button"
               onClick={handleReset}
-              className="text-xs text-muted border border-muted/30 rounded px-2 py-1 hover:text-danger hover:border-danger/40 ml-auto"
+              className="text-xs text-danger border border-danger/40 rounded px-2 py-1 hover:bg-danger-dim/10 ml-auto"
             >
               RESET DECK
             </button>

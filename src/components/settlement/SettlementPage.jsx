@@ -4,8 +4,6 @@ import { useCampaign } from '../../context/CampaignContext'
 import { calcPowerGenerated, calcPowerConsumed, calcWaterGenerated, calcWaterConsumed, getStructureRef, calcSettlementTotalCaps, calcDefenseRating } from '../../utils/calculations'
 import AddStructureModal from './AddStructureModal'
 import ItemPoolPanel from './ItemPoolPanel'
-import SettlementItemDeckPanel from './SettlementItemDeckPanel'
-import { useSettlementItemDeck } from '../../hooks/useSettlementItemDeck'
 import { BarracksModal, MedicalCenterModal, StoresModal } from './StructureUseModals'
 import { getDeckStats, drawCard } from '../../utils/cardDraw'
 import CardDrawer from '../overview/CardDrawer'
@@ -59,7 +57,7 @@ const DECK_SUBTYPE_COLOR = {
 }
 
 function buildFullDeckIds() {
-  return itemsData.filter(i => SETTLEMENT_DECK_TYPES.includes(i.subType)).map(i => i.id)
+  return itemsData.map(i => i.id)
 }
 
 function itemMatchesTypeLabel(item, typeLabel) {
@@ -926,7 +924,10 @@ function StructuresPanel({
       )}
 
       {/* Item Pool Panel — above structure list */}
-      <ItemPoolPanel structures={structures} />
+      <div className="space-y-3 mt-4">
+        <h3 className="text-title text-xs font-bold tracking-widest border-b border-pip-dim/30 pb-1">POOLS</h3>
+        <ItemPoolPanel structures={structures} />
+      </div>
 
       {/* AT Filter toggle */}
       <div className="flex items-center gap-2 mb-4 mt-4">
@@ -1000,7 +1001,7 @@ function StructuresPanel({
                 <div className="flex items-center gap-2 px-3 pt-2 pb-1">
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 flex-wrap">
-                      <span className={`text-sm font-bold ${s.usedThisRound ? 'text-muted' : 'text-pip'}`}>{ref.name}</span>
+                      <span className={`text-sm font-bold ${s.usedThisRound ? 'text-title/40' : 'text-title'}`}>{ref.name}</span>
                       {isSpecial && !s.usedThisRound && <span className="text-amber text-xs">★</span>}
                       {s.condition === 'Damaged' && <span className="text-amber text-xs font-bold">DMG</span>}
                       {s.condition === 'Badly Damaged' && <span className="text-danger text-xs font-bold">B.DMG</span>}
@@ -1112,7 +1113,7 @@ function StructuresPanel({
                 <div className="md:hidden px-3 py-3 space-y-3">
                   <div className="flex items-start justify-between gap-2">
                     <div className="min-w-0">
-                      <div className="text-pip font-bold text-sm">{ref.name}</div>
+                      <div className="text-title font-bold text-sm">{ref.name}</div>
                       <div className="flex items-center gap-2 mt-1 text-xs">
                         <span className="inline-flex items-center gap-1.5 text-muted">
                           <span className={`w-2.5 h-2.5 rounded-full shrink-0 ${structureConditionDotClass(s.condition)}`} />
@@ -1746,7 +1747,6 @@ function DeckDrawModal({ draw, onKeep, onClose }) {
 
 /* ── Settlement Item Deck Panel ── */
 function SettlementDeckPanel({ state, setState, structures, deckFilter, setDeckFilter, recentlyDrawn, setRecentlyDrawn, drawManualFromDeck, reshuffleDeck, fullResetDeck, addRecentlyDrawnToPool }) {
-  const settlementItemDeckApi = useSettlementItemDeck()
   const allIds = buildFullDeckIds()
   const deck = state.settlementDeck ?? []
   const discard = state.settlementDiscard ?? []
@@ -1967,25 +1967,13 @@ function SettlementDeckPanel({ state, setState, structures, deckFilter, setDeckF
 
   return (
     <div className="space-y-4">
-      <SettlementItemDeckPanel
-        drawCount={settlementItemDeckApi.drawCount}
-        discardCount={settlementItemDeckApi.discardCount}
-        catalogTotal={settlementItemDeckApi.catalogTotal}
-        drawCard={settlementItemDeckApi.drawCard}
-        lastDrawn={settlementItemDeckApi.lastDrawn}
-        exhaustAlert={settlementItemDeckApi.exhaustAlert}
-        initNotice={settlementItemDeckApi.initNotice}
-        discardOpen={settlementItemDeckApi.discardOpen}
-        setDiscardOpen={settlementItemDeckApi.setDiscardOpen}
-        discardSearch={settlementItemDeckApi.discardSearch}
-        setDiscardSearch={settlementItemDeckApi.setDiscardSearch}
-        filteredDiscard={settlementItemDeckApi.filteredDiscard}
-        restoreCard={settlementItemDeckApi.restoreCard}
-      />
+      <div className="space-y-3">
+        <h3 className="text-title text-xs font-bold tracking-widest border-b border-pip-dim/30 pb-1">DECKS</h3>
 
+        <div className="border border-deck-item/50 rounded-lg bg-deck-item-dim/20 p-3 space-y-3">
       {/* Header — filtered subtype deck for structure equipment draws */}
-      <div className="flex items-center gap-3 border-b border-pip-mid/50 pb-2 flex-wrap gap-y-2">
-        <h2 className="text-pip text-sm tracking-widest font-bold flex-1">ITEM DECK (EQUIPMENT DRAW)</h2>
+      <div className="flex items-center gap-3 border-b border-deck-item/20 pb-2 flex-wrap gap-y-2">
+        <h2 className="text-deck-item text-sm tracking-widest font-bold flex-1">ITEM DECK</h2>
         <span className="text-muted text-xs">{deckCount}/{total} remaining · {discardCount} in discard</span>
         {deck.length === 0 && discard.length > 0 && (
           <button
@@ -2090,18 +2078,18 @@ function SettlementDeckPanel({ state, setState, structures, deckFilter, setDeckF
           No deck initialized — draw a card or use a structure to start.
         </p>
       )}
+        </div>
 
-      {/* ── BOOST DECK ── */}
-      <div className="border rounded bg-panel" style={{ borderColor: 'rgba(168,85,247,0.5)', boxShadow: '0 0 10px rgba(168,85,247,0.12)' }}>
-        <div className="flex items-center gap-3 px-4 py-3 border-b flex-wrap gap-y-1" style={{ borderColor: 'rgba(168,85,247,0.25)' }}>
-          <Sparkles size={13} style={{ color: '#a855f7' }} />
-          <h3 className="text-sm font-bold tracking-wider flex-1" style={{ color: '#a855f7', textShadow: '0 0 8px rgba(168,85,247,0.6)' }}>BOOST DECK</h3>
+        {/* ── BOOST DECK ── */}
+        <div className="border rounded bg-deck-boost-dim/20" style={{ borderColor: 'rgba(29,233,182,0.5)', boxShadow: '0 0 10px rgba(29,233,182,0.12)' }}>
+        <div className="flex items-center gap-3 px-4 py-3 border-b flex-wrap gap-y-1" style={{ borderColor: 'rgba(29,233,182,0.25)' }}>
+          <Sparkles size={13} className="text-deck-boost" />
+          <h3 className="text-deck-boost text-sm font-bold tracking-wider flex-1">BOOST DECK</h3>
           <span className="text-muted text-xs">{boostDeckCount}/{allBoostIds.length} remaining · {boostDiscardCount} discarded</span>
           {boostDeck.length === 0 && boostDiscard.length > 0 && (
             <button
               onClick={() => setState(prev => ({ ...prev, boostDeck: [...(prev.boostDiscard ?? [])].sort(() => Math.random() - 0.5), boostDiscard: [] }))}
-              className="flex items-center gap-1 text-xs border rounded px-2 py-1 hover:opacity-80 transition-colors font-bold"
-              style={{ color: '#a855f7', borderColor: 'rgba(168,85,247,0.6)' }}
+              className="flex items-center gap-1 text-xs border rounded px-2 py-1 hover:opacity-80 transition-colors font-bold text-deck-boost border-deck-boost/60"
             ><Shuffle size={11} /> RESHUFFLE</button>
           )}
           {(boostDeck.length > 0 || boostDiscard.length > 0) && (
@@ -2117,8 +2105,8 @@ function SettlementDeckPanel({ state, setState, structures, deckFilter, setDeckF
           <div className="flex gap-2 flex-wrap">
             <button
               onClick={handleDrawRandomBoost}
-              className="flex items-center gap-1.5 text-xs border font-bold rounded px-4 py-1.5 hover:opacity-80 transition-colors"
-              style={{ color: '#a855f7', borderColor: 'rgba(168,85,247,0.7)', boxShadow: '0 0 6px rgba(168,85,247,0.25)' }}
+              className="flex items-center gap-1.5 text-xs border font-bold rounded px-4 py-1.5 hover:opacity-80 transition-colors text-deck-boost border-deck-boost/70"
+              style={{ boxShadow: '0 0 6px rgba(29,233,182,0.25)' }}
             ><Sparkles size={11} /> DRAW RANDOM BOOST</button>
             <button
               onClick={() => { setShowBoostBrowse(v => !v); setBoostBrowseSearch('') }}
@@ -2128,9 +2116,9 @@ function SettlementDeckPanel({ state, setState, structures, deckFilter, setDeckF
 
           {/* Browse boost cards */}
           {showBoostBrowse && (
-            <div className="border rounded p-3 space-y-2 bg-panel-alt" style={{ borderColor: 'rgba(168,85,247,0.3)' }}>
+            <div className="border rounded p-3 space-y-2 bg-panel-alt border-deck-boost/30">
               <div className="flex items-center justify-between">
-                <span className="text-xs tracking-wider" style={{ color: '#a855f7' }}>BROWSE BOOSTS</span>
+                <span className="text-deck-boost text-xs tracking-wider">BROWSE BOOSTS</span>
                 <button onClick={() => setShowBoostBrowse(false)} className="text-muted hover:text-danger"><X size={13} /></button>
               </div>
               <div className="flex gap-2 flex-wrap">
@@ -2182,10 +2170,15 @@ function SettlementDeckPanel({ state, setState, structures, deckFilter, setDeckF
         </div>
       </div>
 
+      </div>{/* end DECKS section */}
+
+      <div className="space-y-3 mt-4">
+        <h3 className="text-title text-xs font-bold tracking-widest border-b border-pip-dim/30 pb-1">POOLS</h3>
+
       {/* ── RECOVERY POOL ── */}
-      <div className="border rounded bg-panel mt-2" style={{ borderColor: 'rgba(251,100,10,0.55)', boxShadow: '0 0 10px rgba(251,100,10,0.15)' }}>
-        <div className="flex items-center gap-3 px-4 py-3 border-b" style={{ borderColor: 'rgba(251,100,10,0.3)' }}>
-          <h3 className="text-sm font-bold tracking-wider flex-1" style={{ color: '#fb640a', textShadow: '0 0 8px rgba(251,100,10,0.6)' }}>RECOVERY POOL ({recoveryItems.length})</h3>
+      <div className="border rounded bg-panel mt-2" style={{ borderColor: 'rgba(255,145,0,0.55)', boxShadow: '0 0 10px rgba(255,145,0,0.15)' }}>
+        <div className="flex items-center gap-3 px-4 py-3 border-b" style={{ borderColor: 'rgba(255,145,0,0.3)' }}>
+          <h3 className="text-pool-recovery text-sm font-bold tracking-wider flex-1">RECOVERY POOL ({recoveryItems.length})</h3>
         </div>
         <div className="p-4 space-y-3">
           <p className="text-muted text-xs">Items gathered from battle. Use Maintenance Sheds to process into your Settlement Pool.</p>
@@ -2452,6 +2445,7 @@ function SettlementDeckPanel({ state, setState, structures, deckFilter, setDeckF
           </div>
         </div>
       </div>
+      </div>{/* end POOLS section */}
     </div>
   )
 }

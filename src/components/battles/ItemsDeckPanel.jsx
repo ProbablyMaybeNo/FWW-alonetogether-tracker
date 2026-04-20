@@ -39,9 +39,9 @@ export default function ItemsDeckPanel({ battlePage, patchBattle, isOnline }) {
 
   return (
     <div className="space-y-3">
-      <div className="border border-pip-dim/40 rounded-lg bg-panel p-3 space-y-2">
-        <div className="flex flex-wrap items-center gap-2 border-b border-pip-dim/30 pb-2">
-          <h3 className="text-amber text-xs font-bold tracking-widest flex-1">ITEMS (WASTELAND)</h3>
+      <div className="border border-deck-item/40 rounded-lg bg-panel p-3 space-y-2">
+        <div className="flex flex-wrap items-center gap-2 border-b border-deck-item/20 pb-2">
+          <h3 className="text-deck-item text-xs font-bold tracking-widest flex-1">ITEMS (WASTELAND)</h3>
           <div className="flex rounded border border-pip-dim/50 overflow-hidden text-xs shrink-0">
             <button
               type="button"

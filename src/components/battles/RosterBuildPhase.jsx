@@ -325,7 +325,7 @@ export default function RosterBuildPhase({
         <button
           onClick={handleSubmit}
           disabled={!canSubmit}
-          className="w-full py-4 rounded-lg font-bold tracking-[0.2em] text-sm border-2 border-pip/80 bg-pip/15 text-pip shadow-[0_0_24px_var(--color-pip-glow)] disabled:opacity-40 disabled:shadow-none flex items-center justify-center gap-2"
+          className="w-full py-4 rounded-lg font-bold tracking-[0.2em] text-sm border-2 border-amber/80 bg-amber/15 text-amber shadow-[0_0_24px_var(--color-amber-glow)] disabled:opacity-40 disabled:shadow-none flex items-center justify-center gap-2"
         >
           <Check size={18} /> SUBMIT ROSTER
         </button>

@@ -32,13 +32,32 @@
   /* Label green — medium-dim for hierarchy between pip and dim */
   --color-pip-label: #4db87a;
 
-  /* Title/heading color — near-white with slight green tint; reads as white on terminal */
-  --color-title: #e0e8e0;
+  /* Title/heading color — pure white, max hierarchy for headings */
+  --color-title: #ffffff;
 
   /* Neon purple — boost mechanics, special elements */
   --color-purple: #c084fc;
   --color-purple-dim: #2a1240;
   --color-purple-glow: rgba(192, 132, 252, 0.4);
+
+  /* Deck identity colors — EXCLUSIVE to deck panels, never used in general UI */
+  --color-deck-item: #76ff03;
+  --color-deck-item-dim: #1a3300;
+  --color-deck-item-glow: rgba(118, 255, 3, 0.45);
+  --color-deck-boost: #1de9b6;
+  --color-deck-boost-dim: #003328;
+  --color-deck-boost-glow: rgba(29, 233, 182, 0.45);
+
+  /* Pool identity colors — EXCLUSIVE to pool panels, never used in general UI */
+  --color-pool-recovery: #ff9100;
+  --color-pool-recovery-dim: #3d2200;
+  --color-pool-recovery-glow: rgba(255, 145, 0, 0.45);
+  --color-pool-settlement: #ff6d00;
+  --color-pool-settlement-dim: #331900;
+  --color-pool-settlement-glow: rgba(255, 109, 0, 0.45);
+  --color-pool-battle: #ff1744;
+  --color-pool-battle-dim: #3d0011;
+  --color-pool-battle-glow: rgba(255, 23, 68, 0.45);
 
   /* Backgrounds — dark terminal aesthetic preserved */
   --color-terminal: #080c08;
@@ -46,8 +65,8 @@
   --color-panel-light: #192019;
   --color-panel-alt: #161d16;
 
-  /* Muted text — bright enough to read clearly, visibly subordinate to primary pip */
-  --color-muted: #55c47a;
+  /* Secondary/descriptive text — neon cyan */
+  --color-muted: #00e5ff;
   /* Dim — only for truly unavailable/disabled content */
   --color-dim: #006633;
 
@@ -161,4 +180,40 @@ button {
   .text-info {
     text-shadow: 0 0 8px rgba(0, 229, 255, 0.65), 0 0 2px rgba(0, 229, 255, 0.35);
   }
+
+  /* Secondary/descriptive text — softer cyan glow than text-info */
+  .text-muted {
+    text-shadow: 0 0 6px rgba(0, 229, 255, 0.3);
+  }
+
+  /* Deck identity text colors */
+  .text-deck-item {
+    color: var(--color-deck-item);
+    text-shadow: 0 0 8px var(--color-deck-item-glow), 0 0 2px rgba(118, 255, 3, 0.4);
+  }
+  .text-deck-boost {
+    color: var(--color-deck-boost);
+    text-shadow: 0 0 8px var(--color-deck-boost-glow), 0 0 2px rgba(29, 233, 182, 0.4);
+  }
+
+  /* Pool identity text colors */
+  .text-pool-recovery {
+    color: var(--color-pool-recovery);
+    text-shadow: 0 0 8px var(--color-pool-recovery-glow), 0 0 2px rgba(255, 145, 0, 0.4);
+  }
+  .text-pool-settlement {
+    color: var(--color-pool-settlement);
+    text-shadow: 0 0 8px var(--color-pool-settlement-glow), 0 0 2px rgba(255, 109, 0, 0.4);
+  }
+  .text-pool-battle {
+    color: var(--color-pool-battle);
+    text-shadow: 0 0 8px var(--color-pool-battle-glow), 0 0 2px rgba(255, 23, 68, 0.4);
+  }
+
+  /* Border utilities for deck/pool identity */
+  .border-deck-item { border-color: var(--color-deck-item); }
+  .border-deck-boost { border-color: var(--color-deck-boost); }
+  .border-pool-recovery { border-color: var(--color-pool-recovery); }
+  .border-pool-settlement { border-color: var(--color-pool-settlement); }
+  .border-pool-battle { border-color: var(--color-pool-battle); }
 }

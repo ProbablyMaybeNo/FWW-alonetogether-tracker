@@ -92,7 +92,7 @@ export function BarracksModal({ isOpen, onClose, roster, onApply }) {
               >
                 APPLY
               </button>
-              <button onClick={handleClose} className="flex-1 py-2 border border-muted text-muted rounded text-xs hover:text-pip">
+              <button onClick={handleClose} className="flex-1 py-2 border border-danger text-danger rounded text-xs hover:bg-danger-dim/10">
                 CANCEL
               </button>
             </div>
@@ -214,7 +214,7 @@ export function StoresModal({ isOpen, onClose, poolItems = [], roster = [], onAp
           >
             CONFIRM ({selected.length} items)
           </button>
-          <button onClick={handleClose} className="flex-1 py-2 border border-muted text-muted rounded text-xs hover:text-pip">
+          <button onClick={handleClose} className="flex-1 py-2 border border-danger text-danger rounded text-xs hover:bg-danger-dim/10">
             CANCEL
           </button>
         </div>
@@ -306,7 +306,7 @@ export function MedicalCenterModal({ isOpen, onClose, roster, onApply }) {
           >
             APPLY
           </button>
-          <button onClick={handleClose} className="flex-1 py-2 border border-muted text-muted rounded text-xs hover:text-pip">
+          <button onClick={handleClose} className="flex-1 py-2 border border-danger text-danger rounded text-xs hover:bg-danger-dim/10">
             CANCEL
           </button>
         </div>

@@ -199,7 +199,7 @@ export default function ItemPoolPanel({ structures }) {
   ]
 
   return (
-    <div className="border border-muted/50 rounded bg-panel mt-4">
+    <div className="border border-white/20 rounded bg-panel mt-4">
       {/* Header */}
       <div
         className="flex items-center justify-between px-4 py-3 cursor-pointer hover:bg-panel-alt transition-colors"
@@ -213,7 +213,7 @@ export default function ItemPoolPanel({ structures }) {
       </div>
 
       {!collapsed && (
-        <div className="border-t border-muted/40 p-4">
+        <div className="border-t border-white/10 p-4">
           {/* Slot overview */}
           <div className="grid grid-cols-3 gap-2 mb-3">
             <div className="border border-pip-mid/40 rounded bg-panel-alt p-2 text-center">
@@ -232,19 +232,28 @@ export default function ItemPoolPanel({ structures }) {
 
           {/* Tabs */}
           <div className="flex gap-1 mb-4 flex-wrap">
-            {tabs.map(tab => (
-              <button
-                key={tab.key}
-                onClick={() => setActiveTab(tab.key)}
-                className={`text-xs px-3 py-1.5 border rounded transition-colors ${
-                  activeTab === tab.key
-                    ? 'border-pip text-pip bg-pip-dim/20'
-                    : 'border-muted/50 text-muted hover:text-pip'
-                }`}
-              >
-                {tab.label}
-              </button>
-            ))}
+            {tabs.map(tab => {
+              const isActive = activeTab === tab.key
+              let activeClass = ''
+              if (isActive) {
+                if (tab.key === 'recovery') activeClass = 'border-pool-recovery text-pool-recovery bg-pool-recovery-dim/20'
+                else if (tab.key === 'stored' || tab.key === 'locker') activeClass = 'border-pool-settlement text-pool-settlement bg-pool-settlement-dim/20'
+                else if (tab.key === 'stores') activeClass = 'border-pool-battle text-pool-battle bg-pool-battle-dim/20'
+              }
+              return (
+                <button
+                  key={tab.key}
+                  onClick={() => setActiveTab(tab.key)}
+                  className={`text-xs px-3 py-1.5 border rounded transition-colors ${
+                    isActive
+                      ? activeClass
+                      : 'border-white/20 text-title/60 hover:text-title hover:border-white/40'
+                  }`}
+                >
+                  {tab.label}
+                </button>
+              )
+            })}
           </div>
 
           {/* RECOVERY TAB */}
@@ -254,7 +263,7 @@ export default function ItemPoolPanel({ structures }) {
                 <span className="text-muted text-xs">Items gathered from battle — keep, store, or sell</span>
                 <button
                   onClick={() => setShowAddItem(true)}
-                  className="flex items-center gap-1 text-xs px-3 py-1 border border-muted rounded text-muted hover:text-pip hover:border-pip"
+                  className="flex items-center gap-1 text-xs px-3 py-1 border border-amber text-amber hover:bg-amber-dim/20"
                 >
                   <Plus size={12} /> ADD ITEM
                 </button>
@@ -264,7 +273,7 @@ export default function ItemPoolPanel({ structures }) {
               ) : (
                 <div className="space-y-1">
                   {recoveryItems.map(item => (
-                    <div key={item.id} className="flex items-center gap-2 border border-pip-mid/30 rounded px-3 py-2 bg-panel-light flex-wrap">
+                    <div key={item.id} className="flex items-center gap-2 border border-pip-mid/30 border-l-2 border-l-pool-recovery/60 rounded px-3 py-2 bg-panel-light flex-wrap">
                       <span className="text-pip text-xs flex-1 min-w-0">{item.name}</span>
                       <span className="text-muted text-xs px-1.5 py-0.5 border border-muted/40 rounded">{item.subType}</span>
                       <span className="text-amber text-xs font-bold">{item.caps}c</span>
@@ -316,7 +325,7 @@ export default function ItemPoolPanel({ structures }) {
               ) : (
                 <div className="space-y-1">
                   {storedItems.map(item => (
-                    <div key={item.id} className="flex items-center gap-2 border border-pip-mid/30 rounded px-3 py-2 bg-panel-light flex-wrap">
+                    <div key={item.id} className="flex items-center gap-2 border border-pip-mid/30 border-l-2 border-l-pool-settlement/60 rounded px-3 py-2 bg-panel-light flex-wrap">
                       <span className="text-pip text-xs flex-1 min-w-0">{item.name}</span>
                       <span className="text-muted text-xs px-1.5 py-0.5 border border-muted/40 rounded">{item.subType}</span>
                       <span className="text-amber text-xs font-bold">{item.caps}c</span>
@@ -346,7 +355,7 @@ export default function ItemPoolPanel({ structures }) {
                 {lockerItems.length > 0 && (
                   <button
                     onClick={returnLockerToPool}
-                    className="text-xs px-3 py-1 border border-muted rounded text-muted hover:text-pip hover:border-pip"
+                    className="text-xs px-3 py-1 border border-danger text-danger hover:bg-danger-dim/10"
                   >
                     RETURN LOCKER ITEMS TO POOL
                   </button>
@@ -357,7 +366,7 @@ export default function ItemPoolPanel({ structures }) {
               ) : (
                 <div className="space-y-1">
                   {lockerItems.map(item => (
-                    <div key={item.id} className="flex items-center gap-2 border border-pip-mid/30 rounded px-3 py-2 bg-panel-light flex-wrap">
+                    <div key={item.id} className="flex items-center gap-2 border border-pip-mid/30 border-l-2 border-l-pool-settlement/60 rounded px-3 py-2 bg-panel-light flex-wrap">
                       <span className="text-pip text-xs flex-1 min-w-0">{item.name}</span>
                       <span className="text-muted text-xs px-1.5 py-0.5 border border-muted/40 rounded">{item.subType}</span>
                       <span className="text-amber text-xs font-bold">{item.caps}c</span>
@@ -390,7 +399,7 @@ export default function ItemPoolPanel({ structures }) {
                 {storesItems.length > 0 && (
                   <button
                     onClick={clearAllStores}
-                    className="text-xs px-3 py-1 border border-muted rounded text-muted hover:text-pip hover:border-pip"
+                    className="text-xs px-3 py-1 border border-danger text-danger hover:bg-danger-dim/10"
                   >
                     CLEAR ALL STORES
                   </button>
@@ -417,7 +426,7 @@ export default function ItemPoolPanel({ structures }) {
                           </div>
                           <div className="space-y-1 ml-2">
                             {groupItems.map(item => (
-                              <div key={item.id} className="flex items-center gap-2 border border-pip-mid/30 rounded px-3 py-2 bg-panel-light flex-wrap">
+                              <div key={item.id} className="flex items-center gap-2 border border-pip-mid/30 border-l-2 border-l-pool-battle/60 rounded px-3 py-2 bg-panel-light flex-wrap">
                                 <span className="text-pip text-xs flex-1 min-w-0">{item.name}</span>
                                 <span className="text-muted text-xs">{item.subType}</span>
                                 <span className="text-amber text-xs font-bold">{item.caps}c</span>
