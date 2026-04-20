@@ -2,7 +2,7 @@ import { useState, useCallback, useMemo, useEffect, useRef } from 'react'
 import { ChevronDown, ChevronUp, ChevronLeft, ChevronRight, Skull, Minimize2, Maximize2, X } from 'lucide-react'
 import { normalizeActiveBattle, shuffleArray, buildInitialParticipants } from '../../utils/activeBattle'
 import RosterBuildPhase from './RosterBuildPhase'
-import { canonicalBattleHostUserId } from '../../utils/postBattlePropagation'
+import { Swords } from 'lucide-react'
 import { getItemRef } from '../../utils/calculations'
 import { getCardBodyText } from '../../utils/battleDeckCardUtils'
 import { lookupItemMeta } from '../../utils/settlementItemDeckUtils'
@@ -57,7 +57,6 @@ export default function LiveBattleTracker({
 }) {
   const ab = normalizeActiveBattle(activeBattleProp)
   const seedRef = useRef(false)
-  const transitionRef = useRef(false)
   const [minimized, setMinimized] = useState(false)
   const [cancelConfirm, setCancelConfirm] = useState(false)
   const setup = ab.setup || {}
@@ -96,29 +95,9 @@ export default function LiveBattleTracker({
     })
   }, [activeBattleProp, saveActiveBattle, currentUserId])
 
-  // roster_build → active: canonical host transitions once all players submit
-  useEffect(() => {
+  const beginBattle = useCallback(() => {
     const cur = normalizeActiveBattle(activeBattleProp)
-    if (cur.status !== 'roster_build') {
-      transitionRef.current = false
-      return
-    }
-    const participants = cur.setup.participantUserIds ?? []
-    if (participants.length === 0) return
-    const allReady = participants.every(uid => cur.readyFlags[uid] === 'roster_ready')
-    if (!allReady) return
-    const hostId = canonicalBattleHostUserId(participants)
-    if (hostId !== currentUserId) return
-    if (transitionRef.current) return
-    transitionRef.current = true
-
-    // Merge all wasteland contributions and shuffle
     const allCardIds = Object.values(cur.wastelandContributions || {}).flat()
-    const wastelandDeck = {
-      drawPile: shuffleArray(allCardIds),
-      discardPile: [],
-      lastDrawn: null,
-    }
     const startedAt = new Date().toISOString()
     saveActiveBattle({
       ...cur,
@@ -128,7 +107,10 @@ export default function LiveBattleTracker({
       turn: 1,
       turnHistory: [],
       participants: buildInitialParticipants(cur),
-      deckStates: { ...cur.deckStates, wastelandItems: wastelandDeck },
+      deckStates: {
+        ...cur.deckStates,
+        wastelandItems: { drawPile: shuffleArray(allCardIds), discardPile: [], lastDrawn: null },
+      },
       log: [{ turn: 1, timestamp: startedAt, userId: currentUserId, event: 'Battle started' }],
     })
   }, [activeBattleProp, currentUserId, saveActiveBattle])
@@ -674,22 +656,59 @@ export default function LiveBattleTracker({
   }
 
   if (ab.status === 'roster_build') {
+    const mySubmitted = !!ab.battleRosters[currentUserId]
+    const allParticipants = ab.setup?.participantUserIds ?? [currentUserId]
+    const allReady = allParticipants.length > 0 &&
+      allParticipants.every(uid => ab.readyFlags[uid] === 'roster_ready')
+
     return (
       <div
         className="fixed inset-0 z-50 flex flex-col bg-[var(--color-terminal)] text-pip"
         style={{ fontFamily: 'var(--font-family-mono)' }}
       >
         {header}
-        <RosterBuildPhase
-          activeBattle={activeBattleProp}
-          currentUserId={currentUserId}
-          roster={roster}
-          saveActiveBattle={saveActiveBattle}
-          state={state}
-          setState={setState}
-          campaignId={campaignId}
-          isOnline={isOnline}
-        />
+        {!mySubmitted ? (
+          <RosterBuildPhase
+            activeBattle={activeBattleProp}
+            currentUserId={currentUserId}
+            roster={roster}
+            saveActiveBattle={saveActiveBattle}
+            state={state}
+            setState={setState}
+            campaignId={campaignId}
+            isOnline={isOnline}
+          />
+        ) : (
+          <div className="flex-1 flex flex-col items-center justify-center gap-6 p-6">
+            <p className="text-title text-sm font-bold tracking-widest">WAITING FOR ALL ROSTERS</p>
+            <div className="flex gap-3 flex-wrap justify-center">
+              {allParticipants.map(uid => {
+                const ready = ab.readyFlags[uid] === 'roster_ready'
+                return (
+                  <div
+                    key={uid}
+                    className={`px-4 py-3 rounded-lg border text-xs font-bold tracking-wider ${
+                      ready
+                        ? 'border-pip bg-pip-dim/30 text-pip'
+                        : 'border-muted/30 text-muted/60'
+                    }`}
+                  >
+                    {uid === currentUserId ? 'YOU' : 'OPPONENT'}
+                    <span className="ml-2">{ready ? '✓ READY' : '…'}</span>
+                  </div>
+                )
+              })}
+            </div>
+            <button
+              onClick={beginBattle}
+              disabled={!allReady}
+              className="mt-4 px-8 py-4 rounded-lg font-bold tracking-[0.2em] text-sm border-2 border-amber/80 bg-amber/15 text-amber shadow-[0_0_24px_var(--color-amber-glow)] disabled:opacity-30 disabled:shadow-none disabled:cursor-not-allowed flex items-center gap-2 transition-all"
+            >
+              <Swords size={18} />
+              {allReady ? 'BEGIN BATTLE' : 'WAITING FOR ROSTER…'}
+            </button>
+          </div>
+        )}
         {cancelConfirm && (
           <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/70 p-4">
             <div className="bg-panel border border-danger/50 rounded-lg max-w-sm w-full p-5 space-y-4">
