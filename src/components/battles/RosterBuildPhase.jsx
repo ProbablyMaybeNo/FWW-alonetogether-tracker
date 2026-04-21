@@ -113,13 +113,25 @@ export default function RosterBuildPhase({
   }
 
   async function handleSubmit() {
-    let deck = normalizeSettlementItemDeck(state?.settlementItemDeck)
+    // Read from the flat-array format that SettlementPage uses as canonical.
+    // Fall back to the object format for backwards compat, then to a fresh deck.
+    const flatDraw = state?.settlementDeck ?? []
+    const flatDiscard = state?.settlementDiscard ?? []
+    let deck = flatDraw.length > 0 || flatDiscard.length > 0
+      ? normalizeSettlementItemDeck({ drawPile: flatDraw, discardPile: flatDiscard })
+      : normalizeSettlementItemDeck(state?.settlementItemDeck)
     if (deck.drawPile.length === 0 && deck.discardPile.length === 0) {
       deck = createInitialSettlementItemDeck()
     }
     const contrib = contributeRandomCardsToBattle(deck, wastelandN)
 
-    setState(prev => ({ ...prev, settlementItemDeck: contrib.next }))
+    // Write back to both schemas so SettlementPage overview stays in sync.
+    setState(prev => ({
+      ...prev,
+      settlementDeck: contrib.next.drawPile,
+      settlementDiscard: contrib.next.discardPile,
+      settlementItemDeck: contrib.next,
+    }))
 
     if (isOnline && campaignId && currentUserId && supabase) {
       try {
