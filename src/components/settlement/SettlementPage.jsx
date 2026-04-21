@@ -1152,7 +1152,7 @@ export default function SettlementPage() {
       {/* ── SETTLEMENT VIEW — always visible ── */}
       <div className="mt-8 border-t-2 border-pip-dim/30 pt-6">
         <div className="flex items-center justify-between mb-4 flex-wrap gap-2">
-          <h2 className="text-title text-xs font-bold tracking-widest">SETTLEMENT</h2>
+          <h2 className="text-title text-xs font-bold tracking-widest">SETTLEMENT OVERVIEW</h2>
           {step > 0 && (
             <button
               onClick={() => setStep(0)}
