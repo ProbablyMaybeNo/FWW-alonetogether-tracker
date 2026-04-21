@@ -115,7 +115,6 @@ export default function SettlementPage() {
   const settings = state?.settings ?? {}
   const [subTab, setSubTab] = useState('structures')
   const [step, setStep] = useState(0)
-  const [showAdvanced, setShowAdvanced] = useState(false)
   const [showAddStructure, setShowAddStructure] = useState(false)
   const [atValidOnly, setAtValidOnly] = useState(() => settings?.settlementMode !== 'homestead')
   const [showBarracks, setShowBarracks] = useState(false)
@@ -780,7 +779,7 @@ export default function SettlementPage() {
 
       {/* ── STEP 0 — Landing ── */}
       {step === 0 && (
-        <div className="space-y-6">
+        <div className="space-y-4">
           {/* Hero action */}
           <div className="border-2 border-amber rounded-xl bg-amber/5 p-6 text-center" style={{ boxShadow: '0 0 32px var(--color-amber-glow)' }}>
             <div className="text-title text-xs font-bold tracking-widest mb-1 opacity-60">SETTLEMENT PHASE</div>
@@ -808,50 +807,6 @@ export default function SettlementPage() {
               <div className="text-pip font-bold text-lg">{structures.length}</div>
               <div className="text-muted text-xs">STRUCTURES</div>
             </div>
-          </div>
-
-          {/* Advanced collapsible */}
-          <div className="border border-pip-dim/40 rounded bg-panel">
-            <button
-              onClick={() => setShowAdvanced(v => !v)}
-              className="w-full flex items-center justify-between px-4 py-3 text-left hover:bg-panel-alt transition-colors"
-            >
-              <span className="text-title text-xs font-bold tracking-widest">ADVANCED / MANUAL</span>
-              <span className="text-muted text-xs">{showAdvanced ? '▲ HIDE' : '▼ SHOW'}</span>
-            </button>
-            {showAdvanced && (
-              <div className="border-t border-pip-dim/30">
-                <div className="flex gap-1 px-4 py-3">
-                  {SETTLEMENT_SUB_TABS.map(t => (
-                    <button
-                      key={t.id}
-                      type="button"
-                      onClick={() => setSubTab(t.id)}
-                      className={`flex-1 min-h-[44px] py-2 text-xs rounded border transition-colors font-bold tracking-wider ${
-                        subTab === t.id
-                          ? 'border-pip bg-panel-light text-pip'
-                          : 'border-muted/30 text-muted hover:text-pip hover:border-pip'
-                      }`}
-                    >
-                      {t.label}
-                    </button>
-                  ))}
-                </div>
-                <div className="px-4 pb-4">
-                  {subTab === 'structures' && <StructuresPanel {...structuresPanelProps} />}
-                  {subTab === 'deck' && (
-                    <SettlementDeckPanel
-                      state={state} setState={setState} structures={structures}
-                      deckFilter={deckFilter} setDeckFilter={setDeckFilter}
-                      recentlyDrawn={recentlyDrawn} setRecentlyDrawn={setRecentlyDrawn}
-                      drawManualFromDeck={drawManualFromDeck} reshuffleDeck={reshuffleDeck}
-                      fullResetDeck={fullResetDeck} addRecentlyDrawnToPool={addRecentlyDrawnToPool}
-                    />
-                  )}
-                  {subTab === 'explore' && <ExplorePanel state={state} setState={setState} />}
-                </div>
-              </div>
-            )}
           </div>
         </div>
       )}
@@ -1193,6 +1148,51 @@ export default function SettlementPage() {
           )}
         </div>
       )}
+
+      {/* ── SETTLEMENT VIEW — always visible ── */}
+      <div className="mt-8 border-t-2 border-pip-dim/30 pt-6">
+        <div className="flex items-center justify-between mb-4 flex-wrap gap-2">
+          <h2 className="text-title text-xs font-bold tracking-widest">SETTLEMENT</h2>
+          {step > 0 && (
+            <button
+              onClick={() => setStep(0)}
+              className="text-xs border border-muted/30 text-muted px-3 py-1.5 rounded hover:text-pip hover:border-pip transition-colors"
+            >
+              ← EXIT PHASE
+            </button>
+          )}
+        </div>
+
+        {/* Sub-tab switcher */}
+        <div className="flex gap-1 mb-4">
+          {SETTLEMENT_SUB_TABS.map(t => (
+            <button
+              key={t.id}
+              type="button"
+              onClick={() => setSubTab(t.id)}
+              className={`flex-1 min-h-[44px] py-2 text-xs rounded border transition-colors font-bold tracking-wider ${
+                subTab === t.id
+                  ? 'border-pip bg-panel-light text-pip'
+                  : 'border-muted/30 text-muted hover:text-pip hover:border-pip'
+              }`}
+            >
+              {t.label}
+            </button>
+          ))}
+        </div>
+
+        {subTab === 'structures' && <StructuresPanel {...structuresPanelProps} />}
+        {subTab === 'deck' && (
+          <SettlementDeckPanel
+            state={state} setState={setState} structures={structures}
+            deckFilter={deckFilter} setDeckFilter={setDeckFilter}
+            recentlyDrawn={recentlyDrawn} setRecentlyDrawn={setRecentlyDrawn}
+            drawManualFromDeck={drawManualFromDeck} reshuffleDeck={reshuffleDeck}
+            fullResetDeck={fullResetDeck} addRecentlyDrawnToPool={addRecentlyDrawnToPool}
+          />
+        )}
+        {subTab === 'explore' && <ExplorePanel state={state} setState={setState} />}
+      </div>
     </div>
   )
 }
