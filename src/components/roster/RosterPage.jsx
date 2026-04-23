@@ -321,7 +321,7 @@ export default function RosterPage() {
                 {/* Desktop: compact row + inline summary */}
                 <div className="hidden md:block">
                   <div
-                    className="flex items-center gap-2 px-3 py-2 cursor-pointer hover:bg-panel-light transition-colors"
+                    className="group flex items-center gap-2 px-3 py-2 cursor-pointer hover:bg-panel-light transition-colors"
                     onClick={() => setExpandedSlot(expanded ? null : unit.slotId)}
                   >
                     {expanded ? <ChevronDown size={14} className="text-muted shrink-0" /> : <ChevronRight size={14} className="text-muted shrink-0" />}
@@ -335,6 +335,13 @@ export default function RosterPage() {
                     <span className={`text-xs px-2 py-0.5 rounded font-bold ${fateBadge}`}>{unit.fate === 'Pending' ? 'FATE?' : unit.fate.toUpperCase()}</span>
                     <span className="text-amber text-sm font-bold w-16 text-right">{totalCaps}c</span>
                     {items.length > 0 && <Package size={12} className="text-muted" />}
+                    <button
+                      onClick={e => { e.stopPropagation(); handleRemoveUnit(unit.slotId) }}
+                      className="opacity-0 group-hover:opacity-100 text-muted hover:text-danger transition-all shrink-0 p-0.5"
+                      title="Remove unit from roster"
+                    >
+                      <Trash2 size={13} />
+                    </button>
                   </div>
 
                   {/* Inline Summary — visible when collapsed */}
@@ -455,6 +462,11 @@ export default function RosterPage() {
                           })}
                           <button onClick={() => setShowAddItem(unit.slotId)} className="w-full flex items-center justify-center gap-2 py-2 border border-dashed border-pip-mid/50 text-pip rounded text-xs hover:border-pip hover:bg-pip-dim/20 transition-colors font-bold tracking-wider">
                             <Plus size={12} /> ADD EQUIPMENT
+                          </button>
+                        </div>
+                        <div className="flex justify-end pt-1">
+                          <button onClick={() => handleRemoveUnit(unit.slotId)} className="flex items-center gap-1 text-xs text-muted hover:text-danger border border-muted/30 hover:border-danger/50 rounded px-3 py-1.5 transition-colors">
+                            <Trash2 size={12} /> REMOVE UNIT FROM ROSTER
                           </button>
                         </div>
                       </div>
