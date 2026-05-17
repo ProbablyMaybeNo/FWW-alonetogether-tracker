@@ -65,6 +65,15 @@ function AddItemToPoolModal({ isOpen, onClose, onAdd }) {
   )
 }
 
+// Each Maintenance Shed / Stores holds "1 Item OR up to 2 Boosts".
+// Model as 2 units of capacity per structure; an Item costs 2 units, a Boost costs 1.
+const UNITS_PER_STRUCTURE = 2
+function itemUnitCost(item) { return item?.isBoost ? 1 : UNITS_PER_STRUCTURE }
+function unitsUsed(items) { return (items || []).reduce((s, i) => s + itemUnitCost(i), 0) }
+function canFit(items, structureCount, candidate) {
+  return unitsUsed(items) + itemUnitCost(candidate) <= structureCount * UNITS_PER_STRUCTURE
+}
+
 export default function ItemPoolPanel({ structures }) {
   const { state, setState } = useCampaign()
   const [collapsed, setCollapsed] = useState(false)
@@ -87,6 +96,11 @@ export default function ItemPoolPanel({ structures }) {
   const storedItems = items.filter(i => i.location === 'stored' || i.location === 'Maint. Shed')
   const lockerItems = items.filter(i => i.location === 'locker' || i.location === 'Locker')
   const storesItems = items.filter(i => i.location === 'stores' || i.location === 'Stores')
+
+  const shedUnitsUsed = unitsUsed(storedItems)
+  const shedUnitsMax = shedSlots * UNITS_PER_STRUCTURE
+  const storesUnitsUsed = unitsUsed(storesItems)
+  const storesUnitsMax = storesSlots * UNITS_PER_STRUCTURE
 
   function updateItem(id, changes) {
     setState(prev => ({
@@ -188,31 +202,36 @@ export default function ItemPoolPanel({ structures }) {
     }))
   }
 
-  // Keep item to shed (stored)
+  // Keep item to shed (stored). Capacity: shedSlots * 2 units; Item = 2, Boost = 1.
   function keepToShed(item) {
-    const nonBoostStored = storedItems.filter(i => !i.isBoost).length
-    const boostStored = storedItems.filter(i => i.isBoost).length
-    if (!item.isBoost && nonBoostStored >= shedSlots && shedSlots > 0) {
-      alert(`Maintenance Shed full (${shedSlots} slots used)`)
+    if (!canFit(storedItems, shedSlots, item)) {
+      alert(`Maintenance Shed full — needs ${itemUnitCost(item) === 2 ? '1 Item slot' : '1 Boost slot'} (${shedUnitsUsed}/${shedUnitsMax} used). Build another Maintenance Shed.`)
       return
     }
     updateItem(item.id, { location: 'stored' })
   }
 
   function moveToLocker(item) {
-    const lockerUsed = lockerItems.length
-    if (lockerUsed >= lockerSlots && lockerSlots > 0) {
-      alert(`Lockers full (${lockerSlots} slots used)`)
+    if (lockerItems.length + 1 > lockerSlots) {
+      alert(`Lockers full (${lockerItems.length}/${lockerSlots} used). Build another Locker.`)
       return
     }
     updateItem(item.id, { location: 'locker' })
   }
 
+  function assignToStores(item, unitSlotId) {
+    if (!canFit(storesItems, storesSlots, item)) {
+      alert(`Stores full — needs ${itemUnitCost(item) === 2 ? '1 Item slot' : '1 Boost slot'} (${storesUnitsUsed}/${storesUnitsMax} used). Build another Stores.`)
+      return
+    }
+    updateItem(item.id, { location: 'stores', assignedUnit: unitSlotId })
+  }
+
   const tabs = [
     { key: 'recovery', label: `POOL (${recoveryItems.length})` },
-    { key: 'stored',   label: `SHED (${storedItems.length}/${shedSlots || '0'})` },
-    { key: 'locker',   label: `LOCKERS (${lockerItems.length}/${lockerSlots || '0'})` },
-    { key: 'stores',   label: `STORES (${storesItems.length})` },
+    { key: 'stored',   label: `SHED (${shedUnitsUsed}/${shedUnitsMax})` },
+    { key: 'locker',   label: `LOCKERS (${lockerItems.length}/${lockerSlots})` },
+    { key: 'stores',   label: `STORES (${storesUnitsUsed}/${storesUnitsMax})` },
   ]
 
   return (
@@ -231,19 +250,19 @@ export default function ItemPoolPanel({ structures }) {
 
       {!collapsed && (
         <div className="border-t border-white/10 p-4">
-          {/* Slot overview */}
+          {/* Slot overview — Shed/Stores show units (Item = 2, Boost = 1; 2 units per structure) */}
           <div className="grid grid-cols-3 gap-2 mb-3">
-            <div className="border border-pip-mid/40 rounded bg-panel-alt p-2 text-center">
-              <div className="text-pip font-bold text-sm">{storedItems.filter(i=>!i.isBoost).length}/{shedSlots || 0}</div>
-              <div className="text-muted text-xs">SHED</div>
+            <div className={`border rounded bg-panel-alt p-2 text-center ${shedUnitsUsed > shedUnitsMax ? 'border-danger/60' : 'border-pip-mid/40'}`}>
+              <div className={`font-bold text-sm ${shedUnitsUsed > shedUnitsMax ? 'text-danger' : 'text-pip'}`}>{shedUnitsUsed}/{shedUnitsMax}</div>
+              <div className="text-muted text-xs">SHED slots</div>
             </div>
-            <div className="border border-pip-mid/40 rounded bg-panel-alt p-2 text-center">
-              <div className="text-pip font-bold text-sm">{lockerItems.length}/{lockerSlots || 0}</div>
+            <div className={`border rounded bg-panel-alt p-2 text-center ${lockerItems.length > lockerSlots ? 'border-danger/60' : 'border-pip-mid/40'}`}>
+              <div className={`font-bold text-sm ${lockerItems.length > lockerSlots ? 'text-danger' : 'text-pip'}`}>{lockerItems.length}/{lockerSlots}</div>
               <div className="text-muted text-xs">LOCKERS</div>
             </div>
-            <div className="border border-pip-mid/40 rounded bg-panel-alt p-2 text-center">
-              <div className="text-pip font-bold text-sm">{storesItems.length}/{storesSlots || 0}</div>
-              <div className="text-muted text-xs">STORES</div>
+            <div className={`border rounded bg-panel-alt p-2 text-center ${storesUnitsUsed > storesUnitsMax ? 'border-danger/60' : 'border-pip-mid/40'}`}>
+              <div className={`font-bold text-sm ${storesUnitsUsed > storesUnitsMax ? 'text-danger' : 'text-pip'}`}>{storesUnitsUsed}/{storesUnitsMax}</div>
+              <div className="text-muted text-xs">STORES slots</div>
             </div>
           </div>
 
@@ -297,19 +316,23 @@ export default function ItemPoolPanel({ structures }) {
                       <div className="flex gap-1 flex-wrap">
                         <button
                           onClick={() => keepToShed(item)}
-                          disabled={!item.isBoost && storedItems.filter(i => !i.isBoost).length >= shedSlots && shedSlots > 0}
+                          disabled={!canFit(storedItems, shedSlots, item)}
                           className="text-xs px-2 py-0.5 border border-muted rounded text-muted hover:text-pip hover:border-pip disabled:opacity-40 disabled:cursor-not-allowed"
-                          title={`Keep in Maintenance Shed (${storedItems.filter(i => !i.isBoost).length}/${shedSlots} used)`}
+                          title={shedSlots === 0
+                            ? 'Build a Maintenance Shed first'
+                            : `Maintenance Shed: ${shedUnitsUsed}/${shedUnitsMax} units used (Item = 2, Boost = 1)`}
                         >
-                          SHED ({shedSlots - storedItems.filter(i => !i.isBoost).length} left)
+                          SHED ({Math.max(0, shedUnitsMax - shedUnitsUsed)} slots left)
                         </button>
                         <button
                           onClick={() => moveToLocker(item)}
-                          disabled={lockerItems.length >= lockerSlots && lockerSlots > 0}
+                          disabled={lockerItems.length >= lockerSlots}
                           className="text-xs px-2 py-0.5 border border-muted rounded text-muted hover:text-pip hover:border-pip disabled:opacity-40 disabled:cursor-not-allowed"
-                          title={`Move to Locker (${lockerItems.length}/${lockerSlots} used)`}
+                          title={lockerSlots === 0
+                            ? 'Build a Locker first'
+                            : `Lockers: ${lockerItems.length}/${lockerSlots} used`}
                         >
-                          Locker ({lockerSlots - lockerItems.length} left)
+                          Locker ({Math.max(0, lockerSlots - lockerItems.length)} left)
                         </button>
                         <button
                           onClick={() => sellItem(item)}
@@ -350,7 +373,10 @@ export default function ItemPoolPanel({ structures }) {
           {/* STORED TAB */}
           {activeTab === 'stored' && (
             <div>
-              <p className="text-muted text-xs mb-3">Retained via Maintenance Shed (1 item or 2 Boosts per Shed)</p>
+              <p className="text-muted text-xs mb-3">
+                Retained via Maintenance Shed (1 Item or 2 Boosts per Shed) — {shedUnitsUsed}/{shedUnitsMax} slots used
+                {shedUnitsUsed > shedUnitsMax && <span className="text-danger ml-1">· OVER CAPACITY</span>}
+              </p>
               {storedItems.length === 0 ? (
                 <p className="text-muted text-xs">No stored items.</p>
               ) : (
@@ -361,9 +387,13 @@ export default function ItemPoolPanel({ structures }) {
                       <span className="text-muted text-xs px-1.5 py-0.5 border border-muted/40 rounded">{item.subType}</span>
                       <span className="text-amber text-xs font-bold">{item.caps}c</span>
                       <div className="flex gap-1 flex-wrap">
-                        <AssignUnitButton item={item} roster={roster} onAssign={(unitSlotId) => {
-                          updateItem(item.id, { location: 'stores', assignedUnit: unitSlotId })
-                        }} />
+                        <AssignUnitButton
+                          item={item}
+                          roster={roster}
+                          disabled={!canFit(storesItems, storesSlots, item)}
+                          disabledReason={storesSlots === 0 ? 'Build a Stores first' : `Stores full (${storesUnitsUsed}/${storesUnitsMax})`}
+                          onAssign={(unitSlotId) => assignToStores(item, unitSlotId)}
+                        />
                         <button
                           onClick={() => sellItem(item)}
                           className="text-xs px-2 py-0.5 border border-amber/40 rounded text-amber hover:bg-amber-dim/20"
@@ -442,7 +472,10 @@ export default function ItemPoolPanel({ structures }) {
           {activeTab === 'stores' && (
             <div>
               <div className="flex items-center justify-between mb-3">
-                <p className="text-muted text-xs">Items assigned to units for next battle</p>
+                <p className="text-muted text-xs">
+                  Items assigned to units for next battle (1 Item or 2 Boosts per Stores) — {storesUnitsUsed}/{storesUnitsMax} slots used
+                  {storesUnitsUsed > storesUnitsMax && <span className="text-danger ml-1">· OVER CAPACITY</span>}
+                </p>
                 {storesItems.length > 0 && (
                   <button
                     onClick={clearAllStores}
@@ -511,14 +544,16 @@ export default function ItemPoolPanel({ structures }) {
   )
 }
 
-function AssignUnitButton({ item, roster, onAssign }) {
+function AssignUnitButton({ item, roster, onAssign, disabled = false, disabledReason = '' }) {
   const [open, setOpen] = useState(false)
 
   if (!open) {
     return (
       <button
         onClick={() => setOpen(true)}
-        className="text-xs px-2 py-0.5 border border-muted rounded text-muted hover:text-pip hover:border-pip"
+        disabled={disabled}
+        title={disabled ? disabledReason : undefined}
+        className="text-xs px-2 py-0.5 border border-muted rounded text-muted hover:text-pip hover:border-pip disabled:opacity-40 disabled:cursor-not-allowed"
       >
         Assign to Unit
       </button>
