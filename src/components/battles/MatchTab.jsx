@@ -61,14 +61,51 @@ export default function MatchTab({
     setCountering(false)
   }
 
-  // Battle in progress — just show a status card (tracker is the full-screen overlay)
+  // A battle exists. Show a per-player status card.
   if (status === 'active' || status === 'roster_build') {
-    const label = status === 'roster_build' ? 'BUILDING ROSTERS' : 'BATTLE IN PROGRESS'
+    const iHaveApplied = !!ab.postBattleAppliedBy?.[currentUserId]
+    const iHaveEnded = !!ab.battleEndedBy?.[currentUserId]
+    const iHaveSubmittedRoster = !!ab.readyFlags?.[currentUserId]
+
+    // I'm done — already applied my results. Tell me what I'm waiting on instead
+    // of "BATTLE IN PROGRESS" (the tracker is closed for me).
+    if (iAmParticipant && iHaveApplied) {
+      const remaining = participantUserIds.filter(uid => !ab.postBattleAppliedBy?.[uid])
+      return (
+        <div className="border border-pip/40 rounded-lg bg-panel p-6 text-center space-y-2">
+          <Swords size={20} className="text-pip mx-auto" />
+          <p className="text-title text-sm font-bold tracking-wider">● RESULTS SUBMITTED</p>
+          <p className="text-muted text-xs">
+            {remaining.length === 0
+              ? 'Finalizing battle…'
+              : `Waiting for ${remaining.length} player${remaining.length === 1 ? '' : 's'} to finish reporting before the next match can start.`}
+          </p>
+        </div>
+      )
+    }
+
+    // I'm a participant still in the battle — tracker / outcome modal is open as overlay
+    if (iAmParticipant) {
+      const label = iHaveEnded
+        ? 'REPORTING OUTCOME'
+        : !iHaveSubmittedRoster
+          ? 'BUILDING ROSTER'
+          : 'BATTLE IN PROGRESS'
+      return (
+        <div className="border border-amber/40 rounded-lg bg-panel p-6 text-center space-y-2">
+          <Swords size={20} className="text-amber mx-auto" />
+          <p className="text-title text-sm font-bold tracking-wider">● {label}</p>
+          <p className="text-muted text-xs">Your battle is open as an overlay.</p>
+        </div>
+      )
+    }
+
+    // I'm not in this battle — let me know someone else is fighting
     return (
-      <div className="border border-amber/40 rounded-lg bg-panel p-6 text-center space-y-2">
-        <Swords size={20} className="text-amber mx-auto" />
-        <p className="text-title text-sm font-bold tracking-wider">● {label}</p>
-        <p className="text-muted text-xs">The battle tracker is open as an overlay.</p>
+      <div className="border border-pip-dim/40 rounded-lg bg-panel p-6 text-center space-y-2">
+        <Swords size={20} className="text-pip mx-auto" />
+        <p className="text-title text-sm font-bold tracking-wider">● BATTLE IN PROGRESS</p>
+        <p className="text-muted text-xs">Other players are fighting — new challenges paused until they finish.</p>
       </div>
     )
   }

@@ -104,7 +104,6 @@ export default function PostBattleSummary({
 
   const finalizeBattleCampaign = useCallback(async (snap) => {
     const abSnap = normalizeActiveBattle(snap)
-    if (abSnap.status !== 'ended') return
     const round = state?.round ?? 0
     const roundKey = String(round)
     const parts = participantIdsFromBattle(abSnap)
@@ -159,12 +158,13 @@ export default function PostBattleSummary({
   useEffect(() => {
     if (!iAmHost || !activeBattleProp) return
     const abn = normalizeActiveBattle(activeBattleProp)
-    if (abn.status !== 'ended') return
     const parts = participantIdsFromBattle(abn)
     if (parts.length === 0) return
     const applied = abn.postBattleAppliedBy || {}
     if (!parts.every(id => applied[id])) return
-    const ed = abn.endedAt || ''
+    // Dedupe key: sorted concatenation of every player's apply timestamp.
+    // (endedAt is no longer set under per-player flow.)
+    const ed = Object.values(applied).filter(Boolean).sort().join('|')
     if (finalizedEndedAtRef.current === ed) return
     if (hostFinalizeLock.current) return
 
@@ -269,11 +269,28 @@ export default function PostBattleSummary({
         : {}
       const nextApplied = { ...prevApplied, [currentUserId]: iso }
 
-      await saveActiveBattle({
-        ...normalizeActiveBattle(activeBattleProp),
+      const baseForSave = normalizeActiveBattle(activeBattleProp)
+      const nextActiveBattle = {
+        ...baseForSave,
         postBattleAppliedBy: nextApplied,
         lastUpdatedBy: currentUserId,
-      })
+      }
+      await saveActiveBattle(nextActiveBattle)
+
+      // If I'm the host and this apply makes everyone done, finalize now
+      // rather than relying on the useEffect — this component is about to unmount.
+      if (iAmHost) {
+        const allApplied = participants.length > 0 &&
+          participants.every(id => nextApplied[id])
+        if (allApplied && !hostFinalizeLock.current) {
+          hostFinalizeLock.current = true
+          try {
+            await finalizeBattleCampaign(nextActiveBattle)
+          } finally {
+            hostFinalizeLock.current = false
+          }
+        }
+      }
 
       setPendingNav(true)
     } catch (e) {
