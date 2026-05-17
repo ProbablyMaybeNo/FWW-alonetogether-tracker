@@ -1,5 +1,5 @@
 import { useState, useMemo } from 'react'
-import { Plus, X, ChevronDown, ChevronRight } from 'lucide-react'
+import { Plus, X, ChevronDown, ChevronRight, Trash2 } from 'lucide-react'
 import Modal from '../layout/Modal'
 import { useCampaign } from '../../context/CampaignContext'
 import { getStructureRef } from '../../utils/calculations'
@@ -114,6 +114,23 @@ export default function ItemPoolPanel({ structures }) {
       itemPool: {
         ...prev.itemPool,
         items: [...(prev.itemPool.items || []), item],
+      },
+    }))
+  }
+
+  function discardItem(item) {
+    if (!confirm(`Discard "${item.name}"? This removes it from the pool with no caps refund.`)) return
+    removeItem(item.id)
+  }
+
+  function discardAllRecovery() {
+    if (!recoveryItems.length) return
+    if (!confirm(`Discard all ${recoveryItems.length} recovery items? No caps refund.`)) return
+    setState(prev => ({
+      ...prev,
+      itemPool: {
+        ...prev.itemPool,
+        items: prev.itemPool.items.filter(i => i.location !== 'recovery' && i.location !== 'Temp Pool'),
       },
     }))
   }
@@ -300,15 +317,29 @@ export default function ItemPoolPanel({ structures }) {
                         >
                           Sell {item.caps}c
                         </button>
+                        <button
+                          onClick={() => discardItem(item)}
+                          title="Discard (no caps refund)"
+                          className="text-xs p-1 border border-muted/40 rounded text-muted hover:text-danger hover:border-danger transition-colors"
+                          aria-label="Discard item"
+                        >
+                          <Trash2 size={12} />
+                        </button>
                       </div>
                     </div>
                   ))}
-                  <div className="pt-2">
+                  <div className="pt-2 flex gap-2 flex-wrap">
                     <button
                       onClick={sellAllRecovery}
-                      className="text-xs px-4 py-2 border border-danger/40 text-danger rounded hover:bg-danger-dim/10 transition-colors"
+                      className="text-xs px-4 py-2 border border-amber/40 text-amber rounded hover:bg-amber-dim/10 transition-colors"
                     >
                       SELL ALL ({recoveryItems.reduce((s, i) => s + (i.caps || 0), 0)}c)
+                    </button>
+                    <button
+                      onClick={discardAllRecovery}
+                      className="text-xs px-4 py-2 border border-danger/40 text-danger rounded hover:bg-danger-dim/10 transition-colors flex items-center gap-1.5"
+                    >
+                      <Trash2 size={12} /> DISCARD ALL
                     </button>
                   </div>
                 </div>
@@ -338,6 +369,14 @@ export default function ItemPoolPanel({ structures }) {
                           className="text-xs px-2 py-0.5 border border-amber/40 rounded text-amber hover:bg-amber-dim/20"
                         >
                           Sell {item.caps}c
+                        </button>
+                        <button
+                          onClick={() => discardItem(item)}
+                          title="Discard (no caps refund)"
+                          className="text-xs p-1 border border-muted/40 rounded text-muted hover:text-danger hover:border-danger transition-colors"
+                          aria-label="Discard item"
+                        >
+                          <Trash2 size={12} />
                         </button>
                       </div>
                     </div>
@@ -370,7 +409,7 @@ export default function ItemPoolPanel({ structures }) {
                       <span className="text-pip text-xs flex-1 min-w-0">{item.name}</span>
                       <span className="text-muted text-xs px-1.5 py-0.5 border border-muted/40 rounded">{item.subType}</span>
                       <span className="text-amber text-xs font-bold">{item.caps}c</span>
-                      <div className="flex gap-1">
+                      <div className="flex gap-1 flex-wrap">
                         <button
                           onClick={() => updateItem(item.id, { location: 'stored' })}
                           className="text-xs px-2 py-0.5 border border-muted rounded text-muted hover:text-pip hover:border-pip"
@@ -382,6 +421,14 @@ export default function ItemPoolPanel({ structures }) {
                           className="text-xs px-2 py-0.5 border border-amber/40 rounded text-amber hover:bg-amber-dim/20"
                         >
                           Sell {item.caps}c
+                        </button>
+                        <button
+                          onClick={() => discardItem(item)}
+                          title="Discard (no caps refund)"
+                          className="text-xs p-1 border border-muted/40 rounded text-muted hover:text-danger hover:border-danger transition-colors"
+                          aria-label="Discard item"
+                        >
+                          <Trash2 size={12} />
                         </button>
                       </div>
                     </div>
@@ -435,6 +482,14 @@ export default function ItemPoolPanel({ structures }) {
                                   className="text-xs px-2 py-0.5 border border-muted rounded text-muted hover:text-pip hover:border-pip"
                                 >
                                   Unassign
+                                </button>
+                                <button
+                                  onClick={() => discardItem(item)}
+                                  title="Discard (no caps refund)"
+                                  className="text-xs p-1 border border-muted/40 rounded text-muted hover:text-danger hover:border-danger transition-colors"
+                                  aria-label="Discard item"
+                                >
+                                  <Trash2 size={12} />
                                 </button>
                               </div>
                             ))}
