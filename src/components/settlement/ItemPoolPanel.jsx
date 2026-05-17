@@ -387,9 +387,20 @@ export default function ItemPoolPanel({ structures }) {
                       <span className="text-muted text-xs px-1.5 py-0.5 border border-muted/40 rounded">{item.subType}</span>
                       <span className="text-amber text-xs font-bold">{item.caps}c</span>
                       <div className="flex gap-1 flex-wrap">
+                        <button
+                          onClick={() => moveToLocker(item)}
+                          disabled={lockerItems.length >= lockerSlots}
+                          title={lockerSlots === 0
+                            ? 'Build a Locker first'
+                            : `Lockers: ${lockerItems.length}/${lockerSlots} used`}
+                          className="text-xs px-2 py-0.5 border border-muted rounded text-muted hover:text-pip hover:border-pip disabled:opacity-40 disabled:cursor-not-allowed"
+                        >
+                          → Locker ({Math.max(0, lockerSlots - lockerItems.length)})
+                        </button>
                         <AssignUnitButton
                           item={item}
                           roster={roster}
+                          label={`→ Stores (${Math.max(0, storesUnitsMax - storesUnitsUsed)})`}
                           disabled={!canFit(storesItems, storesSlots, item)}
                           disabledReason={storesSlots === 0 ? 'Build a Stores first' : `Stores full (${storesUnitsUsed}/${storesUnitsMax})`}
                           onAssign={(unitSlotId) => assignToStores(item, unitSlotId)}
@@ -544,7 +555,7 @@ export default function ItemPoolPanel({ structures }) {
   )
 }
 
-function AssignUnitButton({ item, roster, onAssign, disabled = false, disabledReason = '' }) {
+function AssignUnitButton({ item, roster, onAssign, disabled = false, disabledReason = '', label = 'Assign to Unit' }) {
   const [open, setOpen] = useState(false)
 
   if (!open) {
@@ -555,7 +566,7 @@ function AssignUnitButton({ item, roster, onAssign, disabled = false, disabledRe
         title={disabled ? disabledReason : undefined}
         className="text-xs px-2 py-0.5 border border-muted rounded text-muted hover:text-pip hover:border-pip disabled:opacity-40 disabled:cursor-not-allowed"
       >
-        Assign to Unit
+        {label}
       </button>
     )
   }
