@@ -8,8 +8,6 @@ import {
   outcomeLabel,
   canonicalBattleHostUserId,
   participantIdsFromBattle,
-  outcomesConflict,
-  allParticipantsSubmittedOutcome,
   countUnitsRemoved,
   collectLootedItemsForPlayer,
   sumCapsFromBattleLog,
@@ -60,21 +58,22 @@ export default function PostBattleSummary({
   const finalizedEndedAtRef = useRef(null)
 
   const outcome = ab.outcome && typeof ab.outcome === 'object' ? ab.outcome : {}
-  const conflict = outcomesConflict(outcome, participants)
-  const allOutcomesIn = allParticipantsSubmittedOutcome(outcome, participants) && !conflict
+  const myOutcomeValue = outcome[currentUserId]
 
+  // Auto-advance to summary as soon as I've picked my outcome.
+  // No waiting for opponents — each player advances independently.
   useEffect(() => {
-    if (uiStep === 'outcome' && allOutcomesIn) {
+    if (uiStep === 'outcome' && myOutcomeValue) {
       setUiStep('summary')
     }
-  }, [uiStep, allOutcomesIn])
+  }, [uiStep, myOutcomeValue])
 
   useEffect(() => {
-    if (pendingNav && activeBattleProp == null) {
+    if (pendingNav) {
       onNavigateBattlesTab?.()
       setPendingNav(false)
     }
-  }, [pendingNav, activeBattleProp, onNavigateBattlesTab])
+  }, [pendingNav, onNavigateBattlesTab])
 
   useEffect(() => {
     if (!isOnline || !campaignId || !supabase) {
@@ -195,10 +194,22 @@ export default function PostBattleSummary({
     })
   }
 
+  // Closing the modal (X / ESC / outside click) reverts END BATTLE so the user
+  // goes back to the live tracker. Their outcome pick (if any) is preserved.
+  // Use null (not delete) so the realtime per-user merge in useCampaignSync keeps
+  // the local clear instead of restoring my stale timestamp from a concurrent echo.
+  async function handleDismiss() {
+    if (uiStep === 'applying') return
+    const cur = normalizeActiveBattle(activeBattleProp)
+    await saveActiveBattle({
+      ...cur,
+      battleEndedBy: { ...(cur.battleEndedBy || {}), [currentUserId]: null },
+      lastUpdatedBy: currentUserId,
+    })
+    setUiStep('outcome')
+  }
+
   const myOutcome = outcome[currentUserId]
-  const waitingForOpponent =
-    isOnline &&
-    participants.filter(id => id !== currentUserId).some(id => !outcome[id])
 
   const perPlayerStats = useMemo(() => {
     const out = {}
@@ -275,11 +286,7 @@ export default function PostBattleSummary({
   const outcomePicker = (
     <div className="space-y-4">
       <h3 className="text-title font-bold tracking-widest text-center">HOW DID IT GO?</h3>
-      {conflict && (
-        <p className="text-amber text-xs border border-amber/40 rounded p-2 bg-amber/10">
-          You both picked the same competitive outcome — agree on results and resubmit (each pick again).
-        </p>
-      )}
+      <p className="text-muted text-xs text-center">Pick your outcome — you'll move on as soon as you submit. Your opponent reports independently.</p>
       <div className="grid grid-cols-2 gap-2">
         {OUTCOME_OPTIONS.map(opt => (
           <button
@@ -296,12 +303,6 @@ export default function PostBattleSummary({
           </button>
         ))}
       </div>
-      {waitingForOpponent && myOutcome && (
-        <p className="text-muted text-xs text-center">Waiting for opponent to submit…</p>
-      )}
-      {!isOnline && (
-        <p className="text-muted text-xs text-center">Solo — confirm your outcome to continue.</p>
-      )}
     </div>
   )
 
@@ -471,7 +472,7 @@ export default function PostBattleSummary({
     <Modal
       isOpen
       wide
-      onClose={() => {}}
+      onClose={handleDismiss}
       title={title}
     >
       {uiStep === 'outcome' && outcomePicker}

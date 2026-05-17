@@ -53,13 +53,7 @@ export default function RosterBuildPhase({
   }, [draftEntries, activeRoster, poolItems])
 
   const overLimit = totalUsed > pointsLimit
-  const canSubmit = draftEntries.length > 0 && !overLimit
-
-  const allParticipants = setup.participantUserIds ?? [currentUserId]
-  const readyPlayers = Object.entries(ab.readyFlags)
-    .filter(([, v]) => v === 'roster_ready')
-    .map(([uid]) => uid)
-  const waitingFor = allParticipants.filter(uid => !readyPlayers.includes(uid))
+  const canSubmit = draftEntries.length > 0
 
   const usedInstanceIds = new Set(draftEntries.flatMap(e => e.addedItemInstanceIds || []))
   const usedBoostIds = new Set(draftEntries.flatMap(e => e.addedBoostInstanceIds || []))
@@ -166,35 +160,14 @@ export default function RosterBuildPhase({
     setSubmitted(true)
   }
 
+  // After submit, parent (LiveBattleTracker) takes over and shows the pre-battle tracker.
+  // Briefly render nothing in case the parent hasn't switched yet.
   if (submitted) {
     return (
       <div className="flex-1 flex flex-col items-center justify-center gap-4 p-8 text-center">
         <Check size={32} className="text-pip" />
         <p className="text-title font-bold tracking-wider">ROSTER SUBMITTED</p>
-        {waitingFor.length > 0 ? (
-          <div className="space-y-3">
-            <p className="text-muted text-xs">
-              Waiting for {waitingFor.length} player{waitingFor.length !== 1 ? 's' : ''} to submit...
-            </p>
-            <div className="flex gap-2 justify-center flex-wrap">
-              {allParticipants.map(uid => (
-                <div
-                  key={uid}
-                  className={`text-xs px-3 py-1.5 rounded border ${
-                    readyPlayers.includes(uid)
-                      ? 'border-pip text-pip'
-                      : 'border-muted/30 text-muted'
-                  }`}
-                >
-                  {uid === currentUserId ? 'You' : 'Opponent'}
-                  {readyPlayers.includes(uid) ? ' ✓' : ' …'}
-                </div>
-              ))}
-            </div>
-          </div>
-        ) : (
-          <p className="text-amber text-xs animate-pulse">All rosters in — starting battle…</p>
-        )}
+        <p className="text-muted text-xs animate-pulse">Loading battle tracker…</p>
       </div>
     )
   }

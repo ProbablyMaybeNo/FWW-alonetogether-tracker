@@ -20,10 +20,12 @@ export default function MatchTab({
   const status = activeBattleProp?.status ?? null
   const challengerId = ab.setup?.challengerId ?? null
   const opponentIds = ab.setup?.opponentUserIds ?? []
+  const participantUserIds = ab.setup?.participantUserIds ?? []
   const counterProposal = ab.setup?.counterProposal ?? null
 
   const iAmChallenger = challengerId === currentUserId
   const iAmOpponent = !iAmChallenger && opponentIds.includes(currentUserId)
+  const iAmParticipant = participantUserIds.includes(currentUserId)
 
   const opponents = opponentRows.filter(p => !p.isMe)
   const challengerRow = opponentRows.find(p => p.userId === challengerId)
@@ -85,68 +87,17 @@ export default function MatchTab({
     )
   }
 
-  // I sent a challenge — waiting for opponent
-  if ((status === 'pending' || status === 'setup') && iAmChallenger) {
-    const scenarioName = battleScenarios.find(s => s.id === ab.setup.scenario?.scenarioId)?.name
-    const hasCounter = counterProposal && counterProposal.proposedBy !== currentUserId
-
-    if (hasCounter) {
-      return (
-        <div className="border border-amber/50 rounded-lg bg-panel p-4 space-y-4">
-          <div className="flex items-center gap-2">
-            <Clock size={14} className="text-amber" />
-            <span className="text-title text-xs font-bold tracking-wider">COUNTER-PROPOSAL RECEIVED</span>
-          </div>
-          <div className="space-y-1 text-xs">
-            <p className="text-muted">Your caps limit: <span className="text-pip">{ab.setup.pointsLimit}</span></p>
-            <p className="text-muted">Counter-proposal: <span className="text-amber font-bold">{counterProposal.pointsLimit} caps</span></p>
-          </div>
-          <div className="flex gap-2">
-            <button
-              onClick={acceptChallenge}
-              className="flex-1 text-xs border border-pip text-pip font-bold py-2.5 rounded hover:bg-pip/10 transition-colors"
-            >
-              ACCEPT COUNTER
-            </button>
-            <button
-              onClick={cancelBattle}
-              className="flex-1 text-xs border border-danger/50 text-danger font-bold py-2.5 rounded hover:bg-danger/10 transition-colors"
-            >
-              CANCEL BATTLE
-            </button>
-          </div>
-        </div>
-      )
-    }
-
-    return (
-      <div className="border border-pip/40 rounded-lg bg-panel p-4 space-y-3">
-        <div className="flex items-center gap-2">
-          <Clock size={14} className="text-pip" />
-          <span className="text-title text-xs font-bold tracking-wider">CHALLENGE SENT</span>
-        </div>
-        <div className="space-y-1 text-xs text-muted">
-          <p>Opponent: <span className="text-pip font-bold">{opponentRow?.username ?? 'Player'}</span></p>
-          {scenarioName && <p>Scenario: <span className="text-pip">{scenarioName}</span></p>}
-          <p>Caps limit: <span className="text-pip">{ab.setup.pointsLimit}</span></p>
-          <p>Wasteland cards: <span className="text-pip">{ab.setup.wastelandItemsCount} per player</span></p>
-        </div>
-        <p className="text-muted text-xs italic">Waiting for opponent to respond…</p>
-        <button
-          onClick={cancelBattle}
-          className="text-xs border border-muted/30 text-muted px-4 py-2 rounded hover:text-danger hover:border-danger transition-colors min-h-[44px]"
-        >
-          CANCEL CHALLENGE
-        </button>
-      </div>
-    )
-  }
-
-  // I received a challenge
-  if ((status === 'pending' || status === 'setup') && iAmOpponent) {
+  // Pending challenge — unified notification for both players
+  if ((status === 'pending' || status === 'setup') && iAmParticipant) {
     const scenario = battleScenarios.find(s => s.id === ab.setup.scenario?.scenarioId)
+    const challengerName = challengerRow?.username ?? (iAmChallenger ? 'You' : 'Player')
+    const opponentName = opponentRow?.username ?? (iAmOpponent ? 'You' : 'Player')
+    const hasCounter = counterProposal && counterProposal.proposedBy !== currentUserId
+    const counterFromName = counterProposal?.proposedBy === challengerId
+      ? challengerName
+      : opponentName
 
-    if (countering) {
+    if (iAmOpponent && countering) {
       return (
         <div className="border border-amber/40 rounded-lg bg-panel p-4 space-y-3">
           <h3 className="text-title text-xs font-bold tracking-wider">PROPOSE COUNTER</h3>
@@ -183,35 +134,78 @@ export default function MatchTab({
       <div className="border border-amber/50 rounded-lg bg-panel p-4 space-y-4">
         <div className="flex items-center gap-2">
           <Swords size={14} className="text-amber" />
-          <span className="text-title text-xs font-bold tracking-wider">CHALLENGE RECEIVED</span>
+          <span className="text-title text-xs font-bold tracking-wider">CHALLENGE</span>
         </div>
-        <div className="space-y-1 text-xs text-muted">
-          <p>From: <span className="text-pip font-bold">{challengerRow?.username ?? 'Player'}</span></p>
+        <div className="text-sm text-pip text-center py-1">
+          <span className="text-amber font-bold">{challengerName}</span>
+          <span className="text-muted mx-2">challenges</span>
+          <span className="text-amber font-bold">{opponentName}</span>
+        </div>
+        <div className="space-y-1 text-xs text-muted border-t border-pip-dim/30 pt-3">
           {scenario && <p>Scenario: <span className="text-pip">{scenario.name}</span></p>}
           <p>Caps limit: <span className="text-pip">{ab.setup.pointsLimit}</span></p>
           <p>Wasteland cards: <span className="text-pip">{ab.setup.wastelandItemsCount} per player</span></p>
           <p>Game mode: <span className="text-pip capitalize">{ab.setup.gameMode ?? 'skirmish'}</span></p>
+          {hasCounter && (
+            <p className="text-amber border-t border-amber/20 pt-1 mt-1">
+              {counterFromName} proposed counter: <span className="font-bold">{counterProposal.pointsLimit} caps</span>
+            </p>
+          )}
         </div>
-        <div className="grid grid-cols-3 gap-2">
-          <button
-            onClick={acceptChallenge}
-            className="text-xs border border-pip text-pip font-bold py-3 rounded hover:bg-pip/10 transition-colors flex items-center justify-center gap-1 min-h-[44px]"
-          >
-            <Check size={12} /> ACCEPT
-          </button>
-          <button
-            onClick={() => { setCounterCaps(ab.setup.pointsLimit ?? 500); setCountering(true) }}
-            className="text-xs border border-amber text-amber font-bold py-3 rounded hover:bg-amber/10 transition-colors min-h-[44px]"
-          >
-            COUNTER
-          </button>
-          <button
-            onClick={cancelBattle}
-            className="text-xs border border-danger/50 text-danger font-bold py-3 rounded hover:bg-danger/10 transition-colors flex items-center justify-center gap-1 min-h-[44px]"
-          >
-            <X size={12} /> DECLINE
-          </button>
-        </div>
+
+        {iAmOpponent && !hasCounter && (
+          <div className="grid grid-cols-3 gap-2">
+            <button
+              onClick={acceptChallenge}
+              className="text-xs border border-pip text-pip font-bold py-3 rounded hover:bg-pip/10 transition-colors flex items-center justify-center gap-1 min-h-[44px]"
+            >
+              <Check size={12} /> ACCEPT
+            </button>
+            <button
+              onClick={() => { setCounterCaps(ab.setup.pointsLimit ?? 500); setCountering(true) }}
+              className="text-xs border border-amber text-amber font-bold py-3 rounded hover:bg-amber/10 transition-colors min-h-[44px]"
+            >
+              COUNTER
+            </button>
+            <button
+              onClick={cancelBattle}
+              className="text-xs border border-danger/50 text-danger font-bold py-3 rounded hover:bg-danger/10 transition-colors flex items-center justify-center gap-1 min-h-[44px]"
+            >
+              <X size={12} /> DECLINE
+            </button>
+          </div>
+        )}
+
+        {iAmChallenger && hasCounter && (
+          <div className="flex gap-2">
+            <button
+              onClick={acceptChallenge}
+              className="flex-1 text-xs border border-pip text-pip font-bold py-2.5 rounded hover:bg-pip/10 transition-colors min-h-[44px]"
+            >
+              ACCEPT COUNTER
+            </button>
+            <button
+              onClick={cancelBattle}
+              className="flex-1 text-xs border border-danger/50 text-danger font-bold py-2.5 rounded hover:bg-danger/10 transition-colors min-h-[44px]"
+            >
+              CANCEL BATTLE
+            </button>
+          </div>
+        )}
+
+        {iAmChallenger && !hasCounter && (
+          <div className="flex items-center justify-between gap-2">
+            <p className="text-muted text-xs italic flex items-center gap-1.5">
+              <Clock size={12} /> Waiting for {opponentName} to respond…
+            </p>
+            <button
+              onClick={cancelBattle}
+              className="text-xs border border-muted/30 text-muted px-4 py-2 rounded hover:text-danger hover:border-danger transition-colors min-h-[44px]"
+            >
+              CANCEL
+            </button>
+          </div>
+        )}
       </div>
     )
   }

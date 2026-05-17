@@ -1,9 +1,10 @@
-import { useState, useCallback, useMemo, useEffect, useRef } from 'react'
+import { useState, useCallback, useMemo, useEffect } from 'react'
 import { ChevronDown, ChevronUp, ChevronLeft, ChevronRight, Skull, Minimize2, Maximize2, X } from 'lucide-react'
-import { normalizeActiveBattle, shuffleArray, buildInitialParticipants } from '../../utils/activeBattle'
+import { normalizeActiveBattle, shuffleArray } from '../../utils/activeBattle'
 import RosterBuildPhase from './RosterBuildPhase'
 import { Swords } from 'lucide-react'
 import { getItemRef } from '../../utils/calculations'
+import { supabase } from '../../lib/supabase'
 import { getCardBodyText } from '../../utils/battleDeckCardUtils'
 import { lookupItemMeta } from '../../utils/settlementItemDeckUtils'
 import battleCreatures from '../../data/battle/battleCreatures.json'
@@ -56,9 +57,9 @@ export default function LiveBattleTracker({
   isOnline,
 }) {
   const ab = normalizeActiveBattle(activeBattleProp)
-  const seedRef = useRef(false)
   const [minimized, setMinimized] = useState(false)
   const [cancelConfirm, setCancelConfirm] = useState(false)
+  const [playerNames, setPlayerNames] = useState({})
   const setup = ab.setup || {}
   const scenario = battleScenarios.find(s => s.id === setup.scenario?.scenarioId)
   const [mobileYour, setMobileYour] = useState(false)
@@ -71,7 +72,35 @@ export default function LiveBattleTracker({
   const [pendingWasteland, setPendingWasteland] = useState(null)
   const [assignTarget, setAssignTarget] = useState('tray')
 
-  const opponentIds = setup.opponentUserIds || []
+  const opponentIds = (setup.participantUserIds || [])
+    .filter(uid => uid && uid !== currentUserId)
+
+  const iHaveSubmittedRoster = !!ab.readyFlags?.[currentUserId]
+  const iHaveStarted = !!ab.battleStartedBy?.[currentUserId]
+  const iHaveEnded = !!ab.battleEndedBy?.[currentUserId]
+
+  const displayName = useCallback((uid) => {
+    if (uid === currentUserId) return state?.player?.name || playerNames[uid] || 'You'
+    return playerNames[uid] || `Player ${String(uid || '').slice(0, 6)}…`
+  }, [currentUserId, playerNames, state?.player?.name])
+
+  useEffect(() => {
+    if (!isOnline || !campaignId || !supabase) return
+    let cancelled = false
+    ;(async () => {
+      const { data } = await supabase
+        .from('player_data')
+        .select('user_id, player_info')
+        .eq('campaign_id', campaignId)
+      if (cancelled || !data) return
+      const next = {}
+      for (const row of data) {
+        next[row.user_id] = row.player_info?.name || 'Player'
+      }
+      setPlayerNames(next)
+    })()
+    return () => { cancelled = true }
+  }, [campaignId, isOnline])
 
   const patch = useCallback((next) => {
     const base = normalizeActiveBattle(activeBattleProp)
@@ -79,40 +108,56 @@ export default function LiveBattleTracker({
     saveActiveBattle({ ...n, lastUpdatedBy: currentUserId })
   }, [activeBattleProp, saveActiveBattle, currentUserId])
 
-  useEffect(() => {
+  const startBattleForMe = useCallback(() => {
     const cur = normalizeActiveBattle(activeBattleProp)
-    if (cur.status !== 'active') {
-      seedRef.current = false
-      return
-    }
-    if (cur.participants && Object.keys(cur.participants).length > 0) return
-    if (seedRef.current) return
-    seedRef.current = true
-    saveActiveBattle({
-      ...cur,
-      participants: buildInitialParticipants(cur),
-      lastUpdatedBy: currentUserId,
-    })
-  }, [activeBattleProp, saveActiveBattle, currentUserId])
-
-  const beginBattle = useCallback(() => {
-    const cur = normalizeActiveBattle(activeBattleProp)
-    const allCardIds = Object.values(cur.wastelandContributions || {}).flat()
+    if (cur.battleStartedBy?.[currentUserId]) return
+    const startedBy = cur.battleStartedBy || {}
+    const isFirstStart = Object.keys(startedBy).length === 0
     const startedAt = new Date().toISOString()
-    saveActiveBattle({
+
+    // Seed my own participant entry from my submitted roster
+    const myEntries = cur.battleRosters?.[currentUserId]?.entries || []
+    const myUnits = {}
+    for (const e of myEntries) {
+      myUnits[e.slotId] = {
+        slotId: e.slotId,
+        regDamage: 0,
+        radDamage: 0,
+        conditions: { poisoned: false, injuredArm: false, injuredLeg: false },
+        removed: false,
+        lootedItems: [],
+      }
+    }
+    const nextParticipants = {
+      ...(cur.participants || {}),
+      [currentUserId]: cur.participants?.[currentUserId] ?? {
+        units: myUnits, itemTray: [], objectiveComplete: false,
+      },
+    }
+
+    let next = {
       ...cur,
-      status: 'active',
+      battleStartedBy: { ...startedBy, [currentUserId]: startedAt },
+      participants: nextParticipants,
       lastUpdatedBy: currentUserId,
-      startedAt,
-      turn: 1,
-      turnHistory: [],
-      participants: buildInitialParticipants(cur),
-      deckStates: {
+    }
+
+    if (isFirstStart) {
+      const allCardIds = Object.values(cur.wastelandContributions || {}).flat()
+      next.status = 'active'
+      next.startedAt = startedAt
+      next.turn = 1
+      next.turnHistory = []
+      next.deckStates = {
         ...cur.deckStates,
         wastelandItems: { drawPile: shuffleArray(allCardIds), discardPile: [], lastDrawn: null },
-      },
-      log: [{ turn: 1, timestamp: startedAt, userId: currentUserId, event: 'Battle started' }],
-    })
+      }
+      next.log = [...(cur.log || []), { turn: 1, timestamp: startedAt, userId: currentUserId, event: 'Battle started' }]
+    } else {
+      next.log = [...(cur.log || []), { turn: cur.turn || 1, timestamp: startedAt, userId: currentUserId, event: 'Joined battle' }]
+    }
+
+    saveActiveBattle(next)
   }, [activeBattleProp, currentUserId, saveActiveBattle])
 
   const rosterBySlot = useMemo(() => {
@@ -142,6 +187,7 @@ export default function LiveBattleTracker({
   }
 
   function drawFromDeck(deckKey) {
+    if (!iHaveStarted) return
     const de = setup.decksEnabled || {}
     if (deckKey !== 'wastelandItems' && de[deckKey] === false) return
 
@@ -274,6 +320,7 @@ export default function LiveBattleTracker({
   }
 
   function nextTurn() {
+    if (!iHaveStarted) return
     const t = ab.turn || 1
     const snap = { turn: t, participants: deepClone(ab.participants || {}) }
     const history = [...(ab.turnHistory || []).filter(h => h.turn !== t), snap].sort((a, b) => a.turn - b.turn)
@@ -283,6 +330,7 @@ export default function LiveBattleTracker({
   }
 
   function prevTurn() {
+    if (!iHaveStarted) return
     const t = ab.turn || 1
     if (t <= 1) return
     const prevT = t - 1
@@ -320,17 +368,21 @@ export default function LiveBattleTracker({
   }
 
   function confirmEndBattle() {
+    const cur = normalizeActiveBattle(activeBattleProp)
+    if (cur.battleEndedBy?.[currentUserId]) { setEndOpen(false); return }
+    const endedAt = new Date().toISOString()
     patch({
-      ...ab,
-      status: 'ended',
-      endedAt: new Date().toISOString(),
+      ...cur,
+      battleEndedBy: { ...(cur.battleEndedBy || {}), [currentUserId]: endedAt },
+      // status: do NOT set to 'ended' globally — that locks both players.
+      // Each player exits independently via their own battleEndedBy flag.
       log: [
-        ...(ab.log || []),
+        ...(cur.log || []),
         {
-          turn: ab.turn || 1,
-          timestamp: new Date().toISOString(),
+          turn: cur.turn || 1,
+          timestamp: endedAt,
           userId: currentUserId,
-          event: 'Battle ended — report your outcome',
+          event: 'Player ended battle — reporting outcome',
         },
       ],
     })
@@ -344,8 +396,6 @@ export default function LiveBattleTracker({
   const myPart = ab.participants?.[currentUserId] || { units: {}, itemTray: [] }
 
   const rosterBuildParticipants = ab.setup?.participantUserIds ?? [currentUserId]
-  const allRostersReady = rosterBuildParticipants.length > 0 &&
-    rosterBuildParticipants.every(uid => ab.readyFlags[uid] === 'roster_ready')
 
   const wastelandDs = ab.deckStates?.wastelandItems || { drawPile: [], discardPile: [], lastDrawn: null }
 
@@ -443,7 +493,7 @@ export default function LiveBattleTracker({
         <p className="text-pip font-bold text-sm">{scenario?.name ?? 'Scenario'}</p>
       </div>
       <div className="flex items-center gap-2 flex-wrap">
-        {ab.status === 'active' && (
+        {iHaveStarted && (
           <>
             <span className="text-amber font-mono font-bold text-lg">Turn {ab.turn || 1}</span>
             <button type="button" className="min-h-[44px] px-3 border border-pip-dim/50 rounded flex items-center gap-1 text-xs" onClick={prevTurn} disabled={(ab.turn || 1) <= 1}>
@@ -498,7 +548,7 @@ export default function LiveBattleTracker({
               )}
               <button
                 type="button"
-                disabled={disabled || remaining === 0}
+                disabled={disabled || remaining === 0 || !iHaveStarted}
                 className="min-h-[44px] w-full text-xs font-bold border border-amber/60 text-amber rounded py-2 disabled:opacity-40"
                 onClick={() => drawFromDeck(key)}
               >
@@ -518,7 +568,7 @@ export default function LiveBattleTracker({
         </p>
         <button
           type="button"
-          disabled={(wastelandDs.drawPile || []).length === 0}
+          disabled={(wastelandDs.drawPile || []).length === 0 || !iHaveStarted}
           className="min-h-[44px] w-full text-xs font-bold border border-pip/50 text-pip rounded py-2 disabled:opacity-40"
           onClick={() => drawFromDeck('wastelandItems')}
         >
@@ -601,7 +651,7 @@ export default function LiveBattleTracker({
           </div>
         </div>
 
-        {myEntries.map(e => renderUnitCard(currentUserId, e, false))}
+        {myEntries.map(e => renderUnitCard(currentUserId, e, !iHaveStarted))}
         <div className="text-xs border border-pip/20 rounded p-2 space-y-1">
           <p className="text-muted">Item tray</p>
           {(myPart.itemTray || []).length === 0 ? (
@@ -652,7 +702,7 @@ export default function LiveBattleTracker({
           const oppReady = ab.readyFlags[oid] === 'roster_ready'
           return (
             <div key={oid} className="space-y-2">
-              <p className="text-xs text-muted">Player {oid.slice(0, 8)}…</p>
+              <p className="text-xs text-pip font-bold">{displayName(oid)}</p>
 
               {/* Opponent Victory Counter — read-only */}
               <div className="border border-white/20 rounded-lg p-2 flex items-center justify-between bg-white/5">
@@ -660,9 +710,9 @@ export default function LiveBattleTracker({
                 <span className="text-title font-bold text-xl">{oppVP}</span>
               </div>
 
-              {ab.status === 'roster_build' && !oppReady ? (
+              {!oppReady ? (
                 <div className="border border-muted/20 rounded p-3 text-center text-xs text-muted animate-pulse">
-                  Waiting for roster…
+                  Waiting for opponent to submit their roster…
                 </div>
               ) : (
                 entries.map(e => renderUnitCard(oid, e, true))
@@ -679,37 +729,42 @@ export default function LiveBattleTracker({
 
   const centerColumn = (
     <div className="space-y-3 min-w-0 order-2 md:order-none">
-      {ab.status === 'roster_build' && (
+      {iHaveSubmittedRoster && !iHaveStarted && (
         <div className="border border-amber/40 rounded-lg p-4 space-y-3 bg-amber/5">
-          <p className="text-title text-xs font-bold tracking-widest text-center">ROSTER STATUS</p>
+          <p className="text-title text-xs font-bold tracking-widest text-center">READY TO BEGIN</p>
           <div className="flex gap-2 justify-center flex-wrap">
             {rosterBuildParticipants.map(uid => {
-              const ready = ab.readyFlags[uid] === 'roster_ready'
+              const submitted = ab.readyFlags[uid] === 'roster_ready'
+              const started = !!ab.battleStartedBy?.[uid]
               return (
                 <div
                   key={uid}
                   className={`px-3 py-2 rounded text-xs border font-bold ${
-                    ready ? 'border-pip bg-pip-dim/30 text-pip' : 'border-muted/30 text-muted/60'
+                    started ? 'border-pip bg-pip-dim/30 text-pip'
+                      : submitted ? 'border-amber/50 text-amber'
+                        : 'border-muted/30 text-muted/60'
                   }`}
                 >
-                  {uid === currentUserId ? 'YOU' : 'OPPONENT'} {ready ? '✓ READY' : '…'}
+                  {uid === currentUserId ? 'YOU' : (playerNames[uid] || 'OPPONENT')} {started ? '▶ FIGHTING' : submitted ? '✓ READY' : '…'}
                 </div>
               )
             })}
           </div>
+          <p className="text-muted text-xs text-center">
+            Start whenever you're ready — your opponent doesn't have to start at the same time.
+          </p>
           <button
-            onClick={beginBattle}
-            disabled={!allRostersReady}
-            className="w-full py-4 rounded-lg font-bold tracking-[0.2em] text-sm border-2 border-amber/80 bg-amber/15 text-amber shadow-[0_0_24px_var(--color-amber-glow)] disabled:opacity-30 disabled:shadow-none disabled:cursor-not-allowed flex items-center justify-center gap-2 transition-all"
+            onClick={startBattleForMe}
+            className="w-full py-4 rounded-lg font-bold tracking-[0.2em] text-sm border-2 border-amber/80 bg-amber/15 text-amber shadow-[0_0_24px_var(--color-amber-glow)] flex items-center justify-center gap-2 transition-all"
           >
             <Swords size={18} />
-            {allRostersReady ? 'BEGIN BATTLE' : 'WAITING FOR ROSTERS…'}
+            START BATTLE
           </button>
         </div>
       )}
       {decksBlock}
       {battleLogPanel}
-      {ab.status === 'active' && (
+      {iHaveStarted && !iHaveEnded && (
         <button
           type="button"
           className="w-full min-h-[48px] rounded-lg border-2 border-danger bg-danger/20 text-danger font-bold tracking-widest text-sm shadow-[0_0_20px_rgba(239,68,68,0.35)] flex items-center justify-center gap-2"
@@ -729,12 +784,12 @@ export default function LiveBattleTracker({
         className="fixed bottom-20 md:bottom-4 right-4 z-50 flex items-center gap-2 px-4 py-3 rounded-lg border-2 border-amber/70 bg-[var(--color-terminal)] text-amber font-bold text-xs shadow-[0_0_20px_rgba(245,158,11,0.4)] animate-pulse"
       >
         <Maximize2 size={14} />
-        {ab.status === 'roster_build' ? 'BUILDING ROSTERS' : 'BATTLE IN PROGRESS'}
+        {!iHaveSubmittedRoster ? 'BUILDING ROSTER' : !iHaveStarted ? 'READY TO BEGIN' : 'BATTLE IN PROGRESS'}
       </button>
     )
   }
 
-  if (ab.status === 'roster_build' && !ab.battleRosters[currentUserId]) {
+  if (!iHaveSubmittedRoster) {
     return (
       <div
         className="fixed inset-0 z-50 flex flex-col bg-[var(--color-terminal)] text-pip"

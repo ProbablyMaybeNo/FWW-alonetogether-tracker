@@ -148,6 +148,15 @@ function AppContent({ campaignId, onLeaveCampaign }) {
   const activeBattle = state?.activeBattle
   const uid = authUser?.id ?? campaignUserId ?? 'solo-local'
 
+  const isParticipant = !!activeBattle && (activeBattle.setup?.participantUserIds ?? []).includes(uid)
+  const iHaveEnded = !!activeBattle?.battleEndedBy?.[uid]
+  const iHaveApplied = !!activeBattle?.postBattleAppliedBy?.[uid]
+  const battlePending = activeBattle?.status === 'pending' || activeBattle?.status === 'setup'
+  // Per-player overlay gating: each player flows through roster-build → tracker → post-battle
+  // independently of the other player. Stops the "waiting for opponent" lock.
+  const showLiveBattle = isParticipant && !battlePending && !iHaveEnded && !iHaveApplied
+  const showPostBattle = isParticipant && iHaveEnded && !iHaveApplied
+
   return (
     <div className="min-h-screen flex flex-col">
       <AppShell
@@ -178,7 +187,7 @@ function AppContent({ campaignId, onLeaveCampaign }) {
         <OnboardingTour settings={settings} onDone={() => setShowTour(false)} />
       )}
 
-      {(activeBattle?.status === 'active' || activeBattle?.status === 'roster_build') && (
+      {showLiveBattle && (
         <LiveBattleTracker
           activeBattle={activeBattle}
           currentUserId={uid}
@@ -191,7 +200,7 @@ function AppContent({ campaignId, onLeaveCampaign }) {
         />
       )}
 
-      {activeBattle?.status === 'ended' && (
+      {showPostBattle && (
         <PostBattleSummary
           campaignId={campaignId}
           activeBattle={activeBattle}

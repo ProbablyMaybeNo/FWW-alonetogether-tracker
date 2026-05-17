@@ -235,16 +235,33 @@ export function useCampaignSync({ campaignId, userId } = {}) {
         filter: `id=eq.${campaignId}`,
       }, (payload) => {
         const newRow = payload.new
-        const ab = newRow.active_battle
         setSharedState(prev => {
           const merged = campaignDbToState(newRow)
-          if (
-            ab && typeof ab === 'object' && ab.lastUpdatedBy &&
-            userId && ab.lastUpdatedBy === userId && prev?.activeBattle
-          ) {
-            return { ...merged, activeBattle: prev.activeBattle }
+          const remoteAb = merged.activeBattle
+          const localAb = prev?.activeBattle
+          // Trust remote for everyone else's data; preserve my own pending optimistic
+          // updates in per-user keyed maps so they don't flicker out before my own RPC
+          // echoes back.
+          if (!remoteAb || !localAb || !userId) return merged
+
+          function preserveMine(remote, local) {
+            if (!local || typeof local !== 'object') return remote
+            if (!(userId in local)) return remote
+            return { ...(remote || {}), [userId]: local[userId] }
           }
-          return merged
+
+          const mergedAb = {
+            ...remoteAb,
+            battleRosters: preserveMine(remoteAb.battleRosters, localAb.battleRosters),
+            readyFlags: preserveMine(remoteAb.readyFlags, localAb.readyFlags),
+            battleStartedBy: preserveMine(remoteAb.battleStartedBy, localAb.battleStartedBy),
+            battleEndedBy: preserveMine(remoteAb.battleEndedBy, localAb.battleEndedBy),
+            outcome: preserveMine(remoteAb.outcome, localAb.outcome),
+            postBattleAppliedBy: preserveMine(remoteAb.postBattleAppliedBy, localAb.postBattleAppliedBy),
+            wastelandContributions: preserveMine(remoteAb.wastelandContributions, localAb.wastelandContributions),
+            participants: preserveMine(remoteAb.participants, localAb.participants),
+          }
+          return { ...merged, activeBattle: mergedAb }
         })
       })
       // Another player's data updated
