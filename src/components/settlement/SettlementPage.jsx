@@ -3,7 +3,6 @@ import { Plus, Trash2, RotateCcw, Zap, Droplets, Building2, Coins, Recycle, Shuf
 import { useCampaign } from '../../context/CampaignContext'
 import { calcPowerGenerated, calcPowerConsumed, calcWaterGenerated, calcWaterConsumed, getStructureRef, calcSettlementTotalCaps, calcDefenseRating } from '../../utils/calculations'
 import AddStructureModal from './AddStructureModal'
-import ItemPoolPanel from './ItemPoolPanel'
 import { BarracksModal, MedicalCenterModal, StoresModal } from './StructureUseModals'
 import { getDeckStats, drawCard } from '../../utils/cardDraw'
 import CardDrawer from '../overview/CardDrawer'
@@ -1340,12 +1339,6 @@ function StructuresPanel({
           </button>
         </div>
       )}
-
-      {/* Item Pool Panel — above structure list */}
-      <div className="border-2 border-white/20 rounded-xl p-3 space-y-3 mt-4">
-        <h3 className="text-title text-xs font-bold tracking-widest border-b border-white/20 pb-1">POOLS</h3>
-        <ItemPoolPanel structures={structures} />
-      </div>
 
       {/* AT Filter toggle */}
       <div className="flex items-center gap-2 mb-4 mt-4">

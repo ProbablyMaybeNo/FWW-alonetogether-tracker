@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Plus, Trash2, ChevronDown, ChevronRight, Dices, Package, X, Star, Shield, Shuffle, Sparkles } from 'lucide-react'
 import { useCampaign } from '../../context/CampaignContext'
 import { calcUnitTotalCaps, calcUnitItemCaps, getItemRef, getStructureRef } from '../../utils/calculations'
@@ -9,6 +9,7 @@ import AddUnitModal from './AddUnitModal'
 import AddItemModal from './AddItemModal'
 import FateRollModal from './FateRollModal'
 import PerkPickerModal from './PerkPickerModal'
+import ItemPoolPanel from '../settlement/ItemPoolPanel'
 import { getPerkCaps, PERK_CARDS, parseSymbols } from '../../data/perkCards'
 
 // Armor budget calc: items on units that have subType === 'Armor' via equippedItems (uses items.json ref)
@@ -59,6 +60,23 @@ export default function RosterPage() {
   const [expandedSlot, setExpandedSlot] = useState(null)
   const [showAddItem, setShowAddItem] = useState(null)
   const [fateModalUnit, setFateModalUnit] = useState(null)
+  const [showItemPool, setShowItemPool] = useState(false)
+
+  // Lock body scroll while the slide-out is open, restore on close.
+  useEffect(() => {
+    if (!showItemPool) return
+    const prev = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+    function onKey(e) { if (e.key === 'Escape') setShowItemPool(false) }
+    window.addEventListener('keydown', onKey)
+    return () => {
+      document.body.style.overflow = prev
+      window.removeEventListener('keydown', onKey)
+    }
+  }, [showItemPool])
+
+  const settlementStructures = state.settlement?.structures || []
+  const itemPoolCount = (state.itemPool?.items || []).length
 
   const phase = state.phase ?? 1
   const roster = state.roster || []
@@ -269,14 +287,23 @@ export default function RosterPage() {
         </div>
       )}
 
-      <div className="flex items-center justify-between mb-4">
+      <div className="flex items-center justify-between mb-4 flex-wrap gap-2">
         <h2 className="text-amber text-sm tracking-widest font-bold">UNIT ROSTER ({roster.length})</h2>
-        <button
-          onClick={() => setShowAddUnit(true)}
-          className="flex items-center gap-2 px-3 py-2 border border-amber text-amber text-sm rounded hover:bg-amber-dim/20 transition-colors font-bold"
-        >
-          <Plus size={14} /> ADD UNIT
-        </button>
+        <div className="flex items-center gap-2">
+          <button
+            onClick={() => setShowItemPool(true)}
+            className="flex items-center gap-2 px-3 py-2 border border-pip text-pip text-sm rounded hover:bg-pip-dim/20 transition-colors font-bold"
+            title="Open Item Pool (legacy items + manual quest/unique entries)"
+          >
+            <Package size={14} /> ITEMS ({itemPoolCount})
+          </button>
+          <button
+            onClick={() => setShowAddUnit(true)}
+            className="flex items-center gap-2 px-3 py-2 border border-amber text-amber text-sm rounded hover:bg-amber-dim/20 transition-colors font-bold"
+          >
+            <Plus size={14} /> ADD UNIT
+          </button>
+        </div>
       </div>
 
       {roster.length === 0 ? (
@@ -701,6 +728,44 @@ export default function RosterPage() {
           unit={fateModalUnit}
           onApply={(fate) => handleApplyFate(fateModalUnit.slotId, fate)}
         />
+      )}
+
+      {/* ── ITEM POOL SLIDE-OUT ── */}
+      {showItemPool && (
+        <>
+          <div
+            className="fixed inset-0 z-40 bg-black/70"
+            onClick={() => setShowItemPool(false)}
+            aria-hidden="true"
+          />
+          <aside
+            className="fixed top-0 right-0 z-50 h-full w-full max-w-2xl bg-panel border-l-2 border-pip-mid/60 shadow-[0_0_32px_rgba(0,0,0,0.5)] flex flex-col"
+            role="dialog"
+            aria-label="Item Pool"
+          >
+            <header className="flex items-center justify-between px-4 py-3 border-b border-pip-mid/40 bg-panel-light shrink-0">
+              <div className="flex items-center gap-2">
+                <Package size={16} className="text-pip" />
+                <h2 className="text-title text-sm font-bold tracking-widest">ITEM POOL</h2>
+                <span className="text-muted text-xs">({itemPoolCount})</span>
+              </div>
+              <button
+                onClick={() => setShowItemPool(false)}
+                className="text-muted hover:text-danger transition-colors p-2 min-h-[44px] min-w-[44px] flex items-center justify-center"
+                aria-label="Close item pool"
+              >
+                <X size={18} />
+              </button>
+            </header>
+            <p className="px-4 py-2 text-muted text-xs border-b border-pip-dim/30 shrink-0">
+              Legacy item pool plus manual quest / unique items. Settlement loot now flows through the
+              <span className="text-pip"> Settlement phase wizard</span> instead.
+            </p>
+            <div className="flex-1 overflow-y-auto p-3">
+              <ItemPoolPanel structures={settlementStructures} />
+            </div>
+          </aside>
+        </>
       )}
     </div>
   )
