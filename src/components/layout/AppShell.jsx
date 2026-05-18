@@ -5,6 +5,7 @@ import { supabase } from '../../lib/supabase'
 import AccountModal from '../modals/AccountModal'
 import CampaignModal from '../modals/CampaignModal'
 import SnapshotModal from '../modals/SnapshotModal'
+import Modal from './Modal'
 import { TABS } from './TabShell'
 
 export default function AppShell({ campaignId, onExport, onImportClick, onLeaveCampaign, onReset, activeTab, onTabChange, settings = {}, onStartTour }) {
@@ -216,15 +217,9 @@ function AddPlayerModal({ campaignId, onClose }) {
   }
 
   return (
-    <div className="fixed inset-0 z-60 flex items-center justify-center bg-black/70 p-4">
-      <div className="bg-panel border border-pip-mid/50 rounded-lg w-full max-w-md p-5 space-y-4 relative">
-        <button onClick={onClose} className="absolute top-3 right-3 text-muted hover:text-pip transition-colors">
-          <X size={16} />
-        </button>
-        <div>
-          <div className="text-title text-sm font-bold tracking-widest mb-1">INVITE PLAYER</div>
-          <div className="text-muted text-xs">Share this invite code with a new player</div>
-        </div>
+    <Modal isOpen onClose={onClose} title="INVITE PLAYER">
+      <div className="space-y-4">
+        <div className="text-muted text-xs">Share this invite code with a new player.</div>
 
         {/* Code display */}
         <div className="border border-amber/40 rounded bg-panel-light px-4 py-3 text-center">
@@ -275,6 +270,6 @@ function AddPlayerModal({ campaignId, onClose }) {
           </button>
         </div>
       </div>
-    </div>
+    </Modal>
   )
 }
