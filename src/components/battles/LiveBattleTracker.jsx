@@ -557,43 +557,47 @@ export default function LiveBattleTracker({
             </div>
           )
         })}
-      </div>
-      <div className="border border-pip/30 rounded p-2 space-y-2">
-        <div className="flex justify-between text-xs">
-          <span className="text-pip font-bold">WASTELAND ITEMS</span>
-          <span className="text-muted">{(wastelandDs.drawPile || []).length} left · {(wastelandDs.discardPile || []).length} discard</span>
-        </div>
-        <p className="text-muted text-xs">
-          Last: {wastelandDs.lastDrawn != null ? lookupItemMeta(wastelandDs.lastDrawn).name : '—'}
-        </p>
-        <button
-          type="button"
-          disabled={(wastelandDs.drawPile || []).length === 0 || !iHaveStarted}
-          className="min-h-[44px] w-full text-xs font-bold border border-pip/50 text-pip rounded py-2 disabled:opacity-40"
-          onClick={() => drawFromDeck('wastelandItems')}
-        >
-          DRAW: Wasteland Items
-        </button>
-        {pendingWasteland && (
-          <div className="border border-amber/40 rounded p-2 space-y-2">
-            <p className="text-pip font-bold">{pendingWasteland.name}</p>
-            <select
-              className="w-full text-xs bg-panel border rounded min-h-[44px]"
-              value={assignTarget}
-              onChange={e => setAssignTarget(e.target.value)}
-            >
-              <option value="tray">Add to item tray</option>
-              {myEntries.map(e => (
-                <option key={e.slotId} value={String(e.slotId)}>
-                  Assign to {unitLabel(currentUserId, e, e.slotId)}
-                </option>
-              ))}
-            </select>
-            <button type="button" className="w-full min-h-[44px] bg-amber/20 border border-amber text-amber rounded text-xs font-bold" onClick={assignPendingWasteland}>
-              CONFIRM
-            </button>
+
+        {/* Wasteland Items — same shape as the standard decks, with assign UI when a draw is pending */}
+        <div className="border border-pip/40 rounded p-2 text-xs space-y-1 bg-pip/5">
+          <div className="flex flex-wrap justify-between gap-1">
+            <span className="text-pip font-bold">WASTELAND ITEMS</span>
+            <span className="text-muted">
+              {(wastelandDs.drawPile || []).length} left · {(wastelandDs.discardPile || []).length} discard
+            </span>
           </div>
-        )}
+          <p className="text-muted">
+            Last: {wastelandDs.lastDrawn != null ? lookupItemMeta(wastelandDs.lastDrawn).name : '—'}
+          </p>
+          <button
+            type="button"
+            disabled={(wastelandDs.drawPile || []).length === 0 || !iHaveStarted}
+            className="min-h-[44px] w-full text-xs font-bold border border-pip/60 text-pip rounded py-2 disabled:opacity-40"
+            onClick={() => drawFromDeck('wastelandItems')}
+          >
+            DRAW: Wasteland Items
+          </button>
+          {pendingWasteland && (
+            <div className="border border-amber/40 rounded p-2 space-y-2 mt-1">
+              <p className="text-pip font-bold">{pendingWasteland.name}</p>
+              <select
+                className="w-full text-xs bg-panel border rounded min-h-[44px]"
+                value={assignTarget}
+                onChange={e => setAssignTarget(e.target.value)}
+              >
+                <option value="tray">Add to item tray</option>
+                {myEntries.map(e => (
+                  <option key={e.slotId} value={String(e.slotId)}>
+                    Assign to {unitLabel(currentUserId, e, e.slotId)}
+                  </option>
+                ))}
+              </select>
+              <button type="button" className="w-full min-h-[44px] bg-amber/20 border border-amber text-amber rounded text-xs font-bold" onClick={assignPendingWasteland}>
+                CONFIRM
+              </button>
+            </div>
+          )}
+        </div>
       </div>
     </section>
   )
