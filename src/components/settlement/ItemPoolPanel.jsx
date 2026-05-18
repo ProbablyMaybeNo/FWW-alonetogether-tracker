@@ -314,26 +314,29 @@ export default function ItemPoolPanel({ structures }) {
                       <span className="text-muted text-xs px-1.5 py-0.5 border border-muted/40 rounded">{item.subType}</span>
                       <span className="text-amber text-xs font-bold">{item.caps}c</span>
                       <div className="flex gap-1 flex-wrap">
-                        <button
-                          onClick={() => keepToShed(item)}
-                          disabled={!canFit(storedItems, shedSlots, item)}
-                          className="text-xs px-2 py-0.5 border border-muted rounded text-muted hover:text-pip hover:border-pip disabled:opacity-40 disabled:cursor-not-allowed"
-                          title={shedSlots === 0
-                            ? 'Build a Maintenance Shed first'
-                            : `Maintenance Shed: ${shedUnitsUsed}/${shedUnitsMax} units used (Item = 2, Boost = 1)`}
-                        >
-                          SHED ({Math.max(0, shedUnitsMax - shedUnitsUsed)} slots left)
-                        </button>
-                        <button
-                          onClick={() => moveToLocker(item)}
-                          disabled={lockerItems.length >= lockerSlots}
-                          className="text-xs px-2 py-0.5 border border-muted rounded text-muted hover:text-pip hover:border-pip disabled:opacity-40 disabled:cursor-not-allowed"
-                          title={lockerSlots === 0
-                            ? 'Build a Locker first'
-                            : `Lockers: ${lockerItems.length}/${lockerSlots} used`}
-                        >
-                          Locker ({Math.max(0, lockerSlots - lockerItems.length)} left)
-                        </button>
+                        <KeepDropdown
+                          label="KEEP"
+                          options={[
+                            {
+                              id: 'shed',
+                              label: `→ Shed (${Math.max(0, shedUnitsMax - shedUnitsUsed)} left)`,
+                              onClick: () => keepToShed(item),
+                              disabled: !canFit(storedItems, shedSlots, item),
+                              disabledReason: shedSlots === 0
+                                ? 'Build a Maintenance Shed first'
+                                : `Shed full (${shedUnitsUsed}/${shedUnitsMax} slots)`,
+                            },
+                            {
+                              id: 'locker',
+                              label: `→ Locker (${Math.max(0, lockerSlots - lockerItems.length)} left)`,
+                              onClick: () => moveToLocker(item),
+                              disabled: lockerItems.length >= lockerSlots,
+                              disabledReason: lockerSlots === 0
+                                ? 'Build a Locker first'
+                                : `Lockers full (${lockerItems.length}/${lockerSlots})`,
+                            },
+                          ]}
+                        />
                         <button
                           onClick={() => sellItem(item)}
                           className="text-xs px-2 py-0.5 border border-amber/40 rounded text-amber hover:bg-amber-dim/20"
@@ -551,6 +554,52 @@ export default function ItemPoolPanel({ structures }) {
       )}
 
       <AddItemToPoolModal isOpen={showAddItem} onClose={() => setShowAddItem(false)} onAdd={addItem} />
+    </div>
+  )
+}
+
+/**
+ * Compact dropdown that collapses multiple "move/keep" destinations into one button.
+ * Each option: { id, label, onClick, disabled, disabledReason }
+ */
+function KeepDropdown({ label = 'KEEP', options = [] }) {
+  const [open, setOpen] = useState(false)
+  const allDisabled = options.every(o => o.disabled)
+  if (!open) {
+    return (
+      <button
+        type="button"
+        onClick={() => setOpen(true)}
+        disabled={allDisabled}
+        title={allDisabled ? 'No storage available — build a Shed, Locker, or Stores first' : undefined}
+        className="text-xs px-2 py-0.5 border border-pip/50 rounded text-pip hover:bg-pip-dim/20 transition-colors flex items-center gap-1 disabled:opacity-40 disabled:cursor-not-allowed"
+      >
+        {label} <ChevronDown size={10} />
+      </button>
+    )
+  }
+  return (
+    <div className="flex gap-1 flex-wrap items-center">
+      {options.map(opt => (
+        <button
+          key={opt.id}
+          type="button"
+          onClick={() => { if (!opt.disabled) { opt.onClick(); setOpen(false) } }}
+          disabled={opt.disabled}
+          title={opt.disabled ? opt.disabledReason : undefined}
+          className="text-xs px-2 py-0.5 border border-muted rounded text-muted hover:text-pip hover:border-pip disabled:opacity-40 disabled:cursor-not-allowed"
+        >
+          {opt.label}
+        </button>
+      ))}
+      <button
+        type="button"
+        onClick={() => setOpen(false)}
+        className="text-muted hover:text-danger text-xs px-1"
+        aria-label="Close menu"
+      >
+        <X size={10} />
+      </button>
     </div>
   )
 }
