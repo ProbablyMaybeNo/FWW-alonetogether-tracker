@@ -3,6 +3,7 @@ import { ScrollText, Target, Plus, Minus, X, ChevronDown } from 'lucide-react'
 import { useCampaign } from '../../context/CampaignContext'
 import { calcPowerGenerated, calcPowerConsumed, calcWaterGenerated, calcWaterConsumed, calcRosterTotalCaps, getStructureRef, calcDefenseRating } from '../../utils/calculations'
 import { SCAVENGER_OBJECTIVES } from '../../data/scavengerObjectives'
+import Modal from '../layout/Modal'
 
 const UNAVAILABLE_FATES = ['Lost', 'Captured', 'Delayed', 'Injured', 'Shaken']
 
@@ -319,54 +320,50 @@ function NarrativeSection({ state, setState, round }) {
       </div>
 
       {/* Add modal */}
-      {showAddModal && (
-        <div className="fixed inset-0 bg-black/85 flex items-center justify-center z-50 p-4" onClick={() => setShowAddModal(false)}>
-          <div className="max-w-lg w-full" onClick={e => e.stopPropagation()}>
-            <div className="bg-panel border border-pip rounded-lg p-4 space-y-3">
-              <div className="flex items-center justify-between">
-                <span className="text-title text-sm font-bold tracking-wider">NEW NARRATIVE ENTRY</span>
-                <span className="text-muted text-xs">Round {round ?? 0}</span>
-              </div>
-              <div>
-                <label className="text-muted text-xs block mb-1 tracking-wider">TITLE</label>
-                <input
-                  type="text"
-                  value={newTitle}
-                  onChange={e => setNewTitle(e.target.value)}
-                  placeholder="Entry title..."
-                  className="w-full text-xs"
-                  autoFocus
-                />
-              </div>
-              <div>
-                <label className="text-muted text-xs block mb-1 tracking-wider">NARRATIVE</label>
-                <textarea
-                  value={newContent}
-                  onChange={e => setNewContent(e.target.value)}
-                  placeholder="Describe what happened this round..."
-                  rows={5}
-                  className="w-full text-xs resize-none"
-                />
-              </div>
-              <div className="flex gap-2 pt-1">
-                <button
-                  onClick={handleAdd}
-                  disabled={!newTitle.trim() && !newContent.trim()}
-                  className="flex-1 py-2 border border-amber text-amber text-xs font-bold rounded hover:bg-amber/10 disabled:opacity-40 transition-colors"
-                >
-                  ADD TO LOG
-                </button>
-                <button
-                  onClick={() => setShowAddModal(false)}
-                  className="px-4 py-2 border border-muted/30 text-muted text-xs rounded hover:text-pip transition-colors"
-                >
-                  CANCEL
-                </button>
-              </div>
-            </div>
+      <Modal
+        isOpen={showAddModal}
+        onClose={() => setShowAddModal(false)}
+        title={`NEW NARRATIVE ENTRY · ROUND ${round ?? 0}`}
+      >
+        <div className="space-y-3">
+          <div>
+            <label className="text-muted text-xs block mb-1 tracking-wider">TITLE</label>
+            <input
+              type="text"
+              value={newTitle}
+              onChange={e => setNewTitle(e.target.value)}
+              placeholder="Entry title..."
+              className="w-full text-xs"
+              autoFocus
+            />
+          </div>
+          <div>
+            <label className="text-muted text-xs block mb-1 tracking-wider">NARRATIVE</label>
+            <textarea
+              value={newContent}
+              onChange={e => setNewContent(e.target.value)}
+              placeholder="Describe what happened this round..."
+              rows={5}
+              className="w-full text-xs resize-none"
+            />
+          </div>
+          <div className="flex gap-2 pt-1">
+            <button
+              onClick={handleAdd}
+              disabled={!newTitle.trim() && !newContent.trim()}
+              className="flex-1 py-2 border border-amber text-amber text-xs font-bold rounded hover:bg-amber/10 disabled:opacity-40 transition-colors"
+            >
+              ADD TO LOG
+            </button>
+            <button
+              onClick={() => setShowAddModal(false)}
+              className="px-4 py-2 border border-muted/30 text-muted text-xs rounded hover:text-pip transition-colors"
+            >
+              CANCEL
+            </button>
           </div>
         </div>
-      )}
+      </Modal>
 
       {/* Entries table */}
       {entries.length === 0 ? (

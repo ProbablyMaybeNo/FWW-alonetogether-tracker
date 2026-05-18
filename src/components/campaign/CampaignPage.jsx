@@ -6,6 +6,7 @@ import { supabase } from '../../lib/supabase'
 import { calcRosterTotalCaps } from '../../utils/calculations'
 import { SCAVENGER_OBJECTIVES } from '../../data/scavengerObjectives'
 import { defaultInhabitantsState } from '../../utils/inhabitantsState'
+import Modal from '../layout/Modal'
 
 
 const PHASES = [
@@ -67,40 +68,30 @@ function NarrativeModal({ player, onClose }) {
   if (!player) return null
   const entries = player.narrativeLog || []
   return (
-    <div className="fixed inset-0 bg-black/85 flex items-center justify-center z-50 p-4" onClick={onClose}>
-      <div className="max-w-2xl w-full max-h-[80vh] flex flex-col" onClick={e => e.stopPropagation()}>
-        <div className="bg-panel border border-pip rounded-lg overflow-hidden flex flex-col max-h-[80vh]">
-          <div className="flex items-center justify-between px-4 py-3 border-b border-pip-dim/30 bg-panel-light">
-            <span className="text-title text-sm font-bold tracking-wider">{player.username} — NARRATIVE LOG</span>
-            <button onClick={onClose} className="text-muted hover:text-danger p-1"><X size={14} /></button>
-          </div>
-          <div className="overflow-y-auto flex-1">
-            {entries.length === 0 ? (
-              <p className="text-muted text-xs text-center py-8">No narrative entries yet.</p>
-            ) : (
-              <table className="w-full text-xs border-collapse">
-                <thead>
-                  <tr className="border-b border-pip-dim/30 bg-panel-light">
-                    <th className="text-left text-info px-4 py-2 tracking-wider font-normal w-8">RND</th>
-                    <th className="text-left text-info px-4 py-2 tracking-wider font-normal w-32">TITLE</th>
-                    <th className="text-left text-info px-4 py-2 tracking-wider font-normal">NARRATIVE</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {entries.map((entry, i) => (
-                    <tr key={entry.id ?? i} className="border-b border-pip-dim/20 hover:bg-panel-light">
-                      <td className="px-4 py-2 text-pip font-bold">{entry.round ?? '—'}</td>
-                      <td className="px-4 py-2 text-amber font-bold">{entry.title}</td>
-                      <td className="px-4 py-2 text-pip leading-relaxed">{entry.content}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            )}
-          </div>
-        </div>
-      </div>
-    </div>
+    <Modal isOpen onClose={onClose} wide title={`${player.username} — NARRATIVE LOG`}>
+      {entries.length === 0 ? (
+        <p className="text-muted text-xs text-center py-8">No narrative entries yet.</p>
+      ) : (
+        <table className="w-full text-xs border-collapse">
+          <thead>
+            <tr className="border-b border-pip-dim/30 bg-panel-light">
+              <th className="text-left text-info px-4 py-2 tracking-wider font-normal w-8">RND</th>
+              <th className="text-left text-info px-4 py-2 tracking-wider font-normal w-32">TITLE</th>
+              <th className="text-left text-info px-4 py-2 tracking-wider font-normal">NARRATIVE</th>
+            </tr>
+          </thead>
+          <tbody>
+            {entries.map((entry, i) => (
+              <tr key={entry.id ?? i} className="border-b border-pip-dim/20 hover:bg-panel-light">
+                <td className="px-4 py-2 text-pip font-bold">{entry.round ?? '—'}</td>
+                <td className="px-4 py-2 text-amber font-bold">{entry.title}</td>
+                <td className="px-4 py-2 text-pip leading-relaxed">{entry.content}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )}
+    </Modal>
   )
 }
 
@@ -111,26 +102,18 @@ function PlayerRoundNarrativeModal({ player, round, onClose }) {
   if (!player) return null
   const entries = (player.narrativeLog || []).filter(e => e.round === round)
   return (
-    <div className="fixed inset-0 bg-black/85 flex items-center justify-center z-50 p-4" onClick={onClose}>
-      <div className="max-w-xl w-full" onClick={e => e.stopPropagation()}>
-        <div className="bg-panel border border-pip rounded-lg overflow-hidden">
-          <div className="flex items-center justify-between px-4 py-3 border-b border-pip-dim/30 bg-panel-light">
-            <span className="text-title text-sm font-bold tracking-wider">{player.username} — ROUND {round}</span>
-            <button onClick={onClose} className="text-muted hover:text-danger p-1"><X size={14} /></button>
+    <Modal isOpen onClose={onClose} title={`${player.username} — ROUND ${round}`}>
+      <div className="space-y-3">
+        {entries.length === 0 ? (
+          <p className="text-muted text-xs text-center py-6">No narrative entries for this round.</p>
+        ) : entries.map((e, i) => (
+          <div key={e.id ?? i} className="space-y-1">
+            {e.title && <div className="text-title text-xs font-bold tracking-wider">{e.title}</div>}
+            <p className="text-pip text-sm leading-relaxed">{e.content}</p>
           </div>
-          <div className="p-4 space-y-3 max-h-[60vh] overflow-y-auto">
-            {entries.length === 0 ? (
-              <p className="text-muted text-xs text-center py-6">No narrative entries for this round.</p>
-            ) : entries.map((e, i) => (
-              <div key={e.id ?? i} className="space-y-1">
-                {e.title && <div className="text-title text-xs font-bold tracking-wider">{e.title}</div>}
-                <p className="text-pip text-sm leading-relaxed">{e.content}</p>
-              </div>
-            ))}
-          </div>
-        </div>
+        ))}
       </div>
-    </div>
+    </Modal>
   )
 }
 

@@ -6,6 +6,7 @@ import questCardDeck from '../../data/questCardDeck.json'
 import { X, Check, Shuffle, ChevronDown, ChevronRight, BookOpen } from 'lucide-react'
 import questCardContent from '../../data/questCardContent.json'
 import EventsPage from '../events/EventsPage'
+import Modal from '../layout/Modal'
 
 function useCardContent(cardName, cardId) {
   if (!cardName || questCardContent.length === 0) return null
@@ -29,46 +30,35 @@ function QuestCardViewer({ cardName, cardId, onClose }) {
   const content = useCardContent(cardName, cardId)
 
   return (
-    <div
-      className="fixed inset-0 bg-black/85 flex items-center justify-center z-50 p-4"
-      onClick={onClose}
-    >
-      <div className="max-w-xl w-full" onClick={e => e.stopPropagation()}>
-        <div className="bg-panel border border-pip rounded p-4 space-y-3">
-          {/* Header */}
-          <div className="flex items-center justify-between">
-            <span className="text-title text-xs font-bold tracking-wider uppercase">{cardName}</span>
-            <button onClick={onClose} className="text-pip hover:text-danger p-1"><X size={14} /></button>
-          </div>
+    <Modal isOpen onClose={onClose} title={cardName?.toUpperCase()}>
+      <div className="space-y-3">
+        {content ? (
+          <>
+            {!showBack ? (
+              <div className="bg-panel-alt border border-pip-dim/20 rounded p-4 min-h-24">
+                <p className="text-pip text-sm leading-relaxed italic">{content.frontText || '—'}</p>
+              </div>
+            ) : (
+              <div className="bg-panel-alt border border-amber/30 rounded p-4 min-h-24 space-y-2">
+                {content.backTitle && (
+                  <p className="text-title text-xs font-bold tracking-wider uppercase">{content.backTitle}</p>
+                )}
+                <p className="text-pip text-sm leading-relaxed">{content.backText || '—'}</p>
+              </div>
+            )}
 
-          {content ? (
-            <>
-              {!showBack ? (
-                <div className="bg-panel-alt border border-pip-dim/20 rounded p-4 min-h-24">
-                  <p className="text-pip text-sm leading-relaxed italic">{content.frontText || '—'}</p>
-                </div>
-              ) : (
-                <div className="bg-panel-alt border border-amber/30 rounded p-4 min-h-24 space-y-2">
-                  {content.backTitle && (
-                    <p className="text-title text-xs font-bold tracking-wider uppercase">{content.backTitle}</p>
-                  )}
-                  <p className="text-pip text-sm leading-relaxed">{content.backText || '—'}</p>
-                </div>
-              )}
-
-              <button
-                onClick={() => setShowBack(b => !b)}
-                className="w-full py-2 border border-pip text-pip text-xs rounded font-bold tracking-wider hover:bg-pip-dim/20 transition-colors"
-              >
-                {showBack ? '◀ FRONT' : 'FLIP ▶'}
-              </button>
-            </>
-          ) : (
-            <p className="text-center py-8 text-pip text-xs">Card content not in library yet.</p>
-          )}
-        </div>
+            <button
+              onClick={() => setShowBack(b => !b)}
+              className="w-full py-2 border border-pip text-pip text-xs rounded font-bold tracking-wider hover:bg-pip-dim/20 transition-colors"
+            >
+              {showBack ? '◀ FRONT' : 'FLIP ▶'}
+            </button>
+          </>
+        ) : (
+          <p className="text-center py-8 text-pip text-xs">Card content not in library yet.</p>
+        )}
       </div>
-    </div>
+    </Modal>
   )
 }
 
