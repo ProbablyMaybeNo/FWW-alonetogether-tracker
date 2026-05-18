@@ -4,14 +4,6 @@ import { useCampaign } from '../../context/CampaignContext'
 import { calcPowerGenerated, calcPowerConsumed, calcWaterGenerated, calcWaterConsumed, calcRosterTotalCaps, getStructureRef, calcDefenseRating } from '../../utils/calculations'
 import { SCAVENGER_OBJECTIVES } from '../../data/scavengerObjectives'
 
-const FACTIONS = [
-  'Arcadia Renegades', 'Brotherhood of Steel', "Caesar's Legion",
-  'Children of Atom', 'Creatures', 'Cult of the Mothman', 'Enclave',
-  'Gunners', 'Institute', 'New California Republic', 'RPG Archetypes',
-  'Raiders', 'Railroad', 'Robots', 'Super Mutants', 'Survivors',
-  'The Harbormen', 'The Scorched', 'Trappers', 'Zetan',
-]
-
 const UNAVAILABLE_FATES = ['Lost', 'Captured', 'Delayed', 'Injured', 'Shaken']
 
 export default function OverviewPage({ onTabChange }) {
@@ -50,10 +42,6 @@ export default function OverviewPage({ onTabChange }) {
   const activeObjective = state.activeScavengerObjective != null
     ? SCAVENGER_OBJECTIVES.find(o => o.id === state.activeScavengerObjective)
     : null
-
-  function handlePlayerChange(field, value) {
-    setState(prev => ({ ...prev, player: { ...prev.player, [field]: value } }))
-  }
 
   function handleCapsEdit() {
     setCapsInput(String(caps))
@@ -101,32 +89,13 @@ export default function OverviewPage({ onTabChange }) {
 
       <OverviewSection title="CAMPAIGN" open={openCampaign} onToggle={() => setOpenCampaign(o => !o)}>
         <div className="space-y-4 px-4 pb-4">
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
-            <div className="flex flex-col">
-              <label className="text-xs text-info mb-1 tracking-wider">PLAYER</label>
-              <input type="text" value={player['name'] || ''} onChange={(e) => handlePlayerChange('name', e.target.value)} className="text-xs py-1 px-2" />
-            </div>
-            <div className="flex flex-col">
-              <label className="text-xs text-info mb-1 tracking-wider">SETTLEMENT</label>
-              <input type="text" value={player['settlement'] || ''} onChange={(e) => handlePlayerChange('settlement', e.target.value)} className="text-xs py-1 px-2" />
-            </div>
-            <div className="flex flex-col">
-              <label className="text-xs text-info mb-1 tracking-wider">FACTION</label>
-              <select
-                value={player['faction'] || ''}
-                onChange={(e) => handlePlayerChange('faction', e.target.value)}
-                className="text-xs py-1 px-2"
-              >
-                <option value="">Select faction...</option>
-                {FACTIONS.map(f => (
-                  <option key={f} value={f}>{f}</option>
-                ))}
-              </select>
-            </div>
-            <div className="flex flex-col">
-              <label className="text-xs text-info mb-1 tracking-wider">SUB-FACTION</label>
-              <input type="text" value={player['leader'] || ''} onChange={(e) => handlePlayerChange('leader', e.target.value)} className="text-xs py-1 px-2" />
-            </div>
+          {/* Compact identity strip — full editor lives in Campaign Settings */}
+          <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs">
+            <span className="text-pip font-bold">{player.name || 'Unnamed player'}</span>
+            <span className="text-muted">·</span>
+            <span className="text-pip">{player.settlement || 'No settlement'}</span>
+            <span className="text-muted">·</span>
+            <span className="text-pip">{player.faction || 'No faction'}{player.leader ? ` / ${player.leader}` : ''}</span>
           </div>
 
           <div className="border border-amber/60 rounded-lg bg-panel p-4" style={{ boxShadow: '0 0 10px var(--color-amber-glow)' }}>

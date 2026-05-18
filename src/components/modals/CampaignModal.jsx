@@ -1,10 +1,24 @@
 import { useState, useEffect } from 'react'
 import { X, Copy, RefreshCw, Check } from 'lucide-react'
 import { useAuth } from '../../context/AuthContext'
+import { useCampaign } from '../../context/CampaignContext'
 import { supabase } from '../../lib/supabase'
+
+const FACTIONS = [
+  'Arcadia Renegades', 'Brotherhood of Steel', "Caesar's Legion",
+  'Children of Atom', 'Creatures', 'Cult of the Mothman', 'Enclave',
+  'Gunners', 'Institute', 'New California Republic', 'RPG Archetypes',
+  'Raiders', 'Railroad', 'Robots', 'Super Mutants', 'Survivors',
+  'The Harbormen', 'The Scorched', 'Trappers', 'Zetan',
+]
 
 export default function CampaignModal({ campaignId, onClose, onLeaveCampaign, onReset }) {
   const { user } = useAuth()
+  const { state, setState } = useCampaign()
+  const player = state?.player ?? {}
+  function updatePlayer(field, value) {
+    setState(prev => ({ ...prev, player: { ...prev.player, [field]: value } }))
+  }
   const [campaign, setCampaign] = useState(null)
   const [players, setPlayers] = useState([])
   const [loading, setLoading] = useState(true)
@@ -146,6 +160,55 @@ export default function CampaignModal({ campaignId, onClose, onLeaveCampaign, on
                   </div>
                 ))}
               </div>
+            </div>
+
+            {/* My profile in this campaign */}
+            <div className="border-t border-pip-mid/20 pt-4 space-y-3">
+              <div className="text-label text-xs tracking-wider mb-1">MY PROFILE IN THIS CAMPAIGN</div>
+              <div className="grid grid-cols-2 gap-2">
+                <label className="flex flex-col">
+                  <span className="text-info text-xs mb-1 tracking-wider">PLAYER</span>
+                  <input
+                    type="text"
+                    value={player.name || ''}
+                    onChange={e => updatePlayer('name', e.target.value)}
+                    placeholder="Your name"
+                    className="text-xs py-1 px-2"
+                  />
+                </label>
+                <label className="flex flex-col">
+                  <span className="text-info text-xs mb-1 tracking-wider">SETTLEMENT</span>
+                  <input
+                    type="text"
+                    value={player.settlement || ''}
+                    onChange={e => updatePlayer('settlement', e.target.value)}
+                    placeholder="Settlement name"
+                    className="text-xs py-1 px-2"
+                  />
+                </label>
+                <label className="flex flex-col">
+                  <span className="text-info text-xs mb-1 tracking-wider">FACTION</span>
+                  <select
+                    value={player.faction || ''}
+                    onChange={e => updatePlayer('faction', e.target.value)}
+                    className="text-xs py-1 px-2"
+                  >
+                    <option value="">Select faction…</option>
+                    {FACTIONS.map(f => <option key={f} value={f}>{f}</option>)}
+                  </select>
+                </label>
+                <label className="flex flex-col">
+                  <span className="text-info text-xs mb-1 tracking-wider">SUB-FACTION / LEADER</span>
+                  <input
+                    type="text"
+                    value={player.leader || ''}
+                    onChange={e => updatePlayer('leader', e.target.value)}
+                    placeholder="e.g. Elder Maxson"
+                    className="text-xs py-1 px-2"
+                  />
+                </label>
+              </div>
+              <p className="text-muted text-xs">Changes save as you type and sync across the campaign.</p>
             </div>
 
             {/* Danger zone */}
