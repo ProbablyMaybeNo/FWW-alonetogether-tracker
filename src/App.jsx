@@ -178,7 +178,7 @@ function AppContent({ campaignId, onLeaveCampaign }) {
         {activeTab === 'campaign'   && <CampaignPage campaignId={campaignId} onTabChange={setActiveTab} />}
         {activeTab === 'player'     && <PlayerPage onTabChange={setActiveTab} />}
         {activeTab === 'roster'     && <RosterPage />}
-        {activeTab === 'settlement' && <SettlementPage />}
+        {activeTab === 'settlement' && <SettlementPage onTabChange={setActiveTab} />}
         {activeTab === 'battles' && <BattlesPage campaignId={campaignId} onTabChange={setActiveTab} />}
         {activeTab === 'events' && settings.useEventCards && <EventsPage />}
       </main>

@@ -201,30 +201,22 @@ export default function RosterPage() {
     }
   }
 
+  const activeCount = roster.filter(u => u.fate !== 'Dead' && !ABSENT_FATES.includes(u.fate)).length
+  const deadCount = roster.filter(u => u.fate === 'Dead').length
+  const unavailCount = roster.filter(u => ABSENT_FATES.filter(f => f !== 'Dead' && f !== 'Pending').includes(u.fate)).length
+  const rosterValue = roster.reduce((s, u) => s + calcUnitTotalCaps(u), 0)
+  const totalPerks = roster.reduce((s, u) => s + (u.perks || []).length, 0)
+
   return (
     <div className="p-4 max-w-5xl mx-auto">
-      {/* Roster Overview Bar */}
-      <div className="mb-4 grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-5 gap-2">
-        <div className="border border-pip-mid/50 rounded bg-panel p-2 text-center">
-          <div className="text-pip text-lg font-bold">{roster.filter(u => u.fate !== 'Dead' && !ABSENT_FATES.includes(u.fate)).length}</div>
-          <div className="text-xs text-muted tracking-wider">ACTIVE</div>
-        </div>
-        <div className="border border-danger/40 rounded bg-panel p-2 text-center">
-          <div className="text-danger text-lg font-bold">{roster.filter(u => u.fate === 'Dead').length}</div>
-          <div className="text-xs text-muted tracking-wider">DEAD</div>
-        </div>
-        <div className="border border-amber/40 rounded bg-panel p-2 text-center">
-          <div className="text-amber text-lg font-bold">{roster.filter(u => ABSENT_FATES.filter(f => f !== 'Dead' && f !== 'Pending').includes(u.fate)).length}</div>
-          <div className="text-xs text-muted tracking-wider">UNAVAILABLE</div>
-        </div>
-        <div className="border border-amber/50 rounded bg-panel p-2 text-center">
-          <div className="text-amber text-lg font-bold">{roster.reduce((s, u) => s + calcUnitTotalCaps(u), 0).toLocaleString()}c</div>
-          <div className="text-xs text-muted tracking-wider">ROSTER VALUE</div>
-        </div>
-        <div className="border border-pip-mid/40 rounded bg-panel p-2 text-center">
-          <div className="text-pip text-lg font-bold">{roster.reduce((s, u) => s + (u.perks || []).length, 0)}</div>
-          <div className="text-xs text-muted tracking-wider">TOTAL PERKS</div>
-        </div>
+      {/* Roster Overview — single inline summary line */}
+      <div className="mb-4 flex flex-wrap items-center gap-x-4 gap-y-1 border border-pip-dim/40 rounded bg-panel px-3 py-2 text-xs">
+        <span><span className="text-pip font-bold">{activeCount}</span> <span className="text-muted">active</span></span>
+        {deadCount > 0 && <span><span className="text-danger font-bold">{deadCount}</span> <span className="text-muted">dead</span></span>}
+        {unavailCount > 0 && <span><span className="text-amber font-bold">{unavailCount}</span> <span className="text-muted">unavail</span></span>}
+        <span className="text-muted">·</span>
+        <span><span className="text-amber font-bold">{rosterValue.toLocaleString()}c</span> <span className="text-muted">value</span></span>
+        <span><span className="text-pip font-bold">{totalPerks}</span> <span className="text-muted">perks</span></span>
       </div>
 
       {/* Leader Absent Banner */}
