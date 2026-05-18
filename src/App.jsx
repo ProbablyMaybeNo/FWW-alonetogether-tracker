@@ -45,6 +45,8 @@ function AppContent({ campaignId, onLeaveCampaign }) {
   const fileRef = useRef(null)
   const [showTour, setShowTour] = useState(() => !isTourComplete())
   const lastProcessedRoundRef = useRef(null)
+  const finalizeKeyRef = useRef(null)
+  const finalizeLockRef = useRef(false)
 
   useEffect(() => {
     if (!sharedState?.round || !state) return
@@ -119,6 +121,106 @@ function AppContent({ campaignId, onLeaveCampaign }) {
     })
   }, [sharedState?.round])
 
+  // Host-side battle finalize watcher — must be declared before the !state early
+  // return to keep hook order stable. Runs whenever activeBattle changes, regardless
+  // of which modal is mounted. Previously this lived inside PostBattleSummary, but
+  // the host's modal unmounts the moment they apply their own results, so if they
+  // applied before the opponent the finalize never fired and the campaign got stuck
+  // on "Finalizing battle…".
+  const activeBattleForFinalize = state?.activeBattle
+  const uidForFinalize = authUser?.id ?? campaignUserId ?? 'solo-local'
+  useEffect(() => {
+    if (!activeBattleForFinalize) { finalizeKeyRef.current = null; return }
+    const parts = participantIdsFromBattle(activeBattleForFinalize)
+    if (parts.length === 0) return
+    const applied = activeBattleForFinalize.postBattleAppliedBy || {}
+    if (!parts.every(id => applied[id])) return
+
+    const hostUserId = canonicalBattleHostUserId(parts)
+    const iAmHost = !isOnline || uidForFinalize === hostUserId
+    if (!iAmHost) return
+
+    const key = Object.values(applied).filter(Boolean).sort().join('|')
+    if (finalizeKeyRef.current === key) return
+    if (finalizeLockRef.current) return
+    finalizeLockRef.current = true
+    finalizeKeyRef.current = key
+
+    ;(async () => {
+      try {
+        const round = state?.round ?? 0
+        const roundKey = String(round)
+        const oc = activeBattleForFinalize.outcome && typeof activeBattleForFinalize.outcome === 'object' ? activeBattleForFinalize.outcome : {}
+
+        const names = {}
+        for (const id of parts) {
+          if (id === uidForFinalize) names[id] = state?.player?.name || 'You'
+          else names[id] = `Player ${String(id).slice(0, 6)}…`
+        }
+        if (isOnline && campaignId && supabase) {
+          try {
+            const { data: rows } = await supabase
+              .from('player_data')
+              .select('user_id, player_info')
+              .eq('campaign_id', campaignId)
+            for (const row of rows || []) {
+              if (row.player_info?.name) names[row.user_id] = row.player_info.name
+            }
+          } catch (e) { console.warn('finalize: name lookup failed', e) }
+        }
+
+        const record = buildLiveBattleRecord({
+          activeBattle: activeBattleForFinalize,
+          outcome: oc,
+          participantUserIds: parts,
+          playerNames: names,
+        })
+        const nextBattles = appendLiveBattleRecordToBattles(
+          sharedState?.battles ?? state?.battles ?? {},
+          roundKey,
+          record,
+        )
+        await saveCampaignBattles(nextBattles)
+
+        const scen = battleScenarios.find(s => s.id === activeBattleForFinalize.setup?.scenario?.scenarioId)
+        const pLabels = parts.map(id => `${names[id]} (${outcomeLabel(oc[id])})`).join(' · ')
+        const line = `${pLabels} — ${scen?.name || 'Battle'} (Turn ${activeBattleForFinalize.turn ?? 1})`
+
+        if (!isOnline) {
+          setState(prev => ({
+            ...prev,
+            battleCount: (prev.battleCount ?? 0) + 1,
+            narrativeLog: [
+              ...(prev.narrativeLog || []),
+              { id: Date.now(), title: 'Battle', content: line, round },
+            ],
+          }))
+        } else {
+          const battleCount = (sharedState?.battleCount ?? state?.battleCount ?? 0) + 1
+          await updateShared('battleCount', battleCount)
+          const narratives = sharedState?.campaignNarratives ?? []
+          await saveCampaignNarratives([
+            ...narratives,
+            {
+              id: Date.now(),
+              round,
+              title: 'Battle',
+              content: line,
+              display: false,
+              createdAt: new Date().toISOString(),
+            },
+          ])
+        }
+        await saveActiveBattle(null)
+      } catch (e) {
+        console.error('host finalize battle:', e)
+        finalizeKeyRef.current = null
+      } finally {
+        finalizeLockRef.current = false
+      }
+    })()
+  }, [activeBattleForFinalize, uidForFinalize, isOnline, campaignId, state, sharedState, saveCampaignBattles, updateShared, saveCampaignNarratives, saveActiveBattle, setState])
+
   if (!state) {
     return (
       <div style={{
@@ -156,106 +258,6 @@ function AppContent({ campaignId, onLeaveCampaign }) {
 
   const activeBattle = state?.activeBattle
   const uid = authUser?.id ?? campaignUserId ?? 'solo-local'
-
-  // Host-side battle finalize watcher — runs whenever activeBattle changes, regardless
-  // of which modal is mounted. Previously this lived inside PostBattleSummary, but the
-  // host's modal unmounts the moment they apply their own results, so if they applied
-  // before the opponent the finalize never fired and the campaign got stuck on
-  // "Finalizing battle…".
-  const finalizeKeyRef = useRef(null)
-  const finalizeLockRef = useRef(false)
-  useEffect(() => {
-    if (!activeBattle) { finalizeKeyRef.current = null; return }
-    const parts = participantIdsFromBattle(activeBattle)
-    if (parts.length === 0) return
-    const applied = activeBattle.postBattleAppliedBy || {}
-    if (!parts.every(id => applied[id])) return
-
-    const hostUserId = canonicalBattleHostUserId(parts)
-    const iAmHost = !isOnline || uid === hostUserId
-    if (!iAmHost) return
-
-    const key = Object.values(applied).filter(Boolean).sort().join('|')
-    if (finalizeKeyRef.current === key) return
-    if (finalizeLockRef.current) return
-    finalizeLockRef.current = true
-    finalizeKeyRef.current = key
-
-    ;(async () => {
-      try {
-        const round = state?.round ?? 0
-        const roundKey = String(round)
-        const oc = activeBattle.outcome && typeof activeBattle.outcome === 'object' ? activeBattle.outcome : {}
-
-        // Player names — try shared/cached state first, fall back to a Supabase lookup
-        const names = {}
-        for (const id of parts) {
-          if (id === uid) names[id] = state?.player?.name || 'You'
-          else names[id] = `Player ${String(id).slice(0, 6)}…`
-        }
-        if (isOnline && campaignId && supabase) {
-          try {
-            const { data: rows } = await supabase
-              .from('player_data')
-              .select('user_id, player_info')
-              .eq('campaign_id', campaignId)
-            for (const row of rows || []) {
-              if (row.player_info?.name) names[row.user_id] = row.player_info.name
-            }
-          } catch (e) { console.warn('finalize: name lookup failed', e) }
-        }
-
-        const record = buildLiveBattleRecord({
-          activeBattle,
-          outcome: oc,
-          participantUserIds: parts,
-          playerNames: names,
-        })
-        const nextBattles = appendLiveBattleRecordToBattles(
-          sharedState?.battles ?? state?.battles ?? {},
-          roundKey,
-          record,
-        )
-        await saveCampaignBattles(nextBattles)
-
-        const scen = battleScenarios.find(s => s.id === activeBattle.setup?.scenario?.scenarioId)
-        const pLabels = parts.map(id => `${names[id]} (${outcomeLabel(oc[id])})`).join(' · ')
-        const line = `${pLabels} — ${scen?.name || 'Battle'} (Turn ${activeBattle.turn ?? 1})`
-
-        if (!isOnline) {
-          setState(prev => ({
-            ...prev,
-            battleCount: (prev.battleCount ?? 0) + 1,
-            narrativeLog: [
-              ...(prev.narrativeLog || []),
-              { id: Date.now(), title: 'Battle', content: line, round },
-            ],
-          }))
-        } else {
-          const battleCount = (sharedState?.battleCount ?? state?.battleCount ?? 0) + 1
-          await updateShared('battleCount', battleCount)
-          const narratives = sharedState?.campaignNarratives ?? []
-          await saveCampaignNarratives([
-            ...narratives,
-            {
-              id: Date.now(),
-              round,
-              title: 'Battle',
-              content: line,
-              display: false,
-              createdAt: new Date().toISOString(),
-            },
-          ])
-        }
-        await saveActiveBattle(null)
-      } catch (e) {
-        console.error('host finalize battle:', e)
-        finalizeKeyRef.current = null
-      } finally {
-        finalizeLockRef.current = false
-      }
-    })()
-  }, [activeBattle, uid, isOnline, campaignId, state?.round, state?.battles, state?.battleCount, state?.player?.name, sharedState?.battles, sharedState?.battleCount, sharedState?.campaignNarratives, saveCampaignBattles, updateShared, saveCampaignNarratives, saveActiveBattle, setState])
 
   const isParticipant = !!activeBattle && (activeBattle.setup?.participantUserIds ?? []).includes(uid)
   const iHaveEnded = !!activeBattle?.battleEndedBy?.[uid]
