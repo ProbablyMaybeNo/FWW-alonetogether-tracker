@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo, useCallback, useRef } from 'react'
+import { useState, useEffect, useMemo, useCallback } from 'react'
 import { Loader2 } from 'lucide-react'
 import Modal from '../layout/Modal'
 import { supabase } from '../../lib/supabase'
@@ -6,7 +6,6 @@ import { normalizeActiveBattle } from '../../utils/activeBattle'
 import {
   OUTCOME_OPTIONS,
   outcomeLabel,
-  canonicalBattleHostUserId,
   participantIdsFromBattle,
   countUnitsRemoved,
   collectLootedItemsForPlayer,
@@ -14,8 +13,6 @@ import {
   buildProposedRosterMerge,
   lootToPoolItems,
   moveBattleEquipmentToRecovery,
-  buildLiveBattleRecord,
-  appendLiveBattleRecordToBattles,
 } from '../../utils/postBattlePropagation'
 import battleScenarios from '../../data/battle/battleScenarios.json'
 import { SCAVENGER_OBJECTIVES } from '../../data/scavengerObjectives'
@@ -46,16 +43,12 @@ export default function PostBattleSummary({
     const p = participantIdsFromBattle(ab)
     return p.length > 0 ? p : [currentUserId]
   }, [ab, currentUserId])
-  const hostUserId = canonicalBattleHostUserId(participants)
-  const iAmHost = !isOnline || currentUserId === hostUserId
 
   const [uiStep, setUiStep] = useState('outcome') // outcome | summary | roster | applying
   const [playerNames, setPlayerNames] = useState({})
   const [draftRoster, setDraftRoster] = useState(null)
   const [applyError, setApplyError] = useState('')
   const [pendingNav, setPendingNav] = useState(false)
-  const hostFinalizeLock = useRef(false)
-  const finalizedEndedAtRef = useRef(null)
 
   const outcome = ab.outcome && typeof ab.outcome === 'object' ? ab.outcome : {}
   const myOutcomeValue = outcome[currentUserId]
@@ -102,87 +95,9 @@ export default function PostBattleSummary({
     return playerNames[uid] || `Player ${String(uid).slice(0, 8)}…`
   }, [currentUserId, state?.player?.name, playerNames])
 
-  const finalizeBattleCampaign = useCallback(async (snap) => {
-    const abSnap = normalizeActiveBattle(snap)
-    const round = state?.round ?? 0
-    const roundKey = String(round)
-    const parts = participantIdsFromBattle(abSnap)
-    if (parts.length === 0) return
-    const applied = abSnap.postBattleAppliedBy || {}
-    if (!parts.every(id => applied[id])) return
-
-    const oc = abSnap.outcome && typeof abSnap.outcome === 'object' ? abSnap.outcome : {}
-    const record = buildLiveBattleRecord({
-      activeBattle: abSnap,
-      outcome: oc,
-      participantUserIds: parts,
-      playerNames: Object.fromEntries(parts.map(id => [id, displayName(id)])),
-    })
-    const nextBattles = appendLiveBattleRecordToBattles(sharedState?.battles ?? state?.battles ?? {}, roundKey, record)
-    await saveCampaignBattles(nextBattles)
-
-    const scen = battleScenarios.find(s => s.id === abSnap.setup?.scenario?.scenarioId)
-    const pLabels = parts.map(id => `${displayName(id)} (${outcomeLabel(oc[id])})`).join(' · ')
-    const line = `${pLabels} — ${scen?.name || 'Battle'} (Turn ${abSnap.turn ?? 1})`
-
-    if (!isOnline) {
-      setState(prev => ({
-        ...prev,
-        battleCount: (prev.battleCount ?? 0) + 1,
-        narrativeLog: [
-          ...(prev.narrativeLog || []),
-          { id: Date.now(), title: 'Battle', content: line, round },
-        ],
-      }))
-    } else {
-      const battleCount = (sharedState?.battleCount ?? state?.battleCount ?? 0) + 1
-      await updateShared('battleCount', battleCount)
-      const narratives = sharedState?.campaignNarratives ?? []
-      await saveCampaignNarratives([
-        ...narratives,
-        {
-          id: Date.now(),
-          round,
-          title: 'Battle',
-          content: line,
-          display: false,
-          createdAt: new Date().toISOString(),
-        },
-      ])
-    }
-
-    await saveActiveBattle(null)
-    setPendingNav(true)
-  }, [isOnline, setState, state?.round, state?.battles, state?.battleCount, sharedState?.battles, sharedState?.battleCount, sharedState?.campaignNarratives, displayName, saveCampaignBattles, updateShared, saveCampaignNarratives, saveActiveBattle])
-
-  useEffect(() => {
-    if (!iAmHost || !activeBattleProp) return
-    const abn = normalizeActiveBattle(activeBattleProp)
-    const parts = participantIdsFromBattle(abn)
-    if (parts.length === 0) return
-    const applied = abn.postBattleAppliedBy || {}
-    if (!parts.every(id => applied[id])) return
-    // Dedupe key: sorted concatenation of every player's apply timestamp.
-    // (endedAt is no longer set under per-player flow.)
-    const ed = Object.values(applied).filter(Boolean).sort().join('|')
-    if (finalizedEndedAtRef.current === ed) return
-    if (hostFinalizeLock.current) return
-
-    let cancelled = false
-    ;(async () => {
-      hostFinalizeLock.current = true
-      try {
-        finalizedEndedAtRef.current = ed
-        await finalizeBattleCampaign(activeBattleProp)
-      } catch (e) {
-        console.error('host finalize battle:', e)
-        finalizedEndedAtRef.current = null
-      } finally {
-        if (!cancelled) hostFinalizeLock.current = false
-      }
-    })()
-    return () => { cancelled = true }
-  }, [iAmHost, activeBattleProp, finalizeBattleCampaign])
+  // Note: host-side battle finalization (writing campaign battle log, incrementing
+  // battleCount, clearing activeBattle) lives in App.jsx now. It needs to keep running
+  // after this modal unmounts (e.g. host applies first, opponent applies second).
 
   const patchOutcome = (value) => {
     const next = normalizeActiveBattle(activeBattleProp)
@@ -270,27 +185,14 @@ export default function PostBattleSummary({
       const nextApplied = { ...prevApplied, [currentUserId]: iso }
 
       const baseForSave = normalizeActiveBattle(activeBattleProp)
-      const nextActiveBattle = {
+      await saveActiveBattle({
         ...baseForSave,
         postBattleAppliedBy: nextApplied,
         lastUpdatedBy: currentUserId,
-      }
-      await saveActiveBattle(nextActiveBattle)
+      })
 
-      // If I'm the host and this apply makes everyone done, finalize now
-      // rather than relying on the useEffect — this component is about to unmount.
-      if (iAmHost) {
-        const allApplied = participants.length > 0 &&
-          participants.every(id => nextApplied[id])
-        if (allApplied && !hostFinalizeLock.current) {
-          hostFinalizeLock.current = true
-          try {
-            await finalizeBattleCampaign(nextActiveBattle)
-          } finally {
-            hostFinalizeLock.current = false
-          }
-        }
-      }
+      // App.jsx watches activeBattle and runs the host-side finalize once everyone
+      // has applied — no per-modal trigger needed here anymore.
 
       setPendingNav(true)
     } catch (e) {

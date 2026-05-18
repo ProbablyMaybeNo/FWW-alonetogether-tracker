@@ -273,8 +273,9 @@ export default function SettlementPage({ onTabChange }) {
       let extraUpdates = {}
 
       if (structureName === 'Listening Post') {
-        const deduct = confirm('Listening Post use costs 50c. Deduct from caps?\n\n[OK = Deduct 50c | Cancel = Skip]')
-        extraUpdates.caps = deduct ? Math.max(0, (prev.caps || 0) - 50) : prev.caps
+        // Listening Post draws an explore card and costs 50 caps. No confirmation —
+        // mark the structure used to opt in, click again to undo.
+        extraUpdates.caps = Math.max(0, (prev.caps || 0) - 50)
         const newCount = (prev.exploreCardsThisRound || 0) + 1
         extraUpdates.exploreCardsThisRound = newCount
         if (drawnCard) extraUpdates.eventCards = { ...prev.eventCards, [drawnCard.id]: { drawn: true } }
