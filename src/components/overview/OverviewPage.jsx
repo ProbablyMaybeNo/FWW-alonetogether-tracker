@@ -73,11 +73,6 @@ export default function OverviewPage({ onTabChange }) {
     setCapsAdjust('')
   }
 
-  function handleBattleCountInc() {
-    const newCount = (state.battleCount ?? 0) + 1
-    setState(prev => ({ ...prev, battleCount: newCount }))
-  }
-
   const phase = state.phase ?? 1
   const defenseRating = calcDefenseRating(structures)
   const phase1CapLimit = state.phase1CapLimit ?? 750
@@ -266,12 +261,8 @@ export default function OverviewPage({ onTabChange }) {
 
       <OverviewSection title="QUESTS" open={openQuests} onToggle={() => setOpenQuests(o => !o)}>
         <div className="space-y-4 px-4 pb-4 border-t border-pip-dim/20 pt-3">
-          <div className="grid grid-cols-2 sm:grid-cols-5 gap-2 divide-x divide-pip-dim/20 border border-pip-dim/30 rounded overflow-hidden">
-            <div className="p-3 text-center col-span-2 sm:col-span-1">
-              <div className="text-pip text-base font-bold">{state.battleCount ?? 0}</div>
-              <div className="text-pip text-xs mt-0.5">BATTLES</div>
-              <button type="button" onClick={handleBattleCountInc} className="mt-1 text-xs text-pip border border-pip/30 hover:border-pip rounded px-2 py-0.5 transition-colors min-h-[44px]">+1</button>
-            </div>
+          <div className="grid grid-cols-2 sm:grid-cols-5 divide-x divide-pip-dim/20 border border-pip-dim/30 rounded overflow-hidden">
+            <StatTile label="BATTLES" value={state.battleCount ?? 0} onClick={() => onTabChange?.('campaign')} />
             <StatTile label="QUESTS ACTIVE" value={activeQuestCount} onClick={() => onTabChange?.('battles')} />
             <StatTile label="QUESTS DONE" value={completedQuestCount} color="amber" onClick={() => onTabChange?.('battles')} />
             <StatTile label="OBJECTIVES" value={completedObjectivesCount} color="amber" onClick={() => onTabChange?.('battles')} />
@@ -281,13 +272,13 @@ export default function OverviewPage({ onTabChange }) {
           <div className="border border-pip-mid/40 rounded-lg bg-panel p-4">
             <div className="flex items-center gap-2 mb-2">
               <ScrollText size={14} className="text-pip" />
-              <h2 className="text-amber text-sm tracking-widest font-bold">BATTLES</h2>
+              <h2 className="text-amber text-sm tracking-widest font-bold">QUEST & OBJECTIVE TRACKING</h2>
               {(state.activeEvents || []).length > 0 && (
                 <span className="text-amber font-bold text-xs">({state.activeEvents.length} active events)</span>
               )}
             </div>
             <p className="text-muted text-xs mb-3">
-              Draw explore/settlement event cards and manage active consequences on the <strong className="text-pip">BATTLES</strong> tab.
+              Quest cards, scavenger objectives, and secret purposes live under the <strong className="text-pip">OBJECTIVES</strong> sub-tab on the <strong className="text-pip">BATTLES</strong> tab.
             </p>
             <button
               type="button"

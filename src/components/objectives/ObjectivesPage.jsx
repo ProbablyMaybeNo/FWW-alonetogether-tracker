@@ -103,13 +103,13 @@ function DrawnCardContent({ cardName, cardId }) {
 }
 
 const SUB_TABS = [
-  { id: 'secret',    label: 'SECRET PURPOSES' },
-  { id: 'scavenger', label: 'SCAVENGER OBJECTIVES' },
   { id: 'quests',    label: 'QUESTS' },
+  { id: 'scavenger', label: 'SCAVENGER OBJECTIVES' },
+  { id: 'secret',    label: 'SECRET PURPOSES' },
 ]
 
 export default function ObjectivesPage() {
-  const [subTab, setSubTab] = useState('secret')
+  const [subTab, setSubTab] = useState('quests')
 
   return (
     <div className="p-4 max-w-5xl mx-auto">

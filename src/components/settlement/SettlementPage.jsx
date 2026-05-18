@@ -113,7 +113,9 @@ export default function SettlementPage() {
   const { state, setState } = useCampaign()
   const settings = state?.settings ?? {}
   const [subTab, setSubTab] = useState('structures')
-  const [step, setStep] = useState(0)
+  // Open the wizard directly on Step 1 — the old Step 0 landing card was pure friction.
+  // Step 0 still exists as the "wizard exited" state and is rendered as a compact banner below.
+  const [step, setStep] = useState(1)
   const [showAddStructure, setShowAddStructure] = useState(false)
   const [atValidOnly, setAtValidOnly] = useState(() => settings?.settlementMode !== 'homestead')
   const [showBarracks, setShowBarracks] = useState(false)
@@ -776,37 +778,21 @@ export default function SettlementPage() {
         )
       )}
 
-      {/* ── STEP 0 — Landing ── */}
+      {/* ── STEP 0 — Compact resume banner (after user exits the wizard) ── */}
       {step === 0 && (
-        <div className="space-y-4">
-          {/* Hero action */}
-          <div className="border-2 border-amber rounded-xl bg-amber/5 p-6 text-center" style={{ boxShadow: '0 0 32px var(--color-amber-glow)' }}>
-            <div className="text-title text-xs font-bold tracking-widest mb-1 opacity-60">SETTLEMENT PHASE</div>
-            <h2 className="text-amber text-lg font-bold tracking-widest mb-4">READY TO BEGIN?</h2>
-            <button
-              onClick={() => setStep(1)}
-              className="min-h-[44px] px-8 py-3 border-2 border-amber text-amber bg-amber/10 font-bold tracking-widest text-sm hover:bg-amber/20 transition-colors"
-              style={{ boxShadow: '0 0 24px var(--color-amber-glow)' }}
-            >
-              BEGIN SETTLEMENT PHASE
-            </button>
+        <div className="border border-amber/50 rounded-lg bg-panel px-4 py-3 flex flex-wrap items-center gap-3">
+          <div className="flex items-center gap-3 flex-1 min-w-0">
+            <span className="text-amber text-xs font-bold tracking-widest">SETTLEMENT PHASE PAUSED</span>
+            <span className="text-muted text-xs hidden sm:inline">
+              {caps.toLocaleString()}c · {recoveryPoolItems.length} recovery · {structures.length} structures
+            </span>
           </div>
-
-          {/* Quick stats */}
-          <div className="grid grid-cols-3 gap-3">
-            <div className="border border-amber/50 rounded bg-panel p-3 text-center">
-              <div className="text-amber font-bold text-lg">{caps.toLocaleString()}c</div>
-              <div className="text-muted text-xs">CAPS</div>
-            </div>
-            <div className="border border-pip-mid/50 rounded bg-panel p-3 text-center">
-              <div className="text-pip font-bold text-lg">{recoveryPoolItems.length}</div>
-              <div className="text-muted text-xs">RECOVERY ITEMS</div>
-            </div>
-            <div className="border border-pip-mid/50 rounded bg-panel p-3 text-center">
-              <div className="text-pip font-bold text-lg">{structures.length}</div>
-              <div className="text-muted text-xs">STRUCTURES</div>
-            </div>
-          </div>
+          <button
+            onClick={() => setStep(1)}
+            className="min-h-[44px] px-4 py-2 border border-amber text-amber bg-amber/10 font-bold tracking-wider text-xs hover:bg-amber/20 transition-colors"
+          >
+            RESUME PHASE →
+          </button>
         </div>
       )}
 
@@ -1225,7 +1211,7 @@ function StructuresPanel({
         <Coins size={14} className="text-amber" />
         <span className="text-xs text-muted">CAPS:</span>
         <span className="text-amber font-bold text-sm">{(caps).toLocaleString()}c</span>
-        <span className="text-muted text-xs ml-2">(Manage in Player)</span>
+        <span className="text-muted text-xs ml-2">(Manage on Overview)</span>
       </div>
 
       {/* Lost Model Recovery Alert */}
