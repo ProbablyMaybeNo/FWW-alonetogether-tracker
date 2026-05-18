@@ -803,7 +803,7 @@ export default function SettlementPage({ onTabChange }) {
         <div className="space-y-4">
           {/* Step bar */}
           <div className="sticky top-0 z-20 -mx-4 px-4 py-2 bg-panel/95 backdrop-blur-sm border-b border-pip-dim/40">
-            <div className="flex gap-1">
+            <div className="flex gap-1 items-stretch">
               {WIZARD_STEPS.map(s => {
                 const isComplete = step > s.n
                 const isCurrent = step === s.n
@@ -828,6 +828,14 @@ export default function SettlementPage({ onTabChange }) {
                   </button>
                 )
               })}
+              <button
+                type="button"
+                onClick={() => setStep(0)}
+                title="Pause wizard — opens the Settlement Overview tabs"
+                className="min-h-[44px] px-3 border border-muted/30 rounded text-muted text-xs tracking-wider hover:text-pip hover:border-pip transition-colors"
+              >
+                EXIT
+              </button>
             </div>
           </div>
 
@@ -1136,50 +1144,42 @@ export default function SettlementPage({ onTabChange }) {
         </div>
       )}
 
-      {/* ── SETTLEMENT VIEW — always visible ── */}
-      <div className="mt-8 border-t-2 border-pip-dim/30 pt-6">
-        <div className="flex items-center justify-between mb-4 flex-wrap gap-2">
-          <h2 className="text-title text-xs font-bold tracking-widest">SETTLEMENT OVERVIEW</h2>
-          {step > 0 && (
-            <button
-              onClick={() => setStep(0)}
-              className="text-xs border border-muted/30 text-muted px-3 py-1.5 rounded hover:text-pip hover:border-pip transition-colors"
-            >
-              ← EXIT PHASE
-            </button>
+      {/* ── SETTLEMENT OVERVIEW — only shown when the wizard is paused (step 0) ── */}
+      {step === 0 && (
+        <div className="mt-8 border-t-2 border-pip-dim/30 pt-6">
+          <h2 className="text-title text-xs font-bold tracking-widest mb-4">SETTLEMENT OVERVIEW</h2>
+
+          {/* Sub-tab switcher */}
+          <div className="flex gap-1 mb-4">
+            {SETTLEMENT_SUB_TABS.map(t => (
+              <button
+                key={t.id}
+                type="button"
+                onClick={() => setSubTab(t.id)}
+                className={`flex-1 min-h-[44px] py-2 text-xs rounded border transition-colors font-bold tracking-wider ${
+                  subTab === t.id
+                    ? 'border-pip bg-panel-light text-pip'
+                    : 'border-muted/30 text-muted hover:text-pip hover:border-pip'
+                }`}
+              >
+                {t.label}
+              </button>
+            ))}
+          </div>
+
+          {subTab === 'structures' && <StructuresPanel {...structuresPanelProps} />}
+          {subTab === 'deck' && (
+            <SettlementDeckPanel
+              state={state} setState={setState} structures={structures}
+              deckFilter={deckFilter} setDeckFilter={setDeckFilter}
+              recentlyDrawn={recentlyDrawn} setRecentlyDrawn={setRecentlyDrawn}
+              drawManualFromDeck={drawManualFromDeck} reshuffleDeck={reshuffleDeck}
+              fullResetDeck={fullResetDeck} addRecentlyDrawnToPool={addRecentlyDrawnToPool}
+            />
           )}
+          {subTab === 'explore' && <ExplorePanel state={state} setState={setState} />}
         </div>
-
-        {/* Sub-tab switcher */}
-        <div className="flex gap-1 mb-4">
-          {SETTLEMENT_SUB_TABS.map(t => (
-            <button
-              key={t.id}
-              type="button"
-              onClick={() => setSubTab(t.id)}
-              className={`flex-1 min-h-[44px] py-2 text-xs rounded border transition-colors font-bold tracking-wider ${
-                subTab === t.id
-                  ? 'border-pip bg-panel-light text-pip'
-                  : 'border-muted/30 text-muted hover:text-pip hover:border-pip'
-              }`}
-            >
-              {t.label}
-            </button>
-          ))}
-        </div>
-
-        {subTab === 'structures' && <StructuresPanel {...structuresPanelProps} />}
-        {subTab === 'deck' && (
-          <SettlementDeckPanel
-            state={state} setState={setState} structures={structures}
-            deckFilter={deckFilter} setDeckFilter={setDeckFilter}
-            recentlyDrawn={recentlyDrawn} setRecentlyDrawn={setRecentlyDrawn}
-            drawManualFromDeck={drawManualFromDeck} reshuffleDeck={reshuffleDeck}
-            fullResetDeck={fullResetDeck} addRecentlyDrawnToPool={addRecentlyDrawnToPool}
-          />
-        )}
-        {subTab === 'explore' && <ExplorePanel state={state} setState={setState} />}
-      </div>
+      )}
     </div>
   )
 }
