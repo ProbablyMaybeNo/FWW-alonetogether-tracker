@@ -4,6 +4,7 @@ import { useCampaign } from '../../context/CampaignContext'
 import { calcPowerGenerated, calcPowerConsumed, calcWaterGenerated, calcWaterConsumed, getStructureRef, calcSettlementTotalCaps, calcDefenseRating } from '../../utils/calculations'
 import AddStructureModal from './AddStructureModal'
 import { BarracksModal, MedicalCenterModal, StoresModal } from './StructureUseModals'
+import Modal from '../layout/Modal'
 import { getDeckStats, drawCard } from '../../utils/cardDraw'
 import CardDrawer from '../overview/CardDrawer'
 import eventCardsData from '../../data/eventCards.json'
@@ -1993,63 +1994,57 @@ function ItemDrawModal({ draw, onKeep, onClose }) {
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-terminal/70 backdrop-blur-sm">
-      <div className="bg-panel border border-pip-mid/60 rounded-lg w-full max-w-lg shadow-xl" style={{ boxShadow: '0 0 24px var(--color-pip-glow)' }}>
-        <div className="flex items-center justify-between px-5 py-3 border-b border-pip-mid/40">
-          <h3 className="text-pip text-sm tracking-widest font-bold">ITEM DRAW — {structureName.toUpperCase()}</h3>
-          <button onClick={onClose} className="text-muted hover:text-pip text-xs px-2 py-1 border border-muted/40 rounded hover:border-pip transition-colors">CLOSE</button>
-        </div>
-        <div className="px-5 py-4 space-y-4">
-          <p className="text-muted text-xs">
-            Drew <span className="text-pip font-bold">{drawnItems.length}</span> {typeLabel} card{drawnItems.length !== 1 ? 's' : ''}.{' '}
-            Select up to <span className="text-amber font-bold">{keepCount}</span> to add to your Item Pool.{' '}
-            <span className="text-muted/60">({selected.length}/{keepCount} selected)</span>
-          </p>
-          <div className="space-y-2 max-h-72 overflow-y-auto">
-            {drawnItems.map((item, idx) => {
-              const isSel = !!selected.find(i => i.id === item.id)
-              const maxed = !isSel && selected.length >= keepCount
-              return (
-                <div
-                  key={`${item.id}-${idx}`}
-                  onClick={() => !maxed && toggle(item)}
-                  className={`flex items-center gap-3 border rounded px-3 py-2.5 transition-colors ${
-                    isSel
-                      ? 'border-pip bg-pip-dim/20 cursor-pointer'
-                      : maxed
-                      ? 'border-muted/20 opacity-40 cursor-not-allowed'
-                      : 'border-muted/40 hover:border-pip/60 hover:bg-panel-light cursor-pointer'
-                  }`}
-                >
-                  <div className={`w-4 h-4 rounded border flex items-center justify-center shrink-0 ${isSel ? 'border-pip bg-pip' : 'border-muted'}`}>
-                    {isSel && <span className="text-terminal text-xs font-bold leading-none">✓</span>}
-                  </div>
-                  <span className="flex-1 min-w-0 text-sm font-bold text-pip truncate">{item.name}</span>
-                  <span className="text-muted text-xs shrink-0">{item.subType}</span>
-                  <span className="text-amber text-sm font-bold shrink-0">{item.caps}c</span>
+    <Modal isOpen onClose={onClose} title={`ITEM DRAW — ${structureName.toUpperCase()}`}>
+      <div className="space-y-4">
+        <p className="text-muted text-xs">
+          Drew <span className="text-pip font-bold">{drawnItems.length}</span> {typeLabel} card{drawnItems.length !== 1 ? 's' : ''}.{' '}
+          Select up to <span className="text-amber font-bold">{keepCount}</span> to add to your Item Pool.{' '}
+          <span className="text-muted/60">({selected.length}/{keepCount} selected)</span>
+        </p>
+        <div className="space-y-2 max-h-72 overflow-y-auto">
+          {drawnItems.map((item, idx) => {
+            const isSel = !!selected.find(i => i.id === item.id)
+            const maxed = !isSel && selected.length >= keepCount
+            return (
+              <div
+                key={`${item.id}-${idx}`}
+                onClick={() => !maxed && toggle(item)}
+                className={`flex items-center gap-3 border rounded px-3 py-2.5 transition-colors ${
+                  isSel
+                    ? 'border-pip bg-pip-dim/20 cursor-pointer'
+                    : maxed
+                    ? 'border-muted/20 opacity-40 cursor-not-allowed'
+                    : 'border-muted/40 hover:border-pip/60 hover:bg-panel-light cursor-pointer'
+                }`}
+              >
+                <div className={`w-4 h-4 rounded border flex items-center justify-center shrink-0 ${isSel ? 'border-pip bg-pip' : 'border-muted'}`}>
+                  {isSel && <span className="text-terminal text-xs font-bold leading-none">✓</span>}
                 </div>
-              )
-            })}
-          </div>
-          <div className="flex gap-2 pt-1">
-            <button
-              onClick={() => { onKeep(selected); onClose() }}
-              disabled={selected.length === 0}
-              className="flex-1 px-4 py-2.5 border border-pip text-pip rounded text-sm hover:bg-pip-dim transition-colors font-bold disabled:opacity-40 disabled:cursor-not-allowed"
-              style={selected.length > 0 ? { boxShadow: '0 0 6px var(--color-pip-glow)' } : {}}
-            >
-              {selected.length > 0 ? `KEEP ${selected.length} ITEM${selected.length !== 1 ? 'S' : ''} → POOL` : 'SELECT ITEMS TO KEEP'}
-            </button>
-            <button
-              onClick={onClose}
-              className="px-4 py-2.5 border border-muted/40 text-muted rounded text-sm hover:text-pip hover:border-pip transition-colors"
-            >
-              Discard All
-            </button>
-          </div>
+                <span className="flex-1 min-w-0 text-sm font-bold text-pip truncate">{item.name}</span>
+                <span className="text-muted text-xs shrink-0">{item.subType}</span>
+                <span className="text-amber text-sm font-bold shrink-0">{item.caps}c</span>
+              </div>
+            )
+          })}
+        </div>
+        <div className="flex gap-2 pt-1">
+          <button
+            onClick={() => { onKeep(selected); onClose() }}
+            disabled={selected.length === 0}
+            className="flex-1 px-4 py-2.5 border border-pip text-pip rounded text-sm hover:bg-pip-dim transition-colors font-bold disabled:opacity-40 disabled:cursor-not-allowed"
+            style={selected.length > 0 ? { boxShadow: '0 0 6px var(--color-pip-glow)' } : {}}
+          >
+            {selected.length > 0 ? `KEEP ${selected.length} ITEM${selected.length !== 1 ? 'S' : ''} → POOL` : 'SELECT ITEMS TO KEEP'}
+          </button>
+          <button
+            onClick={onClose}
+            className="px-4 py-2.5 border border-muted/40 text-muted rounded text-sm hover:text-pip hover:border-pip transition-colors"
+          >
+            Discard All
+          </button>
         </div>
       </div>
-    </div>
+    </Modal>
   )
 }
 
@@ -2078,13 +2073,8 @@ function DeckDrawModal({ draw, onKeep, onClose }) {
   const drawing = !done
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4">
-      <div className="bg-panel border border-pip-mid/50 rounded-lg w-full max-w-md space-y-4 p-5" style={{ boxShadow: '0 0 24px rgba(0,0,0,0.8)' }}>
-        <div className="flex items-center justify-between">
-          <div className="text-title text-xs font-bold tracking-widest">{structureName} — DRAW</div>
-          {done && <button onClick={onClose} className="text-muted hover:text-pip transition-colors"><X size={14} /></button>}
-        </div>
-
+    <Modal isOpen onClose={done ? onClose : () => {}} title={`${structureName} — DRAW`}>
+      <div className="space-y-4">
         <div className="text-muted text-xs">
           {drawing
             ? <span className="text-pip animate-pulse">DRAWING... searching for <span className="text-amber font-bold">{typeLabel}</span></span>
@@ -2146,7 +2136,7 @@ function DeckDrawModal({ draw, onKeep, onClose }) {
           )
         )}
       </div>
-    </div>
+    </Modal>
   )
 }
 
@@ -2923,58 +2913,52 @@ function SettlementPoolItem({ item, roster, storesCount, storesItems, lockerCoun
 /* ── Explore Card Draw Result Modal ── */
 function ExploreCardModal({ card, isScoutCamp, onRedraw, onAddToEvents, onDismiss }) {
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-terminal/70 backdrop-blur-sm">
-      <div className="bg-panel border border-pip-mid/60 rounded-lg w-full max-w-lg shadow-xl" style={{ boxShadow: '0 0 24px var(--color-pip-glow)' }}>
-        <div className="flex items-center justify-between px-5 py-3 border-b border-pip-mid/40">
-          <h3 className="text-pip text-sm tracking-widest font-bold">EXPLORE CARD DRAWN</h3>
-          <button onClick={onDismiss} className="text-muted hover:text-pip text-xs px-2 py-1 border border-muted/40 rounded hover:border-pip transition-colors">CLOSE</button>
-        </div>
-        <div className="px-5 py-4 space-y-3">
-          <div className="border border-pip-mid/40 rounded p-4 bg-panel-alt space-y-2">
-            <div className="flex items-center justify-between">
-              <span className="text-title text-xs font-bold tracking-wider">#{card.id}</span>
-              {card.type && (
-                <span className={`text-xs px-2 py-0.5 rounded font-bold ${
-                  card.type.includes('★') ? 'bg-amber-dim/50 text-amber' : 'bg-pip-dim/30 text-muted'
-                }`}>{card.type}</span>
-              )}
+    <Modal isOpen onClose={onDismiss} title="EXPLORE CARD DRAWN">
+      <div className="space-y-3">
+        <div className="border border-pip-mid/40 rounded p-4 bg-panel-alt space-y-2">
+          <div className="flex items-center justify-between">
+            <span className="text-title text-xs font-bold tracking-wider">#{card.id}</span>
+            {card.type && (
+              <span className={`text-xs px-2 py-0.5 rounded font-bold ${
+                card.type.includes('★') ? 'bg-amber-dim/50 text-amber' : 'bg-pip-dim/30 text-muted'
+              }`}>{card.type}</span>
+            )}
+          </div>
+          <h4 className="text-pip font-bold text-base">{card.name}</h4>
+          <p className="text-muted text-sm leading-relaxed">{card.text}</p>
+          {card.consequence && (
+            <div className="border-t border-pip-dim/30 pt-2 mt-2">
+              <p className="text-amber text-xs font-bold mb-1 tracking-wider">CONSEQUENCE</p>
+              <p className="text-amber text-sm leading-relaxed">{card.consequence}</p>
             </div>
-            <h4 className="text-pip font-bold text-base">{card.name}</h4>
-            <p className="text-muted text-sm leading-relaxed">{card.text}</p>
-            {card.consequence && (
-              <div className="border-t border-pip-dim/30 pt-2 mt-2">
-                <p className="text-amber text-xs font-bold mb-1 tracking-wider">CONSEQUENCE</p>
-                <p className="text-amber text-sm leading-relaxed">{card.consequence}</p>
-              </div>
-            )}
-          </div>
-          <div className="flex gap-2 flex-wrap">
-            {isScoutCamp && (
-              <button
-                onClick={onRedraw}
-                className="flex items-center gap-2 px-4 py-2 border border-amber text-amber rounded text-sm hover:bg-amber-dim/30 transition-colors font-bold"
-              >
-                <Shuffle size={14} /> REDRAW (Scout Camp)
-              </button>
-            )}
-            {card.consequence && (
-              <button
-                onClick={onAddToEvents}
-                className="flex items-center gap-2 px-4 py-2 border border-pip text-pip rounded text-sm hover:bg-pip-dim transition-colors font-bold"
-                style={{ boxShadow: '0 0 6px var(--color-pip-glow)' }}
-              >
-                ADD CONSEQUENCE TO ACTIVE EVENTS
-              </button>
-            )}
+          )}
+        </div>
+        <div className="flex gap-2 flex-wrap">
+          {isScoutCamp && (
             <button
-              onClick={onDismiss}
-              className="px-4 py-2 border border-muted/40 text-muted rounded text-sm hover:text-pip hover:border-pip transition-colors ml-auto"
+              onClick={onRedraw}
+              className="flex items-center gap-2 px-4 py-2 border border-amber text-amber rounded text-sm hover:bg-amber-dim/30 transition-colors font-bold"
             >
-              Dismiss
+              <Shuffle size={14} /> REDRAW (Scout Camp)
             </button>
-          </div>
+          )}
+          {card.consequence && (
+            <button
+              onClick={onAddToEvents}
+              className="flex items-center gap-2 px-4 py-2 border border-pip text-pip rounded text-sm hover:bg-pip-dim transition-colors font-bold"
+              style={{ boxShadow: '0 0 6px var(--color-pip-glow)' }}
+            >
+              ADD CONSEQUENCE TO ACTIVE EVENTS
+            </button>
+          )}
+          <button
+            onClick={onDismiss}
+            className="px-4 py-2 border border-muted/40 text-muted rounded text-sm hover:text-pip hover:border-pip transition-colors ml-auto"
+          >
+            Dismiss
+          </button>
         </div>
       </div>
-    </div>
+    </Modal>
   )
 }
