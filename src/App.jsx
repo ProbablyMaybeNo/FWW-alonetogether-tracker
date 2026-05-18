@@ -7,7 +7,7 @@ import CampaignPage from './components/campaign/CampaignPage'
 import PlayerPage from './components/overview/OverviewPage'
 import RosterPage from './components/roster/RosterPage'
 import SettlementPage from './components/settlement/SettlementPage'
-import EventsPage from './components/events/EventsPage'
+import ObjectivesPage from './components/objectives/ObjectivesPage'
 import BattlesPage from './components/battles/BattlesPage'
 import LoginPage from './components/auth/LoginPage'
 import CampaignDirectory from './components/auth/CampaignDirectory'
@@ -291,7 +291,7 @@ function AppContent({ campaignId, onLeaveCampaign }) {
         {activeTab === 'roster'     && <RosterPage />}
         {activeTab === 'settlement' && <SettlementPage onTabChange={setActiveTab} />}
         {activeTab === 'battles' && <BattlesPage campaignId={campaignId} onTabChange={setActiveTab} />}
-        {activeTab === 'events' && settings.useEventCards && <EventsPage />}
+        {activeTab === 'events' && <ObjectivesPage />}
       </main>
 
       {showTour && state && (

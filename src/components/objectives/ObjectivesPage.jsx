@@ -5,6 +5,7 @@ import { SCAVENGER_OBJECTIVES } from '../../data/scavengerObjectives'
 import questCardDeck from '../../data/questCardDeck.json'
 import { X, Check, Shuffle, ChevronDown, ChevronRight, BookOpen } from 'lucide-react'
 import questCardContent from '../../data/questCardContent.json'
+import EventsPage from '../events/EventsPage'
 
 function useCardContent(cardName, cardId) {
   if (!cardName || questCardContent.length === 0) return null
@@ -102,26 +103,30 @@ function DrawnCardContent({ cardName, cardId }) {
   )
 }
 
-const SUB_TABS = [
+const ALL_SUB_TABS = [
   { id: 'quests',    label: 'QUESTS' },
-  { id: 'scavenger', label: 'SCAVENGER OBJECTIVES' },
+  { id: 'scavenger', label: 'SCAVENGER' },
   { id: 'secret',    label: 'SECRET PURPOSES' },
+  { id: 'events',    label: 'SETTLEMENT EVENTS', requiresSetting: 'useEventCards' },
 ]
 
 export default function ObjectivesPage() {
+  const { state } = useCampaign()
+  const settings = state?.settings ?? {}
+  const subTabs = ALL_SUB_TABS.filter(t => !t.requiresSetting || settings[t.requiresSetting])
   const [subTab, setSubTab] = useState('quests')
 
   return (
     <div className="p-4 max-w-5xl mx-auto">
-      <h2 className="text-amber text-sm tracking-widest mb-4 border-b border-pip-mid/50 pb-2 font-bold">OBJECTIVES</h2>
+      <h2 className="text-amber text-sm tracking-widest mb-4 border-b border-pip-mid/50 pb-2 font-bold">QUESTS</h2>
 
       {/* Sub-tabs */}
-      <div className="flex gap-1 mb-6">
-        {SUB_TABS.map(t => (
+      <div className="flex gap-1 mb-6 flex-wrap">
+        {subTabs.map(t => (
           <button
             key={t.id}
             onClick={() => setSubTab(t.id)}
-            className={`flex-1 py-2 text-xs rounded border transition-colors font-bold tracking-wider ${
+            className={`flex-1 min-w-[120px] py-2 text-xs rounded border transition-colors font-bold tracking-wider ${
               subTab === t.id ? 'border-amber bg-panel-light text-amber' : 'border-pip/30 text-pip hover:text-amber hover:border-amber'
             }`}
           >
@@ -130,9 +135,10 @@ export default function ObjectivesPage() {
         ))}
       </div>
 
-      {subTab === 'secret'    && <SecretPurposes />}
-      {subTab === 'scavenger' && <ScavengerObjectives />}
       {subTab === 'quests'    && <QuestCardsPanel />}
+      {subTab === 'scavenger' && <ScavengerObjectives />}
+      {subTab === 'secret'    && <SecretPurposes />}
+      {subTab === 'events'    && settings.useEventCards && <EventsPage />}
     </div>
   )
 }

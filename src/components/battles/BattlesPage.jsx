@@ -1,10 +1,9 @@
 import { useState, useEffect, useCallback, useMemo } from 'react'
-import { Swords, ClipboardList, MapPin, Layers, Globe } from 'lucide-react'
+import { Swords, MapPin, Layers, Globe } from 'lucide-react'
 import { useCampaign } from '../../context/CampaignContext'
 import { useAuth } from '../../context/AuthContext'
 import { supabase } from '../../lib/supabase'
 import { normalizeBattlePageState } from '../../utils/battlePageState'
-import ObjectivesPage from '../objectives/ObjectivesPage'
 import BattleDeckPanel from './BattleDeckPanel'
 import LocalPopulationDeckPanel from './LocalPopulationDeckPanel'
 import MatchTab from './MatchTab'
@@ -15,13 +14,12 @@ import battleExplores from '../../data/battle/battleExplores.json'
 import battleEvents from '../../data/battle/battleEvents.json'
 import battleScenarios from '../../data/battle/battleScenarios.json'
 import unitsData from '../../data/units.json'
-import { QUESTS_LAST_PANEL_KEY, QUESTS_OPEN_OBJECTIVES_KEY } from '../layout/TabShell'
 
+// Objectives moved to QUESTS tab — Battles is combat-only now.
 const SUBTABS = [
   { id: 'match', label: 'MATCH', icon: Swords },
   { id: 'decks', label: 'DECKS', icon: Layers },
   { id: 'scenario', label: 'SCENARIOS', icon: MapPin },
-  { id: 'objectives', label: 'OBJECTIVES', icon: ClipboardList },
 ]
 
 const DECK_CHIPS = [
@@ -49,21 +47,6 @@ export default function BattlesPage({ campaignId, onTabChange }) {
     const next = typeof updater === 'function' ? updater(structuredClone(base)) : { ...base, ...updater }
     await saveBattlePageState(next)
   }, [state?.battlePageState, saveBattlePageState])
-
-  useEffect(() => {
-    try {
-      if (sessionStorage.getItem(QUESTS_OPEN_OBJECTIVES_KEY) === '1') {
-        setSubTab('objectives')
-        sessionStorage.removeItem(QUESTS_OPEN_OBJECTIVES_KEY)
-      }
-    } catch { /* ignore */ }
-  }, [])
-
-  useEffect(() => {
-    if (subTab === 'objectives') {
-      try { localStorage.setItem(QUESTS_LAST_PANEL_KEY, 'objectives') } catch { /* ignore */ }
-    }
-  }, [subTab])
 
   useEffect(() => {
     if (!isOnline || !campaignId || !supabase) {
@@ -172,7 +155,6 @@ export default function BattlesPage({ campaignId, onTabChange }) {
       )}
 
       {/* ── OBJECTIVES TAB ── */}
-      {subTab === 'objectives' && <ObjectivesPage />}
 
       {/* ── SCENARIOS TAB ── */}
       {subTab === 'scenario' && (

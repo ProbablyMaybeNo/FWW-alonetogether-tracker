@@ -1,10 +1,5 @@
 import { Flag, LayoutDashboard, Users, Building2, Swords, Scroll } from 'lucide-react'
 
-/** Last quest UI: Events tab vs Battles → Objectives (synced from Events/Battles pages) */
-export const QUESTS_LAST_PANEL_KEY = 'fww-quests-last-panel'
-/** One-shot: open Battles page on Objectives sub-tab (set when Quests nav targets objectives) */
-export const QUESTS_OPEN_OBJECTIVES_KEY = 'fww-quests-open-objectives'
-
 const TABS = [
   { id: 'campaign', label: 'CAMPAIGN', shortLabel: 'Campaign', icon: Flag },
   { id: 'player', label: 'OVERVIEW', shortLabel: 'Overview', icon: LayoutDashboard },
@@ -16,60 +11,19 @@ const TABS = [
 
 export { TABS }
 
-function visibleTabs(settings) {
-  return TABS.filter(tab => tab.id !== 'events' || settings.useEventCards)
-}
-
-function readQuestsLastPanel() {
-  try {
-    const v = localStorage.getItem(QUESTS_LAST_PANEL_KEY)
-    return v === 'objectives' ? 'objectives' : 'events'
-  } catch {
-    return 'events'
-  }
-}
-
-export default function TabShell({ activeTab, onTabChange, settings = {} }) {
-  const tabs = visibleTabs(settings)
-
-  function handleTabClick(tabId) {
-    if (tabId === 'events') {
-      try {
-        localStorage.setItem(QUESTS_LAST_PANEL_KEY, 'events')
-      } catch { /* ignore */ }
-      onTabChange('events')
-      return
-    }
-    onTabChange(tabId)
-  }
-
-  function handleQuestsNavClick() {
-    const last = readQuestsLastPanel()
-    if (last === 'objectives') {
-      try {
-        sessionStorage.setItem(QUESTS_OPEN_OBJECTIVES_KEY, '1')
-      } catch { /* ignore */ }
-      onTabChange('battles')
-    } else {
-      try {
-        localStorage.setItem(QUESTS_LAST_PANEL_KEY, 'events')
-      } catch { /* ignore */ }
-      onTabChange('events')
-    }
-  }
-
+export default function TabShell({ activeTab, onTabChange }) {
   return (
     <>
       {/* Desktop top tab bar */}
       <nav data-tour="tab-bar" className="hidden md:flex border-b-2 border-pip-dim bg-panel">
-        {tabs.map(tab => {
+        {TABS.map(tab => {
           const Icon = tab.icon
           const active = activeTab === tab.id
           return (
             <button
               key={tab.id}
               data-tour={`tab-${tab.id}`}
-              onClick={() => handleTabClick(tab.id)}
+              onClick={() => onTabChange(tab.id)}
               className={`flex-1 flex items-center justify-center gap-2 py-3 px-2 text-xs transition-all duration-150 relative
                 ${active
                   ? 'text-amber font-bold bg-panel-light'
@@ -98,17 +52,15 @@ export default function TabShell({ activeTab, onTabChange, settings = {} }) {
         }}
         aria-label="Main navigation"
       >
-        {tabs.map(tab => {
+        {TABS.map(tab => {
           const Icon = tab.icon
-          const isQuests = tab.id === 'events'
-          const active = isQuests ? activeTab === 'events' : activeTab === tab.id
-          const onClick = isQuests ? handleQuestsNavClick : () => handleTabClick(tab.id)
+          const active = activeTab === tab.id
           return (
             <button
               key={tab.id}
               type="button"
               data-tour={`tab-${tab.id}`}
-              onClick={onClick}
+              onClick={() => onTabChange(tab.id)}
               className={`flex flex-1 flex-col items-center justify-center gap-0.5 min-h-[44px] px-1 py-1.5 text-xs transition-colors ${
                 active
                   ? 'text-amber font-bold'

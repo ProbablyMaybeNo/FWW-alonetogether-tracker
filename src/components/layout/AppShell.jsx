@@ -106,7 +106,7 @@ export default function AppShell({ campaignId, onExport, onImportClick, onLeaveC
         <nav className="flex flex-col flex-1 py-2 overflow-y-auto">
           {/* NAVIGATE */}
           <div className="px-4 py-1.5 text-muted/50 text-xs tracking-widest border-b border-pip-dim/20 mb-1">NAVIGATE</div>
-          {TABS.filter(tab => tab.id !== 'events' || settings.useEventCards).map(tab => {
+          {TABS.map(tab => {
             const Icon = tab.icon
             const isActive = activeTab === tab.id
             return (
