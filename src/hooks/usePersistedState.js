@@ -1,11 +1,12 @@
 import { useState, useEffect, useCallback } from 'react'
 import { defaultInhabitantsState } from '../utils/inhabitantsState'
 import { defaultBattlePageState } from '../utils/battlePageState'
+import { defaultCampaignMapState } from '../data/campaignMap'
 
 const STORAGE_KEY = 'fww-campaign'
 
 const DEFAULT_STATE = {
-  version: 10,
+  version: 11,
   player: {
     name: '',
     settlement: '',
@@ -54,6 +55,7 @@ const DEFAULT_STATE = {
   /** Solo / offline: live battle payload mirrors campaigns.active_battle when online */
   activeBattle: null,
   narrativeLog: [],
+  campaignMap: defaultCampaignMapState(),
 }
 
 function migrateUnit(u) {
@@ -217,6 +219,15 @@ function migrateState(stored) {
         manuallyRestored: [],
       },
       battleRosterPresets: stored.battleRosterPresets ?? [],
+    }
+  }
+
+  if (stored.version === 10) {
+    return {
+      ...DEFAULT_STATE,
+      ...stored,
+      version: 11,
+      campaignMap: stored.campaignMap ?? defaultCampaignMapState(),
     }
   }
 

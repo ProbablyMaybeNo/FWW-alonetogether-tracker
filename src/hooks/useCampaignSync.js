@@ -5,6 +5,7 @@ import { normalizeInhabitantsState } from '../utils/inhabitantsState'
 import { normalizeBattlePageState } from '../utils/battlePageState'
 import { normalizeActiveBattle } from '../utils/activeBattle'
 import { normalizeSettlementItemDeck } from '../utils/settlementItemDeckUtils'
+import { defaultCampaignMapState } from '../data/campaignMap'
 
 const DEBOUNCE_MS = 500
 
@@ -81,6 +82,19 @@ function dbToState(row) {
 }
 
 function campaignDbToState(row) {
+  // campaign_map_state is stored as a sparse partial — fill missing top-level keys from default
+  const cm = row.campaign_map_state
+  const defaultCM = defaultCampaignMapState()
+  const campaignMap = (cm && typeof cm === 'object' && Object.keys(cm).length > 0)
+    ? {
+        territories: cm.territories ?? defaultCM.territories,
+        routes:      cm.routes      ?? defaultCM.routes,
+        markers:     cm.markers     ?? [],
+        threats:     { ...defaultCM.threats, ...(cm.threats ?? {}) },
+        showHidden:  !!cm.showHidden,
+      }
+    : defaultCM
+
   return {
     phase: row.phase ?? 1,
     round: row.round ?? 0,
@@ -93,6 +107,7 @@ function campaignDbToState(row) {
     battlePageState: normalizeBattlePageState(row.battle_page_state),
     campaignNarratives: row.campaign_narratives ?? [],
     activeBattle: row.active_battle != null ? normalizeActiveBattle(row.active_battle) : null,
+    campaignMap,
   }
 }
 
@@ -199,7 +214,7 @@ export function useCampaignSync({ campaignId, userId } = {}) {
         // Load shared campaign data
         const { data: camp, error: campErr } = await supabase
           .from('campaigns')
-          .select('phase, round, battle_count, phase1_cap_limit, explore_locations, battles, created_by, inhabitants_state, battle_page_state, campaign_narratives, active_battle')
+          .select('phase, round, battle_count, phase1_cap_limit, explore_locations, battles, created_by, inhabitants_state, battle_page_state, campaign_narratives, active_battle, campaign_map_state')
           .eq('id', campaignId)
           .single()
 
@@ -429,6 +444,37 @@ export function useCampaignSync({ campaignId, userId } = {}) {
     }
   }, [campaignId, isOnline, solo])
 
+  const saveCampaignMapState = useCallback(async (nextMapState) => {
+    const normalized = nextMapState ?? defaultCampaignMapState()
+    if (!isOnline) {
+      solo.setState(prev => ({ ...prev, campaignMap: normalized }))
+      return
+    }
+    // Optimistic — reflect immediately before async save
+    setSharedState(prev => ({ ...(prev ?? {}), campaignMap: normalized }))
+    try {
+      const { error } = await supabase.rpc('patch_campaign_map_state', {
+        p_campaign_id: campaignId,
+        p_state: normalized,
+      })
+      if (!error) { setSyncError(null); return }
+      throw error
+    } catch (e) {
+      console.warn('patch_campaign_map_state RPC missing or failed; trying direct campaigns update (creator-only RLS):', e)
+      try {
+        const { error: e2 } = await supabase
+          .from('campaigns')
+          .update({ campaign_map_state: normalized })
+          .eq('id', campaignId)
+        if (e2) throw e2
+        setSyncError(null)
+      } catch (e3) {
+        console.error('saveCampaignMapState:', e3)
+        setSyncError(e3.message ?? String(e3))
+      }
+    }
+  }, [campaignId, isOnline, solo])
+
   const saveBattlePageState = useCallback(async (nextBattlePageState) => {
     const normalized = normalizeBattlePageState(nextBattlePageState)
     if (!isOnline) {
@@ -548,6 +594,7 @@ export function useCampaignSync({ campaignId, userId } = {}) {
       saveActiveBattle,
       saveCampaignBattles,
       saveCampaignNarratives,
+      saveCampaignMapState,
       syncing: false,
       syncError: null,
       isOnline: false,
@@ -574,6 +621,7 @@ export function useCampaignSync({ campaignId, userId } = {}) {
     saveActiveBattle,
     saveCampaignBattles,
     saveCampaignNarratives,
+    saveCampaignMapState,
     syncing,
     syncError,
     isOnline: true,
