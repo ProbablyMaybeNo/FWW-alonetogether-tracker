@@ -10,6 +10,7 @@ import SettlementPage from './components/settlement/SettlementPage'
 import ObjectivesPage from './components/objectives/ObjectivesPage'
 import BattlesPage from './components/battles/BattlesPage'
 import CampaignMapPage from './components/map/CampaignMapPage'
+import HomesteadPage from './components/homestead/HomesteadPage'
 import LoginPage from './components/auth/LoginPage'
 import CampaignDirectory from './components/auth/CampaignDirectory'
 import OnboardingTour, { isTourComplete } from './components/onboarding/OnboardingTour'
@@ -288,6 +289,7 @@ function AppContent({ campaignId, onLeaveCampaign }) {
 
       <main className="flex-1 overflow-y-auto pb-16 md:pb-0">
         {activeTab === 'campaign'   && <CampaignPage campaignId={campaignId} onTabChange={setActiveTab} />}
+        {activeTab === 'homestead'  && <HomesteadPage />}
         {activeTab === 'player'     && <PlayerPage onTabChange={setActiveTab} />}
         {activeTab === 'roster'     && <RosterPage />}
         {activeTab === 'settlement' && <SettlementPage onTabChange={setActiveTab} />}
