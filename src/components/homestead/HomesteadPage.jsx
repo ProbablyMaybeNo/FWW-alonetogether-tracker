@@ -85,6 +85,11 @@ const BOOST_TYPE_STYLE = {
   practiced:   { color: '#a855f7', shadow: 'rgba(168,85,247,0.5)', label: 'PRACTICED'   },
 }
 
+// Phase 3 starting bundle: 2x Generator-Small(1), Stores(53), Maintenance Shed(54), Listening Post(50)
+const PHASE3_FREE_IDS = [1, 1, 53, 54, 50]
+// Homestead mode starting: 1x Land(69), 2x Generator-Small, Stores, Maintenance Shed, Listening Post, Resource Stand(65), Hut(77)
+const HOMESTEAD_FREE_IDS = [69, 1, 1, 53, 54, 50, 65, 77]
+
 function calcArmorBudget(roster) {
   return roster.reduce((sum, unit) => {
     return sum + (unit.equippedItems || []).reduce((s, itemId) => {
@@ -200,6 +205,75 @@ export default function HomesteadPage() {
         ...(p.settlement ?? {}),
         structures: (p.settlement?.structures ?? []).filter(s => s.instanceId !== instanceId),
       },
+    }))
+  }
+
+  function buyLand() {
+    const currentLand = state.settlement?.landCount ?? (state.settlement?.landPurchased ? 1 : 0)
+    if (!confirm(`Purchase additional land for 500c? Adds 10 extra structure slots. (Current land: ${currentLand})`)) return
+    setState(p => ({
+      ...p,
+      caps: Math.max(0, (p.caps ?? 0) - 500),
+      settlement: {
+        ...(p.settlement ?? {}),
+        landPurchased: true,
+        landCount: (p.settlement?.landCount ?? (p.settlement?.landPurchased ? 1 : 0)) + 1,
+      },
+    }))
+  }
+
+  function claimLandViaQuests() {
+    if (!confirm('Claim additional land via 5 completed quests? (No cap cost)')) return
+    setState(p => ({
+      ...p,
+      settlement: {
+        ...(p.settlement ?? {}),
+        landPurchased: true,
+        landCount: (p.settlement?.landCount ?? (p.settlement?.landPurchased ? 1 : 0)) + 1,
+      },
+    }))
+  }
+
+  function runPhase3Setup() {
+    const isHomestead = state.settings?.settlementMode === 'homestead'
+    const freeIds = isHomestead ? HOMESTEAD_FREE_IDS : PHASE3_FREE_IDS
+    const label = isHomestead
+      ? 'Add free Homestead starting structures? (Land, 2× Generator-Small, Stores, Maintenance Shed, Listening Post, Resource Stand, Hut)'
+      : 'Add free AT starting structures? (2× Generator-Small, Stores, Maintenance Shed, Listening Post)'
+    if (!confirm(label)) return
+    const newStructures = freeIds.map(id => ({
+      instanceId: genId(),
+      structureId: id,
+      usedThisRound: false,
+      powered: false,
+      condition: 'Undamaged',
+      notes: '',
+    }))
+    setState(p => ({
+      ...p,
+      phase: 4,
+      settlement: { ...(p.settlement ?? {}), structures: [...(p.settlement?.structures ?? []), ...newStructures] },
+    }))
+  }
+
+  function restAllWounded() {
+    const wounded = roster.filter(u => !ABSENT_FATES.includes(u.fate) && ((u.regDamage ?? 0) > 0 || u.condPoisoned || u.condInjuredArm || u.condInjuredLeg))
+    if (wounded.length === 0) { alert('No wounded units to rest.'); return }
+    if (!confirm(`Rest ${wounded.length} wounded unit${wounded.length !== 1 ? 's' : ''}? Halves damage and drops one condition per unit.`)) return
+    setState(p => ({
+      ...p,
+      roster: (p.roster ?? []).map(u => {
+        if (ABSENT_FATES.includes(u.fate)) return u
+        if ((u.regDamage ?? 0) === 0 && !u.condPoisoned && !u.condInjuredArm && !u.condInjuredLeg) return u
+        const newDmg = Math.floor((u.regDamage ?? 0) / 2)
+        let condPoisoned = u.condPoisoned ?? false
+        let condInjuredArm = u.condInjuredArm ?? false
+        let condInjuredLeg = u.condInjuredLeg ?? false
+        if (condPoisoned) condPoisoned = false
+        else if (condInjuredArm) condInjuredArm = false
+        else if (condInjuredLeg) condInjuredLeg = false
+        return { ...u, regDamage: newDmg, condPoisoned, condInjuredArm, condInjuredLeg }
+      }),
     }))
   }
 
@@ -529,7 +603,12 @@ export default function HomesteadPage() {
         <section className="border border-pip-mid/40 rounded-lg bg-panel">
           <div className="px-3 py-2 border-b border-pip-mid/30 flex items-center gap-2">
             <h3 className="text-amber text-xs tracking-widest font-bold flex-1">ROSTER ({roster.length})</h3>
-            <span className="text-muted/60 text-[10px] tracking-wider">Click row to expand · Rest applies recovery</span>
+            <button
+              onClick={restAllWounded}
+              title="Halve damage and drop one condition on every wounded Active unit"
+              className="text-[10px] tracking-widest px-2 py-1 border border-pip/60 text-pip rounded hover:bg-pip-dim/20 font-bold"
+            >REST ALL</button>
+            <span className="text-muted/60 text-[10px] tracking-wider hidden sm:inline">Click row to expand</span>
           </div>
           <div className="overflow-x-auto">
             <table className="w-full text-xs">
@@ -605,7 +684,52 @@ export default function HomesteadPage() {
               <DerivedStat label="WATER"  value={water}  good={water >= 0} />
               <DerivedStat label="STORES" value={storesCount} good />
             </div>
+            {/* Land + slots */}
+            {(() => {
+              const landCount = state.settlement?.landCount ?? (state.settlement?.landPurchased ? 1 : 0)
+              const maxSlots = 15 + (landCount * 10)
+              const usedSlots = structures.reduce((sum, s) => {
+                const def = STRUCT_BY_ID[s.structureId]
+                return sum + (def?.size || 1)
+              }, 0)
+              const overBudget = usedSlots > maxSlots
+              const completedQuestCount = (state.questCards || []).filter(q => q.status === 'Complete').length
+              const canClaimViaQuests = completedQuestCount >= 5
+              return (
+                <div className="mt-2 flex items-center gap-2 text-[10px] tracking-wider flex-wrap">
+                  <span className={`${overBudget ? 'text-danger' : 'text-muted'}`}>SLOTS: <span className={`font-bold ${overBudget ? 'text-danger' : 'text-pip'}`}>{usedSlots}/{maxSlots}</span></span>
+                  <span className="text-muted">LAND: <span className="text-pip font-bold">{landCount}</span></span>
+                  <button
+                    onClick={buyLand}
+                    disabled={caps < 500}
+                    title={caps < 500 ? `Need 500c (have ${caps}c)` : 'Purchase additional land for 500c (+10 slots)'}
+                    className="ml-auto px-2 py-0.5 border border-amber/60 text-amber rounded hover:bg-amber-dim/20 disabled:opacity-30 disabled:cursor-not-allowed font-bold"
+                  >+ LAND 500c</button>
+                  {canClaimViaQuests && (
+                    <button
+                      onClick={claimLandViaQuests}
+                      title="Claim free land via 5 completed quests"
+                      className="px-2 py-0.5 border border-pip/60 text-pip rounded hover:bg-pip-dim/20 font-bold"
+                    >+ LAND (quest)</button>
+                  )}
+                </div>
+              )
+            })()}
           </div>
+
+          {/* Phase 3 setup banner */}
+          {phase === 3 && structures.length === 0 && (
+            <div className="border border-amber rounded bg-amber-dim/15 px-3 py-2 flex items-center gap-3">
+              <div className="flex-1">
+                <div className="text-amber text-xs font-bold tracking-widest">PHASE 3 — SETTLEMENT SETUP</div>
+                <p className="text-muted text-[11px] mt-0.5">Add your starting structures and bump to Phase 4 (free, no cap cost).</p>
+              </div>
+              <button
+                onClick={runPhase3Setup}
+                className="px-3 py-1.5 border border-amber text-amber font-bold tracking-widest text-xs rounded hover:bg-amber-dim/30"
+              >SET UP →</button>
+            </div>
+          )}
 
           {/* Structures */}
           <div className="border border-pip-mid/40 rounded-lg bg-panel">
