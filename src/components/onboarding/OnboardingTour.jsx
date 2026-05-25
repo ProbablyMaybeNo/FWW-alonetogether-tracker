@@ -95,11 +95,11 @@ const ALL_STEPS = [
     body: 'Shared across all players. Track campaign phase (1–4), current round, and battle count. When the campaign creator advances to the next round, everything resets automatically — units rest, structure uses clear, unavailable units return when applicable, boost hands return to the recovery pool, and item pools update.',
   },
   {
-    id: 'settlement',
-    target: '[data-tour="tab-settlement"]',
+    id: 'homestead',
+    target: '[data-tour="tab-homestead"]',
     placement: 'below',
-    title: 'SETTLEMENT TAB',
-    body: 'Your personal settlement. Add structures, power them with Generators, then USE them each round to trigger their effects. Track damage, repair, and reinforce. Monitor power, water, and defense totals. The ITEM DECK tab holds your personal Settlement Item Deck — draw cards sequentially when looting or using structures that produce items.',
+    title: 'HOMESTEAD TAB',
+    body: 'Your daily-driver page. Manage your roster (add units, track damage, conditions, fate, perks, equipment), your settlement structures (add, power, USE them to trigger effects like Listening Post draws or Barracks healing), caps, and the post-battle item pool. The ITEMS / DECK / EXPLORE buttons at the top open slide-outs for the item pool, persistent settlement deck, and explore events.',
   },
   {
     id: 'battles',
