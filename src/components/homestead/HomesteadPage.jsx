@@ -16,6 +16,8 @@ import AddItemModal from '../roster/AddItemModal'
 import FateRollModal from '../roster/FateRollModal'
 import PerkPickerModal from '../roster/PerkPickerModal'
 import ItemPoolPanel from '../settlement/ItemPoolPanel'
+import SettlementDeckPanel from '../settlement/SettlementDeckPanel'
+import ExplorePanel from '../settlement/ExplorePanel'
 import { getPerkCaps, PERK_CARDS, parseSymbols } from '../../data/perkCards'
 
 // ── Static catalog lookups (built once) ─────────────────────────────────
@@ -102,21 +104,29 @@ export default function HomesteadPage() {
   const [showAddItem, setShowAddItem] = useState(null)       // slotId of unit
   const [fateModalUnit, setFateModalUnit] = useState(null)
   const [showItemPool, setShowItemPool] = useState(false)
+  const [showDeck, setShowDeck] = useState(false)
+  const [showExplore, setShowExplore] = useState(false)
   const [showPerksBrowser, setShowPerksBrowser] = useState(false)
   const [showPhase1Restrictions, setShowPhase1Restrictions] = useState(true)
 
-  // Lock body scroll while the slide-out is open
+  // Lock body scroll while any slide-out is open + Esc closes the topmost one
+  const anySlideOut = showItemPool || showDeck || showExplore
   useEffect(() => {
-    if (!showItemPool) return
+    if (!anySlideOut) return
     const prev = document.body.style.overflow
     document.body.style.overflow = 'hidden'
-    function onKey(e) { if (e.key === 'Escape') setShowItemPool(false) }
+    function onKey(e) {
+      if (e.key !== 'Escape') return
+      if (showExplore) setShowExplore(false)
+      else if (showDeck) setShowDeck(false)
+      else if (showItemPool) setShowItemPool(false)
+    }
     window.addEventListener('keydown', onKey)
     return () => {
       document.body.style.overflow = prev
       window.removeEventListener('keydown', onKey)
     }
-  }, [showItemPool])
+  }, [anySlideOut, showItemPool, showDeck, showExplore])
 
   if (!state) return <div className="p-8 text-center text-muted text-xs tracking-wider">LOADING…</div>
 
@@ -405,6 +415,20 @@ export default function HomesteadPage() {
             title="Open item pool"
           >
             <Package size={11} /> ITEMS ({itemPoolCount})
+          </button>
+          <button
+            onClick={() => setShowDeck(true)}
+            className="flex items-center gap-1 text-[10px] tracking-widest px-2.5 py-1.5 border border-info/60 text-info rounded hover:bg-info-dim/20"
+            title="Settlement Item + Boost decks (persistent draw / discard / reshuffle)"
+          >
+            DECK
+          </button>
+          <button
+            onClick={() => setShowExplore(true)}
+            className="flex items-center gap-1 text-[10px] tracking-widest px-2.5 py-1.5 border border-info/60 text-info rounded hover:bg-info-dim/20"
+            title="Explore events + locations"
+          >
+            EXPLORE
           </button>
           <button
             onClick={() => setShowAddUnit(true)}
@@ -829,6 +853,66 @@ export default function HomesteadPage() {
             </p>
             <div className="flex-1 overflow-y-auto p-3">
               <ItemPoolPanel structures={structures} />
+            </div>
+          </aside>
+        </>
+      )}
+
+      {/* Deck slide-out — persistent Settlement Item + Boost decks */}
+      {showDeck && (
+        <>
+          <div
+            className="fixed inset-0 z-40 bg-black/70"
+            onClick={() => setShowDeck(false)}
+            aria-hidden="true"
+          />
+          <aside
+            className="fixed top-0 right-0 z-50 h-full w-full max-w-3xl bg-panel border-l-2 border-pip-mid/60 shadow-[0_0_32px_rgba(0,0,0,0.5)] flex flex-col"
+            role="dialog"
+            aria-label="Settlement decks"
+          >
+            <header className="flex items-center justify-between px-4 py-3 border-b border-pip-mid/40 bg-panel-light shrink-0">
+              <h2 className="text-title text-sm font-bold tracking-widest">ITEM + BOOST DECKS</h2>
+              <button
+                onClick={() => setShowDeck(false)}
+                className="text-muted hover:text-danger transition-colors p-2 min-h-[44px] min-w-[44px] flex items-center justify-center"
+                aria-label="Close deck panel"
+              >
+                <X size={18} />
+              </button>
+            </header>
+            <div className="flex-1 overflow-y-auto p-3">
+              <SettlementDeckPanel structures={structures} />
+            </div>
+          </aside>
+        </>
+      )}
+
+      {/* Explore slide-out — events + locations */}
+      {showExplore && (
+        <>
+          <div
+            className="fixed inset-0 z-40 bg-black/70"
+            onClick={() => setShowExplore(false)}
+            aria-hidden="true"
+          />
+          <aside
+            className="fixed top-0 right-0 z-50 h-full w-full max-w-3xl bg-panel border-l-2 border-pip-mid/60 shadow-[0_0_32px_rgba(0,0,0,0.5)] flex flex-col"
+            role="dialog"
+            aria-label="Explore"
+          >
+            <header className="flex items-center justify-between px-4 py-3 border-b border-pip-mid/40 bg-panel-light shrink-0">
+              <h2 className="text-title text-sm font-bold tracking-widest">EXPLORE</h2>
+              <button
+                onClick={() => setShowExplore(false)}
+                className="text-muted hover:text-danger transition-colors p-2 min-h-[44px] min-w-[44px] flex items-center justify-center"
+                aria-label="Close explore panel"
+              >
+                <X size={18} />
+              </button>
+            </header>
+            <div className="flex-1 overflow-y-auto p-3">
+              <ExplorePanel state={state} setState={setState} />
             </div>
           </aside>
         </>
