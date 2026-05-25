@@ -8,6 +8,7 @@ import { SCAVENGER_OBJECTIVES } from '../../data/scavengerObjectives'
 import { defaultInhabitantsState } from '../../utils/inhabitantsState'
 import Modal from '../layout/Modal'
 import PersonalNarrativeLog from './PersonalNarrativeLog'
+import ResetCampaignModal from './ResetCampaignModal'
 
 
 const PHASES = [
@@ -119,7 +120,8 @@ function PlayerRoundNarrativeModal({ player, round, onClose }) {
 }
 
 export default function CampaignPage({ campaignId, onTabChange }) {
-  const { state, setState, updateShared, isOnline, sharedState, saveInhabitantsState, saveCampaignBattles, saveCampaignNarratives, syncError } = useCampaign()
+  const { state, setState, updateShared, isOnline, sharedState, saveInhabitantsState, saveCampaignBattles, saveCampaignNarratives, saveActiveBattle, saveCampaignMapState, saveBattlePageState, syncError } = useCampaign()
+  const [showResetModal, setShowResetModal] = useState(false)
   const { user } = useAuth()
   const [allPlayers, setAllPlayers] = useState([])
   const [loadingPlayers, setLoadingPlayers] = useState(false)
@@ -903,6 +905,41 @@ export default function CampaignPage({ campaignId, onTabChange }) {
         </h2>
         <PersonalNarrativeLog state={state} setState={setState} round={round} />
       </div>
+
+      {/* ── DANGER ZONE — creator-only campaign reset ── */}
+      {isCreator && (
+        <div className="mt-8 border border-danger/40 rounded-lg bg-danger-dim/5 p-4">
+          <div className="flex items-center justify-between gap-3 flex-wrap">
+            <div>
+              <h2 className="text-danger text-xs tracking-widest font-bold">DANGER ZONE</h2>
+              <p className="text-muted text-xs mt-1">
+                Wipe the campaign back to a fresh start. Players keep their identity + journals; everything else resets.
+              </p>
+            </div>
+            <button
+              onClick={() => setShowResetModal(true)}
+              className="px-4 py-2 border border-danger text-danger text-xs font-bold tracking-widest rounded hover:bg-danger-dim/20 transition-colors"
+            >RESET CAMPAIGN…</button>
+          </div>
+        </div>
+      )}
+
+      {showResetModal && (
+        <ResetCampaignModal
+          isOpen={showResetModal}
+          onClose={() => setShowResetModal(false)}
+          state={state}
+          setState={setState}
+          isOnline={isOnline}
+          updateShared={updateShared}
+          saveCampaignBattles={saveCampaignBattles}
+          saveCampaignNarratives={saveCampaignNarratives}
+          saveActiveBattle={saveActiveBattle}
+          saveCampaignMapState={saveCampaignMapState}
+          saveBattlePageState={saveBattlePageState}
+          saveInhabitantsState={saveInhabitantsState}
+        />
+      )}
 
     </div>
   )
