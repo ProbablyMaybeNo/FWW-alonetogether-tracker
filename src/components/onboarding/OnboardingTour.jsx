@@ -95,13 +95,6 @@ const ALL_STEPS = [
     body: 'Shared across all players. Track campaign phase (1–4), current round, and battle count. When the campaign creator advances to the next round, everything resets automatically — units rest, structure uses clear, unavailable units return when applicable, boost hands return to the recovery pool, and item pools update.',
   },
   {
-    id: 'player',
-    target: '[data-tour="tab-player"]',
-    placement: 'below',
-    title: 'PLAYER TAB',
-    body: 'Your personal overview — caps balance, active roster count, settlement power and water totals, active quests, and your current scavenger objective.',
-  },
-  {
     id: 'settlement',
     target: '[data-tour="tab-settlement"]',
     placement: 'below',

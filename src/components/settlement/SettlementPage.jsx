@@ -1190,17 +1190,17 @@ function StructuresPanel({
   const defenseRating = calcDefenseRating(structures)
   return (
     <>
-      {/* Caps — clickable to Overview where they can be edited */}
+      {/* Caps — clickable to HOMESTEAD where they can be edited */}
       <button
         type="button"
-        onClick={() => onTabChange?.('player')}
+        onClick={() => onTabChange?.('homestead')}
         className="mb-4 w-full sm:w-auto flex items-center gap-2 border border-amber/50 rounded px-3 py-2 bg-panel hover:bg-amber/10 transition-colors text-left min-h-[44px]"
-        title="Manage caps on Overview"
+        title="Edit caps on HOMESTEAD"
       >
         <Coins size={14} className="text-amber" />
         <span className="text-xs text-muted">CAPS:</span>
         <span className="text-amber font-bold text-sm">{(caps).toLocaleString()}c</span>
-        <span className="text-muted text-xs ml-2">— manage on Overview →</span>
+        <span className="text-muted text-xs ml-2">— edit on HOMESTEAD →</span>
       </button>
 
       {/* Lost Model Recovery Alert */}

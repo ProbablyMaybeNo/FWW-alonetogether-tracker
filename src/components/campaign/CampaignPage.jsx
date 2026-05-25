@@ -7,6 +7,7 @@ import { calcRosterTotalCaps } from '../../utils/calculations'
 import { SCAVENGER_OBJECTIVES } from '../../data/scavengerObjectives'
 import { defaultInhabitantsState } from '../../utils/inhabitantsState'
 import Modal from '../layout/Modal'
+import PersonalNarrativeLog from './PersonalNarrativeLog'
 
 
 const PHASES = [
@@ -894,6 +895,14 @@ export default function CampaignPage({ campaignId, onTabChange }) {
           </div>
         </div>
       )}
+
+      {/* ── My Personal Narrative Log (migrated from removed OVERVIEW tab) ── */}
+      <div>
+        <h2 className="text-amber text-sm tracking-widest font-bold mb-3 border-b border-pip-mid/50 pb-1">
+          MY JOURNAL
+        </h2>
+        <PersonalNarrativeLog state={state} setState={setState} round={round} />
+      </div>
 
     </div>
   )

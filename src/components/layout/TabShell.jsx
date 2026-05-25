@@ -1,9 +1,8 @@
-import { Flag, LayoutDashboard, Building2, Swords, Scroll, Map, Home } from 'lucide-react'
+import { Flag, Building2, Swords, Scroll, Map, Home } from 'lucide-react'
 
 const TABS = [
   { id: 'campaign', label: 'CAMPAIGN', shortLabel: 'Campaign', icon: Flag },
   { id: 'homestead', label: 'HOMESTEAD', shortLabel: 'Homestead', icon: Home },
-  { id: 'player', label: 'OVERVIEW', shortLabel: 'Overview', icon: LayoutDashboard },
   { id: 'settlement', label: 'SETTLEMENT', shortLabel: 'Settlement', icon: Building2 },
   { id: 'map', label: 'MAP', shortLabel: 'Map', icon: Map },
   { id: 'battles', label: 'BATTLES', shortLabel: 'Battles', icon: Swords },
