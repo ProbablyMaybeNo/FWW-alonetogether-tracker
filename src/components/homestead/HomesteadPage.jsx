@@ -9,7 +9,7 @@ import itemsCatalog from '../../data/items.json'
 import boostsCatalog from '../../data/boosts.json'
 import unitsData from '../../data/units.json'
 import { calcUnitTotalCaps, calcUnitItemCaps, getItemRef, calcPowerGenerated, calcPowerConsumed, calcWaterGenerated, calcWaterConsumed } from '../../utils/calculations'
-import { structureHasSideEffects } from '../../utils/structureEffects'
+import useStructureUse from '../../hooks/useStructureUse'
 import { STATUS_OPTIONS } from '../../utils/fateTable'
 import AddUnitModal from '../roster/AddUnitModal'
 import AddItemModal from '../roster/AddItemModal'
@@ -92,9 +92,10 @@ function calcArmorBudget(roster) {
   }, 0)
 }
 
-export default function HomesteadPage({ onTabChange }) {
+export default function HomesteadPage() {
   const { state, setState } = useCampaign()
-  const [step, setStep] = useState('build')                  // 'build' | 'use' | 'select'
+  const structureUse = useStructureUse()
+  const [step, setStep] = useState('build')                  // 'build' | 'select' | 'use'
   const [structPick, setStructPick] = useState('')
   const [expandedSlot, setExpandedSlot] = useState(null)
   const [showAddUnit, setShowAddUnit] = useState(false)
@@ -413,7 +414,7 @@ export default function HomesteadPage({ onTabChange }) {
             <Plus size={11} /> ADD UNIT
           </button>
           <div className="w-px h-5 bg-pip-dim/40 mx-1" />
-          {['build', 'use', 'select'].map(s => (
+          {['build', 'select', 'use'].map(s => (
             <button
               key={s}
               onClick={() => setStep(s)}
@@ -423,7 +424,7 @@ export default function HomesteadPage({ onTabChange }) {
                   : 'border-pip-dim/50 text-pip/70 hover:border-pip hover:text-pip'
               }`}
             >
-              {s === 'build' ? '1 · BUILD' : s === 'use' ? '2 · USE' : '3 · SELECT'}
+              {s === 'build' ? '1 · BUILD' : s === 'select' ? '2 · SELECT' : '3 · USE'}
             </button>
           ))}
         </div>
@@ -628,7 +629,6 @@ export default function HomesteadPage({ onTabChange }) {
                       {rows.map(({ s, def }) => {
                         const needsPower = (def.pwrReq ?? 0) > 0
                         const canUse = step === 'use' && (!needsPower || s.powered)
-                        const hasSideEffects = structureHasSideEffects(def)
                         return (
                           <div key={s.instanceId} className="flex items-center gap-1.5 border border-pip-dim/30 rounded px-2 py-1 bg-panel-alt">
                             <span className="text-pip text-[11px] flex-1 truncate">{def.name}</span>
@@ -639,21 +639,12 @@ export default function HomesteadPage({ onTabChange }) {
                                 className={`text-[9px] tracking-widest px-1.5 py-0.5 border rounded ${s.powered ? 'border-pip text-pip' : 'border-danger/50 text-danger'}`}
                               >{s.powered ? 'PWR' : 'OFF'}</button>
                             )}
-                            {hasSideEffects ? (
-                              <button
-                                onClick={() => onTabChange?.('settlement')}
-                                disabled={!canUse && !s.usedThisRound}
-                                title={`${def.name} has side-effects (draws/modals/caps). Use it on the SETTLEMENT tab.`}
-                                className={`text-[9px] tracking-widest px-1.5 py-0.5 border rounded ${s.usedThisRound ? 'border-amber text-amber' : 'border-info/50 text-info hover:bg-info-dim/20'} disabled:opacity-30`}
-                              >{s.usedThisRound ? 'USED' : 'USE→'}</button>
-                            ) : (
-                              <button
-                                onClick={() => patchStructure(s.instanceId, { usedThisRound: !s.usedThisRound })}
-                                disabled={!canUse && !s.usedThisRound}
-                                title="Used this phase"
-                                className={`text-[9px] tracking-widest px-1.5 py-0.5 border rounded ${s.usedThisRound ? 'border-amber text-amber' : 'border-muted/40 text-muted'} disabled:opacity-30`}
-                              >{s.usedThisRound ? 'USED' : 'IDLE'}</button>
-                            )}
+                            <button
+                              onClick={() => structureUse.toggleUsed(s.instanceId)}
+                              disabled={!canUse && !s.usedThisRound}
+                              title={s.usedThisRound ? 'Undo use' : 'Use this structure (fires side-effects)'}
+                              className={`text-[9px] tracking-widest px-1.5 py-0.5 border rounded ${s.usedThisRound ? 'border-amber text-amber' : 'border-muted/40 text-muted'} disabled:opacity-30`}
+                            >{s.usedThisRound ? 'USED' : 'USE'}</button>
                             <button
                               onClick={() => removeStructure(s.instanceId)}
                               title="Remove"
@@ -780,6 +771,30 @@ export default function HomesteadPage({ onTabChange }) {
           unit={fateModalUnit}
           onApply={(fate) => applyFate(fateModalUnit.slotId, fate)}
         />
+      )}
+
+      {/* Structure-use modals (Barracks, MedCenter, Stores, ExploreCard, DeckDraw, ItemDraw) */}
+      {structureUse.modalElements}
+
+      {/* Lost-unit recovery alert (fires after Listening Post / Ranger Outpost / Scout Camp explore draws) */}
+      {structureUse.currentLostUnit && (
+        <div className="fixed top-4 right-4 z-40 max-w-sm border border-amber rounded bg-amber-dim/95 backdrop-blur p-3 shadow-lg"
+          style={{ boxShadow: '0 0 16px var(--color-amber-glow)' }}>
+          <div className="text-amber text-xs font-bold tracking-widest mb-1">LOST MODEL RECOVERY</div>
+          <p className="text-pip text-xs mb-2">
+            Explore card drawn — recover <span className="text-amber font-bold">{structureUse.currentLostUnit.unitName}</span>?
+          </p>
+          <div className="flex gap-2">
+            <button
+              onClick={() => structureUse.handleMarkFound(structureUse.currentLostUnit.slotId)}
+              className="flex-1 text-xs px-3 py-1.5 border border-pip text-pip rounded hover:bg-pip-dim/20 font-bold"
+            >MARK FOUND</button>
+            <button
+              onClick={structureUse.handleNotFound}
+              className="px-3 py-1.5 text-xs border border-muted/40 text-muted rounded hover:text-pip hover:border-pip"
+            >SKIP</button>
+          </div>
+        </div>
       )}
 
       {/* Item Pool slide-out */}
