@@ -92,7 +92,6 @@ export default function ResetCampaignModal({
           updateShared('round', 1),
           updateShared('battleCount', 0),
           saveCampaignBattles({}),
-          saveCampaignNarratives([]),
           saveActiveBattle(null),
           saveCampaignMapState(defaultCampaignMapState()),
           saveBattlePageState(defaultBattlePageState()),
@@ -137,6 +136,7 @@ export default function ResetCampaignModal({
             <li>• All players in the campaign</li>
             <li>• Each player's name, faction, leader, settlement name, settings</li>
             <li>• Each player's MY JOURNAL personal narrative log</li>
+            <li>• Shared campaign narratives</li>
           </ul>
 
           <p className="text-amber text-xs tracking-widest font-bold pt-2">EACH PLAYER STARTS WITH</p>
@@ -150,7 +150,7 @@ export default function ResetCampaignModal({
 
           <p className="text-amber text-xs tracking-widest font-bold pt-2">RESET TO DEFAULTS</p>
           <ul className="text-xs text-muted space-y-1 pl-4">
-            <li>• Campaign: Phase 1, Round 1, 0 battles, no battle records, no shared narratives</li>
+            <li>• Campaign: Phase 1, Round 1, 0 battles, no battle records</li>
             <li>• Map: fully reset (fog-of-war, no controlled territories or routes)</li>
             <li>• All inhabitants decks, battle setup state</li>
           </ul>
