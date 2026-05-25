@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { X, BookOpen } from 'lucide-react'
+import { X, BookOpen, Pencil } from 'lucide-react'
 import { useCampaign } from '../../context/CampaignContext'
 import { useAuth } from '../../context/AuthContext'
 import { supabase } from '../../lib/supabase'
@@ -133,6 +133,7 @@ export default function CampaignPage({ campaignId, onTabChange }) {
   const [showAddCampNarrative, setShowAddCampNarrative] = useState(false)
   const [newCampEntry, setNewCampEntry] = useState({ round: '', title: '', content: '' })
   const [campNarrativeError, setCampNarrativeError] = useState('')
+  const [editingNarrativeId, setEditingNarrativeId] = useState(null)
   const [playerRoundNarrative, setPlayerRoundNarrative] = useState(null) // { player, round }
 
   const phase = state?.phase ?? 1
@@ -152,21 +153,44 @@ export default function CampaignPage({ campaignId, onTabChange }) {
     const r = parseInt(newCampEntry.round, 10)
     if (!newCampEntry.content.trim()) { setCampNarrativeError('Narrative content is required.'); return }
     if (isNaN(r)) { setCampNarrativeError('Round number is required.'); return }
-    const entry = {
-      id: Date.now(),
-      round: r,
-      title: newCampEntry.title.trim(),
-      content: newCampEntry.content.trim(),
-      display: campaignNarratives.length === 0,
-      createdAt: new Date().toISOString(),
-    }
     try {
-      await saveCampaignNarratives([...campaignNarratives, entry])
+      if (editingNarrativeId != null) {
+        const updated = campaignNarratives.map(n =>
+          n.id === editingNarrativeId
+            ? {
+                ...n,
+                round: r,
+                title: newCampEntry.title.trim(),
+                content: newCampEntry.content.trim(),
+                updatedAt: new Date().toISOString(),
+              }
+            : n
+        )
+        await saveCampaignNarratives(updated)
+      } else {
+        const entry = {
+          id: Date.now(),
+          round: r,
+          title: newCampEntry.title.trim(),
+          content: newCampEntry.content.trim(),
+          display: campaignNarratives.length === 0,
+          createdAt: new Date().toISOString(),
+        }
+        await saveCampaignNarratives([...campaignNarratives, entry])
+      }
       setNewCampEntry({ round: String(round), title: '', content: '' })
       setShowAddCampNarrative(false)
+      setEditingNarrativeId(null)
     } catch (err) {
       setCampNarrativeError(err?.message ?? 'Failed to save — check Supabase column exists.')
     }
+  }
+
+  function handleStartEditCampNarrative(n) {
+    setEditingNarrativeId(n.id)
+    setNewCampEntry({ round: String(n.round ?? ''), title: n.title || '', content: n.content || '' })
+    setShowAddCampNarrative(true)
+    setCampNarrativeError('')
   }
 
   async function handleToggleDisplay(id) {
@@ -483,8 +507,9 @@ export default function CampaignPage({ campaignId, onTabChange }) {
           {(isCreator || !isOnline) && (
             <button
               onClick={handleBattleInc}
+              title="Record an off-app battle. On-app battles auto-increment when LiveBattleTracker finalises."
               className="text-xs border border-muted/50 text-muted hover:text-pip hover:border-pip rounded px-2 py-0.5 transition-colors"
-            >+1</button>
+            >+1 OFFLINE</button>
           )}
         </div>
       </div>
@@ -651,7 +676,13 @@ export default function CampaignPage({ campaignId, onTabChange }) {
           {isCreator && (
             <button
               onClick={() => {
-                if (!showAddCampNarrative) setNewCampEntry({ round: String(round), title: '', content: '' })
+                if (showAddCampNarrative) {
+                  setEditingNarrativeId(null)
+                  setCampNarrativeError('')
+                } else {
+                  setNewCampEntry({ round: String(round), title: '', content: '' })
+                  setEditingNarrativeId(null)
+                }
                 setShowAddCampNarrative(v => !v)
               }}
               className="text-xs border border-pip/50 text-pip rounded px-3 py-1 hover:bg-pip-dim/20 transition-colors"
@@ -699,7 +730,7 @@ export default function CampaignPage({ campaignId, onTabChange }) {
             )}
             <div className="flex gap-2">
               <button type="submit" className="px-4 py-2 border border-pip text-pip text-xs rounded hover:bg-pip-dim/20 transition-colors">
-                ADD ENTRY
+                {editingNarrativeId != null ? 'UPDATE ENTRY' : 'ADD ENTRY'}
               </button>
             </div>
           </form>
@@ -779,7 +810,7 @@ export default function CampaignPage({ campaignId, onTabChange }) {
                   <th className="text-info tracking-wider py-2 pr-3 font-normal text-left w-12">RND</th>
                   <th className="text-info tracking-wider py-2 pr-3 font-normal text-left">TITLE / CONTENT</th>
                   <th className="text-info tracking-wider py-2 pr-3 font-normal text-center w-20">DISPLAY</th>
-                  <th className="text-info tracking-wider py-2 font-normal text-center w-10"></th>
+                  <th className="text-info tracking-wider py-2 font-normal text-center w-20"></th>
                 </tr>
               </thead>
               <tbody>
@@ -803,9 +834,22 @@ export default function CampaignPage({ campaignId, onTabChange }) {
                       </button>
                     </td>
                     <td className="py-2.5 text-center">
-                      <button onClick={() => handleDeleteCampNarrative(n.id)} className="text-muted hover:text-danger transition-colors p-1">
-                        <X size={12} />
-                      </button>
+                      <div className="flex items-center justify-center gap-1">
+                        <button
+                          onClick={() => handleStartEditCampNarrative(n)}
+                          className="text-muted hover:text-pip transition-colors p-1"
+                          title="Edit entry"
+                        >
+                          <Pencil size={12} />
+                        </button>
+                        <button
+                          onClick={() => handleDeleteCampNarrative(n.id)}
+                          className="text-muted hover:text-danger transition-colors p-1"
+                          title="Delete entry"
+                        >
+                          <X size={12} />
+                        </button>
+                      </div>
                     </td>
                   </tr>
                 ))}

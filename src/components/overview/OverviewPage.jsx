@@ -5,7 +5,9 @@ import { calcPowerGenerated, calcPowerConsumed, calcWaterGenerated, calcWaterCon
 import { SCAVENGER_OBJECTIVES } from '../../data/scavengerObjectives'
 import Modal from '../layout/Modal'
 
-const UNAVAILABLE_FATES = ['Lost', 'Captured', 'Delayed', 'Injured', 'Shaken']
+// Unit fates that count as "off-table but not dead". Injured/Shaken are battle
+// conditions, not persistent fates — they belong on roster.conditions, not here.
+const UNAVAILABLE_FATES = ['Delayed', 'Lost', 'Captured', 'Pending']
 
 export default function OverviewPage({ onTabChange }) {
   const { state, setState } = useCampaign()
@@ -233,10 +235,10 @@ export default function OverviewPage({ onTabChange }) {
         <div className="space-y-4 px-4 pb-4 border-t border-pip-dim/20 pt-3">
           <div className="grid grid-cols-2 sm:grid-cols-5 divide-x divide-pip-dim/20 border border-pip-dim/30 rounded overflow-hidden">
             <StatTile label="BATTLES" value={state.battleCount ?? 0} onClick={() => onTabChange?.('campaign')} />
-            <StatTile label="QUESTS ACTIVE" value={activeQuestCount} onClick={() => onTabChange?.('battles')} />
-            <StatTile label="QUESTS DONE" value={completedQuestCount} color="amber" onClick={() => onTabChange?.('battles')} />
-            <StatTile label="OBJECTIVES" value={completedObjectivesCount} color="amber" onClick={() => onTabChange?.('battles')} />
-            <StatTile label="PURPOSES" value={completedSecretPurposes} color="amber" onClick={() => onTabChange?.('battles')} />
+            <StatTile label="QUESTS ACTIVE" value={activeQuestCount} onClick={() => onTabChange?.('events')} />
+            <StatTile label="QUESTS DONE" value={completedQuestCount} color="amber" onClick={() => onTabChange?.('events')} />
+            <StatTile label="OBJECTIVES" value={completedObjectivesCount} color="amber" onClick={() => onTabChange?.('events')} />
+            <StatTile label="PURPOSES" value={completedSecretPurposes} color="amber" onClick={() => onTabChange?.('events')} />
           </div>
 
           <div className="border border-pip-mid/40 rounded-lg bg-panel p-4">
@@ -248,14 +250,14 @@ export default function OverviewPage({ onTabChange }) {
               )}
             </div>
             <p className="text-muted text-xs mb-3">
-              Quest cards, scavenger objectives, and secret purposes live under the <strong className="text-pip">OBJECTIVES</strong> sub-tab on the <strong className="text-pip">BATTLES</strong> tab.
+              Quest cards, scavenger objectives, and secret purposes all live on the <strong className="text-pip">QUESTS</strong> tab.
             </p>
             <button
               type="button"
-              onClick={() => onTabChange?.('battles')}
+              onClick={() => onTabChange?.('events')}
               className="text-xs border border-amber text-amber font-bold px-4 py-2 rounded hover:bg-amber/10 min-h-[44px]"
             >
-              OPEN BATTLES →
+              OPEN QUESTS →
             </button>
           </div>
         </div>

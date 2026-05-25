@@ -8,7 +8,7 @@ import structuresCatalog from '../../data/structures.json'
 import itemsCatalog from '../../data/items.json'
 import boostsCatalog from '../../data/boosts.json'
 import unitsData from '../../data/units.json'
-import { calcUnitTotalCaps, calcUnitItemCaps, getItemRef } from '../../utils/calculations'
+import { calcUnitTotalCaps, calcUnitItemCaps, getItemRef, calcPowerGenerated, calcPowerConsumed, calcWaterGenerated, calcWaterConsumed } from '../../utils/calculations'
 import { STATUS_OPTIONS } from '../../utils/fateTable'
 import AddUnitModal from '../roster/AddUnitModal'
 import AddItemModal from '../roster/AddItemModal'
@@ -128,20 +128,9 @@ export default function HomesteadPage() {
   const phase1CapLimit = state.phase1CapLimit ?? 750
 
   // ── Derived settlement stats ─────────────────────────────────────────
-  const power = structures.reduce((sum, s) => {
-    const def = STRUCT_BY_ID[s.structureId]
-    if (!def) return sum
-    const gen = s.powered === false ? 0 : (def.pwrGen ?? 0)
-    const req = s.powered ? (def.pwrReq ?? 0) : 0
-    return sum + gen - req
-  }, 0)
-  const water = structures.reduce((sum, s) => {
-    const def = STRUCT_BY_ID[s.structureId]
-    if (!def) return sum
-    const gen = s.powered === false ? 0 : (def.waterGen ?? 0)
-    const req = s.powered ? (def.waterReq ?? 0) : 0
-    return sum + gen - req
-  }, 0)
+  // Use shared utils so HOMESTEAD/SETTLEMENT/OVERVIEW agree on the numbers.
+  const power = calcPowerGenerated(structures) - calcPowerConsumed(structures)
+  const water = calcWaterGenerated(structures) - calcWaterConsumed(structures)
   const storesCount = structures.filter(s => {
     const def = STRUCT_BY_ID[s.structureId]
     if (!def) return false
