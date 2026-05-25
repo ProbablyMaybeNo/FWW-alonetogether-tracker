@@ -1,19 +1,29 @@
-import { useState } from 'react'
-import { Plus, X, RotateCcw, Heart, Skull, Shield, ShieldOff } from 'lucide-react'
+import { useEffect, useState } from 'react'
+import {
+  Plus, X, RotateCcw, Heart, Skull, Shield, ShieldOff,
+  Trash2, ChevronDown, ChevronRight, Dices, Package, Star, Shuffle, Sparkles,
+} from 'lucide-react'
 import { useCampaign } from '../../context/CampaignContext'
 import structuresCatalog from '../../data/structures.json'
 import itemsCatalog from '../../data/items.json'
 import boostsCatalog from '../../data/boosts.json'
+import unitsData from '../../data/units.json'
+import { calcUnitTotalCaps, calcUnitItemCaps, getItemRef } from '../../utils/calculations'
+import { STATUS_OPTIONS } from '../../utils/fateTable'
+import AddUnitModal from '../roster/AddUnitModal'
+import AddItemModal from '../roster/AddItemModal'
+import FateRollModal from '../roster/FateRollModal'
+import PerkPickerModal from '../roster/PerkPickerModal'
+import ItemPoolPanel from '../settlement/ItemPoolPanel'
+import { getPerkCaps, PERK_CARDS, parseSymbols } from '../../data/perkCards'
 
 // ── Static catalog lookups (built once) ─────────────────────────────────
 const STRUCT_BY_ID = Object.fromEntries(structuresCatalog.map(s => [s.id, s]))
 const STRUCT_CATEGORIES = ['Infrastructure', 'Item Structure', 'Boost Structure', 'Exploration', 'Other']
 
-// Module-level so they're not "called during render" per react-hooks/purity.
 const genId = () => Date.now() + Math.random()
 const pickRandom = (arr) => arr[Math.floor(Math.random() * arr.length)]
 
-// Map a raw structure category to a display bucket.
 function structBucket(s) {
   const c = s?.category ?? ''
   if (c === 'Infrastructure') return 'Infrastructure'
@@ -23,7 +33,6 @@ function structBucket(s) {
   return 'Other'
 }
 
-// Item draw categories — maps a "draw this kind" tap to matching catalog items.
 const ITEM_DRAWS = [
   { key: 'any',      label: 'Any Scavenge', match: () => true },
   { key: 'weapon',   label: 'Weapon',       match: i => /weapon|gun|rifle|pistol|shotgun|launcher|knife|blade/i.test(i.subType ?? '') },
@@ -35,7 +44,7 @@ const ITEM_DRAWS = [
 ]
 
 const BOOST_DRAWS = [
-  { key: 'any',         label: 'Any Boost', match: () => true },
+  { key: 'any',         label: 'Any Boost',   match: () => true },
   { key: 'tactical',    label: 'Tactical',    match: b => b.boostType === 'tactical' },
   { key: 'instinctive', label: 'Instinctive', match: b => b.boostType === 'instinctive' },
   { key: 'cunning',     label: 'Cunning',     match: b => b.boostType === 'cunning' },
@@ -45,25 +54,84 @@ const BOOST_DRAWS = [
 ]
 
 const FATES = ['Active', 'Delayed', 'Lost', 'Captured', 'Dead']
+const ABSENT_FATES = ['Delayed', 'Lost', 'Captured', 'Dead', 'Pending']
+
+const EQUIP_TYPE_COLOR = {
+  'Armor':           { border: 'border-white/50',   text: 'text-title' },
+  'Heavy Weapon':    { border: 'border-danger/60',  text: 'text-title' },
+  'Melee':           { border: 'border-amber/60',   text: 'text-title' },
+  'Rifle':           { border: 'border-amber/50',   text: 'text-title' },
+  'Pistol':          { border: 'border-amber/40',   text: 'text-title' },
+  'Grenade':         { border: 'border-danger/50',  text: 'text-title' },
+  'Mine':            { border: 'border-danger/40',  text: 'text-title' },
+  'Chem':            { border: 'border-purple/50',  text: 'text-title' },
+  'Drink':           { border: 'border-pip/50',     text: 'text-title' },
+  'Food':            { border: 'border-pip/40',     text: 'text-title' },
+  'Clothing':        { border: 'border-white/35',   text: 'text-title' },
+  'Mod':             { border: 'border-amber/45',   text: 'text-title' },
+  'Utility':         { border: 'border-white/30',   text: 'text-title' },
+  'Leader':          { border: 'border-amber/70',   text: 'text-title' },
+  'Perk':            { border: 'border-amber/55',   text: 'text-title' },
+  'Automatron Part': { border: 'border-white/30',   text: 'text-title' },
+}
+
+const BOOST_TYPE_STYLE = {
+  tactical:    { color: '#fbbf24', shadow: 'rgba(251,191,36,0.5)', label: 'TACTICAL'    },
+  instinctive: { color: '#00b65a', shadow: 'rgba(0,182,90,0.5)',   label: 'INSTINCTIVE' },
+  cunning:     { color: '#00a0ff', shadow: 'rgba(0,160,255,0.5)',  label: 'CUNNING'     },
+  practiced:   { color: '#a855f7', shadow: 'rgba(168,85,247,0.5)', label: 'PRACTICED'   },
+}
+
+function calcArmorBudget(roster) {
+  return roster.reduce((sum, unit) => {
+    return sum + (unit.equippedItems || []).reduce((s, itemId) => {
+      const ref = getItemRef(itemId)
+      return s + (ref?.subType === 'Armor' ? (ref.caps || 0) : 0)
+    }, 0)
+  }, 0)
+}
 
 export default function HomesteadPage() {
   const { state, setState } = useCampaign()
-  const [step, setStep] = useState('build') // 'build' | 'use' | 'select' — session only
+  const [step, setStep] = useState('build')                  // 'build' | 'use' | 'select'
   const [structPick, setStructPick] = useState('')
+  const [expandedSlot, setExpandedSlot] = useState(null)
+  const [showAddUnit, setShowAddUnit] = useState(false)
+  const [showAddItem, setShowAddItem] = useState(null)       // slotId of unit
+  const [fateModalUnit, setFateModalUnit] = useState(null)
+  const [showItemPool, setShowItemPool] = useState(false)
+  const [showPerksBrowser, setShowPerksBrowser] = useState(false)
+  const [showPhase1Restrictions, setShowPhase1Restrictions] = useState(true)
+
+  // Lock body scroll while the slide-out is open
+  useEffect(() => {
+    if (!showItemPool) return
+    const prev = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+    function onKey(e) { if (e.key === 'Escape') setShowItemPool(false) }
+    window.addEventListener('keydown', onKey)
+    return () => {
+      document.body.style.overflow = prev
+      window.removeEventListener('keydown', onKey)
+    }
+  }, [showItemPool])
 
   if (!state) return <div className="p-8 text-center text-muted text-xs tracking-wider">LOADING…</div>
 
   const caps = state.caps ?? 0
+  const phase = state.phase ?? 1
   const roster = state.roster ?? []
   const structures = state.settlement?.structures ?? []
   const items = state.itemPool?.items ?? []
   const boostHand = state.boostHand ?? []
+  const itemPoolCount = items.length
+  const phase1CapLimit = state.phase1CapLimit ?? 750
 
-  // ── Derived settlement stats ──────────────────────────────────────────
+  // ── Derived settlement stats ─────────────────────────────────────────
   const power = structures.reduce((sum, s) => {
     const def = STRUCT_BY_ID[s.structureId]
     if (!def) return sum
-    const gen = s.powered === false ? 0 : (def.pwrGen ?? 0)  // generators auto-on (no pwrReq)
+    const gen = s.powered === false ? 0 : (def.pwrGen ?? 0)
     const req = s.powered ? (def.pwrReq ?? 0) : 0
     return sum + gen - req
   }, 0)
@@ -74,7 +142,6 @@ export default function HomesteadPage() {
     const req = s.powered ? (def.waterReq ?? 0) : 0
     return sum + gen - req
   }, 0)
-  // Stores = item-structure instances that are powered (or have no power requirement).
   const storesCount = structures.filter(s => {
     const def = STRUCT_BY_ID[s.structureId]
     if (!def) return false
@@ -83,7 +150,18 @@ export default function HomesteadPage() {
     return s.powered === true
   }).length
 
-  // Pool / hand views
+  // ── Derived roster stats ─────────────────────────────────────────────
+  const rosterCapsTotal = roster.reduce((s, u) => s + calcUnitTotalCaps(u), 0)
+  const uniqueCount = roster.filter(u => {
+    const ref = unitsData.find(d => d.id === u.unitId)
+    return ref?.type === 'UNIQUE'
+  }).length
+  const armorBudget = calcArmorBudget(roster)
+  const nonLeaderWithPerks = roster.filter(u => !u.isLeader && (u.perks || []).length > 0)
+  const leaderUnit = roster.find(u => u.isLeader)
+  const leaderAbsent = leaderUnit && ABSENT_FATES.includes(leaderUnit.fate)
+
+  // Pool view
   const pool = items.filter(i => i.location === 'recovery')
 
   // ── Mutators ─────────────────────────────────────────────────────────
@@ -177,11 +255,10 @@ export default function HomesteadPage() {
     const item = pool.find(i => i.id === itemId)
     if (!item) return
     if (item.isBoost) {
-      // Move to boostHand
       setState(p => {
         const remaining = (p.itemPool?.items ?? []).filter(i => i.id !== itemId)
         const handEntry = {
-          id: genId(),
+          instanceId: genId(),
           boostId: item.boostId,
           name: item.name,
           boostType: item.boostType,
@@ -194,7 +271,6 @@ export default function HomesteadPage() {
         }
       })
     } else {
-      // Move to settlement pool ('stored')
       setState(p => ({
         ...p,
         itemPool: {
@@ -215,33 +291,108 @@ export default function HomesteadPage() {
     }))
   }
 
-  function removeFromHand(handId) {
-    setState(p => ({ ...p, boostHand: (p.boostHand ?? []).filter(h => h.id !== handId) }))
-  }
-
   // ── Roster mutators ──────────────────────────────────────────────────
-  function patchUnit(uid, patch) {
-    setState(p => ({ ...p, roster: (p.roster ?? []).map(u => u.id === uid ? { ...u, ...patch } : u) }))
+  function addUnit(unit) {
+    const cost = unit.baseCaps || 0
+    setState(p => ({
+      ...p,
+      caps: Math.max(0, (p.caps ?? 0) - cost),
+      roster: [...(p.roster ?? []), unit],
+    }))
   }
 
-  function restUnit(uid) {
+  function removeUnit(slotId) {
+    if (!confirm('Remove this unit from roster?')) return
+    setState(p => ({ ...p, roster: (p.roster ?? []).filter(u => u.slotId !== slotId) }))
+  }
+
+  function patchUnit(slotId, patch) {
+    setState(p => ({
+      ...p,
+      roster: (p.roster ?? []).map(u => u.slotId === slotId ? { ...u, ...patch } : u),
+    }))
+  }
+
+  function restUnit(slotId) {
     setState(p => ({
       ...p,
       roster: (p.roster ?? []).map(u => {
-        if (u.id !== uid) return u
-        if (['Delayed', 'Lost', 'Captured', 'Dead'].includes(u.fate)) return u  // no rest
-        // halve damage rounded up — discard half
-        const dmg = u.damage ?? 0
-        const newDmg = Math.floor(dmg / 2)  // discard half (rounded up = remove ceil(dmg/2), leaves floor(dmg/2))
-        // remove one condition (priority: P → IA → IL)
+        if (u.slotId !== slotId) return u
+        if (ABSENT_FATES.includes(u.fate)) return u
+        const dmg = u.regDamage ?? 0
+        const newDmg = Math.floor(dmg / 2)
         let condPoisoned = u.condPoisoned ?? false
         let condInjuredArm = u.condInjuredArm ?? false
         let condInjuredLeg = u.condInjuredLeg ?? false
         if (condPoisoned) condPoisoned = false
         else if (condInjuredArm) condInjuredArm = false
         else if (condInjuredLeg) condInjuredLeg = false
-        return { ...u, damage: newDmg, condPoisoned, condInjuredArm, condInjuredLeg }
+        return { ...u, regDamage: newDmg, condPoisoned, condInjuredArm, condInjuredLeg }
       }),
+    }))
+  }
+
+  function applyFate(slotId, fate) {
+    const fateMap = {
+      Fine: 'Active', Delayed: 'Delayed', Lost: 'Lost', Shaken: 'Shaken',
+      Captured: 'Captured', Injured: 'Injured', Dead: 'Dead',
+    }
+    const status = fateMap[fate] || fate
+    setState(p => ({
+      ...p,
+      roster: (p.roster ?? []).map(u =>
+        u.slotId === slotId ? { ...u, fate: status, removed: (u.removed || 0) + 1 } : u
+      ),
+    }))
+  }
+
+  function markRemoved(slotId) {
+    setState(p => ({
+      ...p,
+      roster: (p.roster ?? []).map(u =>
+        u.slotId === slotId
+          ? { ...u, fate: 'Pending', removed: (u.removed || 0) + 1, battles: (u.battles || 0) + 1 }
+          : u
+      ),
+    }))
+  }
+
+  function addItem(slotId, itemId) {
+    setState(p => ({
+      ...p,
+      roster: (p.roster ?? []).map(u =>
+        u.slotId === slotId ? { ...u, equippedItems: [...(u.equippedItems || []), itemId] } : u
+      ),
+    }))
+  }
+
+  function removeItem(slotId, idx) {
+    setState(p => ({
+      ...p,
+      roster: (p.roster ?? []).map(u =>
+        u.slotId === slotId ? { ...u, equippedItems: (u.equippedItems || []).filter((_, i) => i !== idx) } : u
+      ),
+    }))
+  }
+
+  function addPerk(slotId, perkName) {
+    if (!perkName.trim()) return
+    setState(p => ({
+      ...p,
+      roster: (p.roster ?? []).map(u =>
+        u.slotId === slotId
+          ? { ...u, perks: [...(u.perks || []), perkName.trim()], perksThisRound: (u.perksThisRound || 0) + 1 }
+          : u
+      ),
+    }))
+  }
+
+  function removePerk(slotId, idx) {
+    setState(p => ({
+      ...p,
+      roster: (p.roster ?? []).map(u =>
+        u.slotId === slotId ? { ...u, perks: (u.perks || []).filter((_, i) => i !== idx) } : u
+      ),
     }))
   }
 
@@ -249,14 +400,29 @@ export default function HomesteadPage() {
   return (
     <div className="p-4 max-w-7xl mx-auto space-y-4">
       {/* Header strip */}
-      <div className="bg-panel-light border border-amber/40 rounded-lg px-4 py-3 flex items-center gap-4 flex-wrap"
+      <div className="bg-panel-light border border-amber/40 rounded-lg px-4 py-3 flex items-center gap-3 flex-wrap"
         style={{ boxShadow: '0 0 12px var(--color-amber-glow)' }}>
         <div className="flex items-center gap-2">
           <span className="text-title text-lg font-bold tracking-widest">HOMESTEAD</span>
-          <span className="text-amber/80 text-xs tracking-wider">— LEAN TRACKER</span>
+          <span className="text-amber/80 text-xs tracking-wider">— ROSTER · SETTLEMENT · TRACKER</span>
         </div>
         <span className="text-muted/60 text-[10px] tracking-wider">Round {state.round ?? 0}</span>
-        <div className="ml-auto flex items-center gap-1.5">
+        <div className="ml-auto flex items-center gap-1.5 flex-wrap">
+          <button
+            onClick={() => setShowItemPool(true)}
+            className="flex items-center gap-1 text-[10px] tracking-widest px-2.5 py-1.5 border border-pip text-pip rounded hover:bg-pip-dim/20"
+            title="Open item pool"
+          >
+            <Package size={11} /> ITEMS ({itemPoolCount})
+          </button>
+          <button
+            onClick={() => setShowAddUnit(true)}
+            className="flex items-center gap-1 text-[10px] tracking-widest px-2.5 py-1.5 border border-amber text-amber rounded hover:bg-amber-dim/20"
+            title="Add a unit to your roster"
+          >
+            <Plus size={11} /> ADD UNIT
+          </button>
+          <div className="w-px h-5 bg-pip-dim/40 mx-1" />
           {['build', 'use', 'select'].map(s => (
             <button
               key={s}
@@ -273,18 +439,88 @@ export default function HomesteadPage() {
         </div>
       </div>
 
+      {/* Leader absent banner */}
+      {leaderAbsent && (
+        <div className="border border-danger rounded bg-danger-dim/20 px-4 py-2 text-danger text-xs font-bold"
+          style={{ boxShadow: '0 0 8px var(--color-danger-glow)' }}>
+          YOUR LEADER IS {leaderUnit.fate.toUpperCase()} — Designate a new Leader
+        </div>
+      )}
+
+      {/* Phase 1 restrictions (collapsible) */}
+      {phase === 1 && (
+        <div className="border border-pip-mid/50 rounded bg-panel-alt">
+          <button
+            type="button"
+            onClick={() => setShowPhase1Restrictions(v => !v)}
+            className="w-full px-4 py-2 flex items-center gap-2 text-left hover:bg-panel-light"
+          >
+            {showPhase1Restrictions ? <ChevronDown size={12} className="text-muted" /> : <ChevronRight size={12} className="text-muted" />}
+            <span className="text-title text-xs font-bold tracking-widest">PHASE 1 RESTRICTIONS</span>
+            <span className="ml-auto flex items-center gap-3 text-xs">
+              <span className={rosterCapsTotal > phase1CapLimit ? 'text-danger font-bold' : 'text-pip/70'}>{rosterCapsTotal}/{phase1CapLimit}c</span>
+              <span className={uniqueCount > 3 ? 'text-danger font-bold' : 'text-pip/70'}>U {uniqueCount}/3</span>
+              <span className={armorBudget > 150 ? 'text-danger font-bold' : 'text-pip/70'}>A {armorBudget}/150c</span>
+            </span>
+          </button>
+          {showPhase1Restrictions && (
+            <div className="px-4 pb-3 border-t border-pip-dim/30">
+              <div className="flex flex-wrap gap-4 text-xs items-center pt-2">
+                <span>
+                  Roster Caps:{' '}
+                  <span className={rosterCapsTotal > phase1CapLimit ? 'text-danger font-bold' : 'text-pip font-bold'}>{rosterCapsTotal}</span>
+                  {' / '}
+                  <span className="text-muted">{phase1CapLimit}c</span>{' '}
+                  <span className="text-muted">(limit:</span>
+                  <input
+                    type="number" min="0" value={phase1CapLimit}
+                    onChange={(e) => {
+                      const num = parseInt(e.target.value, 10)
+                      if (!isNaN(num) && num >= 0) setState(p => ({ ...p, phase1CapLimit: num }))
+                    }}
+                    className="w-16 text-xs py-0 px-1 ml-1 inline-block"
+                  />
+                  <span className="text-muted">c)</span>
+                </span>
+                <span>
+                  Unique:{' '}
+                  <span className={uniqueCount > 3 ? 'text-danger font-bold' : 'text-pip font-bold'}>{uniqueCount}</span>
+                  {' / 3'}
+                </span>
+                <span>
+                  Armor Budget:{' '}
+                  <span className={armorBudget > 150 ? 'text-danger font-bold' : 'text-pip font-bold'}>{armorBudget}c</span>
+                  {' / 150c'}
+                </span>
+              </div>
+              {nonLeaderWithPerks.length > 0 && (
+                <div className="text-danger text-xs mt-2">
+                  Non-leader units cannot have perks in Phase 1: {nonLeaderWithPerks.map(u => u.unitName).join(', ')}
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+      )}
+
+      {phase === 2 && (
+        <div className="border border-amber/60 rounded bg-amber-dim/20 px-4 py-2 text-title text-xs font-bold tracking-wider">
+          PHASE 2 MODE — Track Fate only. Battles and Removed counts are not tracked this phase.
+        </div>
+      )}
+
       <div className="grid grid-cols-1 lg:grid-cols-[1fr,360px] gap-4">
         {/* ───── LEFT: ROSTER ───── */}
         <section className="border border-pip-mid/40 rounded-lg bg-panel">
           <div className="px-3 py-2 border-b border-pip-mid/30 flex items-center gap-2">
             <h3 className="text-amber text-xs tracking-widest font-bold flex-1">ROSTER ({roster.length})</h3>
-            <span className="text-muted/60 text-[10px] tracking-wider">Edit inline · Rest applies recovery</span>
+            <span className="text-muted/60 text-[10px] tracking-wider">Click row to expand · Rest applies recovery</span>
           </div>
           <div className="overflow-x-auto">
             <table className="w-full text-xs">
               <thead>
                 <tr className="border-b border-pip-dim/30 bg-panel-alt">
-                  <th className="text-left text-info py-1.5 px-2 font-normal tracking-wider w-[16%]">UNIT</th>
+                  <th className="text-left  text-info py-1.5 px-2 font-normal tracking-wider w-[18%]">UNIT</th>
                   <th className="text-center text-info py-1.5 px-1 font-normal tracking-wider w-12">DMG</th>
                   <th className="text-center text-info py-1.5 px-1 font-normal tracking-wider w-12">RAD</th>
                   <th className="text-center text-info py-1.5 px-1 font-normal tracking-wider w-20">COND</th>
@@ -296,81 +532,39 @@ export default function HomesteadPage() {
               </thead>
               <tbody>
                 {roster.length === 0 && (
-                  <tr><td colSpan={8} className="text-center text-muted/60 py-6 text-xs">No units in roster. Add them from the legacy ROSTER tab while testing.</td></tr>
+                  <tr>
+                    <td colSpan={8} className="text-center text-muted/60 py-6 text-xs">
+                      No units in roster. Click <span className="text-amber font-bold">+ ADD UNIT</span> at the top to get started.
+                    </td>
+                  </tr>
                 )}
                 {roster.map(u => {
-                  const isDown = ['Delayed', 'Lost', 'Captured', 'Dead'].includes(u.fate)
-                  const dmg = u.damage ?? 0
-                  const rads = u.rads ?? 0
+                  const isDown = ABSENT_FATES.includes(u.fate)
+                  const dmg = u.regDamage ?? 0
+                  const rads = u.radDamage ?? 0
+                  const expanded = expandedSlot === u.slotId
                   return (
-                    <tr key={u.id} className={`border-b border-pip-dim/20 hover:bg-panel-alt ${isDown ? 'opacity-50' : ''}`}>
-                      <td className="py-1 px-2">
-                        <div className="text-pip font-bold leading-tight">{u.name || '—'}</div>
-                        {u.faction && <div className="text-muted/60 text-[10px] leading-tight">{u.faction}</div>}
-                      </td>
-                      <td className="py-1 px-1">
-                        <Counter value={dmg} onChange={v => patchUnit(u.id, { damage: v })} accent="danger" />
-                      </td>
-                      <td className="py-1 px-1">
-                        <Counter value={rads} onChange={v => patchUnit(u.id, { rads: v })} accent="purple" />
-                      </td>
-                      <td className="py-1 px-1">
-                        <div className="flex items-center justify-center gap-0.5">
-                          <CondPill on={u.condPoisoned}    label="P"  onToggle={() => patchUnit(u.id, { condPoisoned:    !u.condPoisoned    })} />
-                          <CondPill on={u.condInjuredArm}  label="IA" onToggle={() => patchUnit(u.id, { condInjuredArm:  !u.condInjuredArm  })} />
-                          <CondPill on={u.condInjuredLeg}  label="IL" onToggle={() => patchUnit(u.id, { condInjuredLeg:  !u.condInjuredLeg  })} />
-                        </div>
-                      </td>
-                      <td className="py-1 px-1">
-                        <div className="flex items-center justify-center gap-0.5">
-                          <button
-                            onClick={() => patchUnit(u.id, { hasPowerArmor: !u.hasPowerArmor, paDegraded: u.hasPowerArmor ? false : u.paDegraded })}
-                            title="Power Armor"
-                            className={`p-0.5 rounded border ${u.hasPowerArmor ? 'border-pip text-pip' : 'border-muted/40 text-muted/40'}`}
-                          >
-                            {u.hasPowerArmor ? <Shield size={11} /> : <ShieldOff size={11} />}
-                          </button>
-                          {u.hasPowerArmor && (
-                            <button
-                              onClick={() => patchUnit(u.id, { paDegraded: !u.paDegraded })}
-                              title="Degraded"
-                              className={`text-[10px] font-bold px-1 rounded border ${u.paDegraded ? 'border-danger text-danger' : 'border-muted/40 text-muted/40'}`}
-                            >D</button>
-                          )}
-                        </div>
-                      </td>
-                      <td className="py-1 px-1">
-                        <input
-                          value={u.addiction ?? ''}
-                          onChange={e => patchUnit(u.id, { addiction: e.target.value })}
-                          placeholder="—"
-                          className="w-full text-[11px] py-0.5 px-1.5"
-                        />
-                      </td>
-                      <td className="py-1 px-1">
-                        <select
-                          value={u.fate ?? 'Active'}
-                          onChange={e => patchUnit(u.id, { fate: e.target.value })}
-                          className="w-full text-[11px] py-0.5 px-1.5"
-                        >
-                          {FATES.map(f => <option key={f} value={f}>{f}</option>)}
-                        </select>
-                      </td>
-                      <td className="py-1 px-1 text-center">
-                        {u.fate === 'Dead' ? (
-                          <Skull size={14} className="text-danger inline" />
-                        ) : (
-                          <button
-                            onClick={() => restUnit(u.id)}
-                            title="Rest: halve damage, drop one condition"
-                            disabled={isDown}
-                            className="inline-flex items-center justify-center w-7 h-7 rounded border border-pip/40 text-pip hover:bg-pip-dim/20 disabled:opacity-30"
-                          >
-                            <Heart size={11} />
-                          </button>
-                        )}
-                      </td>
-                    </tr>
+                    <RosterRow
+                      key={u.slotId}
+                      unit={u}
+                      isDown={isDown}
+                      dmg={dmg}
+                      rads={rads}
+                      expanded={expanded}
+                      phase={phase}
+                      onToggleExpand={() => setExpandedSlot(expanded ? null : u.slotId)}
+                      onPatch={(patch) => patchUnit(u.slotId, patch)}
+                      onRest={() => restUnit(u.slotId)}
+                      onRemove={() => removeUnit(u.slotId)}
+                      onShowAddItem={() => setShowAddItem(u.slotId)}
+                      onShowFate={() => setFateModalUnit(u)}
+                      onMarkRemoved={() => markRemoved(u.slotId)}
+                      onAddPerk={(perk) => addPerk(u.slotId, perk)}
+                      onRemovePerk={(idx) => removePerk(u.slotId, idx)}
+                      onRemoveItem={(idx) => removeItem(u.slotId, idx)}
+                      round={state.round ?? 0}
+                      battleCount={state.battleCount ?? 0}
+                    />
                   )
                 })}
               </tbody>
@@ -404,7 +598,6 @@ export default function HomesteadPage() {
               <h3 className="text-amber text-xs tracking-widest font-bold">STRUCTURES ({structures.length})</h3>
             </div>
             <div className="p-2 space-y-2">
-              {/* Add */}
               <div className="flex items-center gap-1.5">
                 <select
                   value={structPick}
@@ -433,7 +626,6 @@ export default function HomesteadPage() {
                 >ADD</button>
               </div>
 
-              {/* List */}
               {STRUCT_CATEGORIES.map(cat => {
                 const rows = structures
                   .map(s => ({ s, def: STRUCT_BY_ID[s.structureId] }))
@@ -475,7 +667,6 @@ export default function HomesteadPage() {
                 )
               })}
 
-              {/* Reset used-flags */}
               {structures.some(s => s.usedThisRound) && (
                 <button
                   onClick={() => setState(p => ({
@@ -533,9 +724,7 @@ export default function HomesteadPage() {
               )}
               {pool.map(i => (
                 <div key={i.id} className="flex items-center gap-1.5 border border-pip-dim/30 rounded px-2 py-1 bg-panel-alt">
-                  <span className={`text-[11px] flex-1 truncate ${i.isBoost ? 'text-purple' : 'text-pip'}`}>
-                    {i.name}
-                  </span>
+                  <span className={`text-[11px] flex-1 truncate ${i.isBoost ? 'text-purple' : 'text-pip'}`}>{i.name}</span>
                   <span className="text-[10px] text-muted">{i.isBoost ? i.boostType ?? 'boost' : i.subType}</span>
                   {!i.isBoost && <span className="text-[10px] text-amber tabular-nums">{i.caps}c</span>}
                   <button onClick={() => keepFromPool(i.id)}
@@ -547,25 +736,10 @@ export default function HomesteadPage() {
             </div>
           </div>
 
-          {/* Boost hand */}
-          <div className="border border-pip-mid/40 rounded-lg bg-panel">
-            <div className="px-3 py-2 border-b border-pip-mid/30">
-              <h3 className="text-amber text-xs tracking-widest font-bold">BOOST HAND ({boostHand.length})</h3>
-            </div>
-            <div className="p-2 flex flex-wrap gap-1">
-              {boostHand.length === 0 && <p className="text-muted/60 text-[11px]">No boosts held.</p>}
-              {boostHand.map(b => (
-                <span key={b.id} className="inline-flex items-center gap-1 border border-purple/50 text-purple text-[10px] tracking-wider px-2 py-0.5 rounded bg-purple-dim/20">
-                  {b.name}
-                  <button onClick={() => removeFromHand(b.id)} className="opacity-60 hover:opacity-100">
-                    <X size={9} />
-                  </button>
-                </span>
-              ))}
-            </div>
-          </div>
+          {/* Boost hand — full panel */}
+          <BoostHandPanel boostHand={boostHand} setState={setState} />
 
-          {/* Rewards quick entry */}
+          {/* Rewards */}
           <div className="border border-pip-mid/40 rounded-lg bg-panel p-3">
             <h3 className="text-amber text-xs tracking-widest font-bold mb-2">POST-BATTLE</h3>
             <div className="grid grid-cols-2 gap-1.5">
@@ -576,11 +750,654 @@ export default function HomesteadPage() {
           </div>
         </aside>
       </div>
+
+      {/* Perks Browser (collapsible) */}
+      <div className="border border-pip-mid/40 rounded-lg bg-panel overflow-hidden">
+        <button
+          type="button"
+          onClick={() => setShowPerksBrowser(v => !v)}
+          className="w-full px-3 py-2 flex items-center gap-2 text-left bg-panel-light border-b border-pip-mid/30 hover:bg-panel-alt"
+        >
+          {showPerksBrowser ? <ChevronDown size={12} className="text-muted" /> : <ChevronRight size={12} className="text-muted" />}
+          <span className="text-pip text-xs tracking-widest font-bold">PERK BROWSER</span>
+          <span className="text-muted/60 text-[10px] tracking-wider ml-2">Browse all perks · assign to a unit (spends caps)</span>
+        </button>
+        {showPerksBrowser && (
+          <PerksBrowser roster={roster} caps={caps} onAddPerk={(slotId, perkName) => addPerk(slotId, perkName)} setState={setState} />
+        )}
+      </div>
+
+      {/* Modals */}
+      <AddUnitModal
+        isOpen={showAddUnit}
+        onClose={() => setShowAddUnit(false)}
+        onAdd={addUnit}
+        caps={caps}
+      />
+      {showAddItem && (
+        <AddItemModal
+          isOpen={!!showAddItem}
+          onClose={() => setShowAddItem(null)}
+          onAdd={(itemId) => addItem(showAddItem, itemId)}
+          poolItems={items}
+        />
+      )}
+      {fateModalUnit && (
+        <FateRollModal
+          isOpen={!!fateModalUnit}
+          onClose={() => setFateModalUnit(null)}
+          unit={fateModalUnit}
+          onApply={(fate) => applyFate(fateModalUnit.slotId, fate)}
+        />
+      )}
+
+      {/* Item Pool slide-out */}
+      {showItemPool && (
+        <>
+          <div
+            className="fixed inset-0 z-40 bg-black/70"
+            onClick={() => setShowItemPool(false)}
+            aria-hidden="true"
+          />
+          <aside
+            className="fixed top-0 right-0 z-50 h-full w-full max-w-2xl bg-panel border-l-2 border-pip-mid/60 shadow-[0_0_32px_rgba(0,0,0,0.5)] flex flex-col"
+            role="dialog"
+            aria-label="Item Pool"
+          >
+            <header className="flex items-center justify-between px-4 py-3 border-b border-pip-mid/40 bg-panel-light shrink-0">
+              <div className="flex items-center gap-2">
+                <Package size={16} className="text-pip" />
+                <h2 className="text-title text-sm font-bold tracking-widest">ITEM POOL</h2>
+                <span className="text-muted text-xs">({itemPoolCount})</span>
+              </div>
+              <button
+                onClick={() => setShowItemPool(false)}
+                className="text-muted hover:text-danger transition-colors p-2 min-h-[44px] min-w-[44px] flex items-center justify-center"
+                aria-label="Close item pool"
+              >
+                <X size={18} />
+              </button>
+            </header>
+            <p className="px-4 py-2 text-muted text-xs border-b border-pip-dim/30 shrink-0">
+              Legacy item pool plus manual quest / unique items.
+            </p>
+            <div className="flex-1 overflow-y-auto p-3">
+              <ItemPoolPanel structures={structures} />
+            </div>
+          </aside>
+        </>
+      )}
     </div>
   )
 }
 
-// ── Helpers ────────────────────────────────────────────────────────────
+// ────────────────────────────────────────────────────────────────────────
+// Per-unit row + expanded detail (renders as two <tr> siblings)
+// ────────────────────────────────────────────────────────────────────────
+function RosterRow({
+  unit, isDown, dmg, rads, expanded, phase,
+  onToggleExpand, onPatch, onRest, onRemove,
+  onShowAddItem, onShowFate, onMarkRemoved,
+  onAddPerk, onRemovePerk, onRemoveItem,
+  round, battleCount,
+}) {
+  const u = unit
+  const totalCaps = calcUnitTotalCaps(u)
+  const itemCaps = calcUnitItemCaps(u)
+  const itemsList = (u.equippedItems || []).map(id => getItemRef(id)).filter(Boolean)
+  return (
+    <>
+      <tr className={`border-b border-pip-dim/20 hover:bg-panel-alt ${isDown ? 'opacity-50' : ''} ${expanded ? 'bg-panel-alt' : ''}`}>
+        <td className="py-1 px-2">
+          <button
+            type="button"
+            onClick={onToggleExpand}
+            className="flex items-center gap-1 text-left w-full hover:text-amber"
+            title={expanded ? 'Collapse' : 'Expand detail'}
+          >
+            {expanded
+              ? <ChevronDown size={11} className="text-muted shrink-0" />
+              : <ChevronRight size={11} className="text-muted shrink-0" />}
+            <span className="min-w-0">
+              <div className="text-pip font-bold leading-tight truncate flex items-center gap-1">
+                {u.unitName || '—'}
+                {u.isLeader && <span className="text-amber text-[9px] px-1 border border-amber/60 rounded font-bold">LDR</span>}
+                {u.heroic && <Star size={9} className="text-amber" />}
+              </div>
+              {u.faction && <div className="text-muted/60 text-[10px] leading-tight">{u.faction}</div>}
+            </span>
+          </button>
+        </td>
+        <td className="py-1 px-1">
+          <Counter value={dmg} onChange={v => onPatch({ regDamage: v })} accent="danger" />
+        </td>
+        <td className="py-1 px-1">
+          <Counter value={rads} onChange={v => onPatch({ radDamage: v })} accent="purple" />
+        </td>
+        <td className="py-1 px-1">
+          <div className="flex items-center justify-center gap-0.5">
+            <CondPill on={u.condPoisoned}   label="P"  onToggle={() => onPatch({ condPoisoned:   !u.condPoisoned   })} />
+            <CondPill on={u.condInjuredArm} label="IA" onToggle={() => onPatch({ condInjuredArm: !u.condInjuredArm })} />
+            <CondPill on={u.condInjuredLeg} label="IL" onToggle={() => onPatch({ condInjuredLeg: !u.condInjuredLeg })} />
+          </div>
+        </td>
+        <td className="py-1 px-1">
+          <div className="flex items-center justify-center gap-0.5">
+            <button
+              onClick={() => onPatch({ hasPowerArmor: !u.hasPowerArmor, paDegraded: u.hasPowerArmor ? false : u.paDegraded })}
+              title="Power Armor"
+              className={`p-0.5 rounded border ${u.hasPowerArmor ? 'border-pip text-pip' : 'border-muted/40 text-muted/40'}`}
+            >
+              {u.hasPowerArmor ? <Shield size={11} /> : <ShieldOff size={11} />}
+            </button>
+            {u.hasPowerArmor && (
+              <button
+                onClick={() => onPatch({ paDegraded: !u.paDegraded })}
+                title="Degraded"
+                className={`text-[10px] font-bold px-1 rounded border ${u.paDegraded ? 'border-danger text-danger' : 'border-muted/40 text-muted/40'}`}
+              >D</button>
+            )}
+          </div>
+        </td>
+        <td className="py-1 px-1">
+          <input
+            value={u.addiction ?? ''}
+            onChange={e => onPatch({ addiction: e.target.value })}
+            placeholder="—"
+            className="w-full text-[11px] py-0.5 px-1.5"
+          />
+        </td>
+        <td className="py-1 px-1">
+          <select
+            value={u.fate ?? 'Active'}
+            onChange={e => onPatch({ fate: e.target.value })}
+            className="w-full text-[11px] py-0.5 px-1.5"
+          >
+            {STATUS_OPTIONS.map(f => <option key={f} value={f}>{f}</option>)}
+          </select>
+        </td>
+        <td className="py-1 px-1 text-center">
+          {u.fate === 'Dead' ? (
+            <Skull size={14} className="text-danger inline" />
+          ) : (
+            <button
+              onClick={onRest}
+              title="Rest: halve damage, drop one condition"
+              disabled={isDown}
+              className="inline-flex items-center justify-center w-7 h-7 rounded border border-pip/40 text-pip hover:bg-pip-dim/20 disabled:opacity-30"
+            >
+              <Heart size={11} />
+            </button>
+          )}
+        </td>
+      </tr>
+
+      {expanded && (
+        <tr className="bg-panel-alt border-b border-pip-mid/40">
+          <td colSpan={8} className="p-0">
+            <div className="px-4 py-3 space-y-3 border-t border-pip-mid/30">
+              {/* STATS */}
+              <div className="grid grid-cols-3 sm:grid-cols-6 gap-2">
+                <Stat label="BASE">{u.baseCaps}c</Stat>
+                <Stat label="EQUIP">{itemCaps}c</Stat>
+                <Stat label="TOTAL">{totalCaps}c</Stat>
+                {phase !== 2 ? (
+                  <>
+                    <StatInput label="BATTLES" value={u.battles ?? 0} onChange={v => onPatch({ battles: v })} />
+                    <StatInput label="REMOVED" value={u.removed ?? 0} onChange={v => onPatch({ removed: v })} />
+                    <StatInput label="LUC"     value={u.lucScore ?? 3} onChange={v => onPatch({ lucScore: v })} max={10} />
+                  </>
+                ) : (
+                  <div className="col-span-3 text-[10px] text-muted/60 tracking-wider flex items-center">
+                    Phase 2 — battle counts not tracked
+                  </div>
+                )}
+              </div>
+
+              {/* Flags + fate roll */}
+              <div className="flex gap-2 flex-wrap items-center">
+                <label className="flex items-center gap-1 text-[11px] text-muted">
+                  LEADER:
+                  <select value={u.isLeader ? 'Yes' : 'No'} onChange={(e) => onPatch({ isLeader: e.target.value === 'Yes' })} className="text-[11px] py-0.5 px-1 w-16">
+                    <option>No</option><option>Yes</option>
+                  </select>
+                </label>
+                {(u.battles || 0) >= 2 && (
+                  <button
+                    onClick={() => onPatch({ heroic: !u.heroic })}
+                    className={`flex items-center gap-1 text-[11px] px-2 py-1 border rounded font-bold ${u.heroic ? 'border-amber text-amber bg-amber-dim/20' : 'border-pip/50 text-pip hover:bg-pip-dim/20'}`}
+                  >
+                    <Star size={11} /> {u.heroic ? 'HEROIC ★' : 'HEROIC'}
+                  </button>
+                )}
+                <button
+                  onClick={onShowFate}
+                  className="flex items-center gap-1 px-2 py-1 border border-amber text-amber rounded text-[11px] hover:bg-amber-dim/30 font-bold"
+                >
+                  <Dices size={11} /> ROLL FATE
+                </button>
+                <button
+                  onClick={onMarkRemoved}
+                  className="px-2 py-1 border border-muted/40 text-muted rounded text-[11px] hover:text-amber hover:border-amber/60 font-bold"
+                >
+                  MARK REMOVED → PENDING
+                </button>
+                {u.fate === 'Pending' && <span className="text-amber text-[11px]">Fate pending — roll at start of next round</span>}
+              </div>
+
+              {/* Captured detail */}
+              {u.fate === 'Captured' && (
+                <div className="grid grid-cols-2 gap-2 border border-amber/40 rounded p-2 bg-amber-dim/10">
+                  <div>
+                    <label className="text-[10px] text-amber tracking-widest">CAPTURED BY</label>
+                    <input type="text" value={u.capturedBy || ''} onChange={(e) => onPatch({ capturedBy: e.target.value })} className="w-full text-[11px] py-1 px-2 mt-0.5" />
+                  </div>
+                  <div>
+                    <label className="text-[10px] text-amber tracking-widest">CAPTURE ROUND</label>
+                    <input type="number" min="0" value={u.captureRound ?? ''} onChange={(e) => onPatch({ captureRound: parseInt(e.target.value) || null })} className="w-full text-[11px] py-1 px-2 mt-0.5" />
+                  </div>
+                  {u.captureRound != null && (
+                    <div className="col-span-2">
+                      <span className={`text-[11px] font-bold ${round >= (u.captureRound + 2) ? 'text-danger' : 'text-amber'}`}>
+                        Deadline: Round {u.captureRound + 2}{round >= (u.captureRound + 2) ? ' — OVERDUE' : ''}
+                      </span>
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {/* Equipment */}
+              <div className="space-y-1.5">
+                <div className="flex items-center justify-between">
+                  <div className="text-[11px] text-amber tracking-widest font-bold">EQUIPMENT ({itemsList.length})</div>
+                  <span className="text-[11px] text-amber font-bold">{itemCaps > 0 ? `${itemCaps}c equipped` : ''}</span>
+                </div>
+                {itemsList.map((item, idx) => {
+                  const ec = EQUIP_TYPE_COLOR[item.subType] || { border: 'border-white/25', text: 'text-title' }
+                  return (
+                    <div key={idx} className={`flex items-center justify-between border ${ec.border} rounded px-2 py-1 bg-panel`}>
+                      <span className={`text-xs font-bold flex-1 ${ec.text}`}>{item.name}</span>
+                      <div className="flex items-center gap-2 shrink-0">
+                        <span className="text-muted text-[10px]">{item.subType}</span>
+                        <span className="text-amber text-xs font-bold">{item.caps}c</span>
+                        <button onClick={() => onRemoveItem(idx)} className="text-muted hover:text-danger transition-colors"><Trash2 size={11} /></button>
+                      </div>
+                    </div>
+                  )
+                })}
+                <button
+                  onClick={onShowAddItem}
+                  className="w-full flex items-center justify-center gap-1 py-1.5 border border-dashed border-pip-mid/50 text-pip rounded text-[11px] hover:border-pip hover:bg-pip-dim/20 font-bold tracking-wider"
+                >
+                  <Plus size={11} /> ADD EQUIPMENT
+                </button>
+              </div>
+
+              {/* Perks */}
+              <PerkPanel
+                unit={u}
+                phase={phase}
+                battleCount={battleCount}
+                onAddPerk={onAddPerk}
+                onRemovePerk={onRemovePerk}
+              />
+
+              {/* Conditions + notes */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                <div>
+                  <label className="text-[10px] text-muted tracking-widest">OTHER CONDITIONS</label>
+                  <input type="text" value={u.conditions || ''} onChange={(e) => onPatch({ conditions: e.target.value })} className="w-full text-[11px] py-1 px-2 mt-0.5" placeholder="e.g. Stun, Prone..." />
+                </div>
+                <div>
+                  <label className="text-[10px] text-muted tracking-widest">NOTES</label>
+                  <input type="text" value={u.notes || ''} onChange={(e) => onPatch({ notes: e.target.value })} className="w-full text-[11px] py-1 px-2 mt-0.5" placeholder="Any notes about this unit..." />
+                </div>
+              </div>
+
+              <div className="flex justify-end">
+                <button
+                  onClick={onRemove}
+                  className="flex items-center gap-1 text-[11px] text-muted hover:text-danger border border-muted/30 hover:border-danger/50 rounded px-3 py-1.5 transition-colors"
+                >
+                  <Trash2 size={11} /> REMOVE UNIT FROM ROSTER
+                </button>
+              </div>
+            </div>
+          </td>
+        </tr>
+      )}
+    </>
+  )
+}
+
+// ────────────────────────────────────────────────────────────────────────
+// Per-unit Perk panel (with PerkPickerModal)
+// ────────────────────────────────────────────────────────────────────────
+function PerkPanel({ unit, phase, battleCount, onAddPerk, onRemovePerk }) {
+  const [showPerkModal, setShowPerkModal] = useState(false)
+  const [expandedPerk, setExpandedPerk] = useState(null)
+
+  const perks = unit.perks || []
+  const battles = unit.battles || 0
+  const perksThisRound = unit.perksThisRound || 0
+
+  const tooMany = perks.length > battles
+  const roundLimitReached = perksThisRound >= 1
+  const phase4FirstBattle = phase === 4 && battleCount === 0
+  const canAdd = !roundLimitReached && !phase4FirstBattle && perks.length < battles
+
+  function handleDrawRandom() {
+    if (!canAdd) return
+    const available = PERK_CARDS.filter(p => !perks.includes(p.name))
+    if (available.length === 0) return
+    const picked = available[Math.floor(Math.random() * available.length)]
+    onAddPerk(picked.name)
+  }
+
+  let warning = null
+  if (phase4FirstBattle) warning = 'First perk available after first Phase 4 battle'
+  else if (roundLimitReached) warning = 'Max 1 new perk per settlement round'
+  else if (perks.length >= battles && battles > 0) warning = 'Cannot exceed battles fought'
+  else if (battles === 0) warning = 'No battles fought yet — perks require at least 1 battle'
+
+  return (
+    <div className="space-y-1.5">
+      <div className="flex items-center justify-between flex-wrap gap-2">
+        <div className="text-[11px] text-amber tracking-widest font-bold">
+          PERKS ({perks.length} / {battles})
+          <span className="ml-2 text-pip text-[11px]">THIS ROUND: {perksThisRound}/1</span>
+        </div>
+        <div className="flex items-center gap-1">
+          <button
+            onClick={handleDrawRandom}
+            disabled={!canAdd}
+            className="flex items-center gap-1 text-[11px] border border-info/60 text-info hover:bg-info-dim/20 rounded px-2 py-1 disabled:opacity-40 disabled:cursor-not-allowed font-bold"
+            title="Draw a random perk card"
+          >
+            <Shuffle size={11} /> RANDOM
+          </button>
+          <button
+            onClick={() => setShowPerkModal(true)}
+            disabled={!canAdd}
+            className="flex items-center gap-1 text-[11px] border border-pip text-pip hover:bg-pip-dim/20 rounded px-2 py-1 disabled:opacity-40 disabled:cursor-not-allowed font-bold"
+          >
+            <Plus size={11} /> SELECT PERK
+          </button>
+        </div>
+      </div>
+
+      {warning && <p className="text-amber text-[11px]">{warning}</p>}
+      {tooMany && <p className="text-danger text-[11px] font-bold">⚠ Too many perks for battles fought</p>}
+
+      {perks.length > 0 && (
+        <div className="space-y-1">
+          {perks.map((perkName, i) => {
+            const perkRef = PERK_CARDS.find(p => p.name === perkName)
+            const isExpanded = expandedPerk === i
+            return (
+              <div key={i} className="border border-pip-dim/30 rounded bg-panel-light overflow-hidden">
+                <div
+                  className="flex items-center justify-between px-2 py-1.5 cursor-pointer hover:bg-panel"
+                  onClick={() => setExpandedPerk(isExpanded ? null : i)}
+                >
+                  <div className="flex items-center gap-2 min-w-0">
+                    {isExpanded ? <ChevronDown size={11} className="text-muted shrink-0" /> : <ChevronRight size={11} className="text-muted shrink-0" />}
+                    <span className="text-pip text-[11px] font-bold truncate">{perkName}</span>
+                  </div>
+                  <button
+                    onClick={e => { e.stopPropagation(); onRemovePerk(i) }}
+                    className="text-muted hover:text-danger p-0.5 transition-colors shrink-0"
+                  >
+                    <X size={11} />
+                  </button>
+                </div>
+                {isExpanded && perkRef && (
+                  <div className="px-3 pb-2 pt-1 border-t border-pip-dim/20">
+                    <p className="text-muted text-[11px] leading-relaxed">{parseSymbols(perkRef.text)}</p>
+                    {perkRef.requires && (
+                      <p className="text-amber text-[11px] mt-1">Requires: {perkRef.requires}</p>
+                    )}
+                  </div>
+                )}
+              </div>
+            )
+          })}
+        </div>
+      )}
+
+      <PerkPickerModal
+        isOpen={showPerkModal}
+        onClose={() => setShowPerkModal(false)}
+        onSelect={(perkName) => {
+          onAddPerk(perkName)
+          setShowPerkModal(false)
+        }}
+        equippedPerks={perks}
+        canAdd={canAdd}
+      />
+    </div>
+  )
+}
+
+// ────────────────────────────────────────────────────────────────────────
+// Full Boost Hand panel (replaces basic pills)
+// ────────────────────────────────────────────────────────────────────────
+function BoostHandPanel({ boostHand, setState }) {
+  function toggleBoostUsed(instanceId) {
+    setState(p => ({
+      ...p,
+      boostHand: (p.boostHand ?? []).map(b => b.instanceId === instanceId ? { ...b, usedThisRound: !b.usedThisRound } : b),
+    }))
+  }
+  function discardBoost(instanceId) {
+    setState(p => ({ ...p, boostHand: (p.boostHand ?? []).filter(b => b.instanceId !== instanceId) }))
+  }
+  function returnToRecovery(boost) {
+    setState(p => ({
+      ...p,
+      boostHand: (p.boostHand ?? []).filter(b => b.instanceId !== boost.instanceId),
+      itemPool: {
+        ...(p.itemPool ?? {}),
+        items: [...(p.itemPool?.items ?? []), {
+          id: Date.now() + Math.random(),
+          boostId: boost.boostId,
+          name: boost.name,
+          caps: 0,
+          subType: 'Boost',
+          isBoost: true,
+          boostType: boost.boostType,
+          location: 'recovery',
+          assignedUnit: null,
+        }],
+      },
+    }))
+  }
+
+  return (
+    <div className="border rounded" style={{ borderColor: 'rgba(168,85,247,0.5)', boxShadow: '0 0 10px rgba(168,85,247,0.12)' }}>
+      <div className="px-3 py-2 border-b" style={{ borderColor: 'rgba(168,85,247,0.25)' }}>
+        <div className="flex items-center gap-2">
+          <Sparkles size={12} style={{ color: '#a855f7' }} />
+          <h3 className="text-xs font-bold tracking-wider" style={{ color: '#a855f7', textShadow: '0 0 8px rgba(168,85,247,0.5)' }}>
+            BOOST HAND ({boostHand.length})
+          </h3>
+        </div>
+        <p className="text-muted text-[10px] mt-0.5">Secret · Returns to Recovery Pool at round end</p>
+      </div>
+      <div className="p-2">
+        {boostHand.length === 0 ? (
+          <p className="text-muted text-[11px]">No boosts in hand.</p>
+        ) : (
+          <div className="space-y-1.5">
+            {boostHand.map(boost => {
+              const bs = BOOST_TYPE_STYLE[boost.boostType] || {}
+              const ref = boostsCatalog.find(b => b.id === boost.boostId)
+              return (
+                <div
+                  key={boost.instanceId}
+                  className={`border rounded px-2 py-1.5 space-y-1 transition-opacity ${boost.usedThisRound ? 'opacity-50' : ''}`}
+                  style={{ borderColor: boost.usedThisRound ? 'rgba(100,100,100,0.3)' : `${bs.color || '#a855f7'}50`, boxShadow: boost.usedThisRound ? 'none' : `0 0 6px ${bs.shadow || 'rgba(168,85,247,0.2)'}` }}
+                >
+                  <div className="flex items-center gap-1.5 flex-wrap">
+                    <Sparkles size={10} style={{ color: boost.usedThisRound ? '#666' : bs.color }} />
+                    <span className="text-[11px] font-bold flex-1 min-w-0" style={{ color: boost.usedThisRound ? '#666' : bs.color }}>
+                      {boost.name}
+                      {boost.usedThisRound && <span className="ml-2 text-dim text-[10px] font-normal">(USED)</span>}
+                    </span>
+                    <span className="text-[10px] px-1.5 py-0.5 border rounded" style={{ color: bs.color, borderColor: `${bs.color}50` }}>{bs.label}</span>
+                    <div className="flex gap-0.5">
+                      <button
+                        onClick={() => toggleBoostUsed(boost.instanceId)}
+                        className="text-[10px] px-1.5 py-0.5 border font-bold rounded transition-colors"
+                        style={boost.usedThisRound
+                          ? { color: '#666', borderColor: 'rgba(100,100,100,0.3)' }
+                          : { color: bs.color, borderColor: `${bs.color}70`, boxShadow: `0 0 4px ${bs.shadow}` }
+                        }
+                      >{boost.usedThisRound ? 'UNUSE' : 'USE'}</button>
+                      <button
+                        onClick={() => returnToRecovery(boost)}
+                        className="text-[10px] px-1.5 py-0.5 border border-muted/30 rounded text-muted hover:text-pip hover:border-pip transition-colors"
+                        title="Return to Recovery Pool"
+                      >RETURN</button>
+                      <button
+                        onClick={() => discardBoost(boost.instanceId)}
+                        className="text-[10px] px-1.5 py-0.5 border border-muted/20 rounded text-dim hover:text-danger hover:border-danger/40 transition-colors"
+                        title="Discard boost permanently"
+                      >DISCARD</button>
+                    </div>
+                  </div>
+                  {ref && <p className="text-[11px] leading-relaxed pl-4" style={{ color: boost.usedThisRound ? '#555' : '#888' }}>{ref.effect}</p>}
+                </div>
+              )
+            })}
+          </div>
+        )}
+      </div>
+    </div>
+  )
+}
+
+// ────────────────────────────────────────────────────────────────────────
+// Perks Browser (collapsible — at bottom of HOMESTEAD)
+// ────────────────────────────────────────────────────────────────────────
+function PerksBrowser({ roster, caps, onAddPerk, setState }) {
+  const [search, setSearch] = useState('')
+  const [selectedPerk, setSelectedPerk] = useState(null)
+  const [selectedUnitSlot, setSelectedUnitSlot] = useState('')
+  const [confirmError, setConfirmError] = useState('')
+
+  const filteredPerks = PERK_CARDS.filter(p =>
+    !search || p.name.toLowerCase().includes(search.toLowerCase())
+  )
+  const activeRoster = roster.filter(u => u.fate !== 'Dead' && u.fate !== 'Pending')
+  const cost = selectedPerk ? (getPerkCaps(selectedPerk.name) ?? null) : null
+
+  function handleConfirm() {
+    if (!selectedPerk || !selectedUnitSlot) return
+    if (cost !== null && caps < cost) {
+      setConfirmError(`Insufficient caps (need ${cost}c, have ${caps}c)`)
+      return
+    }
+    onAddPerk(selectedUnitSlot, selectedPerk.name)
+    if (cost !== null) {
+      setState(prev => ({ ...prev, caps: Math.max(0, (prev.caps ?? 0) - cost) }))
+    }
+    setConfirmError('')
+    setSelectedUnitSlot('')
+  }
+
+  return (
+    <div className="grid md:grid-cols-2 gap-0 divide-y md:divide-y-0 md:divide-x divide-pip-dim/20">
+      <div className="p-3 space-y-2">
+        <input
+          type="text"
+          value={search}
+          onChange={e => setSearch(e.target.value)}
+          placeholder="Search perks..."
+          className="w-full text-xs"
+        />
+        <div className="max-h-72 overflow-y-auto space-y-0.5 pr-1">
+          {filteredPerks.map(perk => {
+            const perkCost = getPerkCaps(perk.name)
+            const isSelected = selectedPerk?.id === perk.id
+            return (
+              <button
+                key={perk.id}
+                onClick={() => { setSelectedPerk(perk); setSelectedUnitSlot(''); setConfirmError('') }}
+                className={`w-full text-left px-2 py-1.5 rounded flex items-center justify-between gap-2 transition-colors text-xs ${
+                  isSelected
+                    ? 'bg-pip-dim/20 border border-pip/40 text-pip'
+                    : 'hover:bg-panel-light text-pip border border-transparent'
+                }`}
+              >
+                <span className="font-bold truncate">{perk.name}</span>
+                {perkCost !== null && (
+                  <span className="shrink-0 text-amber font-bold text-xs">{perkCost}c</span>
+                )}
+              </button>
+            )
+          })}
+        </div>
+      </div>
+
+      <div className="p-3 space-y-3">
+        {selectedPerk ? (
+          <>
+            <div>
+              <div className="flex items-start justify-between gap-2 mb-2">
+                <span className="text-amber font-bold text-sm">{selectedPerk.name}</span>
+                {cost !== null
+                  ? <span className="text-amber font-bold text-sm shrink-0">{cost}c</span>
+                  : <span className="text-muted text-xs shrink-0">cost unknown</span>}
+              </div>
+              <div className="border border-pip-dim/20 rounded bg-panel-light p-3">
+                <p className="text-pip text-xs leading-relaxed">{parseSymbols(selectedPerk.text)}</p>
+                {selectedPerk.requires && (
+                  <p className="text-amber text-xs mt-2">Requires: {selectedPerk.requires}</p>
+                )}
+              </div>
+            </div>
+            <div className="space-y-2 pt-1 border-t border-pip-dim/20">
+              <div>
+                <label className="text-muted text-xs block mb-1 tracking-wider">ASSIGN TO UNIT</label>
+                <select
+                  value={selectedUnitSlot}
+                  onChange={e => { setSelectedUnitSlot(e.target.value); setConfirmError('') }}
+                  className="w-full text-xs"
+                >
+                  <option value="">Select unit...</option>
+                  {activeRoster.map(u => (
+                    <option key={u.slotId} value={u.slotId}>{u.unitName}</option>
+                  ))}
+                </select>
+              </div>
+              {cost !== null && (
+                <div className="text-xs text-muted">
+                  Cost: <span className="text-amber font-bold">{cost}c</span>
+                  {' '}(you have <span className={caps < cost ? 'text-danger font-bold' : 'text-pip font-bold'}>{caps}c</span>)
+                </div>
+              )}
+              {confirmError && <p className="text-danger text-xs">{confirmError}</p>}
+              <button
+                onClick={handleConfirm}
+                disabled={!selectedUnitSlot || (cost !== null && caps < cost)}
+                className="w-full py-2 border border-amber text-amber text-xs font-bold rounded hover:bg-amber/10 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+              >
+                {cost !== null ? `ASSIGN PERK (${cost}c)` : 'ASSIGN PERK'}
+              </button>
+            </div>
+          </>
+        ) : (
+          <p className="text-muted text-xs text-center py-8">Select a perk from the list to read its effect.</p>
+        )}
+      </div>
+    </div>
+  )
+}
+
+// ────────────────────────────────────────────────────────────────────────
+// Small helpers
+// ────────────────────────────────────────────────────────────────────────
 function Counter({ value, onChange, accent = 'pip' }) {
   const color = accent === 'danger' ? 'text-danger' : accent === 'purple' ? 'text-purple' : 'text-pip'
   return (
@@ -615,3 +1432,25 @@ function DerivedStat({ label, value, good }) {
   )
 }
 
+function Stat({ label, children }) {
+  return (
+    <div className="bg-panel rounded px-2 py-1.5 text-center">
+      <div className="text-amber font-bold text-sm">{children}</div>
+      <div className="text-[10px] text-muted tracking-widest">{label}</div>
+    </div>
+  )
+}
+
+function StatInput({ label, value, onChange, max }) {
+  return (
+    <div className="bg-panel rounded px-2 py-1.5 text-center">
+      <input
+        type="number" min="0" {...(max ? { max } : {})}
+        value={value}
+        onChange={(e) => onChange(parseInt(e.target.value) || 0)}
+        className="w-full text-xs py-0.5 px-1 text-center bg-transparent border-0 text-pip font-bold"
+      />
+      <div className="text-[10px] text-muted tracking-widest">{label}</div>
+    </div>
+  )
+}

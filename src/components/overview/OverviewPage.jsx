@@ -211,7 +211,7 @@ export default function OverviewPage({ onTabChange }) {
         open={openRoster}
         onToggle={() => setOpenRoster(o => !o)}
         actions={(
-          <button type="button" onClick={(e) => { e.stopPropagation(); onTabChange?.('roster') }} className="text-xs text-pip shrink-0 px-2 py-1 min-h-[44px]">OPEN →</button>
+          <button type="button" onClick={(e) => { e.stopPropagation(); onTabChange?.('homestead') }} className="text-xs text-pip shrink-0 px-2 py-1 min-h-[44px]">OPEN →</button>
         )}
       >
         <div className="space-y-2 border-t border-pip-dim/20 px-4 py-3">
@@ -221,9 +221,9 @@ export default function OverviewPage({ onTabChange }) {
             </p>
           )}
           <div className="grid grid-cols-2 sm:grid-cols-4 divide-x divide-pip-dim/20">
-            <StatTile label="ACTIVE" value={activeUnits} onClick={() => onTabChange?.('roster')} />
-            <StatTile label="DEAD" value={deadUnits} color={deadUnits > 0 ? 'danger' : 'pip'} onClick={() => onTabChange?.('roster')} />
-            <StatTile label="UNAVAILABLE" value={unavailableUnits} color={unavailableUnits > 0 ? 'amber' : 'pip'} onClick={() => onTabChange?.('roster')} />
+            <StatTile label="ACTIVE" value={activeUnits} onClick={() => onTabChange?.('homestead')} />
+            <StatTile label="DEAD" value={deadUnits} color={deadUnits > 0 ? 'danger' : 'pip'} onClick={() => onTabChange?.('homestead')} />
+            <StatTile label="UNAVAILABLE" value={unavailableUnits} color={unavailableUnits > 0 ? 'amber' : 'pip'} onClick={() => onTabChange?.('homestead')} />
             <StatTile label="ROSTER VALUE" value={`${rosterCaps.toLocaleString()}c`} color="amber" />
           </div>
         </div>

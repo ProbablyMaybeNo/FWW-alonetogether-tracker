@@ -102,13 +102,6 @@ const ALL_STEPS = [
     body: 'Your personal overview — caps balance, active roster count, settlement power and water totals, active quests, and your current scavenger objective.',
   },
   {
-    id: 'roster',
-    target: '[data-tour="tab-roster"]',
-    placement: 'below',
-    title: 'ROSTER TAB',
-    body: 'Your personal warband. Add units, track wounds and XP, assign perks and items, set fate status (Injured, Captured, Dead), and see each unit\'s cap value.',
-  },
-  {
     id: 'settlement',
     target: '[data-tour="tab-settlement"]',
     placement: 'below',

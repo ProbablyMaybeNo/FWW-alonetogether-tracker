@@ -5,7 +5,6 @@ import TabShell from './components/layout/TabShell'
 import AppShell from './components/layout/AppShell'
 import CampaignPage from './components/campaign/CampaignPage'
 import PlayerPage from './components/overview/OverviewPage'
-import RosterPage from './components/roster/RosterPage'
 import SettlementPage from './components/settlement/SettlementPage'
 import ObjectivesPage from './components/objectives/ObjectivesPage'
 import BattlesPage from './components/battles/BattlesPage'
@@ -291,7 +290,6 @@ function AppContent({ campaignId, onLeaveCampaign }) {
         {activeTab === 'campaign'   && <CampaignPage campaignId={campaignId} onTabChange={setActiveTab} />}
         {activeTab === 'homestead'  && <HomesteadPage />}
         {activeTab === 'player'     && <PlayerPage onTabChange={setActiveTab} />}
-        {activeTab === 'roster'     && <RosterPage />}
         {activeTab === 'settlement' && <SettlementPage onTabChange={setActiveTab} />}
         {activeTab === 'map' && <CampaignMapPage />}
         {activeTab === 'battles' && <BattlesPage campaignId={campaignId} onTabChange={setActiveTab} />}
