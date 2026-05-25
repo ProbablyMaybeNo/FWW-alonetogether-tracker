@@ -739,15 +739,6 @@ export default function HomesteadPage({ onTabChange }) {
           {/* Boost hand — full panel */}
           <BoostHandPanel boostHand={boostHand} setState={setState} />
 
-          {/* Rewards */}
-          <div className="border border-pip-mid/40 rounded-lg bg-panel p-3">
-            <h3 className="text-amber text-xs tracking-widest font-bold mb-2">POST-BATTLE</h3>
-            <div className="grid grid-cols-2 gap-1.5">
-              <button onClick={() => addCaps(200)} className="text-[10px] tracking-widest px-2 py-1.5 border border-pip text-pip rounded hover:bg-pip-dim/20">WIN +200c</button>
-              <button onClick={() => addCaps(120)} className="text-[10px] tracking-widest px-2 py-1.5 border border-muted/40 text-muted rounded hover:border-pip hover:text-pip">LOSS +120c</button>
-              <button onClick={() => addCaps(50)}  className="text-[10px] tracking-widest px-2 py-1.5 border border-amber/50 text-amber rounded hover:bg-amber-dim/20 col-span-2">1000+ FORCE +50c</button>
-            </div>
-          </div>
         </aside>
       </div>
 
