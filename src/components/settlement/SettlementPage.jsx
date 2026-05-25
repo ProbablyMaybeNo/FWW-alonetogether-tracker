@@ -83,12 +83,6 @@ const PHASE3_FREE_IDS = [1, 1, 53, 54, 50]
 // Homestead starting: 1x Land, 2x Generator-Small, Stores, Maintenance Shed, Listening Post, Resource Stand, Hut
 const HOMESTEAD_FREE_IDS = [69, 1, 1, 53, 54, 50, 65, 77]
 
-const SETTLEMENT_SUB_TABS = [
-  { id: 'structures', label: 'STRUCTURES' },
-  { id: 'deck',       label: 'ITEM + BOOST DECKS' },
-  { id: 'explore',    label: 'EXPLORE' },
-]
-
 const EXPLORE_EVENT_FILTERS = [
   { id: 'all', label: 'ALL' },
   { id: 'available', label: 'AVAILABLE' },
@@ -100,10 +94,12 @@ const EXPLORE_EVENT_FILTERS = [
 export default function SettlementPage({ onTabChange }) {
   const { state, setState } = useCampaign()
   const settings = state?.settings ?? {}
-  const [subTab, setSubTab] = useState('structures')
   // Open the wizard directly on Step 1 — the old Step 0 landing card was pure friction.
   // Step 0 still exists as the "wizard exited" state and is rendered as a compact banner below.
   const [step, setStep] = useState(1)
+  // Below-wizard collapsible panels (always available, collapsed by default).
+  const [showDeckPanel, setShowDeckPanel] = useState(false)
+  const [showExplorePanel, setShowExplorePanel] = useState(false)
   const [showAddStructure, setShowAddStructure] = useState(false)
   const [atValidOnly, setAtValidOnly] = useState(() => settings?.settlementMode !== 'homestead')
   const [showBarracks, setShowBarracks] = useState(false)
@@ -819,7 +815,7 @@ export default function SettlementPage({ onTabChange }) {
               <button
                 type="button"
                 onClick={() => setStep(0)}
-                title="Pause wizard — opens the Settlement Overview tabs"
+                title="Pause wizard — collapsed view with resume button"
                 className="min-h-[44px] px-3 border border-muted/30 rounded text-muted text-xs tracking-wider hover:text-pip hover:border-pip transition-colors"
               >
                 EXIT
@@ -1132,42 +1128,39 @@ export default function SettlementPage({ onTabChange }) {
         </div>
       )}
 
-      {/* ── SETTLEMENT OVERVIEW — only shown when the wizard is paused (step 0) ── */}
-      {step === 0 && (
-        <div className="mt-8 border-t-2 border-pip-dim/30 pt-6">
-          <h2 className="text-title text-xs font-bold tracking-widest mb-4">SETTLEMENT OVERVIEW</h2>
+      {/* ── ALWAYS-VISIBLE: Item Deck + Explore (collapsed by default) ── */}
+      {/* Structures live on HOMESTEAD; the structures sub-tab was a duplicate. */}
+      <div className="mt-6 border-t border-pip-dim/30 pt-4 space-y-2">
+        <button
+          type="button"
+          onClick={() => setShowDeckPanel(v => !v)}
+          className="w-full px-3 py-2 flex items-center gap-2 text-left bg-panel-light border border-pip-mid/40 rounded hover:bg-panel-alt"
+        >
+          <span className="text-muted text-xs">{showDeckPanel ? '▼' : '▶'}</span>
+          <span className="text-pip text-xs tracking-widest font-bold flex-1">ITEM + BOOST DECKS</span>
+          <span className="text-muted/60 text-[10px] tracking-wider">Persistent deck · manual draw · reshuffle</span>
+        </button>
+        {showDeckPanel && (
+          <SettlementDeckPanel
+            state={state} setState={setState} structures={structures}
+            deckFilter={deckFilter} setDeckFilter={setDeckFilter}
+            recentlyDrawn={recentlyDrawn} setRecentlyDrawn={setRecentlyDrawn}
+            drawManualFromDeck={drawManualFromDeck} reshuffleDeck={reshuffleDeck}
+            fullResetDeck={fullResetDeck} addRecentlyDrawnToPool={addRecentlyDrawnToPool}
+          />
+        )}
 
-          {/* Sub-tab switcher */}
-          <div className="flex gap-1 mb-4">
-            {SETTLEMENT_SUB_TABS.map(t => (
-              <button
-                key={t.id}
-                type="button"
-                onClick={() => setSubTab(t.id)}
-                className={`flex-1 min-h-[44px] py-2 text-xs rounded border transition-colors font-bold tracking-wider ${
-                  subTab === t.id
-                    ? 'border-pip bg-panel-light text-pip'
-                    : 'border-muted/30 text-muted hover:text-pip hover:border-pip'
-                }`}
-              >
-                {t.label}
-              </button>
-            ))}
-          </div>
-
-          {subTab === 'structures' && <StructuresPanel {...structuresPanelProps} />}
-          {subTab === 'deck' && (
-            <SettlementDeckPanel
-              state={state} setState={setState} structures={structures}
-              deckFilter={deckFilter} setDeckFilter={setDeckFilter}
-              recentlyDrawn={recentlyDrawn} setRecentlyDrawn={setRecentlyDrawn}
-              drawManualFromDeck={drawManualFromDeck} reshuffleDeck={reshuffleDeck}
-              fullResetDeck={fullResetDeck} addRecentlyDrawnToPool={addRecentlyDrawnToPool}
-            />
-          )}
-          {subTab === 'explore' && <ExplorePanel state={state} setState={setState} />}
-        </div>
-      )}
+        <button
+          type="button"
+          onClick={() => setShowExplorePanel(v => !v)}
+          className="w-full px-3 py-2 flex items-center gap-2 text-left bg-panel-light border border-pip-mid/40 rounded hover:bg-panel-alt"
+        >
+          <span className="text-muted text-xs">{showExplorePanel ? '▼' : '▶'}</span>
+          <span className="text-pip text-xs tracking-widest font-bold flex-1">EXPLORE</span>
+          <span className="text-muted/60 text-[10px] tracking-wider">Active events · locations · deck draws</span>
+        </button>
+        {showExplorePanel && <ExplorePanel state={state} setState={setState} />}
+      </div>
     </div>
   )
 }
