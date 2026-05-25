@@ -154,8 +154,6 @@ export default function BattlesPage({ campaignId, onTabChange }) {
         />
       )}
 
-      {/* ── OBJECTIVES TAB ── */}
-
       {/* ── SCENARIOS TAB ── */}
       {subTab === 'scenario' && (
         <div className="border border-pip-dim/40 rounded-lg bg-panel overflow-hidden">
