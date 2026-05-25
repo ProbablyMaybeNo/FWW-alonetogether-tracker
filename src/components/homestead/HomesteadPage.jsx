@@ -9,6 +9,7 @@ import itemsCatalog from '../../data/items.json'
 import boostsCatalog from '../../data/boosts.json'
 import unitsData from '../../data/units.json'
 import { calcUnitTotalCaps, calcUnitItemCaps, getItemRef, calcPowerGenerated, calcPowerConsumed, calcWaterGenerated, calcWaterConsumed } from '../../utils/calculations'
+import { structureHasSideEffects } from '../../utils/structureEffects'
 import { STATUS_OPTIONS } from '../../utils/fateTable'
 import AddUnitModal from '../roster/AddUnitModal'
 import AddItemModal from '../roster/AddItemModal'
@@ -91,7 +92,7 @@ function calcArmorBudget(roster) {
   }, 0)
 }
 
-export default function HomesteadPage() {
+export default function HomesteadPage({ onTabChange }) {
   const { state, setState } = useCampaign()
   const [step, setStep] = useState('build')                  // 'build' | 'use' | 'select'
   const [structPick, setStructPick] = useState('')
@@ -627,6 +628,7 @@ export default function HomesteadPage() {
                       {rows.map(({ s, def }) => {
                         const needsPower = (def.pwrReq ?? 0) > 0
                         const canUse = step === 'use' && (!needsPower || s.powered)
+                        const hasSideEffects = structureHasSideEffects(def)
                         return (
                           <div key={s.instanceId} className="flex items-center gap-1.5 border border-pip-dim/30 rounded px-2 py-1 bg-panel-alt">
                             <span className="text-pip text-[11px] flex-1 truncate">{def.name}</span>
@@ -637,12 +639,21 @@ export default function HomesteadPage() {
                                 className={`text-[9px] tracking-widest px-1.5 py-0.5 border rounded ${s.powered ? 'border-pip text-pip' : 'border-danger/50 text-danger'}`}
                               >{s.powered ? 'PWR' : 'OFF'}</button>
                             )}
-                            <button
-                              onClick={() => patchStructure(s.instanceId, { usedThisRound: !s.usedThisRound })}
-                              disabled={!canUse && !s.usedThisRound}
-                              title="Used this phase"
-                              className={`text-[9px] tracking-widest px-1.5 py-0.5 border rounded ${s.usedThisRound ? 'border-amber text-amber' : 'border-muted/40 text-muted'} disabled:opacity-30`}
-                            >{s.usedThisRound ? 'USED' : 'IDLE'}</button>
+                            {hasSideEffects ? (
+                              <button
+                                onClick={() => onTabChange?.('settlement')}
+                                disabled={!canUse && !s.usedThisRound}
+                                title={`${def.name} has side-effects (draws/modals/caps). Use it on the SETTLEMENT tab.`}
+                                className={`text-[9px] tracking-widest px-1.5 py-0.5 border rounded ${s.usedThisRound ? 'border-amber text-amber' : 'border-info/50 text-info hover:bg-info-dim/20'} disabled:opacity-30`}
+                              >{s.usedThisRound ? 'USED' : 'USE→'}</button>
+                            ) : (
+                              <button
+                                onClick={() => patchStructure(s.instanceId, { usedThisRound: !s.usedThisRound })}
+                                disabled={!canUse && !s.usedThisRound}
+                                title="Used this phase"
+                                className={`text-[9px] tracking-widest px-1.5 py-0.5 border rounded ${s.usedThisRound ? 'border-amber text-amber' : 'border-muted/40 text-muted'} disabled:opacity-30`}
+                              >{s.usedThisRound ? 'USED' : 'IDLE'}</button>
+                            )}
                             <button
                               onClick={() => removeStructure(s.instanceId)}
                               title="Remove"

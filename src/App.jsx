@@ -288,7 +288,7 @@ function AppContent({ campaignId, onLeaveCampaign }) {
 
       <main className="flex-1 overflow-y-auto pb-16 md:pb-0">
         {activeTab === 'campaign'   && <CampaignPage campaignId={campaignId} onTabChange={setActiveTab} />}
-        {activeTab === 'homestead'  && <HomesteadPage />}
+        {activeTab === 'homestead'  && <HomesteadPage onTabChange={setActiveTab} />}
         {activeTab === 'player'     && <PlayerPage onTabChange={setActiveTab} />}
         {activeTab === 'settlement' && <SettlementPage onTabChange={setActiveTab} />}
         {activeTab === 'map' && <CampaignMapPage />}

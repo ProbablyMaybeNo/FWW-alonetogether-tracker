@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { Plus, Trash2, RotateCcw, Zap, Droplets, Building2, Coins, Recycle, Shuffle, X, Sparkles, LayoutGrid, Map } from 'lucide-react'
 import { useCampaign } from '../../context/CampaignContext'
 import { calcPowerGenerated, calcPowerConsumed, calcWaterGenerated, calcWaterConsumed, getStructureRef, calcSettlementTotalCaps, calcDefenseRating } from '../../utils/calculations'
+import { SPECIAL_STRUCTURE_NAMES, parseDrawEffect } from '../../utils/structureEffects'
 import AddStructureModal from './AddStructureModal'
 import { BarracksModal, MedicalCenterModal, StoresModal } from './StructureUseModals'
 import Modal from '../layout/Modal'
@@ -11,17 +12,6 @@ import eventCardsData from '../../data/eventCards.json'
 import exploreCardDeck from '../../data/exploreCardDeck.json'
 import itemsData from '../../data/items.json'
 import boostsData from '../../data/boosts.json'
-
-// Parse "Draw X Y card(s), Keep Z" or "Draw & Keep X Y" from structure effect text
-function parseDrawEffect(effect) {
-  if (!effect) return null
-  const m1 = effect.match(/Draw (\d+) (.+?) cards?, Keep (\d+)/i)
-  if (m1) return { drawCount: parseInt(m1[1]), keepCount: parseInt(m1[3]), typeLabel: m1[2].trim() }
-  const m2 = effect.match(/Draw & Keep (\d+) (.+?)(?:\s*[\.(]|$)/i)
-  if (m2) { const n = parseInt(m2[1]); return { drawCount: n, keepCount: n, typeLabel: m2[2].trim() } }
-  return null
-}
-
 
 // ── Settlement Item Deck ──────────────────────────────────────
 const SETTLEMENT_DECK_TYPES = ['Pistol','Rifle','Heavy Weapon','Melee','Grenade','Mine','Armor','Clothing','Food','Drink','Chem','Utility','Mod']
@@ -92,9 +82,6 @@ const PHASE3_FREE_IDS = [1, 1, 53, 54, 50]
 
 // Homestead starting: 1x Land, 2x Generator-Small, Stores, Maintenance Shed, Listening Post, Resource Stand, Hut
 const HOMESTEAD_FREE_IDS = [69, 1, 1, 53, 54, 50, 65, 77]
-
-// Structures with special use handlers
-const SPECIAL_STRUCTURE_NAMES = ['Listening Post', 'Ranger Outpost', 'Scout Camp', 'Barracks', 'Medical Center', 'Stores']
 
 const SETTLEMENT_SUB_TABS = [
   { id: 'structures', label: 'STRUCTURES' },
