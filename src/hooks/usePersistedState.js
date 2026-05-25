@@ -43,6 +43,16 @@ const DEFAULT_STATE = {
     useEventCards: false,
     useQuests: true,
   },
+  // TWO SHAPES COEXIST — keep both until the deck UI migration is finished.
+  // - `settlementDeck` / `settlementDiscard` (flat arrays): canonical for now.
+  //   Used by SettlementPage.handleToggleUsed (structure-use draw mechanic) and
+  //   SettlementDeckPanel (the visible deck UI).
+  // - `settlementItemDeck` (object form): designed per .agents/AGENT_B_settlement_deck.md
+  //   to become canonical with deliberate persistence + audit trail. Persisted to
+  //   Supabase column `settlement_item_deck` via patch_settlement_item_deck RPC.
+  //   Maintained as a parallel mirror by RosterBuildPhase (which dual-writes both
+  //   shapes on battle setup). The intended useSettlementItemDeck hook was deleted
+  //   as dead code — re-add it if/when the deck UI redesign resumes.
   settlementDeck: [],    // array of item IDs remaining in deck (shuffled order)
   settlementDiscard: [], // array of item IDs that have been drawn
   settlementItemDeck: { drawPile: [], discardPile: [], manuallyRestored: [] },
