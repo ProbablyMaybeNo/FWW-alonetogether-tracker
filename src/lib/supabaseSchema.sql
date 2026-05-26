@@ -268,3 +268,12 @@ end;
 $$;
 
 grant execute on function public.patch_settlement_item_deck(uuid, uuid, jsonb) to authenticated;
+
+-- ── REALTIME PUBLICATION ──
+-- Make all three tables broadcast UPDATE/INSERT/DELETE events so the client's
+-- useCampaignSync realtime channel fires on every change. Without these,
+-- PvP challenges, phase advances, narrative posts, map updates, and roster
+-- changes only appear after a manual reload. Run if missing:
+alter publication supabase_realtime add table campaigns;
+alter publication supabase_realtime add table campaign_players;
+alter publication supabase_realtime add table player_data;
