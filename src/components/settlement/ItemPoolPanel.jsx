@@ -1,69 +1,7 @@
-import { useState, useMemo } from 'react'
+import { useState } from 'react'
 import { Plus, X, ChevronDown, ChevronRight, Trash2 } from 'lucide-react'
-import Modal from '../layout/Modal'
 import { useCampaign } from '../../context/CampaignContext'
 import { getStructureRef } from '../../utils/calculations'
-import itemsData from '../../data/items.json'
-
-
-function AddItemToPoolModal({ isOpen, onClose, onAdd }) {
-  const [search, setSearch] = useState('')
-
-  const searchResults = useMemo(() => {
-    if (!search.trim()) return []
-    const q = search.toLowerCase()
-    return itemsData.filter(i => i.name.toLowerCase().includes(q)).slice(0, 20)
-  }, [search])
-
-  function handleAddFromSearch(item) {
-    onAdd({
-      id: Date.now() + Math.random(),
-      catalogId: item.id,
-      name: item.name,
-      caps: item.caps,
-      subType: item.subType,
-      isBoost: false,
-      location: 'recovery',
-      assignedUnit: null,
-    })
-    onClose()
-  }
-
-  return (
-    <Modal isOpen={isOpen} onClose={onClose} title="ADD ITEM TO POOL">
-      <div className="space-y-4">
-        <div>
-          <input
-            type="text"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            placeholder="Search items by name..."
-            className="w-full text-xs py-1 px-2 mb-2"
-            autoFocus
-          />
-          <div className="max-h-64 overflow-y-auto space-y-1">
-            {searchResults.length === 0 && search.trim() && (
-              <p className="text-muted text-xs">No results found.</p>
-            )}
-            {searchResults.map(item => (
-              <div
-                key={item.id}
-                onClick={() => handleAddFromSearch(item)}
-                className="flex items-center justify-between border border-muted/40 rounded px-3 py-2 hover:bg-panel-alt cursor-pointer"
-              >
-                <span className="text-pip text-xs">{item.name}</span>
-                <div className="flex items-center gap-2">
-                  <span className="text-muted text-xs">{item.subType}</span>
-                  <span className="text-amber text-xs font-bold">{item.caps}c</span>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-    </Modal>
-  )
-}
 
 // Each Maintenance Shed / Stores holds "1 Item OR up to 2 Boosts".
 // Model as 2 units of capacity per structure; an Item costs 2 units, a Boost costs 1.
@@ -78,7 +16,6 @@ export default function ItemPoolPanel({ structures }) {
   const { state, setState } = useCampaign()
   const [collapsed, setCollapsed] = useState(false)
   const [activeTab, setActiveTab] = useState('recovery')
-  const [showAddItem, setShowAddItem] = useState(false)
 
   const items = state.itemPool?.items || []
   const roster = state.roster || []
@@ -118,16 +55,6 @@ export default function ItemPoolPanel({ structures }) {
       itemPool: {
         ...prev.itemPool,
         items: prev.itemPool.items.filter(i => i.id !== id),
-      },
-    }))
-  }
-
-  function addItem(item) {
-    setState(prev => ({
-      ...prev,
-      itemPool: {
-        ...prev.itemPool,
-        items: [...(prev.itemPool.items || []), item],
       },
     }))
   }
@@ -295,15 +222,7 @@ export default function ItemPoolPanel({ structures }) {
           {/* RECOVERY TAB */}
           {activeTab === 'recovery' && (
             <div>
-              <div className="flex items-center justify-between mb-3">
-                <span className="text-muted text-xs">Items gathered from battle — keep, store, or sell</span>
-                <button
-                  onClick={() => setShowAddItem(true)}
-                  className="flex items-center gap-1 text-xs px-3 py-1 border border-amber text-amber hover:bg-amber-dim/20"
-                >
-                  <Plus size={12} /> ADD ITEM
-                </button>
-              </div>
+              <p className="text-muted text-xs mb-3">Items gathered from battle — keep, store, or sell</p>
               {recoveryItems.length === 0 ? (
                 <p className="text-muted text-xs">No items in recovery pool.</p>
               ) : (
@@ -553,7 +472,6 @@ export default function ItemPoolPanel({ structures }) {
         </div>
       )}
 
-      <AddItemToPoolModal isOpen={showAddItem} onClose={() => setShowAddItem(false)} onAdd={addItem} />
     </div>
   )
 }
