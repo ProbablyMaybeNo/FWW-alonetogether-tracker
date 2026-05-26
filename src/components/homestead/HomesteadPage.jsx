@@ -8,7 +8,7 @@ import structuresCatalog from '../../data/structures.json'
 import itemsCatalog from '../../data/items.json'
 import boostsCatalog from '../../data/boosts.json'
 import unitsData from '../../data/units.json'
-import { calcUnitTotalCaps, calcUnitItemCaps, getItemRef, calcPowerGenerated, calcPowerConsumed, calcWaterGenerated, calcWaterConsumed } from '../../utils/calculations'
+import { calcUnitTotalCaps, calcUnitItemCaps, getItemRef, calcPowerGenerated, calcPowerConsumed, calcWaterGenerated, calcWaterConsumed, applyRestToUnit } from '../../utils/calculations'
 import useStructureUse from '../../hooks/useStructureUse'
 import { STATUS_OPTIONS } from '../../utils/fateTable'
 import AddUnitModal from '../roster/AddUnitModal'
@@ -257,23 +257,19 @@ export default function HomesteadPage() {
   }
 
   function restAllWounded() {
-    const wounded = roster.filter(u => !ABSENT_FATES.includes(u.fate) && ((u.regDamage ?? 0) > 0 || u.condPoisoned || u.condInjuredArm || u.condInjuredLeg))
-    if (wounded.length === 0) { alert('No wounded units to rest.'); return }
-    if (!confirm(`Rest ${wounded.length} wounded unit${wounded.length !== 1 ? 's' : ''}? Halves damage and drops one condition per unit.`)) return
+    const eligible = roster.filter(u =>
+      u.fate === 'Active' || u.fate === 'Delayed' || u.fate === 'Injured'
+    )
+    if (eligible.length === 0) { alert('No models eligible to rest.'); return }
+    if (!confirm(
+      `Apply REST to ${eligible.length} model${eligible.length !== 1 ? 's' : ''} per Alone Together rules?\n\n` +
+      `• Delayed → Active (returns, no heal)\n` +
+      `• Injured → Active (returns + heals)\n` +
+      `• For healing units: convert half radiation (round up) to regular damage, then discard half regular damage (round up), drop 1 condition`
+    )) return
     setState(p => ({
       ...p,
-      roster: (p.roster ?? []).map(u => {
-        if (ABSENT_FATES.includes(u.fate)) return u
-        if ((u.regDamage ?? 0) === 0 && !u.condPoisoned && !u.condInjuredArm && !u.condInjuredLeg) return u
-        const newDmg = Math.floor((u.regDamage ?? 0) / 2)
-        let condPoisoned = u.condPoisoned ?? false
-        let condInjuredArm = u.condInjuredArm ?? false
-        let condInjuredLeg = u.condInjuredLeg ?? false
-        if (condPoisoned) condPoisoned = false
-        else if (condInjuredArm) condInjuredArm = false
-        else if (condInjuredLeg) condInjuredLeg = false
-        return { ...u, regDamage: newDmg, condPoisoned, condInjuredArm, condInjuredLeg }
-      }),
+      roster: (p.roster ?? []).map(applyRestToUnit),
     }))
   }
 
@@ -391,19 +387,7 @@ export default function HomesteadPage() {
   function restUnit(slotId) {
     setState(p => ({
       ...p,
-      roster: (p.roster ?? []).map(u => {
-        if (u.slotId !== slotId) return u
-        if (ABSENT_FATES.includes(u.fate)) return u
-        const dmg = u.regDamage ?? 0
-        const newDmg = Math.floor(dmg / 2)
-        let condPoisoned = u.condPoisoned ?? false
-        let condInjuredArm = u.condInjuredArm ?? false
-        let condInjuredLeg = u.condInjuredLeg ?? false
-        if (condPoisoned) condPoisoned = false
-        else if (condInjuredArm) condInjuredArm = false
-        else if (condInjuredLeg) condInjuredLeg = false
-        return { ...u, regDamage: newDmg, condPoisoned, condInjuredArm, condInjuredLeg }
-      }),
+      roster: (p.roster ?? []).map(u => u.slotId === slotId ? applyRestToUnit(u) : u),
     }))
   }
 

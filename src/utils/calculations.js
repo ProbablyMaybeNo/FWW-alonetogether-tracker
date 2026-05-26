@@ -99,3 +99,60 @@ export function calcSettlementTotalCaps(structures) {
     return sum + cost
   }, 0)
 }
+
+/**
+ * Applies the Alone Together "Rest" mechanic to a single unit per
+ * alone_together_v2.1.pdf §9 Step 1 "Rest (Start of Every Round)".
+ *
+ *   - Delayed models return automatically (fate → Active) but do NOT heal.
+ *   - Injured models are automatically healed (fate → Active) AND get healing.
+ *   - Lost / Captured / Dead / Pending: no change.
+ *   - Models eligible for healing: convert half Radiation Damage (rounded up)
+ *     to Regular Damage, then discard half Regular Damage (rounded up),
+ *     then discard up to 1 condition (priority Poisoned > Injured Arm > Injured Leg).
+ *
+ * Example: a unit with 4 reg / 2 rad → convert 1 rad to reg → 5 reg / 1 rad →
+ * discard 3 reg (half of 5 rounded up) → 2 reg / 1 rad.
+ *
+ * Returns a NEW unit object with the changes applied.
+ */
+export function applyRestToUnit(unit) {
+  if (!unit) return unit
+  const wasDelayed = unit.fate === 'Delayed'
+  const wasInjured = unit.fate === 'Injured'
+  const fate = (wasDelayed || wasInjured) ? 'Active' : unit.fate
+
+  // Delayed returns but doesn't heal. Lost/Captured/Dead/Pending: no change at all.
+  const noHealing =
+    wasDelayed ||
+    fate === 'Lost' ||
+    fate === 'Captured' ||
+    fate === 'Dead' ||
+    fate === 'Pending'
+  if (noHealing) return { ...unit, fate }
+
+  const rad = unit.radDamage ?? 0
+  const radToConvert = Math.ceil(rad / 2)
+  const remainingRad = rad - radToConvert
+  const regAfterConvert = (unit.regDamage ?? 0) + radToConvert
+  const regToDiscard = Math.ceil(regAfterConvert / 2)
+  const newReg = regAfterConvert - regToDiscard
+
+  // Discard up to 1 condition. Priority P > IA > IL (player-pick UI not yet implemented).
+  let condPoisoned = unit.condPoisoned ?? false
+  let condInjuredArm = unit.condInjuredArm ?? false
+  let condInjuredLeg = unit.condInjuredLeg ?? false
+  if (condPoisoned) condPoisoned = false
+  else if (condInjuredArm) condInjuredArm = false
+  else if (condInjuredLeg) condInjuredLeg = false
+
+  return {
+    ...unit,
+    fate,
+    regDamage: newReg,
+    radDamage: remainingRad,
+    condPoisoned,
+    condInjuredArm,
+    condInjuredLeg,
+  }
+}

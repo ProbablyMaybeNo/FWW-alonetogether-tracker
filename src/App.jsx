@@ -22,6 +22,7 @@ import {
   buildLiveBattleRecord,
   appendLiveBattleRecordToBattles,
 } from './utils/postBattlePropagation'
+import { applyRestToUnit } from './utils/calculations'
 
 function AppContent({ campaignId, onLeaveCampaign }) {
   const [activeTab, setActiveTab] = useState('campaign')
@@ -88,11 +89,12 @@ function AppContent({ campaignId, onLeaveCampaign }) {
         powered: false,
       }))
 
-      // Reset units: perksThisRound → 0, Delayed → Active
+      // Auto-Rest per Alone Together §9 Step 1 — convert half rad to reg,
+      // discard half reg, drop one condition, return Delayed/Injured to Active.
+      // Resets per-round counters too.
       const updatedRoster = (prev.roster ?? []).map(u => ({
-        ...u,
+        ...applyRestToUnit(u),
         perksThisRound: 0,
-        fate: u.fate === 'Delayed' ? 'Active' : u.fate,
       }))
 
       // Move boost hand → recovery pool (players decide what to keep in stores)
