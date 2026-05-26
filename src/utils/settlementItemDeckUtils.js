@@ -1,7 +1,20 @@
 import itemsData from '../data/items.json'
 
-/** Every catalog item id from items.json (source of truth for the Settlement Item Deck). */
-export const ALL_ITEM_CATALOG_IDS = itemsData.map(i => i.id)
+// Item subTypes a normal player can equip / use / store in the wasteland +
+// settlement item decks. Drops:
+//  - Perk (107)            — Perks are assigned permanently, not drawn as items
+//  - Leader (27)           — only a Leader unit can equip, useless for most rosters
+//  - Automatron Part (16)  — only Automatron units can equip
+// Keeps Mods (which includes the CONDITIONING: family — those are legit unit upgrades).
+const EQUIPPABLE_SUBTYPES = new Set([
+  'Melee', 'Mod', 'Armor', 'Rifle', 'Pistol', 'Clothing', 'Utility',
+  'Food', 'Chem', 'Grenade', 'Heavy Weapon', 'Drink', 'Mine',
+])
+
+/** Every catalog item id from items.json filtered to player-equippable subTypes. */
+export const ALL_ITEM_CATALOG_IDS = itemsData
+  .filter(i => EQUIPPABLE_SUBTYPES.has(i.subType))
+  .map(i => i.id)
 
 export function normalizeSettlementItemDeck(raw) {
   const d = raw && typeof raw === 'object' ? raw : {}

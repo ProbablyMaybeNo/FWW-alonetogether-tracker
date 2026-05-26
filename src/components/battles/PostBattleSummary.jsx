@@ -13,6 +13,8 @@ import {
   buildProposedRosterMerge,
   lootToPoolItems,
   moveBattleEquipmentToRecovery,
+  rewardCapsForOutcome,
+  CAMPAIGN_REWARD_BONUS,
 } from '../../utils/postBattlePropagation'
 import battleScenarios from '../../data/battle/battleScenarios.json'
 import { SCAVENGER_OBJECTIVES } from '../../data/scavengerObjectives'
@@ -132,16 +134,19 @@ export default function PostBattleSummary({
       const loot = collectLootedItemsForPlayer(ab.participants, uid)
       const obj = ab.participants?.[uid]?.objectiveComplete
       const objTotal = setup.battleObjectiveId ? 1 : 0
+      const reward = rewardCapsForOutcome(outcome[uid]) + CAMPAIGN_REWARD_BONUS
       out[uid] = {
         removed: countUnitsRemoved(ab.participants, uid),
         loot,
-        caps: sumCapsFromBattleLog(ab.log, uid),
+        capsFromBattle: sumCapsFromBattleLog(ab.log, uid),
+        rewardCaps: reward,
+        capsTotal: sumCapsFromBattleLog(ab.log, uid) + reward,
         objectives: obj ? 1 : 0,
         objectivesTotal: objTotal,
       }
     }
     return out
-  }, [ab.participants, ab.log, participants, setup.battleObjectiveId])
+  }, [ab.participants, ab.log, participants, setup.battleObjectiveId, outcome])
 
   const battleObjective = SCAVENGER_OBJECTIVES.find(o => o.id === setup.battleObjectiveId)
 
@@ -159,6 +164,8 @@ export default function PostBattleSummary({
       const newItems = lootToPoolItems(loot)
       const myEntries = ab.battleRosters?.[currentUserId]?.entries || []
       const capsGain = sumCapsFromBattleLog(ab.log, currentUserId)
+      // Outcome reward (200/120/160/0) + flat AT campaign bonus per battle.
+      const outcomeCaps = rewardCapsForOutcome(myOutcome) + CAMPAIGN_REWARD_BONUS
 
       let completedPatch = [...(state?.completedObjectives || [])]
       const oid = setup.battleObjectiveId
@@ -172,7 +179,7 @@ export default function PostBattleSummary({
         return {
           ...prev,
           roster: (draftRoster || prev.roster || []).map(u => stripBattleMeta(u)),
-          caps: (prev.caps ?? 0) + capsGain,
+          caps: (prev.caps ?? 0) + capsGain + outcomeCaps,
           itemPool: { ...prev.itemPool, items: mergedItems },
           completedObjectives: completedPatch,
         }
@@ -255,7 +262,13 @@ export default function PostBattleSummary({
                 <span>—</span>
               )}
             </div>
-            <p>Caps gained: +{st.caps ?? 0}</p>
+            <p>
+              Caps gained: <span className="text-amber font-bold">+{st.capsTotal ?? 0}c</span>
+              <span className="text-muted/70 ml-1">
+                ({st.capsFromBattle > 0 ? `${st.capsFromBattle}c from battle + ` : ''}
+                {st.rewardCaps}c reward [{outcomeLabel(outcome[uid])} +{CAMPAIGN_REWARD_BONUS} bonus])
+              </span>
+            </p>
             <p>
               Objectives complete: {st.objectives ?? 0} / {st.objectivesTotal ?? 0}
             </p>
@@ -291,77 +304,111 @@ export default function PostBattleSummary({
   const rosterGate = draftRoster && (
     <div className="space-y-3 text-xs">
       <div className="border-2 border-amber/60 rounded-lg p-3 bg-amber/5 space-y-2">
-        <p className="text-amber font-bold">These changes will be applied to your roster</p>
-        <p className="text-muted">Edit values below if needed, then apply.</p>
+        <p className="text-amber font-bold">Auto-populated from this battle — edit if needed, then apply.</p>
+        <p className="text-muted">Damage / rads / conditions from the live tracker are already merged into each unit. Adjust any value, then APPLY.</p>
         <ul className="space-y-2 max-h-[40vh] overflow-y-auto">
           {draftRoster
             .filter(u => battleSlots.has(u.slotId))
-            .map(u => (
-              <li key={u.slotId} className="border border-pip-dim/30 rounded p-2 space-y-2">
-                <p className="text-pip font-bold">{u.unitName || `Unit #${u.slotId}`}</p>
-                <div className="grid grid-cols-2 gap-2">
-                  <label className="space-y-0.5">
-                    <span className="text-muted">Wounds (total)</span>
-                    <input
-                      type="number"
-                      min="0"
-                      className="w-full bg-terminal border rounded px-2 py-1"
-                      value={u.regDamage ?? 0}
-                      onChange={e => {
-                        const v = parseInt(e.target.value, 10) || 0
-                        setDraftRoster(dr => dr.map(x => (x.slotId === u.slotId ? { ...x, regDamage: v } : x)))
-                      }}
-                    />
-                  </label>
-                  <label className="space-y-0.5">
-                    <span className="text-muted">Rads (total)</span>
-                    <input
-                      type="number"
-                      min="0"
-                      className="w-full bg-terminal border rounded px-2 py-1"
-                      value={u.radDamage ?? 0}
-                      onChange={e => {
-                        const v = parseInt(e.target.value, 10) || 0
-                        setDraftRoster(dr => dr.map(x => (x.slotId === u.slotId ? { ...x, radDamage: v } : x)))
-                      }}
-                    />
-                  </label>
-                  <label className="space-y-0.5">
-                    <span className="text-muted">Removed count</span>
-                    <input
-                      type="number"
-                      min="0"
-                      className="w-full bg-terminal border rounded px-2 py-1"
-                      value={u.removed ?? 0}
-                      onChange={e => {
-                        const v = parseInt(e.target.value, 10) || 0
-                        setDraftRoster(dr => dr.map(x => (x.slotId === u.slotId ? { ...x, removed: v } : x)))
-                      }}
-                    />
-                  </label>
-                  <label className="space-y-0.5">
-                    <span className="text-muted">Fate</span>
-                    <select
-                      className="w-full bg-terminal border rounded px-2 py-1 min-h-[36px]"
-                      value={u.fate || 'Active'}
-                      onChange={e => {
-                        const v = e.target.value
-                        setDraftRoster(dr => dr.map(x => (x.slotId === u.slotId ? { ...x, fate: v } : x)))
-                      }}
-                    >
-                      <option value="Active">Active</option>
-                      <option value="Pending">Pending</option>
-                      <option value="Delayed">Delayed</option>
-                      <option value="Shaken">Shaken</option>
-                      <option value="Injured">Injured</option>
-                      <option value="Lost">Lost</option>
-                      <option value="Captured">Captured</option>
-                      <option value="Dead">Dead</option>
-                    </select>
-                  </label>
-                </div>
-              </li>
-            ))}
+            .map(u => {
+              const battleUnit = ab.participants?.[currentUserId]?.units?.[u.slotId] || {}
+              const battleReg = battleUnit.regDamage || 0
+              const battleRad = battleUnit.radDamage || 0
+              const battleConds = battleUnit.conditions || {}
+              return (
+                <li key={u.slotId} className="border border-pip-dim/30 rounded p-2 space-y-2">
+                  <p className="text-pip font-bold">{u.unitName || `Unit #${u.slotId}`}</p>
+                  <div className="grid grid-cols-2 gap-2">
+                    <label className="space-y-0.5">
+                      <span className="text-muted">
+                        Wounds (total)
+                        {battleReg > 0 && <span className="text-amber ml-1">+{battleReg} this battle</span>}
+                      </span>
+                      <input
+                        type="number"
+                        min="0"
+                        className="w-full bg-terminal border rounded px-2 py-1"
+                        value={u.regDamage ?? 0}
+                        onChange={e => {
+                          const v = parseInt(e.target.value, 10) || 0
+                          setDraftRoster(dr => dr.map(x => (x.slotId === u.slotId ? { ...x, regDamage: v } : x)))
+                        }}
+                      />
+                    </label>
+                    <label className="space-y-0.5">
+                      <span className="text-muted">
+                        Rads (total)
+                        {battleRad > 0 && <span className="text-amber ml-1">+{battleRad} this battle</span>}
+                      </span>
+                      <input
+                        type="number"
+                        min="0"
+                        className="w-full bg-terminal border rounded px-2 py-1"
+                        value={u.radDamage ?? 0}
+                        onChange={e => {
+                          const v = parseInt(e.target.value, 10) || 0
+                          setDraftRoster(dr => dr.map(x => (x.slotId === u.slotId ? { ...x, radDamage: v } : x)))
+                        }}
+                      />
+                    </label>
+                    <label className="space-y-0.5">
+                      <span className="text-muted">Removed count</span>
+                      <input
+                        type="number"
+                        min="0"
+                        className="w-full bg-terminal border rounded px-2 py-1"
+                        value={u.removed ?? 0}
+                        onChange={e => {
+                          const v = parseInt(e.target.value, 10) || 0
+                          setDraftRoster(dr => dr.map(x => (x.slotId === u.slotId ? { ...x, removed: v } : x)))
+                        }}
+                      />
+                    </label>
+                    <label className="space-y-0.5">
+                      <span className="text-muted">Fate</span>
+                      <select
+                        className="w-full bg-terminal border rounded px-2 py-1 min-h-[36px]"
+                        value={u.fate || 'Active'}
+                        onChange={e => {
+                          const v = e.target.value
+                          setDraftRoster(dr => dr.map(x => (x.slotId === u.slotId ? { ...x, fate: v } : x)))
+                        }}
+                      >
+                        <option value="Active">Active</option>
+                        <option value="Pending">Pending</option>
+                        <option value="Delayed">Delayed</option>
+                        <option value="Shaken">Shaken</option>
+                        <option value="Injured">Injured</option>
+                        <option value="Lost">Lost</option>
+                        <option value="Captured">Captured</option>
+                        <option value="Dead">Dead</option>
+                      </select>
+                    </label>
+                  </div>
+                  {/* Conditions — edit the three battle-applicable ones (P / IA / IL) */}
+                  <div className="flex flex-wrap gap-2 pt-1 border-t border-pip-dim/20">
+                    <span className="text-muted self-center">Conditions:</span>
+                    {[
+                      { key: 'condPoisoned',    label: 'Poisoned',    inBattle: !!battleConds.poisoned },
+                      { key: 'condInjuredArm',  label: 'Injured Arm', inBattle: !!battleConds.injuredArm },
+                      { key: 'condInjuredLeg',  label: 'Injured Leg', inBattle: !!battleConds.injuredLeg },
+                    ].map(({ key, label, inBattle }) => (
+                      <button
+                        key={key}
+                        type="button"
+                        onClick={() => setDraftRoster(dr => dr.map(x => (x.slotId === u.slotId ? { ...x, [key]: !x[key] } : x)))}
+                        className={`text-xs px-2 py-1 rounded border transition-colors ${
+                          u[key]
+                            ? 'border-danger text-danger bg-danger/10 font-bold'
+                            : 'border-muted/40 text-muted hover:border-pip/60 hover:text-pip'
+                        }`}
+                      >
+                        {label}{inBattle && <span className="ml-1 text-amber">+</span>}
+                      </button>
+                    ))}
+                  </div>
+                </li>
+              )
+            })}
         </ul>
       </div>
       {applyError && <p className="text-danger text-xs">{applyError}</p>}

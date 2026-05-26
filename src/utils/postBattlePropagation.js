@@ -13,6 +13,22 @@ export function outcomeLabel(id) {
   return OUTCOME_OPTIONS.find(o => o.id === id)?.label ?? id ?? '—'
 }
 
+// Per AT v2.1 §10 step 5 + Campaign Handbook §4.3 "After a Battle".
+// Winner +200, loser +120; draw splits the difference at 160; AT adds a flat
+// +50 campaign bonus to every participant every battle. Force-size ≥ 1000c
+// bonus (+50 to both players) is deferred — needs the force size at battle start.
+export const CAMPAIGN_REWARD_BONUS = 50
+export function rewardCapsForOutcome(outcomeId) {
+  switch (outcomeId) {
+    case 'major_victory':
+    case 'minor_victory': return 200
+    case 'draw': return 160
+    case 'loss': return 120
+    case 'na':
+    default: return 0
+  }
+}
+
 /** Deterministic host for one-time campaign writes (both clients must agree). */
 export function canonicalBattleHostUserId(participantUserIds) {
   const ids = [...(participantUserIds || [])].filter(Boolean)
