@@ -14,6 +14,7 @@ import AddItemModal from '../roster/AddItemModal'
 import FateRollModal from '../roster/FateRollModal'
 import PerkPickerModal from '../roster/PerkPickerModal'
 import ItemPoolPanel from '../settlement/ItemPoolPanel'
+import ManualPoolPanel from '../settlement/ManualPoolPanel'
 import SettlementDeckPanel from '../settlement/SettlementDeckPanel'
 import ExplorePanel from '../settlement/ExplorePanel'
 import { PERK_CARDS, parseSymbols } from '../../data/perkCards'
@@ -764,6 +765,7 @@ export default function HomesteadPage() {
             <div className="flex gap-0 border-b border-pip-mid/40 bg-panel-alt shrink-0">
               {[
                 { id: 'items',   label: 'ITEM POOL'    },
+                { id: 'stash',   label: 'STASH'        },
                 { id: 'decks',   label: 'DECKS'        },
                 { id: 'explore', label: 'EXPLORE'      },
               ].map(t => (
@@ -781,6 +783,7 @@ export default function HomesteadPage() {
             </div>
             <div className="flex-1 overflow-y-auto p-3">
               {poolsTab === 'items' && <ItemPoolPanel structures={structures} />}
+              {poolsTab === 'stash' && <ManualPoolPanel />}
               {poolsTab === 'decks' && <SettlementDeckPanel />}
               {poolsTab === 'explore' && <ExplorePanel state={state} setState={setState} />}
             </div>
