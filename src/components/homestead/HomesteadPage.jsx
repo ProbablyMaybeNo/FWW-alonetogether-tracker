@@ -1140,5 +1140,61 @@ function PerkPanel({ unit, phase, battleCount, onAddPerk, onRemovePerk }) {
 }
 
 // ────────────────────────────────────────────────────────────────────────
-// Full Boost Hand panel (replaces basic pills)
+// Small presentational leaf components
 // ────────────────────────────────────────────────────────────────────────
+function Counter({ value, onChange, accent = 'pip' }) {
+  const color = accent === 'danger' ? 'text-danger' : accent === 'purple' ? 'text-purple' : 'text-pip'
+  return (
+    <div className="flex items-center justify-center gap-0.5">
+      <button onClick={() => onChange(Math.max(0, value - 1))}
+        className="w-4 h-4 leading-none border border-muted/40 rounded text-muted text-[10px] hover:border-pip hover:text-pip">−</button>
+      <span className={`w-5 text-center text-xs tabular-nums font-bold ${color}`}>{value}</span>
+      <button onClick={() => onChange(value + 1)}
+        className="w-4 h-4 leading-none border border-muted/40 rounded text-muted text-[10px] hover:border-pip hover:text-pip">+</button>
+    </div>
+  )
+}
+
+function CondPill({ on, label, onToggle }) {
+  return (
+    <button
+      onClick={onToggle}
+      title={label === 'P' ? 'Poisoned' : label === 'IA' ? 'Injured Arm' : 'Injured Leg'}
+      className={`text-[10px] font-bold w-5 h-5 rounded border ${
+        on ? 'border-danger text-danger bg-danger/10' : 'border-muted/30 text-muted/40'
+      }`}
+    >{label}</button>
+  )
+}
+
+function DerivedStat({ label, value, good }) {
+  return (
+    <div className={`border rounded bg-panel-alt px-2 py-1 text-center ${good ? 'border-pip-dim/40' : 'border-danger/50'}`}>
+      <div className="text-label text-[9px] tracking-widest opacity-80">{label}</div>
+      <div className={`text-sm font-bold tabular-nums ${good ? 'text-pip' : 'text-danger'}`}>{value}</div>
+    </div>
+  )
+}
+
+function Stat({ label, children }) {
+  return (
+    <div className="bg-panel rounded px-2 py-1.5 text-center">
+      <div className="text-amber font-bold text-sm">{children}</div>
+      <div className="text-[10px] text-muted tracking-widest">{label}</div>
+    </div>
+  )
+}
+
+function StatInput({ label, value, onChange, max }) {
+  return (
+    <div className="bg-panel rounded px-2 py-1.5 text-center">
+      <input
+        type="number" min="0" {...(max ? { max } : {})}
+        value={value}
+        onChange={(e) => onChange(parseInt(e.target.value) || 0)}
+        className="w-full text-xs py-0.5 px-1 text-center bg-transparent border-0 text-pip font-bold"
+      />
+      <div className="text-[10px] text-muted tracking-widest">{label}</div>
+    </div>
+  )
+}

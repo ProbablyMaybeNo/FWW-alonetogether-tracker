@@ -3,6 +3,7 @@ import { CampaignProvider, useCampaign } from './context/CampaignContext'
 import { useAuth } from './context/AuthContext'
 import TabShell from './components/layout/TabShell'
 import AppShell from './components/layout/AppShell'
+import ErrorBoundary from './components/layout/ErrorBoundary'
 import CampaignPage from './components/campaign/CampaignPage'
 import ObjectivesPage from './components/objectives/ObjectivesPage'
 import BattlesPage from './components/battles/BattlesPage'
@@ -287,11 +288,13 @@ function AppContent({ campaignId, onLeaveCampaign }) {
       <TabShell activeTab={activeTab} onTabChange={setActiveTab} settings={settings} />
 
       <main className="flex-1 overflow-y-auto pb-16 md:pb-0">
-        {activeTab === 'campaign'   && <CampaignPage campaignId={campaignId} onTabChange={setActiveTab} />}
-        {activeTab === 'homestead'  && <HomesteadPage />}
-        {activeTab === 'map' && <CampaignMapPage />}
-        {activeTab === 'battles' && <BattlesPage campaignId={campaignId} onTabChange={setActiveTab} />}
-        {activeTab === 'events' && <ObjectivesPage />}
+        <ErrorBoundary resetKey={activeTab}>
+          {activeTab === 'campaign'   && <CampaignPage campaignId={campaignId} onTabChange={setActiveTab} />}
+          {activeTab === 'homestead'  && <HomesteadPage />}
+          {activeTab === 'map' && <CampaignMapPage />}
+          {activeTab === 'battles' && <BattlesPage campaignId={campaignId} onTabChange={setActiveTab} />}
+          {activeTab === 'events' && <ObjectivesPage />}
+        </ErrorBoundary>
       </main>
 
       {showTour && state && (
