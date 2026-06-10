@@ -110,7 +110,6 @@ export default function HomesteadPage() {
 
   // ── Derived roster stats ─────────────────────────────────────────────
   const rosterCapsTotal = roster.reduce((s, u) => s + calcUnitTotalCaps(u), 0)
-  const battleReadyCount = roster.filter(u => u.fate === 'Active' && u.battleReady).length
   const leaderUnit = roster.find(u => u.isLeader)
   const leaderAbsent = leaderUnit && ABSENT_FATES.includes(leaderUnit.fate)
 
@@ -356,16 +355,9 @@ export default function HomesteadPage() {
         <section className="border border-pip-mid/40 rounded-lg bg-panel">
           <div className="px-3 py-2 border-b border-pip-mid/30 flex items-center gap-2">
             <h3 className="text-amber text-xs tracking-widest font-bold flex-1">ROSTER ({roster.length})</h3>
-            <span
-              className="flex items-center gap-1 text-[10px] tracking-wider text-purple"
-              title="Units flagged for the battle roster. Tap the swords on a unit to flag it — flagged units auto-load when you start a battle."
-              style={battleReadyCount > 0 ? { textShadow: '0 0 6px var(--color-purple-glow)' } : undefined}
-            >
-              <Swords size={11} /> {battleReadyCount} battle-ready
-            </span>
             <button
               onClick={restAllWounded}
-              title="Halve damage and drop one condition on every wounded Active unit"
+              title={'REST ALL — applies a Rest to every wounded Active model:\n• Radiation: convert half (round up) into Regular Damage\n• Regular Damage: discard half (round up)\n• Conditions: discard up to 1 condition affecting the model'}
               className="text-[10px] tracking-widest px-2 py-1 border border-pip/60 text-pip rounded hover:bg-pip-dim/20 font-bold"
             >REST ALL</button>
             <span
@@ -373,7 +365,7 @@ export default function HomesteadPage() {
               style={{ boxShadow: '0 0 10px var(--color-purple-glow)', textShadow: '0 0 6px var(--color-purple-glow)' }}
               title="Total caps cost of every roster unit plus equipped items"
             >
-              COST {rosterCapsTotal}c
+              {rosterCapsTotal}c
             </span>
           </div>
           <div className="overflow-x-auto">
@@ -653,15 +645,16 @@ export default function HomesteadPage() {
             </header>
             <div className="flex gap-0 border-b border-pip-mid/40 bg-panel-alt shrink-0">
               {[
-                { id: 'items',   label: 'ITEM POOL'    },
-                { id: 'stash',   label: 'STASH'        },
-                { id: 'decks',   label: 'DECKS'        },
-                { id: 'explore', label: 'EXPLORE'      },
+                { id: 'items',   label: 'ITEM POOL', desc: 'Manage the equipment in your settlement pools.' },
+                { id: 'stash',   label: 'STASH',     desc: 'Unique and Quest items get stored in your stash and can be equipped and removed from units at any time.' },
+                { id: 'decks',   label: 'DECKS',     desc: 'Draw settlement items and boosts using the decks on this page.' },
+                { id: 'explore', label: 'EXPLORE',   desc: 'Draw and track your explore cards and their consequences.' },
               ].map(t => (
                 <button
                   key={t.id}
                   type="button"
                   onClick={() => setPoolsTab(t.id)}
+                  title={t.desc}
                   className={`flex-1 px-3 py-2 text-xs tracking-widest font-bold border-b-2 transition-colors ${
                     poolsTab === t.id
                       ? 'border-pip text-pip bg-panel-light'

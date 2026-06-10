@@ -4,7 +4,6 @@ import { useCampaign } from '../../context/CampaignContext'
 import { useAuth } from '../../context/AuthContext'
 import { supabase } from '../../lib/supabase'
 import { calcRosterTotalCaps } from '../../utils/calculations'
-import { SCAVENGER_OBJECTIVES } from '../../data/scavengerObjectives'
 import { defaultInhabitantsState } from '../../utils/inhabitantsState'
 import Modal from '../layout/Modal'
 import PersonalNarrativeLog from './PersonalNarrativeLog'
@@ -85,7 +84,6 @@ export default function CampaignPage({ campaignId, onTabChange }) {
   const [playerRoundNarrative, setPlayerRoundNarrative] = useState(null) // { player, round }
 
   const round = state?.round ?? 0
-  const battleCount = state?.battleCount ?? 0
   const isCreator = !isOnline || !sharedState || !sharedState.createdBy ||
     !!(user?.id && user.id === sharedState.createdBy)
 
@@ -249,12 +247,6 @@ export default function CampaignPage({ campaignId, onTabChange }) {
     await resetInhabitantsSession(newRound)
   }
 
-  function handleBattleInc() {
-    const n = battleCount + 1
-    if (isOnline) updateShared('battleCount', n)
-    else setState(prev => ({ ...prev, battleCount: n }))
-  }
-
   // Battle data
   const battles = sharedState?.battles ?? {}
   const roundBattles = battles[String(round)] ?? {}
@@ -390,18 +382,6 @@ export default function CampaignPage({ campaignId, onTabChange }) {
             </div>
           ) : (
             <span className="text-amber font-bold text-lg w-16 text-center">{round}</span>
-          )}
-        </div>
-        {/* Battles */}
-        <div className="flex items-center gap-2 border-l border-pip-dim/30 pl-4">
-          <span className="text-pip text-xs tracking-wider">BATTLES</span>
-          <span className="text-pip font-bold text-lg">{battleCount}</span>
-          {(isCreator || !isOnline) && (
-            <button
-              onClick={handleBattleInc}
-              title="Record an off-app battle. On-app battles auto-increment when LiveBattleTracker finalises."
-              className="text-xs border border-muted/50 text-muted hover:text-pip hover:border-pip rounded px-2 py-0.5 transition-colors"
-            >+1 OFFLINE</button>
           )}
         </div>
       </div>
@@ -750,42 +730,6 @@ export default function CampaignPage({ campaignId, onTabChange }) {
           </div>
         )}
       </div>
-
-      {/* ── Scavenger Objectives Board ── */}
-      {displayPlayers.some(p => p.activeObjectiveId != null || p.completedObjectiveIds?.length > 0) && (
-        <div>
-          <h2 className="text-amber text-sm tracking-widest font-bold mb-3 border-b border-pip-mid/50 pb-1">
-            SCAVENGER OBJECTIVES
-          </h2>
-          <div className="space-y-1">
-            {SCAVENGER_OBJECTIVES.map(obj => {
-              const statuses = displayPlayers.map(p => {
-                const done = (p.completedObjectiveIds || []).includes(obj.id)
-                const active = p.activeObjectiveId === obj.id
-                return { username: p.username, done, active }
-              }).filter(s => s.done || s.active)
-              if (statuses.length === 0) return null
-              return (
-                <div key={obj.id} className="flex items-center gap-3 border border-pip-dim/30 rounded px-3 py-2 bg-panel">
-                  <div className="flex-1 min-w-0">
-                    <span className="text-pip text-xs font-bold">{obj.name}</span>
-                    <span className="ml-2 text-muted/60 text-xs">{obj.mode}</span>
-                  </div>
-                  <div className="flex gap-2 flex-wrap justify-end">
-                    {statuses.map(s => (
-                      <span key={s.username} className={`text-xs px-2 py-0.5 rounded border font-bold ${
-                        s.done ? 'border-pip/40 text-pip bg-pip-dim/10' : 'border-amber/50 text-amber bg-amber-dim/10'
-                      }`}>
-                        {s.done ? '✓' : '●'} {s.username}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              )
-            }).filter(Boolean)}
-          </div>
-        </div>
-      )}
 
       {/* ── My Personal Narrative Log (migrated from removed OVERVIEW tab) ── */}
       <div>
