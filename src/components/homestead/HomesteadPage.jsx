@@ -5,7 +5,6 @@ import {
 } from 'lucide-react'
 import { useCampaign } from '../../context/CampaignContext'
 import structuresCatalog from '../../data/structures.json'
-import unitsData from '../../data/units.json'
 import { calcUnitTotalCaps, calcUnitItemCaps, getItemRef, calcPowerGenerated, calcPowerConsumed, calcWaterGenerated, calcWaterConsumed, applyRestToUnit } from '../../utils/calculations'
 import useStructureUse from '../../hooks/useStructureUse'
 import { STATUS_OPTIONS } from '../../utils/fateTable'
@@ -64,20 +63,6 @@ const BOOST_TYPE_STYLE = {
   practiced:   { color: '#a855f7', shadow: 'rgba(168,85,247,0.5)', label: 'PRACTICED'   },
 }
 
-// Phase 3 starting bundle: 2x Generator-Small(1), Stores(53), Maintenance Shed(54), Listening Post(50)
-const PHASE3_FREE_IDS = [1, 1, 53, 54, 50]
-// Homestead mode starting: 1x Land(69), 2x Generator-Small, Stores, Maintenance Shed, Listening Post, Resource Stand(65), Hut(77)
-const HOMESTEAD_FREE_IDS = [69, 1, 1, 53, 54, 50, 65, 77]
-
-function calcArmorBudget(roster) {
-  return roster.reduce((sum, unit) => {
-    return sum + (unit.equippedItems || []).reduce((s, itemId) => {
-      const ref = getItemRef(itemId)
-      return s + (ref?.subType === 'Armor' ? (ref.caps || 0) : 0)
-    }, 0)
-  }, 0)
-}
-
 export default function HomesteadPage() {
   const { state, setState } = useCampaign()
   const structureUse = useStructureUse()
@@ -89,7 +74,6 @@ export default function HomesteadPage() {
   const [fateModalUnit, setFateModalUnit] = useState(null)
   const [showPools, setShowPools] = useState(false)
   const [poolsTab, setPoolsTab] = useState('items') // 'items' | 'decks' | 'explore'
-  const [showPhase1Restrictions, setShowPhase1Restrictions] = useState(true)
 
   // Lock body scroll while the slide-out is open + Esc closes it
   useEffect(() => {
@@ -107,12 +91,10 @@ export default function HomesteadPage() {
   if (!state) return <div className="p-8 text-center text-muted text-xs tracking-wider">LOADING…</div>
 
   const caps = state.caps ?? 0
-  const phase = state.phase ?? 1
   const roster = state.roster ?? []
   const structures = state.settlement?.structures ?? []
   const items = state.itemPool?.items ?? []
   const itemPoolCount = items.length
-  const phase1CapLimit = state.phase1CapLimit ?? 750
 
   // ── Derived settlement stats ─────────────────────────────────────────
   // Use shared utils so HOMESTEAD/SETTLEMENT/OVERVIEW agree on the numbers.
@@ -128,12 +110,6 @@ export default function HomesteadPage() {
 
   // ── Derived roster stats ─────────────────────────────────────────────
   const rosterCapsTotal = roster.reduce((s, u) => s + calcUnitTotalCaps(u), 0)
-  const uniqueCount = roster.filter(u => {
-    const ref = unitsData.find(d => d.id === u.unitId)
-    return ref?.type === 'UNIQUE'
-  }).length
-  const armorBudget = calcArmorBudget(roster)
-  const nonLeaderWithPerks = roster.filter(u => !u.isLeader && (u.perks || []).length > 0)
   const leaderUnit = roster.find(u => u.isLeader)
   const leaderAbsent = leaderUnit && ABSENT_FATES.includes(leaderUnit.fate)
 
@@ -198,28 +174,6 @@ export default function HomesteadPage() {
         landPurchased: true,
         landCount: (p.settlement?.landCount ?? (p.settlement?.landPurchased ? 1 : 0)) + 1,
       },
-    }))
-  }
-
-  function runPhase3Setup() {
-    const isHomestead = state.settings?.settlementMode === 'homestead'
-    const freeIds = isHomestead ? HOMESTEAD_FREE_IDS : PHASE3_FREE_IDS
-    const label = isHomestead
-      ? 'Add free Homestead starting structures? (Land, 2× Generator-Small, Stores, Maintenance Shed, Listening Post, Resource Stand, Hut)'
-      : 'Add free AT starting structures? (2× Generator-Small, Stores, Maintenance Shed, Listening Post)'
-    if (!confirm(label)) return
-    const newStructures = freeIds.map(id => ({
-      instanceId: genId(),
-      structureId: id,
-      usedThisRound: false,
-      powered: false,
-      condition: 'Undamaged',
-      notes: '',
-    }))
-    setState(p => ({
-      ...p,
-      phase: 4,
-      settlement: { ...(p.settlement ?? {}), structures: [...(p.settlement?.structures ?? []), ...newStructures] },
     }))
   }
 
@@ -357,6 +311,13 @@ export default function HomesteadPage() {
           <span className="text-amber/80 text-xs tracking-wider">— ROSTER · SETTLEMENT · TRACKER</span>
         </div>
         <span className="text-muted/60 text-[10px] tracking-wider">Round {state.round ?? 0}</span>
+        <span
+          className="text-purple text-xs font-bold tracking-widest px-2.5 py-1 border border-purple/50 rounded bg-purple-dim/20"
+          style={{ boxShadow: '0 0 10px var(--color-purple-glow)', textShadow: '0 0 6px var(--color-purple-glow)' }}
+          title="Total caps cost of every roster unit plus equipped items"
+        >
+          ROSTER COST {rosterCapsTotal}c
+        </span>
         <div className="ml-auto flex items-center gap-1.5 flex-wrap">
           <button
             onClick={() => { setPoolsTab('items'); setShowPools(true) }}
@@ -394,68 +355,6 @@ export default function HomesteadPage() {
         <div className="border border-danger rounded bg-danger-dim/20 px-4 py-2 text-danger text-xs font-bold"
           style={{ boxShadow: '0 0 8px var(--color-danger-glow)' }}>
           YOUR LEADER IS {leaderUnit.fate.toUpperCase()} — Designate a new Leader
-        </div>
-      )}
-
-      {/* Phase 1 restrictions (collapsible) */}
-      {phase === 1 && (
-        <div className="border border-pip-mid/50 rounded bg-panel-alt">
-          <button
-            type="button"
-            onClick={() => setShowPhase1Restrictions(v => !v)}
-            className="w-full px-4 py-2 flex items-center gap-2 text-left hover:bg-panel-light"
-          >
-            {showPhase1Restrictions ? <ChevronDown size={12} className="text-muted" /> : <ChevronRight size={12} className="text-muted" />}
-            <span className="text-title text-xs font-bold tracking-widest">PHASE 1 RESTRICTIONS</span>
-            <span className="ml-auto flex items-center gap-3 text-xs">
-              <span className={rosterCapsTotal > phase1CapLimit ? 'text-danger font-bold' : 'text-pip/70'}>{rosterCapsTotal}/{phase1CapLimit}c</span>
-              <span className={uniqueCount > 3 ? 'text-danger font-bold' : 'text-pip/70'}>U {uniqueCount}/3</span>
-              <span className={armorBudget > 150 ? 'text-danger font-bold' : 'text-pip/70'}>A {armorBudget}/150c</span>
-            </span>
-          </button>
-          {showPhase1Restrictions && (
-            <div className="px-4 pb-3 border-t border-pip-dim/30">
-              <div className="flex flex-wrap gap-4 text-xs items-center pt-2">
-                <span>
-                  Roster Caps:{' '}
-                  <span className={rosterCapsTotal > phase1CapLimit ? 'text-danger font-bold' : 'text-pip font-bold'}>{rosterCapsTotal}</span>
-                  {' / '}
-                  <span className="text-muted">{phase1CapLimit}c</span>{' '}
-                  <span className="text-muted">(limit:</span>
-                  <input
-                    type="number" min="0" value={phase1CapLimit}
-                    onChange={(e) => {
-                      const num = parseInt(e.target.value, 10)
-                      if (!isNaN(num) && num >= 0) setState(p => ({ ...p, phase1CapLimit: num }))
-                    }}
-                    className="w-16 text-xs py-0 px-1 ml-1 inline-block"
-                  />
-                  <span className="text-muted">c)</span>
-                </span>
-                <span>
-                  Unique:{' '}
-                  <span className={uniqueCount > 3 ? 'text-danger font-bold' : 'text-pip font-bold'}>{uniqueCount}</span>
-                  {' / 3'}
-                </span>
-                <span>
-                  Armor Budget:{' '}
-                  <span className={armorBudget > 150 ? 'text-danger font-bold' : 'text-pip font-bold'}>{armorBudget}c</span>
-                  {' / 150c'}
-                </span>
-              </div>
-              {nonLeaderWithPerks.length > 0 && (
-                <div className="text-danger text-xs mt-2">
-                  Non-leader units cannot have perks in Phase 1: {nonLeaderWithPerks.map(u => u.unitName).join(', ')}
-                </div>
-              )}
-            </div>
-          )}
-        </div>
-      )}
-
-      {phase === 2 && (
-        <div className="border border-amber/60 rounded bg-amber-dim/20 px-4 py-2 text-title text-xs font-bold tracking-wider">
-          PHASE 2 MODE — Track Fate only. Battles and Removed counts are not tracked this phase.
         </div>
       )}
 
@@ -506,7 +405,6 @@ export default function HomesteadPage() {
                       dmg={dmg}
                       rads={rads}
                       expanded={expanded}
-                      phase={phase}
                       onToggleExpand={() => setExpandedSlot(expanded ? null : u.slotId)}
                       onPatch={(patch) => patchUnit(u.slotId, patch)}
                       onRest={() => restUnit(u.slotId)}
@@ -518,7 +416,6 @@ export default function HomesteadPage() {
                       onRemovePerk={(idx) => removePerk(u.slotId, idx)}
                       onRemoveItem={(idx) => removeItem(u.slotId, idx)}
                       round={state.round ?? 0}
-                      battleCount={state.battleCount ?? 0}
                     />
                   )
                 })}
@@ -577,20 +474,6 @@ export default function HomesteadPage() {
               )
             })()}
           </div>
-
-          {/* Phase 3 setup banner */}
-          {phase === 3 && structures.length === 0 && (
-            <div className="border border-amber rounded bg-amber-dim/15 px-3 py-2 flex items-center gap-3">
-              <div className="flex-1">
-                <div className="text-amber text-xs font-bold tracking-widest">PHASE 3 — SETTLEMENT SETUP</div>
-                <p className="text-muted text-[11px] mt-0.5">Add your starting structures and bump to Phase 4 (free, no cap cost).</p>
-              </div>
-              <button
-                onClick={runPhase3Setup}
-                className="px-3 py-1.5 border border-amber text-amber font-bold tracking-widest text-xs rounded hover:bg-amber-dim/30"
-              >SET UP →</button>
-            </div>
-          )}
 
           {/* Structures */}
           <div className="border border-pip-mid/40 rounded-lg bg-panel">
@@ -798,11 +681,11 @@ export default function HomesteadPage() {
 // Per-unit row + expanded detail (renders as two <tr> siblings)
 // ────────────────────────────────────────────────────────────────────────
 function RosterRow({
-  unit, isDown, dmg, rads, expanded, phase,
+  unit, isDown, dmg, rads, expanded,
   onToggleExpand, onPatch, onRest, onRemove,
   onShowAddItem, onShowFate, onMarkRemoved,
   onAddPerk, onRemovePerk, onRemoveItem,
-  round, battleCount,
+  round,
 }) {
   const u = unit
   const totalCaps = calcUnitTotalCaps(u)
@@ -904,17 +787,9 @@ function RosterRow({
                 <Stat label="BASE">{u.baseCaps}c</Stat>
                 <Stat label="EQUIP">{itemCaps}c</Stat>
                 <Stat label="TOTAL">{totalCaps}c</Stat>
-                {phase !== 2 ? (
-                  <>
-                    <StatInput label="BATTLES" value={u.battles ?? 0} onChange={v => onPatch({ battles: v })} />
-                    <StatInput label="REMOVED" value={u.removed ?? 0} onChange={v => onPatch({ removed: v })} />
-                    <StatInput label="LUC"     value={u.lucScore ?? 3} onChange={v => onPatch({ lucScore: v })} max={10} />
-                  </>
-                ) : (
-                  <div className="col-span-3 text-[10px] text-muted/60 tracking-wider flex items-center">
-                    Phase 2 — battle counts not tracked
-                  </div>
-                )}
+                <StatInput label="BATTLES" value={u.battles ?? 0} onChange={v => onPatch({ battles: v })} />
+                <StatInput label="REMOVED" value={u.removed ?? 0} onChange={v => onPatch({ removed: v })} />
+                <StatInput label="LUC"     value={u.lucScore ?? 3} onChange={v => onPatch({ lucScore: v })} max={10} />
               </div>
 
               {/* Flags + fate roll */}
@@ -999,8 +874,6 @@ function RosterRow({
               {/* Perks */}
               <PerkPanel
                 unit={u}
-                phase={phase}
-                battleCount={battleCount}
                 onAddPerk={onAddPerk}
                 onRemovePerk={onRemovePerk}
               />
@@ -1036,7 +909,7 @@ function RosterRow({
 // ────────────────────────────────────────────────────────────────────────
 // Per-unit Perk panel (with PerkPickerModal)
 // ────────────────────────────────────────────────────────────────────────
-function PerkPanel({ unit, phase, battleCount, onAddPerk, onRemovePerk }) {
+function PerkPanel({ unit, onAddPerk, onRemovePerk }) {
   const [showPerkModal, setShowPerkModal] = useState(false)
   const [expandedPerk, setExpandedPerk] = useState(null)
 
@@ -1046,8 +919,7 @@ function PerkPanel({ unit, phase, battleCount, onAddPerk, onRemovePerk }) {
 
   const tooMany = perks.length > battles
   const roundLimitReached = perksThisRound >= 1
-  const phase4FirstBattle = phase === 4 && battleCount === 0
-  const canAdd = !roundLimitReached && !phase4FirstBattle && perks.length < battles
+  const canAdd = !roundLimitReached && perks.length < battles
 
   function handleDrawRandom() {
     if (!canAdd) return
@@ -1058,8 +930,7 @@ function PerkPanel({ unit, phase, battleCount, onAddPerk, onRemovePerk }) {
   }
 
   let warning = null
-  if (phase4FirstBattle) warning = 'First perk available after first Phase 4 battle'
-  else if (roundLimitReached) warning = 'Max 1 new perk per settlement round'
+  if (roundLimitReached) warning = 'Max 1 new perk per settlement round'
   else if (perks.length >= battles && battles > 0) warning = 'Cannot exceed battles fought'
   else if (battles === 0) warning = 'No battles fought yet — perks require at least 1 battle'
 

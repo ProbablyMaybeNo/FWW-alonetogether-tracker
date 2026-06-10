@@ -489,7 +489,7 @@ export default function CampaignDirectory({ onEnterCampaign, onSolo }) {
                       <div className="flex-1 min-w-0">
                         <div className="text-pip text-sm font-bold truncate">{camp.name}</div>
                         <div className="text-pip text-xs mt-0.5 flex items-center gap-3">
-                          <span>Phase {camp.phase} · Round {camp.round}</span>
+                          <span>Round {camp.round}</span>
                           <span className="hidden sm:inline text-pip">
                             {camp.created_at ? new Date(camp.created_at).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }) : ''}
                           </span>

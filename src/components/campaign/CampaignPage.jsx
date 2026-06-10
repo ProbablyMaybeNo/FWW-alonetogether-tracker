@@ -11,61 +11,6 @@ import PersonalNarrativeLog from './PersonalNarrativeLog'
 import ResetCampaignModal from './ResetCampaignModal'
 
 
-const PHASES = [
-  {
-    num: 1,
-    name: 'THE ROAD AHEAD',
-    subtitle: 'Build Roster',
-    battles: 'None',
-    rules: [
-      '750 Caps',
-      'Max 3 Uniques',
-      'Leader must be 1 unique and determines faction',
-      '1 Leader Perk and/or Heroic',
-      '1 heavy weapon per 250 caps',
-      'Basic loadouts only',
-      '+150 armor only caps fund',
-      'No Perks, Equipment, or Boosts (Except for leader)',
-    ],
-  },
-  {
-    num: 2,
-    name: 'GATHER SUPPLIES',
-    subtitle: 'Loot & Survive',
-    battles: '2–3',
-    rules: [
-      'Track FATE only — no Injury, Battle, or Removed counts.',
-      'Permanent deaths apply.',
-      'All non-Dead conditions reset at Phase 3 start.',
-      'Caps and loot carry forward.',
-    ],
-  },
-  {
-    num: 3,
-    name: 'STAKING A CLAIM',
-    subtitle: 'Build Settlement',
-    battles: 'None',
-    rules: [
-      'Spend caps on structures and recruits only.',
-      'Free start: 2× Small Generator, Stores, Maintenance Shed, Listening Post.',
-      'Unspent caps carry into Phase 4.',
-    ],
-  },
-  {
-    num: 4,
-    name: 'FIGHTING FOR THE FRONTIER',
-    subtitle: 'Open Campaign Loop',
-    battles: 'Until end',
-    rules: [
-      'Repeat Settlement Round Sequence (Steps 1–5) each round.',
-      'Force: 500 caps default, 1,000 cap hard ceiling.',
-      '+50 cap bonus every battle.',
-      'Final Score = Caps + living roster value.',
-    ],
-  },
-]
-
-
 function NarrativeModal({ player, onClose }) {
   if (!player) return null
   const entries = player.narrativeLog || []
@@ -139,11 +84,8 @@ export default function CampaignPage({ campaignId, onTabChange }) {
   const [editingNarrativeId, setEditingNarrativeId] = useState(null)
   const [playerRoundNarrative, setPlayerRoundNarrative] = useState(null) // { player, round }
 
-  const phase = state?.phase ?? 1
   const round = state?.round ?? 0
   const battleCount = state?.battleCount ?? 0
-  const phaseInfo = PHASES[phase - 1] || PHASES[0]
-  const isAT = !state?.settings?.settlementMode || state.settings.settlementMode === 'alone-together'
   const isCreator = !isOnline || !sharedState || !sharedState.createdBy ||
     !!(user?.id && user.id === sharedState.createdBy)
 
@@ -299,14 +241,6 @@ export default function CampaignPage({ campaignId, onTabChange }) {
     ? allPlayers.map(p => (myStats && p.isMe) ? myStats : p)
     : (myStats ? [myStats] : [])
 
-  function handlePhaseSet(val) {
-    const n = parseInt(val, 10)
-    if (isNaN(n)) return
-    const newPhase = Math.max(1, Math.min(4, n))
-    if (isOnline) updateShared('phase', newPhase)
-    else setState(prev => ({ ...prev, phase: newPhase }))
-  }
-
   async function handleRoundChange(val) {
     const n = parseInt(val, 10)
     const newRound = isNaN(n) ? 0 : n
@@ -432,55 +366,10 @@ export default function CampaignPage({ campaignId, onTabChange }) {
         </div>
       )}
 
-      {/* ── Phase Banner ── */}
-      <div
-        className="bg-panel-light border border-amber/40 rounded-lg px-4 py-3"
-        style={{ boxShadow: '0 0 12px var(--color-amber-glow)' }}
-      >
-        {/* Phase name — AT only */}
-        {isAT && (
-          <div className="min-w-0">
-            <div className="flex items-center gap-3 mb-1">
-              <span className="text-title text-xl font-bold tracking-widest">PHASE {phase}</span>
-              <span className="text-amber/80 text-base font-bold tracking-wider">— {phaseInfo.name}</span>
-            </div>
-            <div className="flex flex-wrap gap-x-4 gap-y-0.5 mb-1">
-              <span className="text-muted text-xs"><span className="text-pip/70 uppercase tracking-wider text-xs">Objective:</span> {phaseInfo.subtitle}</span>
-              <span className="text-muted text-xs"><span className="text-pip/70 uppercase tracking-wider text-xs">Battles:</span> {phaseInfo.battles}</span>
-            </div>
-            <div className="flex flex-wrap gap-x-3 gap-y-0.5 mt-1">
-              {phaseInfo.rules.map((r, i) => (
-                <span key={i} className="text-muted/80 text-xs">
-                  <span className="text-amber/60 mr-1">›</span>{r}
-                </span>
-              ))}
-            </div>
-          </div>
-        )}
-        {!isAT && (
-          <div className="text-pip text-xs tracking-wider opacity-50">Campaign Mode — Phase tracking disabled</div>
-        )}
-      </div>
-
       {/* ── Round / Battles Controls ── */}
       <div className="flex items-center gap-4 flex-wrap">
-        {/* Phase — AT mode only: editable for creator, read-only for others */}
-        {isAT && isCreator && (
-          <div className="flex items-center gap-2">
-            <span className="text-pip text-xs tracking-wider">PHASE</span>
-            <input
-              type="number" min="1" max="4" value={phase}
-              onChange={e => handlePhaseSet(e.target.value)}
-              className="text-sm py-1 px-2 w-12 text-center font-bold"
-            />
-            <span className="text-pip text-xs">/4</span>
-          </div>
-        )}
-        {isAT && !isCreator && (
-          <span className="text-pip text-xs tracking-wider">PHASE {phase} / 4</span>
-        )}
         {/* Round — +/- stepper for creator or solo, read-only for members */}
-        <div className={`flex items-center gap-2 ${isAT ? 'border-l border-pip-dim/30 pl-4' : ''}`}>
+        <div className="flex items-center gap-2">
           <span className="text-pip text-xs tracking-wider">ROUND</span>
           {isCreator || !isOnline ? (
             <div className="flex items-center gap-1">

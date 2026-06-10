@@ -245,7 +245,7 @@ export default function CampaignLobby({ onEnterCampaign, onSolo }) {
               {campaigns.map(c => (
                 <button key={c.id} style={s.campaignBtn} onClick={() => enterCampaign(c.id)} type="button">
                   <span style={s.campName}>{c.name}</span>
-                  <span style={s.campMeta}>Phase {c.phase ?? 1} · Round {c.round ?? 0}</span>
+                  <span style={s.campMeta}>Round {c.round ?? 0}</span>
                 </button>
               ))}
             </div>

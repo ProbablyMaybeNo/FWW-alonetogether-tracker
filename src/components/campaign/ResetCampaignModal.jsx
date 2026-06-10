@@ -150,7 +150,7 @@ export default function ResetCampaignModal({
 
           <p className="text-amber text-xs tracking-widest font-bold pt-2">RESET TO DEFAULTS</p>
           <ul className="text-xs text-muted space-y-1 pl-4">
-            <li>• Campaign: Phase 1, Round 1, 0 battles, no battle records</li>
+            <li>• Campaign: Round 1, 0 battles, no battle records</li>
             <li>• Map: fully reset (fog-of-war, no controlled territories or routes)</li>
             <li>• All inhabitants decks, battle setup state</li>
           </ul>
@@ -159,7 +159,7 @@ export default function ResetCampaignModal({
         {isOnline && (
           <div className="border border-amber/40 rounded p-3 bg-amber-dim/10">
             <p className="text-amber text-xs leading-relaxed">
-              <strong>Multiplayer note:</strong> the shared campaign state (phase/round/battles/narratives/map) resets for everyone immediately.
+              <strong>Multiplayer note:</strong> the shared campaign state (round/battles/narratives/map) resets for everyone immediately.
               Each <em>other</em> player's per-player data (their roster/caps/items/etc.) only resets when <em>they</em> press this button on their own session.
               Ask them to do the same after you.
             </p>
