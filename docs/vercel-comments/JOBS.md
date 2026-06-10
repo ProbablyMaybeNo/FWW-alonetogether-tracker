@@ -28,9 +28,11 @@ See "Open Questions" below.
 ## Wave 1b — Quick wins needing a live click to confirm target first
 | Job | Comment | Action |
 |-----|---------|--------|
-| J9 | C04 | Identify the 3rd aside card, confirm with Ross if non-obvious, remove |
-| J10 | C25 | Identify the Campaign section `h2`, remove (standings → Battles page) |
-| J11 | C02 | Click the header button, answer "what does this do?", add a tooltip |
+| ~~J9~~ | ~~C04~~ | **RE-SCOPED → Wave 5.** C04 is the map LEGEND, not a Homestead card. Folds into the map overhaul. |
+| J10 | C25 | Campaign "ROUND N STATUS" card. **Scope confirm needed** — removing the whole card also removes the NEXT ROUND advance button. Ask Ross: whole section vs keep round-advance / drop only standings. |
+| J11 | C02 | The commented button (`inline-flex gap-1.5`) doesn't match the current Homestead header (decluttered since the comment). **Ask Ross which button**, or add explanatory tooltips to all header buttons (also covers C19). |
+
+**Catalogue correction (verified live 2026-06-10):** C03 = map FACTION THREAT (factions blank/player-typed) and C04 = map LEGEND (remove) are **map-page**, not Homestead → both moved into Wave 5.
 
 ## Wave 2 — Homestead header/settlement restructure (do as one set; depends on C02 answer)
 | Job | Comment | Action |
@@ -59,7 +61,9 @@ See "Open Questions" below.
 | J21 | C07 | Image-upload canvas + drag-from-legend icon placement + per-icon info popup |
 | J22 | C06 | Generic icons, blank names, colour, Save name+position |
 | J23 | C05 | Reuse location menus blank-by-default; auto-fill "connected locations" from routes |
-| J24 | (C07) | Route-drawing between locations (approach per Q1) |
+| J24 | (C07) | Route-drawing between locations — simple DRAW LINE button (drop each end on two locations) |
+| J24b | C03 | FACTION THREAT: start blank, players add/name their own faction rows |
+| J24c | C04 | Remove the LEGEND section |
 
 ## Wave 6 — Quest data backfill (depends on Q4)
 | Job | Comment | Action |

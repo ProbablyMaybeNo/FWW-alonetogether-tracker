@@ -49,11 +49,11 @@ Selected: BUILD `button.text-[10px]` (3rd) in header.
 **Interpretation:** Add a hover/explainer panel (left of page or inline) describing each step. Exact copy supplied above. Depends on C08 (where the buttons end up).
 **Agent notes:** Implement as tooltips on the build/select/use buttons (or a small fixed explainer box). Use the three strings verbatim.
 
-### C04 · `zOrYVM8giNcY` — Remove an aside section · **Remove · S · Verify-on-app**
-Selected: `h3.text-amber.text-xs.tracking-widest` in Homestead aside, `div.border:nth-of-type(3)` (3rd bordered card in the right column).
+### C04 · `zOrYVM8giNcY` — Remove the map LEGEND section · **Remove · S · → MAP (Wave 5)**
+**RE-SCOPED:** verified on live app — this is the **MAP page** aside `div.border:nth-of-type(3)` = the **LEGEND** card (STATE key), NOT Homestead.
 > We can remove this entire section.
-**Interpretation:** Delete the whole 3rd card in the settlement aside. **Need to confirm which card** (3rd bordered block) on the live app — likely an inhabitants/explore or item-deck sub-panel.
-**Agent notes:** Identify the `div.border:nth-of-type(3)` under `aside.space-y-3` in the Homestead grid, confirm its `h3`, then remove the section.
+**Interpretation:** Remove the LEGEND section from the map. Folds into the C07 map overhaul (fresh rebuild won't carry the legend). Could also be a standalone 1-liner removal if done before the rebuild.
+**Agent notes:** `components/map/CampaignLegend.jsx` / its render in `CampaignMapPage.jsx`.
 
 ### C18 · `Af28E-zQ16sg` — Combine CAPS into STRUCTURES; caps counter inside · **Change · M · Ready**
 Selected: `span.text-amber` "CAPS" header in the aside `div.border > div.flex`.
@@ -89,6 +89,12 @@ Selected: `h3.text-amber` MARKERS palette header (map aside).
 > These Markers are great but can we leave their names blank until the player fills them in themselves? We'll need to add a "Save" function so players can save the names and their position on the board. Also we don't need quite as many as we have. Would be better to make them generic icons instead of letters so players can assign them to anything and then change their colors.
 **Interpretation:** Part of the C07 overhaul — generic (non-lettered) icons, blank names until filled, fewer of them, colour-changeable, with explicit Save of name+board position.
 **Agent notes:** `MarkerPalette.jsx`. Folds into C07.
+
+### C03 · `1B0SJOGco17e` — FACTION THREAT factions blank/player-typed · **Change · M · → MAP (Wave 5)**
+Selected: `span.inline-flex` in map aside `div.border:nth-of-type(2)` = the **FACTION THREAT** tracker. Verified on live app — currently fixed factions (Brotherhood of Steel, Caesar's Legion, Institute, Super Mutants, Raiders).
+> We need to make it so the FACTIONS start blank and players can type in the factions they want so players can add any factions they want which are appropriate for their specific campaign.
+**Interpretation:** FACTION THREAT list starts blank; players add/name their own faction rows (any factions appropriate to their campaign). Folds into the map rework.
+**Agent notes:** `components/map/ThreatTracker.jsx`; faction-threat data in `data/campaignMap.js` / `useCampaignMapState.js`.
 
 ---
 
@@ -185,7 +191,7 @@ Selected: an amber `span.text-xs` quest badge; attachment `c01-edens-project-que
 ## Cross-cutting groups (for sequencing)
 - **Homestead header/settlement restructure:** C08, C18, C10, C19 (+ C02 answer). Do together.
 - **Quick text/remove wins:** C09, C11, C12, C14, C15, C16, C20, C23 (+ verify C04, C25).
-- **Map overhaul:** C05, C06, C07 (one feature).
+- **Map overhaul:** C07, C05, C06, **C03** (faction-threat editable), **C04** (remove legend) — one feature.
 - **Pools/equipment cycle:** C13, C17 → unblocks C10. (+ C14–16 copy.)
 - **Campaign narrative rework:** C21, C22, C24.
 - **Quest data:** C01.
