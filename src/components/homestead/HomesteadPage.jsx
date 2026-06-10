@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import {
   Plus, X, RotateCcw, Heart, Skull, Shield, ShieldOff,
-  Trash2, ChevronDown, ChevronRight, Dices, Package, Star, Shuffle,
+  Trash2, ChevronDown, ChevronRight, Dices, Package, Star, Shuffle, Swords,
 } from 'lucide-react'
 import { useCampaign } from '../../context/CampaignContext'
 import structuresCatalog from '../../data/structures.json'
@@ -110,6 +110,7 @@ export default function HomesteadPage() {
 
   // ── Derived roster stats ─────────────────────────────────────────────
   const rosterCapsTotal = roster.reduce((s, u) => s + calcUnitTotalCaps(u), 0)
+  const battleReadyCount = roster.filter(u => u.fate === 'Active' && u.battleReady).length
   const leaderUnit = roster.find(u => u.isLeader)
   const leaderAbsent = leaderUnit && ABSENT_FATES.includes(leaderUnit.fate)
 
@@ -363,6 +364,13 @@ export default function HomesteadPage() {
         <section className="border border-pip-mid/40 rounded-lg bg-panel">
           <div className="px-3 py-2 border-b border-pip-mid/30 flex items-center gap-2">
             <h3 className="text-amber text-xs tracking-widest font-bold flex-1">ROSTER ({roster.length})</h3>
+            <span
+              className="flex items-center gap-1 text-[10px] tracking-wider text-purple"
+              title="Units flagged for the battle roster. Tap the swords on a unit to flag it — flagged units auto-load when you start a battle."
+              style={battleReadyCount > 0 ? { textShadow: '0 0 6px var(--color-purple-glow)' } : undefined}
+            >
+              <Swords size={11} /> {battleReadyCount} battle-ready
+            </span>
             <button
               onClick={restAllWounded}
               title="Halve damage and drop one condition on every wounded Active unit"
@@ -695,24 +703,42 @@ function RosterRow({
     <>
       <tr className={`border-b border-pip-dim/20 hover:bg-panel-alt ${isDown ? 'opacity-50' : ''} ${expanded ? 'bg-panel-alt' : ''}`}>
         <td className="py-1 px-2">
-          <button
-            type="button"
-            onClick={onToggleExpand}
-            className="flex items-center gap-1 text-left w-full hover:text-amber"
-            title={expanded ? 'Collapse' : 'Expand detail'}
-          >
-            {expanded
-              ? <ChevronDown size={11} className="text-muted shrink-0" />
-              : <ChevronRight size={11} className="text-muted shrink-0" />}
-            <span className="min-w-0">
-              <div className="text-pip font-bold leading-tight truncate flex items-center gap-1">
-                {u.unitName || '—'}
-                {u.isLeader && <span className="text-amber text-[9px] px-1 border border-amber/60 rounded font-bold">LDR</span>}
-                {u.heroic && <Star size={9} className="text-amber" />}
-              </div>
-              {u.faction && <div className="text-muted/60 text-[10px] leading-tight">{u.faction}</div>}
-            </span>
-          </button>
+          <div className="flex items-center gap-1.5">
+            <button
+              type="button"
+              onClick={() => onPatch({ battleReady: !u.battleReady })}
+              disabled={isDown}
+              title={u.battleReady
+                ? 'In battle roster — auto-loaded when you start a battle. Tap to remove.'
+                : 'Add to battle roster — auto-loaded when you start a battle'}
+              className={`shrink-0 p-1 rounded border transition-colors disabled:opacity-30 ${
+                u.battleReady
+                  ? 'border-purple text-purple bg-purple-dim/30'
+                  : 'border-muted/30 text-muted/40 hover:text-purple hover:border-purple/50'
+              }`}
+              style={u.battleReady ? { boxShadow: '0 0 8px var(--color-purple-glow)' } : undefined}
+            >
+              <Swords size={12} />
+            </button>
+            <button
+              type="button"
+              onClick={onToggleExpand}
+              className="flex items-center gap-1 text-left min-w-0 flex-1 hover:text-amber"
+              title={expanded ? 'Collapse' : 'Expand detail'}
+            >
+              {expanded
+                ? <ChevronDown size={11} className="text-muted shrink-0" />
+                : <ChevronRight size={11} className="text-muted shrink-0" />}
+              <span className="min-w-0">
+                <div className="text-pip font-bold leading-tight truncate flex items-center gap-1">
+                  {u.unitName || '—'}
+                  {u.isLeader && <span className="text-amber text-[9px] px-1 border border-amber/60 rounded font-bold">LDR</span>}
+                  {u.heroic && <Star size={9} className="text-amber" />}
+                </div>
+                {u.faction && <div className="text-muted/60 text-[10px] leading-tight">{u.faction}</div>}
+              </span>
+            </button>
+          </div>
         </td>
         <td className="py-1 px-1">
           <Counter value={dmg} onChange={v => onPatch({ regDamage: v })} accent="danger" />

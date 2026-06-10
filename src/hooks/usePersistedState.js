@@ -79,6 +79,7 @@ function migrateUnit(u) {
     heroic: u.heroic ?? false,
     hasPowerArmor: u.hasPowerArmor ?? false,
     paDegraded: u.paDegraded ?? false,
+    battleReady: u.battleReady ?? false,
     condPoisoned: u.condPoisoned ?? false,
     condInjuredArm: u.condInjuredArm ?? false,
     condInjuredLeg: u.condInjuredLeg ?? false,

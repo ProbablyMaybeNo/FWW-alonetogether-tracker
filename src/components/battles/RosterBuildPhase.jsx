@@ -1,5 +1,5 @@
 import { useState, useMemo } from 'react'
-import { Check, Users } from 'lucide-react'
+import { Check, Users, X, Plus } from 'lucide-react'
 import { normalizeActiveBattle } from '../../utils/activeBattle'
 import { getItemRef } from '../../utils/calculations'
 import {
@@ -36,7 +36,19 @@ export default function RosterBuildPhase({
   const wastelandN = setup.wastelandItemsCount ?? 6
 
   const alreadySubmitted = !!ab.battleRosters[currentUserId]
-  const [draftEntries, setDraftEntries] = useState([])
+  // Pre-load any units the player flagged as battle-ready on their Homestead roster.
+  const [draftEntries, setDraftEntries] = useState(() => {
+    if (alreadySubmitted) return []
+    return (roster || [])
+      .filter(u => u.fate === 'Active' && u.battleReady)
+      .map(u => ({
+        slotId: u.slotId,
+        unitName: u.unitName ?? `Unit #${u.slotId}`,
+        omittedStandardItemIds: [],
+        addedItemInstanceIds: [],
+        addedBoostInstanceIds: [],
+      }))
+  })
   const [submitted, setSubmitted] = useState(alreadySubmitted)
 
   const activeRoster = (roster || []).filter(u => u.fate === 'Active')
@@ -184,7 +196,7 @@ export default function RosterBuildPhase({
       </div>
 
       <p className="text-muted text-xs px-4 pt-2">
-        Your roster is hidden from your opponent until you submit. Submitting also draws {wastelandN} cards from your Settlement Item Deck for the Wasteland.
+        Units flagged <span className="text-purple font-bold">battle-ready</span> on your Homestead roster are pre-loaded below — add or remove any unit, and tweak each unit's loadout here for this battle only. Your roster is hidden from your opponent until you submit. Submitting also draws {wastelandN} cards from your Settlement Item Deck for the Wasteland.
       </p>
 
       <div className="flex-1 overflow-y-auto p-4 space-y-4">
@@ -231,7 +243,7 @@ export default function RosterBuildPhase({
 
               {(unit.equippedItems || []).length > 0 && (
                 <div>
-                  <p className="text-muted mb-1">Standard items — click to omit for this battle</p>
+                  <p className="text-muted mb-1 uppercase tracking-wider text-[10px]">Inherent equipment — tap to remove for this battle</p>
                   <div className="flex flex-wrap gap-1">
                     {(unit.equippedItems || []).map(eid => {
                       const ref = getItemRef(eid)
@@ -240,10 +252,12 @@ export default function RosterBuildPhase({
                         <button
                           key={eid}
                           onClick={() => toggleOmitStandard(entry.slotId, eid)}
-                          className={`text-xs px-2 py-0.5 rounded border transition-opacity ${
-                            omitted ? 'opacity-40 line-through border-muted/30 text-muted' : 'border-pip/40 text-pip'
+                          title={omitted ? 'Removed for this battle — tap to restore' : 'Tap to remove for this battle'}
+                          className={`flex items-center gap-1 text-xs px-2 py-1 rounded border min-h-[32px] transition ${
+                            omitted ? 'opacity-50 line-through border-muted/30 text-muted' : 'border-pip/50 text-pip'
                           }`}
                         >
+                          {omitted ? <Plus size={11} /> : <X size={11} />}
                           {ref?.name ?? eid} ({ref?.caps ?? 0}c)
                         </button>
                       )
@@ -254,8 +268,8 @@ export default function RosterBuildPhase({
 
               {poolItems.length > 0 && (
                 <div>
-                  <p className="text-pip mb-1">Battle pool items (Stores)</p>
-                  <div className="flex flex-wrap gap-1 max-h-24 overflow-y-auto">
+                  <p className="text-amber mb-1 uppercase tracking-wider text-[10px]">Equip from Stores — tap to add for this battle</p>
+                  <div className="flex flex-wrap gap-1 max-h-28 overflow-y-auto">
                     {poolItems
                       .filter(i => !usedInstanceIds.has(i.id) || entry.addedItemInstanceIds.includes(i.id))
                       .map(i => {
@@ -265,10 +279,12 @@ export default function RosterBuildPhase({
                             key={i.id}
                             disabled={!onUnit && usedInstanceIds.has(i.id)}
                             onClick={() => onUnit ? removeItem(entry.slotId, i.id) : assignItem(entry.slotId, i.id)}
-                            className={`text-xs px-2 py-0.5 rounded border ${
-                              onUnit ? 'border-amber text-amber' : 'border-pip-dim/40 text-muted disabled:opacity-30'
+                            title={onUnit ? 'Equipped from Stores — tap to unequip' : 'Tap to equip for this battle'}
+                            className={`flex items-center gap-1 text-xs px-2 py-1 rounded border min-h-[32px] ${
+                              onUnit ? 'border-amber text-amber bg-amber-dim/20' : 'border-pip-dim/40 text-muted disabled:opacity-30'
                             }`}
                           >
+                            {onUnit ? <X size={11} /> : <Plus size={11} />}
                             {i.name} ({i.caps ?? 0}c)
                           </button>
                         )
