@@ -309,16 +309,8 @@ export default function HomesteadPage() {
         style={{ boxShadow: '0 0 12px var(--color-amber-glow)' }}>
         <div className="flex items-center gap-2">
           <span className="text-title text-lg font-bold tracking-widest">HOMESTEAD</span>
-          <span className="text-amber/80 text-xs tracking-wider">— ROSTER · SETTLEMENT · TRACKER</span>
         </div>
         <span className="text-muted/60 text-[10px] tracking-wider">Round {state.round ?? 0}</span>
-        <span
-          className="text-purple text-xs font-bold tracking-widest px-2.5 py-1 border border-purple/50 rounded bg-purple-dim/20"
-          style={{ boxShadow: '0 0 10px var(--color-purple-glow)', textShadow: '0 0 6px var(--color-purple-glow)' }}
-          title="Total caps cost of every roster unit plus equipped items"
-        >
-          ROSTER COST {rosterCapsTotal}c
-        </span>
         <div className="ml-auto flex items-center gap-1.5 flex-wrap">
           <button
             onClick={() => { setPoolsTab('items'); setShowPools(true) }}
@@ -376,7 +368,13 @@ export default function HomesteadPage() {
               title="Halve damage and drop one condition on every wounded Active unit"
               className="text-[10px] tracking-widest px-2 py-1 border border-pip/60 text-pip rounded hover:bg-pip-dim/20 font-bold"
             >REST ALL</button>
-            <span className="text-muted/60 text-[10px] tracking-wider hidden sm:inline">Click row to expand</span>
+            <span
+              className="text-purple text-[11px] font-bold tracking-widest px-2 py-1 border border-purple/50 rounded bg-purple-dim/20"
+              style={{ boxShadow: '0 0 10px var(--color-purple-glow)', textShadow: '0 0 6px var(--color-purple-glow)' }}
+              title="Total caps cost of every roster unit plus equipped items"
+            >
+              COST {rosterCapsTotal}c
+            </span>
           </div>
           <div className="overflow-x-auto">
             <table className="w-full text-xs">
