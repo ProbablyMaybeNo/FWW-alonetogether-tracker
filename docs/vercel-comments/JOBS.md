@@ -72,7 +72,7 @@ See "Open Questions" below.
 `[ ]` todo · `[~]` in progress · `[x]` done+verified · `[!]` needs rework
 
 ```
-Wave 1:  [ ] J1  [ ] J2  [ ] J3  [ ] J4  [ ] J5  [ ] J6  [ ] J7  [ ] J8
+Wave 1:  [x] J1  [x] J2  [x] J3  [x] J4  [x] J5  [x] J6  [x] J7  [x] J8   ← shipped to main (b131e63), verified on prod 2026-06-10
 Wave 1b: [ ] J9  [ ] J10 [ ] J11
 Wave 2:  [ ] J12 [ ] J13 [ ] J14
 Wave 3:  [ ] J15 [ ] J16 [ ] J17
@@ -80,6 +80,14 @@ Wave 4:  [ ] J18 [ ] J19 [ ] J20
 Wave 5:  [ ] J21 [ ] J22 [ ] J23 [ ] J24
 Wave 6:  [ ] J25
 ```
+
+**Wave 1 verification (prod `fww-alonetogether-tracker.vercel.app`, logged-in campaign):**
+- J1 ✓ ROSTER bar no longer shows the "battle-ready" chip (per-row purple swords toggle retained).
+- J2 ✓ Roster cost chip reads `900c` (no "COST").
+- J4 ✓ Campaign top controls show only ROUND; BATTLES counter gone.
+- J5 ✓ Scavenger Objectives board gone (Players → Round Status → Campaign Narrative → My Journal → Danger Zone).
+- J3 / J6 / J7 / J8 — native `title=` tooltips; confirmed in code + build (native tooltips don't screenshot reliably).
+- Vercel comment threads C09/C11/C12/C14/C15/C16/C20/C23 left **unresolved** pending Ross's eyes — resolve once confirmed.
 
 ## Decisions (Wave 0 — answered 2026-06-10)
 **Q1 — Map (C05/C06/C07):** ✅ **Simple DRAW LINE button.** Full rebuild = upload map image + drag icons from legend + per-icon info popup + routes via a "DRAW LINE" button (drop each end on two locations). **Fresh map state** (old hex/SVG map replaced).
