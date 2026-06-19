@@ -52,7 +52,7 @@ Autonomous build checklist for the map rebuild. Full intent + locked decisions l
     live; fill rules/buffs → persists across reload; delete row → icon + entry gone; build +
     lint green.
 
-- [ ] **P5 — Snap-to-icon route lines.** Add line drawing between icons.
+- [x] **P5 — Snap-to-icon route lines.** Add line drawing between icons.
   - A **DRAW LINE** toggle button (editor-only, in the aside). When active, the user clicks
     one icon then a second icon; on the second click create a line
     `{ id, fromId, toId, color? }` in `lines` and exit draw mode. Show a hint while active;

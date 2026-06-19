@@ -16,15 +16,23 @@ const MARKER_INDEX = Object.fromEntries(MARKER_KINDS.map(m => [m.kind, m]))
 
 export default function CampaignMapCanvas({
   markers,
+  lines,
   background,
   selectedId,
   onSelect,
   onDropMarker,
   onMoveMarker,
   onRemoveMarker,
+  drawMode = false,
+  drawFromId = null,
+  onPickLineEnd,
+  onCancelDraw,
+  onRemoveLine,
 }) {
   const svgRef = useRef(null)
   const [dragMarker, setDragMarker] = useState(null) // { id }
+
+  const markerById = Object.fromEntries((markers ?? []).map(m => [m.id, m]))
 
   const handleDragOver = useCallback((e) => {
     e.preventDefault()
@@ -72,8 +80,8 @@ export default function CampaignMapCanvas({
         onPointerMove={handlePointerMove}
         onPointerUp={handlePointerUp}
         onPointerLeave={handlePointerUp}
-        onPointerDown={() => onSelect?.(null)}
-        style={{ touchAction: 'none' }}
+        onPointerDown={() => { drawMode ? onCancelDraw?.() : onSelect?.(null) }}
+        style={{ touchAction: 'none', cursor: drawMode ? 'crosshair' : undefined }}
       >
         {/* Uploaded background map image (P2) */}
         {background?.url && (
@@ -87,6 +95,38 @@ export default function CampaignMapCanvas({
           />
         )}
 
+        {/* Route lines — rendered UNDER the icons; endpoints anchored to the
+            icons' live x/y so lines follow icons when moved (the "snap"). */}
+        <g>
+          {(lines ?? []).map(l => {
+            const a = markerById[l.fromId]
+            const b = markerById[l.toId]
+            if (!a || !b) return null // guard: an endpoint icon was removed
+            const color = l.color ?? '#3aa0ff'
+            const isSelected = selectedId === l.id
+            return (
+              <g key={l.id}>
+                {/* Wide invisible hit area so right-click/select is easy to land */}
+                <line
+                  x1={a.x} y1={a.y} x2={b.x} y2={b.y}
+                  stroke="transparent" strokeWidth={3}
+                  style={{ cursor: 'pointer' }}
+                  onPointerDown={(e) => { e.stopPropagation(); if (!drawMode) onSelect?.(l.id) }}
+                  onContextMenu={(e) => { e.preventDefault(); e.stopPropagation(); onRemoveLine?.(l.id) }}
+                />
+                <line
+                  x1={a.x} y1={a.y} x2={b.x} y2={b.y}
+                  stroke={color}
+                  strokeWidth={isSelected ? 0.8 : 0.5}
+                  strokeLinecap="round"
+                  pointerEvents="none"
+                  style={{ filter: `drop-shadow(0 0 ${isSelected ? 3 : 1.5}px ${color})` }}
+                />
+              </g>
+            )
+          })}
+        </g>
+
         {/* Placed icons (markers) */}
         <g>
           {markers.map(m => {
@@ -95,22 +135,33 @@ export default function CampaignMapCanvas({
             const color = m.color ?? info.color
             const isDragging = dragMarker?.id === m.id
             const isSelected = selectedId === m.id
+            const isDrawSource = drawMode && drawFromId === m.id
             return (
               <g
                 key={m.id}
                 transform={`translate(${m.x} ${m.y})`}
-                style={{ cursor: isDragging ? 'grabbing' : 'grab' }}
+                style={{ cursor: drawMode ? 'crosshair' : (isDragging ? 'grabbing' : 'grab') }}
                 onPointerDown={(e) => {
                   e.stopPropagation()
+                  if (drawMode) {
+                    onPickLineEnd?.(m.id)
+                    return
+                  }
                   e.currentTarget.setPointerCapture?.(e.pointerId)
                   onSelect?.(m.id)
                   setDragMarker({ id: m.id })
                 }}
                 onContextMenu={(e) => {
                   e.preventDefault()
-                  onRemoveMarker?.(m.id)
+                  if (!drawMode) onRemoveMarker?.(m.id)
                 }}
               >
+                {isDrawSource && (
+                  <circle r={3.2} fill="none" stroke="var(--color-pip)" strokeWidth={0.5}
+                    strokeDasharray="1 0.8"
+                    style={{ filter: 'drop-shadow(0 0 4px var(--color-pip))' }}
+                  />
+                )}
                 {isSelected && (
                   <circle r={3.2} fill="none" stroke="var(--color-amber)" strokeWidth={0.4}
                     style={{ filter: 'drop-shadow(0 0 4px var(--color-amber))' }}

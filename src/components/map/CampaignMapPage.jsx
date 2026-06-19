@@ -1,5 +1,5 @@
-import { useState } from 'react'
-import { RotateCcw } from 'lucide-react'
+import { useState, useEffect, useCallback } from 'react'
+import { RotateCcw, Spline } from 'lucide-react'
 import { useCampaignMapState } from '../../hooks/useCampaignMapState'
 import CampaignMapCanvas from './CampaignMapCanvas'
 import MarkerPalette from './MarkerPalette'
@@ -10,6 +10,28 @@ export default function CampaignMapPage() {
   const map = useCampaignMapState()
   const [confirmReset, setConfirmReset] = useState(false)
   const [selectedId, setSelectedId] = useState(null)
+  const [drawMode, setDrawMode] = useState(false)
+  const [drawFromId, setDrawFromId] = useState(null) // first picked icon while drawing
+
+  const cancelDraw = useCallback(() => { setDrawMode(false); setDrawFromId(null) }, [])
+
+  // First icon click sets the source; second click creates the line + exits.
+  const pickLineEnd = useCallback((iconId) => {
+    setDrawFromId(prev => {
+      if (!prev) return iconId
+      if (prev !== iconId) map.addLine(prev, iconId)
+      setDrawMode(false)
+      return null
+    })
+  }, [map])
+
+  // Esc cancels draw mode while active.
+  useEffect(() => {
+    if (!drawMode) return
+    const onKey = e => { if (e.key === 'Escape') cancelDraw() }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [drawMode, cancelDraw])
 
   function handleReset() {
     if (!confirmReset) {
@@ -57,16 +79,29 @@ export default function CampaignMapPage() {
         <div className="relative">
           <CampaignMapCanvas
             markers={map.markers}
+            lines={map.lines}
             background={map.background}
             selectedId={selectedId}
             onSelect={setSelectedId}
             onDropMarker={map.addMarker}
             onMoveMarker={map.moveMarker}
             onRemoveMarker={map.removeMarker}
+            drawMode={drawMode}
+            drawFromId={drawFromId}
+            onPickLineEnd={pickLineEnd}
+            onCancelDraw={cancelDraw}
+            onRemoveLine={map.removeLine}
           />
-          {map.canEdit && (
+          {map.canEdit && drawMode && (
+            <p className="text-pip text-[10px] tracking-widest mt-2 px-1"
+              style={{ textShadow: '0 0 6px var(--color-pip-glow)' }}>
+              {drawFromId ? 'Click a SECOND icon to connect · ' : 'Click the FIRST icon · '}
+              Esc or click empty map to cancel
+            </p>
+          )}
+          {map.canEdit && !drawMode && (
             <p className="text-muted/60 text-[10px] tracking-wider mt-2 px-1">
-              Drag icons from the palette onto the map · Drag a placed icon to move it · Right-click an icon to remove it
+              Drag icons from the palette onto the map · Drag a placed icon to move it · Right-click an icon to remove it · Right-click a line to remove it
             </p>
           )}
         </div>
@@ -80,13 +115,35 @@ export default function CampaignMapPage() {
               clearBackground={map.clearBackground}
             />
             <MarkerPalette />
+            <div className="border border-pip-mid/40 rounded bg-panel">
+              <div className="px-3 py-2 border-b border-pip-mid/30">
+                <h3 className="text-amber text-xs tracking-widest font-bold">ROUTES</h3>
+                <p className="text-muted/60 text-[10px] tracking-wider mt-0.5">Connect two icons with a line</p>
+              </div>
+              <div className="p-2">
+                <button
+                  onClick={() => (drawMode ? cancelDraw() : setDrawMode(true))}
+                  disabled={map.markers.length < 2}
+                  className={`w-full inline-flex items-center justify-center gap-1.5 text-[10px] tracking-widest px-3 py-2 border rounded transition-colors disabled:opacity-40 disabled:cursor-not-allowed ${
+                    drawMode
+                      ? 'border-pip text-pip bg-pip-dim/20'
+                      : 'border-pip-dim/50 text-pip hover:border-pip hover:bg-pip-dim/20'
+                  }`}
+                  title={map.markers.length < 2 ? 'Place at least two icons first' : 'Draw a route line between two icons'}
+                >
+                  <Spline size={12} />
+                  {drawMode ? 'CANCEL DRAW' : 'DRAW LINE'}
+                </button>
+              </div>
+            </div>
           </aside>
         )}
       </div>
 
-      {/* Auto-populating detail table — the edit surface for every placed icon */}
+      {/* Auto-populating detail table — the edit surface for every icon + route */}
       <MapTable
         markers={map.markers}
+        lines={map.lines}
         table={map.table}
         canEdit={map.canEdit}
         selectedId={selectedId}
@@ -95,6 +152,7 @@ export default function CampaignMapPage() {
         setMarkerLabel={map.setMarkerLabel}
         setTableField={map.setTableField}
         onRemoveMarker={map.removeMarker}
+        onRemoveLine={map.removeLine}
       />
     </div>
   )

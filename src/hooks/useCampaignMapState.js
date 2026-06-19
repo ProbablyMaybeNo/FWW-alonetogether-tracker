@@ -42,8 +42,15 @@ export function useCampaignMapState() {
 
   const removeMarker = useCallback(id => {
     patchMap(cur => {
-      const { [id]: _gone, ...table } = cur.table ?? {}
-      return { ...cur, markers: (cur.markers ?? []).filter(m => m.id !== id), table }
+      // Drop the icon, any lines touching it, and all their table entries.
+      const lines = (cur.lines ?? []).filter(l => l.fromId !== id && l.toId !== id)
+      const removedLineIds = (cur.lines ?? [])
+        .filter(l => l.fromId === id || l.toId === id)
+        .map(l => l.id)
+      const table = { ...(cur.table ?? {}) }
+      delete table[id]
+      removedLineIds.forEach(lid => { delete table[lid] })
+      return { ...cur, markers: (cur.markers ?? []).filter(m => m.id !== id), lines, table }
     })
   }, [patchMap])
 
@@ -58,6 +65,40 @@ export function useCampaignMapState() {
     patchMap(cur => ({
       ...cur,
       markers: (cur.markers ?? []).map(m => m.id === id ? { ...m, label } : m),
+    }))
+  }, [patchMap])
+
+  // ── Lines (snap-to-icon routes) ──────────────────────────────────────
+  const addLine = useCallback((fromId, toId) => {
+    if (!fromId || !toId || fromId === toId) return
+    patchMap(cur => {
+      const markers = cur.markers ?? []
+      if (!markers.some(m => m.id === fromId) || !markers.some(m => m.id === toId)) return cur
+      // Don't create a duplicate route between the same pair (either direction).
+      const exists = (cur.lines ?? []).some(l =>
+        (l.fromId === fromId && l.toId === toId) || (l.fromId === toId && l.toId === fromId))
+      if (exists) return cur
+      return {
+        ...cur,
+        lines: [
+          ...(cur.lines ?? []),
+          { id: `l-${Date.now()}-${Math.floor(Math.random() * 1000)}`, fromId, toId },
+        ],
+      }
+    })
+  }, [patchMap])
+
+  const removeLine = useCallback(id => {
+    patchMap(cur => {
+      const { [id]: _gone, ...table } = cur.table ?? {}
+      return { ...cur, lines: (cur.lines ?? []).filter(l => l.id !== id), table }
+    })
+  }, [patchMap])
+
+  const setLineColor = useCallback((id, color) => {
+    patchMap(cur => ({
+      ...cur,
+      lines: (cur.lines ?? []).map(l => l.id === id ? { ...l, color } : l),
     }))
   }, [patchMap])
 
@@ -92,6 +133,11 @@ export function useCampaignMapState() {
     removeMarker,
     setMarkerColor,
     setMarkerLabel,
+
+    // line actions
+    addLine,
+    removeLine,
+    setLineColor,
 
     // table actions
     setTableField,

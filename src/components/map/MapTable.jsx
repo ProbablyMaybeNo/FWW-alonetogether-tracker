@@ -12,6 +12,7 @@ const MARKER_INDEX = Object.fromEntries(MARKER_KINDS.map(m => [m.kind, m]))
 // is lifted into CampaignMapPage).
 export default function MapTable({
   markers,
+  lines = [],
   table,
   canEdit,
   selectedId,
@@ -20,8 +21,9 @@ export default function MapTable({
   setMarkerLabel,
   setTableField,
   onRemoveMarker,
+  onRemoveLine,
 }) {
-  if (!markers.length) {
+  if (!markers.length && !lines.length) {
     return (
       <div className="border border-pip-mid/40 rounded bg-panel">
         <div className="px-3 py-2 border-b border-pip-mid/30">
@@ -34,12 +36,20 @@ export default function MapTable({
     )
   }
 
+  // Resolve a marker's display name for route "Connects" derivation.
+  const nameFor = (id) => {
+    const m = markers.find(mk => mk.id === id)
+    if (!m) return '—'
+    return m.label?.trim() || 'Unnamed location'
+  }
+
   return (
     <div className="border border-pip-mid/40 rounded bg-panel">
       <div className="px-3 py-2 border-b border-pip-mid/30 flex items-center gap-2">
         <h3 className="text-amber text-xs tracking-widest font-bold">MAP TABLE</h3>
         <span className="text-muted/50 text-[10px] tracking-widest ml-auto">
           {markers.length} {markers.length === 1 ? 'LOCATION' : 'LOCATIONS'}
+          {lines.length > 0 && <> · {lines.length} {lines.length === 1 ? 'ROUTE' : 'ROUTES'}</>}
         </span>
       </div>
 
@@ -66,6 +76,85 @@ export default function MapTable({
             />
           )
         })}
+      </div>
+
+      {lines.length > 0 && (
+        <>
+          <div className="px-3 py-1.5 border-y border-pip-mid/30 bg-panel-alt/40">
+            <h4 className="text-pip text-[11px] tracking-widest font-bold">ROUTES</h4>
+          </div>
+          <div className="p-2 space-y-2">
+            {lines.map(l => {
+              const row = table?.[l.id] ?? {}
+              const selected = selectedId === l.id
+              return (
+                <RouteRow
+                  key={l.id}
+                  line={l}
+                  row={row}
+                  connects={`${nameFor(l.fromId)} → ${nameFor(l.toId)}`}
+                  selected={selected}
+                  canEdit={canEdit}
+                  onSelect={() => onSelect?.(selected ? null : l.id)}
+                  setTableField={setTableField}
+                  onRemoveLine={onRemoveLine}
+                />
+              )
+            })}
+          </div>
+        </>
+      )}
+    </div>
+  )
+}
+
+function RouteRow({ line, row, connects, selected, canEdit, onSelect, setTableField, onRemoveLine }) {
+  const id = line.id
+  return (
+    <div
+      onClick={onSelect}
+      className={`rounded border bg-panel-alt transition-colors cursor-pointer ${
+        selected ? 'border-amber/70' : 'border-pip-dim/40 hover:border-pip-mid'
+      }`}
+      style={selected ? { boxShadow: '0 0 10px var(--color-amber-glow)' } : undefined}
+    >
+      <div className="flex items-center gap-2 px-2 py-1.5 border-b border-pip-dim/30">
+        <span className="text-pip/70 text-[11px] shrink-0" aria-hidden>⎯</span>
+        {canEdit ? (
+          <input
+            value={row.name ?? ''}
+            onChange={e => setTableField(id, 'name', e.target.value)}
+            onClick={e => e.stopPropagation()}
+            placeholder="Route name"
+            className="flex-1 min-w-0 text-xs !py-1 !px-2"
+          />
+        ) : (
+          <span className="flex-1 min-w-0 text-pip text-xs tracking-wider truncate">
+            {row.name || <span className="text-muted/50">Unnamed route</span>}
+          </span>
+        )}
+        {canEdit && (
+          <button
+            onClick={e => { e.stopPropagation(); onRemoveLine(id) }}
+            title="Delete this route + line"
+            className="inline-flex items-center justify-center w-6 h-6 rounded border border-muted/40 text-muted hover:border-danger hover:text-danger transition-colors shrink-0"
+          >
+            <Trash2 size={12} />
+          </button>
+        )}
+      </div>
+
+      <div className="p-2 grid grid-cols-1 sm:grid-cols-2 gap-2">
+        <div className="block">
+          <span className="block text-muted/60 text-[10px] tracking-widest mb-0.5">CONNECTS</span>
+          <p className="text-pip/90 text-xs tracking-wider break-words min-h-[1.25rem]">{connects}</p>
+        </div>
+        <Field label="Owner" value={row.owner} canEdit={canEdit}
+          onChange={v => setTableField(id, 'owner', v)} />
+        <Field label="Buffs" value={row.buffs} canEdit={canEdit} area
+          onChange={v => setTableField(id, 'buffs', v)} className="sm:col-span-2" />
+        <Field label="Notes" value={row.notes} canEdit={canEdit} area
+          onChange={v => setTableField(id, 'notes', v)} className="sm:col-span-2" />
       </div>
     </div>
   )
