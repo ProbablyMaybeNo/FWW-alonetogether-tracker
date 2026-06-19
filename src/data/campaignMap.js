@@ -8,6 +8,9 @@
 
 export const MAP_VIEWBOX = { w: 160, h: 100 }
 
+// Supabase Storage bucket holding uploaded map background images (Decision M1).
+export const MAP_IMAGE_BUCKET = 'campaign-maps'
+
 // Generic, assignable marker icons. Players pick one, then recolour/label it for
 // whatever they want it to mean on their map.
 export const MARKER_KINDS = [

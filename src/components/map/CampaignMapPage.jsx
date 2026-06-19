@@ -1,5 +1,7 @@
 import { useState, useEffect, useCallback } from 'react'
 import { RotateCcw, Spline } from 'lucide-react'
+import { supabase } from '../../lib/supabase'
+import { MAP_IMAGE_BUCKET } from '../../data/campaignMap'
 import { useCampaignMapState } from '../../hooks/useCampaignMapState'
 import CampaignMapCanvas from './CampaignMapCanvas'
 import MarkerPalette from './MarkerPalette'
@@ -39,6 +41,13 @@ export default function CampaignMapPage() {
       setTimeout(() => setConfirmReset(false), 2500)
       return
     }
+    // Best-effort: don't orphan the uploaded background in Storage (like MapImageControls remove).
+    const path = map.background?.path
+    if (path && supabase) {
+      supabase.storage.from(MAP_IMAGE_BUCKET).remove([path]).catch(() => {})
+    }
+    cancelDraw()
+    setSelectedId(null)
     map.resetMap()
     setConfirmReset(false)
   }
@@ -83,6 +92,7 @@ export default function CampaignMapPage() {
             background={map.background}
             selectedId={selectedId}
             onSelect={setSelectedId}
+            canEdit={map.canEdit}
             onDropMarker={map.addMarker}
             onMoveMarker={map.moveMarker}
             onRemoveMarker={map.removeMarker}

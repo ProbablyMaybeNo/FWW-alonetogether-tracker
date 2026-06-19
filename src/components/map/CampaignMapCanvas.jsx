@@ -20,6 +20,7 @@ export default function CampaignMapCanvas({
   background,
   selectedId,
   onSelect,
+  canEdit = true,
   onDropMarker,
   onMoveMarker,
   onRemoveMarker,
@@ -41,6 +42,7 @@ export default function CampaignMapCanvas({
 
   const handleDrop = useCallback((e) => {
     e.preventDefault()
+    if (!canEdit) return
     const data = e.dataTransfer.getData('text/plain')
     if (!data?.startsWith('marker:')) return
     const kind = data.slice('marker:'.length)
@@ -49,7 +51,7 @@ export default function CampaignMapCanvas({
     const pt = clientToSvg(svg, e.clientX, e.clientY)
     if (!pt) return
     onDropMarker?.(kind, pt.x, pt.y)
-  }, [onDropMarker])
+  }, [canEdit, onDropMarker])
 
   // Move marker via pointer events (smoother than HTML5 drag for in-canvas moves).
   const handlePointerMove = useCallback((e) => {
@@ -112,7 +114,7 @@ export default function CampaignMapCanvas({
                   stroke="transparent" strokeWidth={3}
                   style={{ cursor: 'pointer' }}
                   onPointerDown={(e) => { e.stopPropagation(); if (!drawMode) onSelect?.(l.id) }}
-                  onContextMenu={(e) => { e.preventDefault(); e.stopPropagation(); onRemoveLine?.(l.id) }}
+                  onContextMenu={(e) => { e.preventDefault(); e.stopPropagation(); if (canEdit) onRemoveLine?.(l.id) }}
                 />
                 <line
                   x1={a.x} y1={a.y} x2={b.x} y2={b.y}
@@ -140,9 +142,10 @@ export default function CampaignMapCanvas({
               <g
                 key={m.id}
                 transform={`translate(${m.x} ${m.y})`}
-                style={{ cursor: drawMode ? 'crosshair' : (isDragging ? 'grabbing' : 'grab') }}
+                style={{ cursor: !canEdit ? 'pointer' : (drawMode ? 'crosshair' : (isDragging ? 'grabbing' : 'grab')) }}
                 onPointerDown={(e) => {
                   e.stopPropagation()
+                  if (!canEdit) { onSelect?.(m.id); return } // view-only: highlight only
                   if (drawMode) {
                     onPickLineEnd?.(m.id)
                     return
@@ -153,7 +156,7 @@ export default function CampaignMapCanvas({
                 }}
                 onContextMenu={(e) => {
                   e.preventDefault()
-                  if (!drawMode) onRemoveMarker?.(m.id)
+                  if (canEdit && !drawMode) onRemoveMarker?.(m.id)
                 }}
               >
                 {isDrawSource && (

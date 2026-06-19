@@ -1,8 +1,8 @@
 import { useRef, useState } from 'react'
 import { ImagePlus, Trash2, Loader2 } from 'lucide-react'
 import { supabase } from '../../lib/supabase'
+import { MAP_IMAGE_BUCKET as BUCKET } from '../../data/campaignMap'
 
-const BUCKET = 'campaign-maps'
 const MAX_BYTES = 10 * 1024 * 1024 // matches the bucket's file_size_limit
 
 // Upload / replace / remove the map background image.

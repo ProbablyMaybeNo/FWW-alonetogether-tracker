@@ -73,7 +73,7 @@ Autonomous build checklist for the map rebuild. Full intent + locked decisions l
     Connects auto-filled; move an icon → line follows; delete an icon → its lines vanish;
     persists across reload; build + lint green.
 
-- [ ] **P6 — Gating finalize + cleanup.** Lock down and tidy.
+- [x] **P6 — Gating finalize + cleanup.** Lock down and tidy.
   - Canvas must respect `canEdit`: when `!canEdit`, disable icon drag-move, right-click
     remove, and line-draw (pass `canEdit` into `CampaignMapCanvas` and guard the handlers).
   - `resetMap` should also remove the background image from Storage (best-effort, like
