@@ -4,10 +4,12 @@ import { useCampaignMapState } from '../../hooks/useCampaignMapState'
 import CampaignMapCanvas from './CampaignMapCanvas'
 import MarkerPalette from './MarkerPalette'
 import MapImageControls from './MapImageControls'
+import MapTable from './MapTable'
 
 export default function CampaignMapPage() {
   const map = useCampaignMapState()
   const [confirmReset, setConfirmReset] = useState(false)
+  const [selectedId, setSelectedId] = useState(null)
 
   function handleReset() {
     if (!confirmReset) {
@@ -56,6 +58,8 @@ export default function CampaignMapPage() {
           <CampaignMapCanvas
             markers={map.markers}
             background={map.background}
+            selectedId={selectedId}
+            onSelect={setSelectedId}
             onDropMarker={map.addMarker}
             onMoveMarker={map.moveMarker}
             onRemoveMarker={map.removeMarker}
@@ -79,6 +83,19 @@ export default function CampaignMapPage() {
           </aside>
         )}
       </div>
+
+      {/* Auto-populating detail table — the edit surface for every placed icon */}
+      <MapTable
+        markers={map.markers}
+        table={map.table}
+        canEdit={map.canEdit}
+        selectedId={selectedId}
+        onSelect={setSelectedId}
+        setMarkerColor={map.setMarkerColor}
+        setMarkerLabel={map.setMarkerLabel}
+        setTableField={map.setTableField}
+        onRemoveMarker={map.removeMarker}
+      />
     </div>
   )
 }

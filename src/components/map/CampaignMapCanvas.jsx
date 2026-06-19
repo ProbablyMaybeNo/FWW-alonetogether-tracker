@@ -17,6 +17,8 @@ const MARKER_INDEX = Object.fromEntries(MARKER_KINDS.map(m => [m.kind, m]))
 export default function CampaignMapCanvas({
   markers,
   background,
+  selectedId,
+  onSelect,
   onDropMarker,
   onMoveMarker,
   onRemoveMarker,
@@ -70,6 +72,7 @@ export default function CampaignMapCanvas({
         onPointerMove={handlePointerMove}
         onPointerUp={handlePointerUp}
         onPointerLeave={handlePointerUp}
+        onPointerDown={() => onSelect?.(null)}
         style={{ touchAction: 'none' }}
       >
         {/* Uploaded background map image (P2) */}
@@ -91,6 +94,7 @@ export default function CampaignMapCanvas({
             if (!info) return null
             const color = m.color ?? info.color
             const isDragging = dragMarker?.id === m.id
+            const isSelected = selectedId === m.id
             return (
               <g
                 key={m.id}
@@ -99,6 +103,7 @@ export default function CampaignMapCanvas({
                 onPointerDown={(e) => {
                   e.stopPropagation()
                   e.currentTarget.setPointerCapture?.(e.pointerId)
+                  onSelect?.(m.id)
                   setDragMarker({ id: m.id })
                 }}
                 onContextMenu={(e) => {
@@ -106,6 +111,11 @@ export default function CampaignMapCanvas({
                   onRemoveMarker?.(m.id)
                 }}
               >
+                {isSelected && (
+                  <circle r={3.2} fill="none" stroke="var(--color-amber)" strokeWidth={0.4}
+                    style={{ filter: 'drop-shadow(0 0 4px var(--color-amber))' }}
+                  />
+                )}
                 <circle r={2.2} fill="rgba(8,12,8,0.85)" stroke={color} strokeWidth={0.3}
                   style={{ filter: `drop-shadow(0 0 3px ${color})` }}
                 />

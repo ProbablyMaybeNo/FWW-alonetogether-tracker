@@ -41,7 +41,32 @@ export function useCampaignMapState() {
   }, [patchMap])
 
   const removeMarker = useCallback(id => {
-    patchMap(cur => ({ ...cur, markers: (cur.markers ?? []).filter(m => m.id !== id) }))
+    patchMap(cur => {
+      const { [id]: _gone, ...table } = cur.table ?? {}
+      return { ...cur, markers: (cur.markers ?? []).filter(m => m.id !== id), table }
+    })
+  }, [patchMap])
+
+  const setMarkerColor = useCallback((id, color) => {
+    patchMap(cur => ({
+      ...cur,
+      markers: (cur.markers ?? []).map(m => m.id === id ? { ...m, color } : m),
+    }))
+  }, [patchMap])
+
+  const setMarkerLabel = useCallback((id, label) => {
+    patchMap(cur => ({
+      ...cur,
+      markers: (cur.markers ?? []).map(m => m.id === id ? { ...m, label } : m),
+    }))
+  }, [patchMap])
+
+  // ── Table rows (detail keyed by marker/line id) ──────────────────────
+  const setTableField = useCallback((id, key, value) => {
+    patchMap(cur => ({
+      ...cur,
+      table: { ...(cur.table ?? {}), [id]: { ...(cur.table?.[id] ?? {}), [key]: value } },
+    }))
   }, [patchMap])
 
   // ── Background image (P2) ────────────────────────────────────────────
@@ -53,6 +78,8 @@ export function useCampaignMapState() {
   return {
     // data
     markers: mapState.markers ?? [],
+    lines: mapState.lines ?? [],
+    table: mapState.table ?? {},
     background: mapState.background ?? null,
 
     // permissions / identity
@@ -63,6 +90,11 @@ export function useCampaignMapState() {
     addMarker,
     moveMarker,
     removeMarker,
+    setMarkerColor,
+    setMarkerLabel,
+
+    // table actions
+    setTableField,
 
     // background actions
     setBackground,

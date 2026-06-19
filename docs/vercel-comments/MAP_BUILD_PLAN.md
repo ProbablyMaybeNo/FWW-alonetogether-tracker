@@ -34,7 +34,7 @@ Autonomous build checklist for the map rebuild. Full intent + locked decisions l
 
 ## Milestones
 
-- [ ] **P4 — Map table (icon rows).** Add a `MapTable` component rendered below the canvas on
+- [x] **P4 — Map table (icon rows).** Add a `MapTable` component rendered below the canvas on
   `CampaignMapPage`. It auto-renders one row per placed icon (`markers`), creating the row
   lazily — no row needs to pre-exist in `table`.
   - Row fields, all editable inline and persisted: **Name** (`label` on the marker),
