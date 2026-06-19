@@ -1,6 +1,6 @@
 import { useCallback } from 'react'
 import { useCampaign } from '../context/CampaignContext'
-import { MARKER_KINDS, defaultCampaignMapState } from '../data/campaignMap'
+import { MARKER_KINDS, MAP_VIEWBOX, defaultCampaignMapState } from '../data/campaignMap'
 
 // Pulls the shared campaign map state and exposes mutate helpers.
 // Writes go through saveCampaignMapState — online: RPC into campaigns.campaign_map_state so every
@@ -111,8 +111,37 @@ export function useCampaignMapState() {
   }, [patchMap])
 
   // ── Background image (P2) ────────────────────────────────────────────
+  // background = { url, path, scale?, x?, y? }. scale defaults to 1 (image fits the
+  // canvas), x/y are pan offsets in viewBox units. New uploads start fitted.
   const setBackground = useCallback((bg) => patchMap(cur => ({ ...cur, background: bg })), [patchMap])
   const clearBackground = useCallback(() => patchMap(cur => ({ ...cur, background: null })), [patchMap])
+
+  // Pan by a delta (viewBox units) — emitted live while dragging the canvas.
+  const panBackground = useCallback((dx, dy) => {
+    patchMap(cur => cur.background
+      ? { ...cur, background: { ...cur.background, x: (cur.background.x ?? 0) + dx, y: (cur.background.y ?? 0) + dy } }
+      : cur)
+  }, [patchMap])
+
+  // Zoom about the canvas centre so the framing stays put as it scales.
+  const zoomBackground = useCallback((factor) => {
+    patchMap(cur => {
+      if (!cur.background) return cur
+      const prev = cur.background.scale ?? 1
+      const scale = Math.min(6, Math.max(0.2, prev * factor))
+      const f = scale / prev
+      const x = (cur.background.x ?? 0) + (MAP_VIEWBOX.w * prev * (1 - f)) / 2
+      const y = (cur.background.y ?? 0) + (MAP_VIEWBOX.h * prev * (1 - f)) / 2
+      return { ...cur, background: { ...cur.background, scale, x, y } }
+    })
+  }, [patchMap])
+
+  // Reset to fitted (whole image visible, centred).
+  const fitBackground = useCallback(() => {
+    patchMap(cur => cur.background
+      ? { ...cur, background: { ...cur.background, scale: 1, x: 0, y: 0 } }
+      : cur)
+  }, [patchMap])
 
   const resetMap = useCallback(() => patchMap(() => defaultCampaignMapState()), [patchMap])
 
@@ -145,6 +174,9 @@ export function useCampaignMapState() {
     // background actions
     setBackground,
     clearBackground,
+    panBackground,
+    zoomBackground,
+    fitBackground,
 
     // ui
     resetMap,

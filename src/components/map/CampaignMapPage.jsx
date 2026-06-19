@@ -14,8 +14,18 @@ export default function CampaignMapPage() {
   const [selectedId, setSelectedId] = useState(null)
   const [drawMode, setDrawMode] = useState(false)
   const [drawFromId, setDrawFromId] = useState(null) // first picked icon while drawing
+  const [adjustImage, setAdjustImage] = useState(false)
 
   const cancelDraw = useCallback(() => { setDrawMode(false); setDrawFromId(null) }, [])
+
+  // Draw and image-adjust are mutually exclusive.
+  const toggleAdjust = useCallback(() => {
+    setAdjustImage(a => { if (!a) cancelDraw(); return !a })
+  }, [cancelDraw])
+  const startDraw = useCallback(() => { setAdjustImage(false); setDrawMode(true) }, [])
+
+  // If the image is removed/reset, leave adjust mode.
+  useEffect(() => { if (!map.background) setAdjustImage(false) }, [map.background])
 
   // First icon click sets the source; second click creates the line + exits.
   const pickLineEnd = useCallback((iconId) => {
@@ -101,6 +111,8 @@ export default function CampaignMapPage() {
             onPickLineEnd={pickLineEnd}
             onCancelDraw={cancelDraw}
             onRemoveLine={map.removeLine}
+            adjustImage={adjustImage}
+            onPanBackground={map.panBackground}
           />
           {map.canEdit && drawMode && (
             <p className="text-pip text-[10px] tracking-widest mt-2 px-1"
@@ -109,7 +121,13 @@ export default function CampaignMapPage() {
               Esc or click empty map to cancel
             </p>
           )}
-          {map.canEdit && !drawMode && (
+          {map.canEdit && adjustImage && (
+            <p className="text-pip text-[10px] tracking-widest mt-2 px-1"
+              style={{ textShadow: '0 0 6px var(--color-pip-glow)' }}>
+              Drag the map to reposition · use ZOOM −/＋ and FIT in the MAP IMAGE panel
+            </p>
+          )}
+          {map.canEdit && !drawMode && !adjustImage && (
             <p className="text-muted/60 text-[10px] tracking-wider mt-2 px-1">
               Drag icons from the palette onto the map · Drag a placed icon to move it · Right-click an icon to remove it · Right-click a line to remove it
             </p>
@@ -123,6 +141,11 @@ export default function CampaignMapPage() {
               campaignId={map.campaignId}
               setBackground={map.setBackground}
               clearBackground={map.clearBackground}
+              adjustImage={adjustImage}
+              onToggleAdjust={toggleAdjust}
+              onZoomIn={() => map.zoomBackground(1.2)}
+              onZoomOut={() => map.zoomBackground(1 / 1.2)}
+              onFit={map.fitBackground}
             />
             <MarkerPalette />
             <div className="border border-pip-mid/40 rounded bg-panel">
@@ -132,7 +155,7 @@ export default function CampaignMapPage() {
               </div>
               <div className="p-2">
                 <button
-                  onClick={() => (drawMode ? cancelDraw() : setDrawMode(true))}
+                  onClick={() => (drawMode ? cancelDraw() : startDraw())}
                   disabled={map.markers.length < 2}
                   className={`w-full inline-flex items-center justify-center gap-1.5 text-[10px] tracking-widest px-3 py-2 border rounded transition-colors disabled:opacity-40 disabled:cursor-not-allowed ${
                     drawMode

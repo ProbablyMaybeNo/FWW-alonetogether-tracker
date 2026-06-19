@@ -29,9 +29,12 @@ export default function CampaignMapCanvas({
   onPickLineEnd,
   onCancelDraw,
   onRemoveLine,
+  adjustImage = false,
+  onPanBackground,
 }) {
   const svgRef = useRef(null)
   const [dragMarker, setDragMarker] = useState(null) // { id }
+  const [panLast, setPanLast] = useState(null)        // { x, y } in viewBox units
 
   const markerById = Object.fromEntries((markers ?? []).map(m => [m.id, m]))
 
@@ -53,19 +56,41 @@ export default function CampaignMapCanvas({
     onDropMarker?.(kind, pt.x, pt.y)
   }, [canEdit, onDropMarker])
 
-  // Move marker via pointer events (smoother than HTML5 drag for in-canvas moves).
+  // Begin panning the background image (adjust mode).
+  const handlePointerDown = useCallback((e) => {
+    if (adjustImage) {
+      const svg = svgRef.current
+      if (!svg) return
+      const pt = clientToSvg(svg, e.clientX, e.clientY)
+      if (!pt) return
+      svg.setPointerCapture?.(e.pointerId)
+      setPanLast({ x: pt.x, y: pt.y })
+      return
+    }
+    drawMode ? onCancelDraw?.() : onSelect?.(null)
+  }, [adjustImage, drawMode, onCancelDraw, onSelect])
+
+  // Move marker (or pan the image while adjusting) via pointer events.
   const handlePointerMove = useCallback((e) => {
-    if (!dragMarker) return
     const svg = svgRef.current
     if (!svg) return
+    if (panLast) {
+      const pt = clientToSvg(svg, e.clientX, e.clientY)
+      if (!pt) return
+      onPanBackground?.(pt.x - panLast.x, pt.y - panLast.y)
+      setPanLast({ x: pt.x, y: pt.y })
+      return
+    }
+    if (!dragMarker) return
     const pt = clientToSvg(svg, e.clientX, e.clientY)
     if (!pt) return
     onMoveMarker?.(dragMarker.id, pt.x, pt.y)
-  }, [dragMarker, onMoveMarker])
+  }, [panLast, dragMarker, onMoveMarker, onPanBackground])
 
   const handlePointerUp = useCallback(() => {
     if (dragMarker) setDragMarker(null)
-  }, [dragMarker])
+    if (panLast) setPanLast(null)
+  }, [dragMarker, panLast])
 
   return (
     <div
@@ -82,18 +107,20 @@ export default function CampaignMapCanvas({
         onPointerMove={handlePointerMove}
         onPointerUp={handlePointerUp}
         onPointerLeave={handlePointerUp}
-        onPointerDown={() => { drawMode ? onCancelDraw?.() : onSelect?.(null) }}
-        style={{ touchAction: 'none', cursor: drawMode ? 'crosshair' : undefined }}
+        onPointerDown={handlePointerDown}
+        style={{ touchAction: 'none', cursor: adjustImage ? (panLast ? 'grabbing' : 'move') : (drawMode ? 'crosshair' : undefined) }}
       >
-        {/* Uploaded background map image (P2) */}
+        {/* Uploaded background map image (P2) — scale/x/y let the editor reposition
+            and resize it (P-image-transform). meet keeps the image's aspect ratio. */}
         {background?.url && (
           <image
             href={background.url}
-            x={0}
-            y={0}
-            width={MAP_VIEWBOX.w}
-            height={MAP_VIEWBOX.h}
-            preserveAspectRatio="xMidYMid slice"
+            x={background.x ?? 0}
+            y={background.y ?? 0}
+            width={MAP_VIEWBOX.w * (background.scale ?? 1)}
+            height={MAP_VIEWBOX.h * (background.scale ?? 1)}
+            preserveAspectRatio="xMidYMid meet"
+            pointerEvents="none"
           />
         )}
 
@@ -113,6 +140,7 @@ export default function CampaignMapCanvas({
                   x1={a.x} y1={a.y} x2={b.x} y2={b.y}
                   stroke="transparent" strokeWidth={3}
                   style={{ cursor: 'pointer' }}
+                  pointerEvents={adjustImage ? 'none' : undefined}
                   onPointerDown={(e) => { e.stopPropagation(); if (!drawMode) onSelect?.(l.id) }}
                   onContextMenu={(e) => { e.preventDefault(); e.stopPropagation(); if (canEdit) onRemoveLine?.(l.id) }}
                 />
@@ -142,6 +170,7 @@ export default function CampaignMapCanvas({
               <g
                 key={m.id}
                 transform={`translate(${m.x} ${m.y})`}
+                pointerEvents={adjustImage ? 'none' : undefined}
                 style={{ cursor: !canEdit ? 'pointer' : (drawMode ? 'crosshair' : (isDragging ? 'grabbing' : 'grab')) }}
                 onPointerDown={(e) => {
                   e.stopPropagation()

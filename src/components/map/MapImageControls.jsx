@@ -1,14 +1,17 @@
 import { useRef, useState } from 'react'
-import { ImagePlus, Trash2, Loader2 } from 'lucide-react'
+import { ImagePlus, Trash2, Loader2, Move, ZoomIn, ZoomOut, Maximize } from 'lucide-react'
 import { supabase } from '../../lib/supabase'
 import { MAP_IMAGE_BUCKET as BUCKET } from '../../data/campaignMap'
 
 const MAX_BYTES = 10 * 1024 * 1024 // matches the bucket's file_size_limit
 
-// Upload / replace / remove the map background image.
-// Image goes to the campaign-maps Storage bucket; only its public URL + path are
-// stored in the shared map state (keeps the synced payload tiny).
-export default function MapImageControls({ background, campaignId, setBackground, clearBackground }) {
+// Upload / replace / remove the map background image, and reposition/resize it.
+// Image goes to the campaign-maps Storage bucket; only its public URL + path (+
+// scale/x/y transform) are stored in the shared map state (tiny synced payload).
+export default function MapImageControls({
+  background, campaignId, setBackground, clearBackground,
+  adjustImage, onToggleAdjust, onZoomIn, onZoomOut, onFit,
+}) {
   const inputRef = useRef(null)
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState(null)
@@ -77,6 +80,44 @@ export default function MapImageControls({ background, campaignId, setBackground
           {busy ? <Loader2 size={12} className="animate-spin" /> : <ImagePlus size={12} />}
           {busy ? 'UPLOADING…' : background?.url ? 'REPLACE MAP' : 'UPLOAD MAP'}
         </button>
+        {background?.url && !busy && (
+          <button
+            onClick={onToggleAdjust}
+            className={`w-full inline-flex items-center justify-center gap-1.5 text-[10px] tracking-widest px-3 py-1.5 border rounded transition-colors ${
+              adjustImage
+                ? 'border-pip text-pip bg-pip-dim/20'
+                : 'border-pip-dim/50 text-pip hover:border-pip hover:bg-pip-dim/20'
+            }`}
+            title="Reposition and resize the map image"
+          >
+            <Move size={12} /> {adjustImage ? 'DONE ADJUSTING' : 'ADJUST IMAGE'}
+          </button>
+        )}
+        {background?.url && !busy && adjustImage && (
+          <div className="flex items-center gap-1.5">
+            <button
+              onClick={onZoomOut}
+              className="flex-1 inline-flex items-center justify-center gap-1 text-[10px] tracking-widest px-2 py-1.5 border border-pip-dim/50 rounded text-pip hover:border-pip hover:bg-pip-dim/20 transition-colors"
+              title="Zoom out"
+            >
+              <ZoomOut size={12} />
+            </button>
+            <button
+              onClick={onZoomIn}
+              className="flex-1 inline-flex items-center justify-center gap-1 text-[10px] tracking-widest px-2 py-1.5 border border-pip-dim/50 rounded text-pip hover:border-pip hover:bg-pip-dim/20 transition-colors"
+              title="Zoom in"
+            >
+              <ZoomIn size={12} />
+            </button>
+            <button
+              onClick={onFit}
+              className="flex-1 inline-flex items-center justify-center gap-1 text-[10px] tracking-widest px-2 py-1.5 border border-muted/40 rounded text-muted hover:border-pip hover:text-pip transition-colors"
+              title="Reset to fit"
+            >
+              <Maximize size={12} /> FIT
+            </button>
+          </div>
+        )}
         {background?.url && !busy && (
           <button
             onClick={handleRemove}
