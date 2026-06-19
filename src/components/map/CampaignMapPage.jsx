@@ -24,8 +24,8 @@ export default function CampaignMapPage() {
   }, [cancelDraw])
   const startDraw = useCallback(() => { setAdjustImage(false); setDrawMode(true) }, [])
 
-  // If the image is removed/reset, leave adjust mode.
-  useEffect(() => { if (!map.background) setAdjustImage(false) }, [map.background])
+  // Adjust mode only applies while an image exists (derive rather than sync via effect).
+  const adjustActive = adjustImage && !!map.background
 
   // First icon click sets the source; second click creates the line + exits.
   const pickLineEnd = useCallback((iconId) => {
@@ -111,7 +111,7 @@ export default function CampaignMapPage() {
             onPickLineEnd={pickLineEnd}
             onCancelDraw={cancelDraw}
             onRemoveLine={map.removeLine}
-            adjustImage={adjustImage}
+            adjustImage={adjustActive}
             onPanBackground={map.panBackground}
           />
           {map.canEdit && drawMode && (
@@ -121,13 +121,13 @@ export default function CampaignMapPage() {
               Esc or click empty map to cancel
             </p>
           )}
-          {map.canEdit && adjustImage && (
+          {map.canEdit && adjustActive && (
             <p className="text-pip text-[10px] tracking-widest mt-2 px-1"
               style={{ textShadow: '0 0 6px var(--color-pip-glow)' }}>
               Drag the map to reposition · use ZOOM −/＋ and FIT in the MAP IMAGE panel
             </p>
           )}
-          {map.canEdit && !drawMode && !adjustImage && (
+          {map.canEdit && !drawMode && !adjustActive && (
             <p className="text-muted/60 text-[10px] tracking-wider mt-2 px-1">
               Drag icons from the palette onto the map · Drag a placed icon to move it · Right-click an icon to remove it · Right-click a line to remove it
             </p>
@@ -141,7 +141,7 @@ export default function CampaignMapPage() {
               campaignId={map.campaignId}
               setBackground={map.setBackground}
               clearBackground={map.clearBackground}
-              adjustImage={adjustImage}
+              adjustImage={adjustActive}
               onToggleAdjust={toggleAdjust}
               onZoomIn={() => map.zoomBackground(1.2)}
               onZoomOut={() => map.zoomBackground(1 / 1.2)}

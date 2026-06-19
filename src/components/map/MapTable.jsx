@@ -1,15 +1,17 @@
-import { Trash2 } from 'lucide-react'
+import { useState } from 'react'
+import { Trash2, Pencil } from 'lucide-react'
 import { MARKER_KINDS } from '../../data/campaignMap'
+import MapEntryModal from './MapEntryModal'
 
 const MARKER_INDEX = Object.fromEntries(MARKER_KINDS.map(m => [m.kind, m]))
+const LOCATION_KEYS = ['owner', 'faction', 'rules', 'buffs', 'notes']
+const ROUTE_KEYS = ['owner', 'buffs', 'notes']
 
-// Auto-populating detail table. One row per placed icon; textual detail
-// (owner/faction/rules/buffs/notes) lives under table[id], while name/colour
-// live on the marker itself and mirror live onto the canvas. The map stays
-// purely visual — this table is the edit surface.
-//
-// Selecting a row highlights its icon on the canvas and vice-versa (selectedId
-// is lifted into CampaignMapPage).
+// Auto-populating detail table — one compact single-line row per icon + route.
+// Each cell shows a truncated value with a hover tooltip carrying the full text.
+// Clicking a row (creator) opens a popup editor; players click to highlight + hover
+// to read. name/colour live on the marker and mirror onto the canvas; the rest live
+// under table[id].
 export default function MapTable({
   markers,
   lines = [],
@@ -23,6 +25,58 @@ export default function MapTable({
   onRemoveMarker,
   onRemoveLine,
 }) {
+  const [editingId, setEditingId] = useState(null)
+
+  const nameFor = (id) => {
+    const m = markers.find(mk => mk.id === id)
+    if (!m) return '—'
+    return m.label?.trim() || 'Unnamed location'
+  }
+
+  function handleRowClick(id) {
+    if (canEdit) { onSelect?.(id); setEditingId(id) }
+    else onSelect?.(selectedId === id ? null : id)
+  }
+
+  // Build the modal entry (location or route) for whatever id is open.
+  function buildEntry(id) {
+    const m = markers.find(mk => mk.id === id)
+    if (m) {
+      const info = MARKER_INDEX[m.kind]
+      const row = table?.[id] ?? {}
+      return {
+        id, type: 'location', glyph: info?.glyph ?? '⬤',
+        values: {
+          name: m.label ?? '', color: m.color ?? info?.color ?? '#00e676',
+          owner: row.owner ?? '', faction: row.faction ?? '',
+          rules: row.rules ?? '', buffs: row.buffs ?? '', notes: row.notes ?? '',
+        },
+      }
+    }
+    const l = lines.find(ln => ln.id === id)
+    if (l) {
+      const row = table?.[id] ?? {}
+      return {
+        id, type: 'route', glyph: '⎯', connects: `${nameFor(l.fromId)} → ${nameFor(l.toId)}`,
+        values: { name: row.name ?? '', owner: row.owner ?? '', buffs: row.buffs ?? '', notes: row.notes ?? '' },
+      }
+    }
+    return null
+  }
+
+  function saveEntry(entry, draft) {
+    if (entry.type === 'location') {
+      setMarkerLabel(entry.id, draft.name ?? '')
+      setMarkerColor(entry.id, draft.color)
+      LOCATION_KEYS.forEach(k => setTableField(entry.id, k, draft[k] ?? ''))
+    } else {
+      setTableField(entry.id, 'name', draft.name ?? '')
+      ROUTE_KEYS.forEach(k => setTableField(entry.id, k, draft[k] ?? ''))
+    }
+  }
+
+  const editingEntry = editingId ? buildEntry(editingId) : null
+
   if (!markers.length && !lines.length) {
     return (
       <div className="border border-pip-mid/40 rounded bg-panel">
@@ -36,13 +90,6 @@ export default function MapTable({
     )
   }
 
-  // Resolve a marker's display name for route "Connects" derivation.
-  const nameFor = (id) => {
-    const m = markers.find(mk => mk.id === id)
-    if (!m) return '—'
-    return m.label?.trim() || 'Unnamed location'
-  }
-
   return (
     <div className="border border-pip-mid/40 rounded bg-panel">
       <div className="px-3 py-2 border-b border-pip-mid/30 flex items-center gap-2">
@@ -53,209 +100,164 @@ export default function MapTable({
         </span>
       </div>
 
-      <div className="p-2 space-y-2">
-        {markers.map(m => {
-          const info = MARKER_INDEX[m.kind]
-          const color = m.color ?? info?.color ?? '#00e676'
-          const row = table?.[m.id] ?? {}
-          const selected = selectedId === m.id
-          return (
-            <LocationRow
-              key={m.id}
-              marker={m}
-              glyph={info?.glyph ?? '⬤'}
-              color={color}
-              row={row}
-              selected={selected}
-              canEdit={canEdit}
-              onSelect={() => onSelect?.(selected ? null : m.id)}
-              setMarkerColor={setMarkerColor}
-              setMarkerLabel={setMarkerLabel}
-              setTableField={setTableField}
-              onRemoveMarker={onRemoveMarker}
-            />
-          )
-        })}
-      </div>
+      {/* LOCATIONS */}
+      {markers.length > 0 && (
+        <div className="px-2 py-2">
+          <HeaderRow
+            cols={['NAME', 'OWNER', 'FACTION', 'RULES', 'BUFFS', 'NOTES']}
+            widths={LOCATION_WIDTHS}
+            canEdit={canEdit}
+          />
+          {markers.map(m => {
+            const info = MARKER_INDEX[m.kind]
+            const color = m.color ?? info?.color ?? '#00e676'
+            const row = table?.[m.id] ?? {}
+            return (
+              <EntryRow
+                key={m.id}
+                glyph={info?.glyph ?? '⬤'}
+                color={color}
+                selected={selectedId === m.id}
+                canEdit={canEdit}
+                onClick={() => handleRowClick(m.id)}
+                onEdit={() => { onSelect?.(m.id); setEditingId(m.id) }}
+                onRemove={() => onRemoveMarker(m.id)}
+                cells={[
+                  { value: m.label, widthClass: LOCATION_WIDTHS[0], strong: true },
+                  { value: row.owner, widthClass: LOCATION_WIDTHS[1] },
+                  { value: row.faction, widthClass: LOCATION_WIDTHS[2] },
+                  { value: row.rules, widthClass: LOCATION_WIDTHS[3] },
+                  { value: row.buffs, widthClass: LOCATION_WIDTHS[4] },
+                  { value: row.notes, widthClass: LOCATION_WIDTHS[5] },
+                ]}
+              />
+            )
+          })}
+        </div>
+      )}
 
+      {/* ROUTES */}
       {lines.length > 0 && (
         <>
           <div className="px-3 py-1.5 border-y border-pip-mid/30 bg-panel-alt/40">
             <h4 className="text-pip text-[11px] tracking-widest font-bold">ROUTES</h4>
           </div>
-          <div className="p-2 space-y-2">
+          <div className="px-2 py-2">
+            <HeaderRow
+              cols={['NAME', 'CONNECTS', 'OWNER', 'BUFFS', 'NOTES']}
+              widths={ROUTE_WIDTHS}
+              canEdit={canEdit}
+            />
             {lines.map(l => {
               const row = table?.[l.id] ?? {}
-              const selected = selectedId === l.id
               return (
-                <RouteRow
+                <EntryRow
                   key={l.id}
-                  line={l}
-                  row={row}
-                  connects={`${nameFor(l.fromId)} → ${nameFor(l.toId)}`}
-                  selected={selected}
+                  glyph="⎯"
+                  color="#3aa0ff"
+                  selected={selectedId === l.id}
                   canEdit={canEdit}
-                  onSelect={() => onSelect?.(selected ? null : l.id)}
-                  setTableField={setTableField}
-                  onRemoveLine={onRemoveLine}
+                  onClick={() => handleRowClick(l.id)}
+                  onEdit={() => { onSelect?.(l.id); setEditingId(l.id) }}
+                  onRemove={() => onRemoveLine(l.id)}
+                  cells={[
+                    { value: row.name, widthClass: ROUTE_WIDTHS[0], strong: true },
+                    { value: `${nameFor(l.fromId)} → ${nameFor(l.toId)}`, widthClass: ROUTE_WIDTHS[1] },
+                    { value: row.owner, widthClass: ROUTE_WIDTHS[2] },
+                    { value: row.buffs, widthClass: ROUTE_WIDTHS[3] },
+                    { value: row.notes, widthClass: ROUTE_WIDTHS[4] },
+                  ]}
                 />
               )
             })}
           </div>
         </>
       )}
-    </div>
-  )
-}
 
-function RouteRow({ line, row, connects, selected, canEdit, onSelect, setTableField, onRemoveLine }) {
-  const id = line.id
-  return (
-    <div
-      onClick={onSelect}
-      className={`rounded border bg-panel-alt transition-colors cursor-pointer ${
-        selected ? 'border-amber/70' : 'border-pip-dim/40 hover:border-pip-mid'
-      }`}
-      style={selected ? { boxShadow: '0 0 10px var(--color-amber-glow)' } : undefined}
-    >
-      <div className="flex items-center gap-2 px-2 py-1.5 border-b border-pip-dim/30">
-        <span className="text-pip/70 text-[11px] shrink-0" aria-hidden>⎯</span>
-        {canEdit ? (
-          <input
-            value={row.name ?? ''}
-            onChange={e => setTableField(id, 'name', e.target.value)}
-            onClick={e => e.stopPropagation()}
-            placeholder="Route name"
-            className="flex-1 min-w-0 text-xs !py-1 !px-2"
-          />
-        ) : (
-          <span className="flex-1 min-w-0 text-pip text-xs tracking-wider truncate">
-            {row.name || <span className="text-muted/50">Unnamed route</span>}
-          </span>
-        )}
-        {canEdit && (
-          <button
-            onClick={e => { e.stopPropagation(); onRemoveLine(id) }}
-            title="Delete this route + line"
-            className="inline-flex items-center justify-center w-6 h-6 rounded border border-muted/40 text-muted hover:border-danger hover:text-danger transition-colors shrink-0"
-          >
-            <Trash2 size={12} />
-          </button>
-        )}
-      </div>
-
-      <div className="p-2 grid grid-cols-1 sm:grid-cols-2 gap-2">
-        <div className="block">
-          <span className="block text-muted/60 text-[10px] tracking-widest mb-0.5">CONNECTS</span>
-          <p className="text-pip/90 text-xs tracking-wider break-words min-h-[1.25rem]">{connects}</p>
-        </div>
-        <Field label="Owner" value={row.owner} canEdit={canEdit}
-          onChange={v => setTableField(id, 'owner', v)} />
-        <Field label="Buffs" value={row.buffs} canEdit={canEdit} area
-          onChange={v => setTableField(id, 'buffs', v)} className="sm:col-span-2" />
-        <Field label="Notes" value={row.notes} canEdit={canEdit} area
-          onChange={v => setTableField(id, 'notes', v)} className="sm:col-span-2" />
-      </div>
-    </div>
-  )
-}
-
-function LocationRow({
-  marker, glyph, color, row, selected, canEdit,
-  onSelect, setMarkerColor, setMarkerLabel, setTableField, onRemoveMarker,
-}) {
-  const id = marker.id
-  return (
-    <div
-      onClick={onSelect}
-      className={`rounded border bg-panel-alt transition-colors cursor-pointer ${
-        selected ? 'border-amber/70' : 'border-pip-dim/40 hover:border-pip-mid'
-      }`}
-      style={selected ? { boxShadow: '0 0 10px var(--color-amber-glow)' } : undefined}
-    >
-      {/* Header line: icon glyph + name + colour + delete */}
-      <div className="flex items-center gap-2 px-2 py-1.5 border-b border-pip-dim/30">
-        <span
-          className="inline-flex items-center justify-center w-5 h-5 rounded-full text-[11px] font-bold shrink-0"
-          style={{ color, background: 'rgba(0,0,0,0.45)', border: `1px solid ${color}`, textShadow: `0 0 4px ${color}` }}
-        >
-          {glyph}
-        </span>
-        {canEdit ? (
-          <input
-            value={marker.label ?? ''}
-            onChange={e => setMarkerLabel(id, e.target.value)}
-            onClick={e => e.stopPropagation()}
-            placeholder="Location name"
-            className="flex-1 min-w-0 text-xs !py-1 !px-2"
-          />
-        ) : (
-          <span className="flex-1 min-w-0 text-pip text-xs tracking-wider truncate">
-            {marker.label || <span className="text-muted/50">Unnamed location</span>}
-          </span>
-        )}
-        {canEdit && (
-          <>
-            <input
-              type="color"
-              value={color}
-              onChange={e => setMarkerColor(id, e.target.value)}
-              onClick={e => e.stopPropagation()}
-              title="Icon colour"
-              className="w-6 h-6 !p-0.5 shrink-0 cursor-pointer"
-            />
-            <button
-              onClick={e => { e.stopPropagation(); onRemoveMarker(id) }}
-              title="Delete this location + its icon"
-              className="inline-flex items-center justify-center w-6 h-6 rounded border border-muted/40 text-muted hover:border-danger hover:text-danger transition-colors shrink-0"
-            >
-              <Trash2 size={12} />
-            </button>
-          </>
-        )}
-      </div>
-
-      {/* Detail fields */}
-      <div className="p-2 grid grid-cols-1 sm:grid-cols-2 gap-2">
-        <Field label="Owner / assignment" value={row.owner} canEdit={canEdit}
-          onChange={v => setTableField(id, 'owner', v)} />
-        <Field label="Faction" value={row.faction} canEdit={canEdit}
-          onChange={v => setTableField(id, 'faction', v)} />
-        <Field label="Rules" value={row.rules} canEdit={canEdit} area
-          onChange={v => setTableField(id, 'rules', v)} className="sm:col-span-2" />
-        <Field label="Buffs" value={row.buffs} canEdit={canEdit} area
-          onChange={v => setTableField(id, 'buffs', v)} className="sm:col-span-2" />
-        <Field label="Notes" value={row.notes} canEdit={canEdit} area
-          onChange={v => setTableField(id, 'notes', v)} className="sm:col-span-2" />
-      </div>
-    </div>
-  )
-}
-
-function Field({ label, value, canEdit, onChange, area, className = '' }) {
-  return (
-    <label className={`block ${className}`} onClick={e => e.stopPropagation()}>
-      <span className="block text-muted/60 text-[10px] tracking-widest mb-0.5">{label.toUpperCase()}</span>
-      {canEdit ? (
-        area ? (
-          <textarea
-            value={value ?? ''}
-            onChange={e => onChange(e.target.value)}
-            rows={2}
-            className="w-full text-xs resize-none !py-1 !px-2"
-          />
-        ) : (
-          <input
-            value={value ?? ''}
-            onChange={e => onChange(e.target.value)}
-            className="w-full text-xs !py-1 !px-2"
-          />
-        )
-      ) : (
-        <p className="text-pip/90 text-xs tracking-wider whitespace-pre-wrap break-words min-h-[1.25rem]">
-          {value || <span className="text-muted/40">—</span>}
-        </p>
+      {editingEntry && (
+        <MapEntryModal
+          entry={editingEntry}
+          onSave={draft => saveEntry(editingEntry, draft)}
+          onClose={() => setEditingId(null)}
+        />
       )}
-    </label>
+    </div>
+  )
+}
+
+const LOCATION_WIDTHS = ['w-[16%]', 'w-[14%]', 'w-[12%]', 'flex-1', 'flex-1', 'flex-1']
+const ROUTE_WIDTHS = ['w-[16%]', 'w-[20%]', 'w-[14%]', 'flex-1', 'flex-1']
+
+function HeaderRow({ cols, widths, canEdit }) {
+  return (
+    <div className="flex items-center gap-2 px-2 pb-1">
+      <span className="w-5 shrink-0" aria-hidden />
+      {cols.map((c, i) => (
+        <span key={c} className={`${widths[i]} min-w-0 text-muted/50 text-[9px] tracking-widest`}>{c}</span>
+      ))}
+      {canEdit && <span className="w-[52px] shrink-0" aria-hidden />}
+    </div>
+  )
+}
+
+function EntryRow({ glyph, color, selected, canEdit, onClick, onEdit, onRemove, cells }) {
+  return (
+    <div
+      onClick={onClick}
+      className={`flex items-center gap-2 px-2 py-1 rounded border mb-1 cursor-pointer transition-colors ${
+        selected ? 'border-amber/70 bg-panel-alt' : 'border-transparent hover:border-pip-mid hover:bg-panel-alt/60'
+      }`}
+      style={selected ? { boxShadow: '0 0 8px var(--color-amber-glow)' } : undefined}
+    >
+      <span
+        className="inline-flex items-center justify-center w-5 h-5 rounded-full text-[11px] font-bold shrink-0"
+        style={{ color, background: 'rgba(0,0,0,0.45)', border: `1px solid ${color}`, textShadow: `0 0 4px ${color}` }}
+      >
+        {glyph}
+      </span>
+      {cells.map((cell, i) => (
+        <Cell key={i} value={cell.value} widthClass={cell.widthClass} strong={cell.strong} />
+      ))}
+      {canEdit && (
+        <div className="w-[52px] shrink-0 flex items-center justify-end gap-1">
+          <button
+            onClick={e => { e.stopPropagation(); onEdit() }}
+            title="Edit this entry"
+            className="inline-flex items-center justify-center w-6 h-6 rounded border border-pip-dim/40 text-pip/80 hover:border-pip hover:text-pip transition-colors"
+          >
+            <Pencil size={11} />
+          </button>
+          <button
+            onClick={e => { e.stopPropagation(); onRemove() }}
+            title="Delete this entry"
+            className="inline-flex items-center justify-center w-6 h-6 rounded border border-muted/40 text-muted hover:border-danger hover:text-danger transition-colors"
+          >
+            <Trash2 size={11} />
+          </button>
+        </div>
+      )}
+    </div>
+  )
+}
+
+// Single-line cell with a hover tooltip carrying the full (untruncated) value.
+function Cell({ value, widthClass, strong }) {
+  const text = (value ?? '').toString().trim()
+  return (
+    <div className={`relative group ${widthClass} min-w-0`}>
+      <span className={`block truncate text-xs tracking-wider ${
+        text ? (strong ? 'text-pip' : 'text-pip/85') : 'text-muted/40'
+      }`}>
+        {text || '—'}
+      </span>
+      {text && (
+        <div
+          className="pointer-events-none absolute z-30 left-0 top-full mt-1 hidden group-hover:block min-w-[8rem] max-w-xs whitespace-pre-wrap break-words border border-pip-mid/60 bg-panel/95 text-pip text-[11px] leading-snug tracking-wider px-2 py-1 rounded"
+          style={{ boxShadow: '0 0 8px var(--color-pip-glow)' }}
+        >
+          {text}
+        </div>
+      )}
+    </div>
   )
 }
