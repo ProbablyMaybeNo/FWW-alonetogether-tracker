@@ -1,8 +1,5 @@
-import { useRef, useState, useCallback, useMemo } from 'react'
+import { useRef, useState, useCallback } from 'react'
 import { MAP_VIEWBOX, MARKER_KINDS } from '../../data/campaignMap'
-import FogOfWarLayer from './FogOfWarLayer'
-import TerritoryNode from './TerritoryNode'
-import TradeRouteLine from './TradeRouteLine'
 
 // Coordinate helpers — translate browser pointer events into the SVG's user coordinate space.
 function clientToSvg(svg, clientX, clientY) {
@@ -18,28 +15,14 @@ function clientToSvg(svg, clientX, clientY) {
 const MARKER_INDEX = Object.fromEntries(MARKER_KINDS.map(m => [m.kind, m]))
 
 export default function CampaignMapCanvas({
-  territories,
-  routes,
   markers,
-  showHidden,
-  selectedTerritoryId,
-  onSelectTerritory,
-  onSelectRoute,
-  onHoverTerritory,
-  onHoverRoute,
-  onLeaveHover,
+  background,
   onDropMarker,
   onMoveMarker,
   onRemoveMarker,
 }) {
   const svgRef = useRef(null)
-  const [dragMarker, setDragMarker] = useState(null) // { id, offsetX, offsetY }
-
-  const territoryById = useMemo(() => {
-    const map = {}
-    for (const t of territories) map[t.id] = t
-    return map
-  }, [territories])
+  const [dragMarker, setDragMarker] = useState(null) // { id }
 
   const handleDragOver = useCallback((e) => {
     e.preventDefault()
@@ -89,55 +72,24 @@ export default function CampaignMapCanvas({
         onPointerLeave={handlePointerUp}
         style={{ touchAction: 'none' }}
       >
-        {/* Base + fog of war */}
-        <FogOfWarLayer />
+        {/* Uploaded background map image (P2) */}
+        {background?.url && (
+          <image
+            href={background.url}
+            x={0}
+            y={0}
+            width={MAP_VIEWBOX.w}
+            height={MAP_VIEWBOX.h}
+            preserveAspectRatio="xMidYMid slice"
+          />
+        )}
 
-        {/* Routes (under nodes) */}
-        <g>
-          {routes.map(r => {
-            const from = territoryById[r.from]
-            const to = territoryById[r.to]
-            const fromHidden = !from || (from.state === 'hidden' && !showHidden)
-            const toHidden   = !to   || (to.state === 'hidden' && !showHidden)
-            const lineHidden = (r.state === 'hidden' && !showHidden) || fromHidden || toHidden
-            return (
-              <TradeRouteLine
-                key={r.id}
-                route={r}
-                from={from}
-                to={to}
-                hidden={lineHidden}
-                onClick={onSelectRoute}
-                onHover={onHoverRoute}
-                onLeave={onLeaveHover}
-              />
-            )
-          })}
-        </g>
-
-        {/* Territories */}
-        <g>
-          {territories.map(t => {
-            const hidden = t.state === 'hidden' && !showHidden
-            return (
-              <TerritoryNode
-                key={t.id}
-                territory={t}
-                hidden={hidden}
-                selected={selectedTerritoryId === t.id}
-                onClick={onSelectTerritory}
-                onHover={onHoverTerritory}
-                onLeave={onLeaveHover}
-              />
-            )
-          })}
-        </g>
-
-        {/* Markers (top-most layer) */}
+        {/* Placed icons (markers) */}
         <g>
           {markers.map(m => {
             const info = MARKER_INDEX[m.kind]
             if (!info) return null
+            const color = m.color ?? info.color
             const isDragging = dragMarker?.id === m.id
             return (
               <g
@@ -154,23 +106,35 @@ export default function CampaignMapCanvas({
                   onRemoveMarker?.(m.id)
                 }}
               >
-                <circle r={2.2} fill="rgba(8,12,8,0.85)" stroke={info.color} strokeWidth={0.3}
-                  style={{ filter: `drop-shadow(0 0 3px ${info.color})` }}
+                <circle r={2.2} fill="rgba(8,12,8,0.85)" stroke={color} strokeWidth={0.3}
+                  style={{ filter: `drop-shadow(0 0 3px ${color})` }}
                 />
                 <text x={0} y={0.4}
                   fontSize="2.6"
-                  fill={info.color}
+                  fill={color}
                   textAnchor="middle"
                   dominantBaseline="middle"
                   pointerEvents="none"
                   style={{
                     fontFamily: "'Share Tech Mono', monospace",
                     fontWeight: 'bold',
-                    textShadow: `0 0 3px ${info.color}`,
+                    textShadow: `0 0 3px ${color}`,
                   }}
                 >
                   {info.glyph}
                 </text>
+                {m.label && (
+                  <text x={0} y={4.2}
+                    fontSize="2"
+                    fill={color}
+                    textAnchor="middle"
+                    dominantBaseline="middle"
+                    pointerEvents="none"
+                    style={{ fontFamily: "'Share Tech Mono', monospace", textShadow: '0 0 2px rgba(0,0,0,0.9)' }}
+                  >
+                    {m.label}
+                  </text>
+                )}
               </g>
             )
           })}
