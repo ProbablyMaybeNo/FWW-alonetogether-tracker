@@ -6,9 +6,13 @@ import { MARKER_KINDS, defaultCampaignMapState } from '../data/campaignMap'
 // Writes go through saveCampaignMapState — online: RPC into campaigns.campaign_map_state so every
 // player (and any of their devices) sees the same map; solo: localStorage via setState.
 export function useCampaignMapState() {
-  const { state, saveCampaignMapState } = useCampaign()
+  const { state, saveCampaignMapState, campaignId, userId, isOnline } = useCampaign()
 
   const mapState = state?.campaignMap ?? defaultCampaignMapState()
+
+  // Who may edit the map: solo always; online → campaign creator only (P6).
+  const createdBy = state?.createdBy ?? null
+  const canEdit = !isOnline || (createdBy != null && createdBy === userId)
 
   // patchMap takes the next state directly and handles persistence.
   const patchMap = useCallback((patch) => {
@@ -40,6 +44,10 @@ export function useCampaignMapState() {
     patchMap(cur => ({ ...cur, markers: (cur.markers ?? []).filter(m => m.id !== id) }))
   }, [patchMap])
 
+  // ── Background image (P2) ────────────────────────────────────────────
+  const setBackground = useCallback((bg) => patchMap(cur => ({ ...cur, background: bg })), [patchMap])
+  const clearBackground = useCallback(() => patchMap(cur => ({ ...cur, background: null })), [patchMap])
+
   const resetMap = useCallback(() => patchMap(() => defaultCampaignMapState()), [patchMap])
 
   return {
@@ -47,10 +55,18 @@ export function useCampaignMapState() {
     markers: mapState.markers ?? [],
     background: mapState.background ?? null,
 
+    // permissions / identity
+    canEdit,
+    campaignId,
+
     // icon actions
     addMarker,
     moveMarker,
     removeMarker,
+
+    // background actions
+    setBackground,
+    clearBackground,
 
     // ui
     resetMap,

@@ -3,6 +3,7 @@ import { RotateCcw } from 'lucide-react'
 import { useCampaignMapState } from '../../hooks/useCampaignMapState'
 import CampaignMapCanvas from './CampaignMapCanvas'
 import MarkerPalette from './MarkerPalette'
+import MapImageControls from './MapImageControls'
 
 export default function CampaignMapPage() {
   const map = useCampaignMapState()
@@ -28,24 +29,29 @@ export default function CampaignMapPage() {
         <div className="flex items-center gap-3 flex-wrap">
           <span className="text-title text-lg font-bold tracking-widest">CAMPAIGN MAP</span>
           <div className="ml-auto flex items-center gap-2 flex-wrap">
-            <button
-              onClick={handleReset}
-              className={`inline-flex items-center gap-1.5 text-[10px] tracking-widest px-3 py-1.5 border rounded transition-colors ${
-                confirmReset
-                  ? 'border-danger text-danger bg-danger/10'
-                  : 'border-muted/40 text-muted hover:border-pip hover:text-pip'
-              }`}
-              title="Clear the map back to blank"
-            >
-              <RotateCcw size={12} />
-              {confirmReset ? 'CONFIRM RESET' : 'RESET MAP'}
-            </button>
+            {!map.canEdit && (
+              <span className="text-muted/70 text-[10px] tracking-widest">VIEW ONLY — creator edits the map</span>
+            )}
+            {map.canEdit && (
+              <button
+                onClick={handleReset}
+                className={`inline-flex items-center gap-1.5 text-[10px] tracking-widest px-3 py-1.5 border rounded transition-colors ${
+                  confirmReset
+                    ? 'border-danger text-danger bg-danger/10'
+                    : 'border-muted/40 text-muted hover:border-pip hover:text-pip'
+                }`}
+                title="Clear the map back to blank"
+              >
+                <RotateCcw size={12} />
+                {confirmReset ? 'CONFIRM RESET' : 'RESET MAP'}
+              </button>
+            )}
           </div>
         </div>
       </div>
 
-      {/* Main grid: canvas + icon palette */}
-      <div className="grid grid-cols-1 lg:grid-cols-[1fr,260px] gap-4">
+      {/* Main grid: canvas + (editor-only) icon palette */}
+      <div className={`grid grid-cols-1 gap-4 ${map.canEdit ? 'lg:grid-cols-[1fr,260px]' : ''}`}>
         <div className="relative">
           <CampaignMapCanvas
             markers={map.markers}
@@ -54,14 +60,24 @@ export default function CampaignMapPage() {
             onMoveMarker={map.moveMarker}
             onRemoveMarker={map.removeMarker}
           />
-          <p className="text-muted/60 text-[10px] tracking-wider mt-2 px-1">
-            Drag icons from the palette onto the map · Drag a placed icon to move it · Right-click an icon to remove it
-          </p>
+          {map.canEdit && (
+            <p className="text-muted/60 text-[10px] tracking-wider mt-2 px-1">
+              Drag icons from the palette onto the map · Drag a placed icon to move it · Right-click an icon to remove it
+            </p>
+          )}
         </div>
 
-        <aside className="space-y-3">
-          <MarkerPalette />
-        </aside>
+        {map.canEdit && (
+          <aside className="space-y-3">
+            <MapImageControls
+              background={map.background}
+              campaignId={map.campaignId}
+              setBackground={map.setBackground}
+              clearBackground={map.clearBackground}
+            />
+            <MarkerPalette />
+          </aside>
+        )}
       </div>
     </div>
   )
