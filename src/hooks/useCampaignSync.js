@@ -87,11 +87,10 @@ function campaignDbToState(row) {
   const defaultCM = defaultCampaignMapState()
   const campaignMap = (cm && typeof cm === 'object' && Object.keys(cm).length > 0)
     ? {
-        territories: cm.territories ?? defaultCM.territories,
-        routes:      cm.routes      ?? defaultCM.routes,
-        markers:     cm.markers     ?? [],
-        threats:     { ...defaultCM.threats, ...(cm.threats ?? {}) },
-        showHidden:  !!cm.showHidden,
+        background: cm.background ?? null,
+        markers:    cm.markers    ?? [],
+        lines:      cm.lines      ?? [],
+        table:      cm.table       ?? {},
       }
     : defaultCM
 
@@ -587,6 +586,7 @@ export function useCampaignSync({ campaignId, userId } = {}) {
     return {
       ...solo,
       userId: 'solo-local',
+      campaignId: campaignId ?? 'solo',
       sharedState: null,
       updateShared: () => {},
       saveInhabitantsState,
@@ -606,6 +606,7 @@ export function useCampaignSync({ campaignId, userId } = {}) {
 
   return {
     userId,
+    campaignId,
     state: mergedState,
     setState,
     updateState: (updater) => setState(prev => {

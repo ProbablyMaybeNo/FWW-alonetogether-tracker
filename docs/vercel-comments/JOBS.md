@@ -56,14 +56,15 @@ See "Open Questions" below.
 | J20 | C21 | Per-player button reveals that player's entries (fits the new model) |
 
 ## Wave 5 — Map overhaul (depends on Q1) — large, isolate to its own branch
-| Job | Comment | Action |
-|-----|---------|--------|
-| J21 | C07 | Image-upload canvas + drag-from-legend icon placement + per-icon info popup |
-| J22 | C06 | Generic icons, blank names, colour, Save name+position |
-| J23 | C05 | Reuse location menus blank-by-default; auto-fill "connected locations" from routes |
-| J24 | (C07) | Route-drawing between locations — simple DRAW LINE button (drop each end on two locations) |
-| J24b | C03 | FACTION THREAT: start blank, players add/name their own faction rows |
-| J24c | C04 | Remove the LEGEND section |
+**DONE on branch `feat/map-rebuild`** (full rebuild per `MAP_DESIGN.md` + `MAP_BUILD_PLAN.md`, P1–P6). Detail now lives in the auto-populating MAP TABLE rather than per-icon popups; the entire seed map (legend, faction-threat tracker, fog, pressure regions) was stripped in P1.
+| Job | Comment | Action | Status |
+|-----|---------|--------|--------|
+| J21 | C07 | Image-upload canvas + drag-to-place icons (per-icon detail moved to map table, not popups) | ✅ done (P2/P3/P4) |
+| J22 | C06 | Generic icons, blank names, colour, save name+position (persisted via shared map state) | ✅ done (P3/P4) |
+| J23 | C05 | Location rows blank-by-default; route rows auto-fill "Connects" from snapped endpoints | ✅ done (P4/P5) |
+| J24 | (C07) | Route-drawing between icons — DRAW LINE button, click two icons, snap-to-icon endpoints | ✅ done (P5) |
+| J24b | C03 | FACTION THREAT tracker — **removed entirely** in the rebuild (P1); superseded by per-row faction field | ✅ resolved-by-rebuild |
+| J24c | C04 | LEGEND section — **removed entirely** in the rebuild (P1) | ✅ resolved-by-rebuild |
 
 ## Wave 6 — Quest data backfill (depends on Q4)
 | Job | Comment | Action |
@@ -81,7 +82,7 @@ Wave 1b: [ ] J9  [ ] J10 [ ] J11
 Wave 2:  [ ] J12 [ ] J13 [ ] J14
 Wave 3:  [ ] J15 [ ] J16 [ ] J17
 Wave 4:  [ ] J18 [ ] J19 [ ] J20
-Wave 5:  [ ] J21 [ ] J22 [ ] J23 [ ] J24
+Wave 5:  [x] J21 [x] J22 [x] J23 [x] J24 [x] J24b [x] J24c   ← rebuilt on feat/map-rebuild (P1–P6), pending Ross review/merge
 Wave 6:  [ ] J25
 ```
 

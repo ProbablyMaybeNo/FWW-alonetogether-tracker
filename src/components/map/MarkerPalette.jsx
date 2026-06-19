@@ -7,7 +7,7 @@ export default function MarkerPalette() {
   return (
     <div className="border border-pip-mid/40 rounded bg-panel">
       <div className="px-3 py-2 border-b border-pip-mid/30">
-        <h3 className="text-amber text-xs tracking-widest font-bold">MARKERS</h3>
+        <h3 className="text-amber text-xs tracking-widest font-bold">ICONS</h3>
         <p className="text-muted/60 text-[10px] tracking-wider mt-0.5">Drag onto map · Right-click to remove</p>
       </div>
       <div className="p-2 grid grid-cols-3 gap-1.5">

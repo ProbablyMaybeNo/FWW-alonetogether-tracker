@@ -1,8 +1,5 @@
-import { useRef, useState, useCallback, useMemo } from 'react'
+import { useRef, useState, useCallback } from 'react'
 import { MAP_VIEWBOX, MARKER_KINDS } from '../../data/campaignMap'
-import FogOfWarLayer from './FogOfWarLayer'
-import TerritoryNode from './TerritoryNode'
-import TradeRouteLine from './TradeRouteLine'
 
 // Coordinate helpers — translate browser pointer events into the SVG's user coordinate space.
 function clientToSvg(svg, clientX, clientY) {
@@ -18,28 +15,25 @@ function clientToSvg(svg, clientX, clientY) {
 const MARKER_INDEX = Object.fromEntries(MARKER_KINDS.map(m => [m.kind, m]))
 
 export default function CampaignMapCanvas({
-  territories,
-  routes,
   markers,
-  showHidden,
-  selectedTerritoryId,
-  onSelectTerritory,
-  onSelectRoute,
-  onHoverTerritory,
-  onHoverRoute,
-  onLeaveHover,
+  lines,
+  background,
+  selectedId,
+  onSelect,
+  canEdit = true,
   onDropMarker,
   onMoveMarker,
   onRemoveMarker,
+  drawMode = false,
+  drawFromId = null,
+  onPickLineEnd,
+  onCancelDraw,
+  onRemoveLine,
 }) {
   const svgRef = useRef(null)
-  const [dragMarker, setDragMarker] = useState(null) // { id, offsetX, offsetY }
+  const [dragMarker, setDragMarker] = useState(null) // { id }
 
-  const territoryById = useMemo(() => {
-    const map = {}
-    for (const t of territories) map[t.id] = t
-    return map
-  }, [territories])
+  const markerById = Object.fromEntries((markers ?? []).map(m => [m.id, m]))
 
   const handleDragOver = useCallback((e) => {
     e.preventDefault()
@@ -48,6 +42,7 @@ export default function CampaignMapCanvas({
 
   const handleDrop = useCallback((e) => {
     e.preventDefault()
+    if (!canEdit) return
     const data = e.dataTransfer.getData('text/plain')
     if (!data?.startsWith('marker:')) return
     const kind = data.slice('marker:'.length)
@@ -56,7 +51,7 @@ export default function CampaignMapCanvas({
     const pt = clientToSvg(svg, e.clientX, e.clientY)
     if (!pt) return
     onDropMarker?.(kind, pt.x, pt.y)
-  }, [onDropMarker])
+  }, [canEdit, onDropMarker])
 
   // Move marker via pointer events (smoother than HTML5 drag for in-canvas moves).
   const handlePointerMove = useCallback((e) => {
@@ -87,90 +82,123 @@ export default function CampaignMapCanvas({
         onPointerMove={handlePointerMove}
         onPointerUp={handlePointerUp}
         onPointerLeave={handlePointerUp}
-        style={{ touchAction: 'none' }}
+        onPointerDown={() => { drawMode ? onCancelDraw?.() : onSelect?.(null) }}
+        style={{ touchAction: 'none', cursor: drawMode ? 'crosshair' : undefined }}
       >
-        {/* Base + fog of war */}
-        <FogOfWarLayer />
+        {/* Uploaded background map image (P2) */}
+        {background?.url && (
+          <image
+            href={background.url}
+            x={0}
+            y={0}
+            width={MAP_VIEWBOX.w}
+            height={MAP_VIEWBOX.h}
+            preserveAspectRatio="xMidYMid slice"
+          />
+        )}
 
-        {/* Routes (under nodes) */}
+        {/* Route lines — rendered UNDER the icons; endpoints anchored to the
+            icons' live x/y so lines follow icons when moved (the "snap"). */}
         <g>
-          {routes.map(r => {
-            const from = territoryById[r.from]
-            const to = territoryById[r.to]
-            const fromHidden = !from || (from.state === 'hidden' && !showHidden)
-            const toHidden   = !to   || (to.state === 'hidden' && !showHidden)
-            const lineHidden = (r.state === 'hidden' && !showHidden) || fromHidden || toHidden
+          {(lines ?? []).map(l => {
+            const a = markerById[l.fromId]
+            const b = markerById[l.toId]
+            if (!a || !b) return null // guard: an endpoint icon was removed
+            const color = l.color ?? '#3aa0ff'
+            const isSelected = selectedId === l.id
             return (
-              <TradeRouteLine
-                key={r.id}
-                route={r}
-                from={from}
-                to={to}
-                hidden={lineHidden}
-                onClick={onSelectRoute}
-                onHover={onHoverRoute}
-                onLeave={onLeaveHover}
-              />
+              <g key={l.id}>
+                {/* Wide invisible hit area so right-click/select is easy to land */}
+                <line
+                  x1={a.x} y1={a.y} x2={b.x} y2={b.y}
+                  stroke="transparent" strokeWidth={3}
+                  style={{ cursor: 'pointer' }}
+                  onPointerDown={(e) => { e.stopPropagation(); if (!drawMode) onSelect?.(l.id) }}
+                  onContextMenu={(e) => { e.preventDefault(); e.stopPropagation(); if (canEdit) onRemoveLine?.(l.id) }}
+                />
+                <line
+                  x1={a.x} y1={a.y} x2={b.x} y2={b.y}
+                  stroke={color}
+                  strokeWidth={isSelected ? 0.8 : 0.5}
+                  strokeLinecap="round"
+                  pointerEvents="none"
+                  style={{ filter: `drop-shadow(0 0 ${isSelected ? 3 : 1.5}px ${color})` }}
+                />
+              </g>
             )
           })}
         </g>
 
-        {/* Territories */}
-        <g>
-          {territories.map(t => {
-            const hidden = t.state === 'hidden' && !showHidden
-            return (
-              <TerritoryNode
-                key={t.id}
-                territory={t}
-                hidden={hidden}
-                selected={selectedTerritoryId === t.id}
-                onClick={onSelectTerritory}
-                onHover={onHoverTerritory}
-                onLeave={onLeaveHover}
-              />
-            )
-          })}
-        </g>
-
-        {/* Markers (top-most layer) */}
+        {/* Placed icons (markers) */}
         <g>
           {markers.map(m => {
             const info = MARKER_INDEX[m.kind]
             if (!info) return null
+            const color = m.color ?? info.color
             const isDragging = dragMarker?.id === m.id
+            const isSelected = selectedId === m.id
+            const isDrawSource = drawMode && drawFromId === m.id
             return (
               <g
                 key={m.id}
                 transform={`translate(${m.x} ${m.y})`}
-                style={{ cursor: isDragging ? 'grabbing' : 'grab' }}
+                style={{ cursor: !canEdit ? 'pointer' : (drawMode ? 'crosshair' : (isDragging ? 'grabbing' : 'grab')) }}
                 onPointerDown={(e) => {
                   e.stopPropagation()
+                  if (!canEdit) { onSelect?.(m.id); return } // view-only: highlight only
+                  if (drawMode) {
+                    onPickLineEnd?.(m.id)
+                    return
+                  }
                   e.currentTarget.setPointerCapture?.(e.pointerId)
+                  onSelect?.(m.id)
                   setDragMarker({ id: m.id })
                 }}
                 onContextMenu={(e) => {
                   e.preventDefault()
-                  onRemoveMarker?.(m.id)
+                  if (canEdit && !drawMode) onRemoveMarker?.(m.id)
                 }}
               >
-                <circle r={2.2} fill="rgba(8,12,8,0.85)" stroke={info.color} strokeWidth={0.3}
-                  style={{ filter: `drop-shadow(0 0 3px ${info.color})` }}
+                {isDrawSource && (
+                  <circle r={3.2} fill="none" stroke="var(--color-pip)" strokeWidth={0.5}
+                    strokeDasharray="1 0.8"
+                    style={{ filter: 'drop-shadow(0 0 4px var(--color-pip))' }}
+                  />
+                )}
+                {isSelected && (
+                  <circle r={3.2} fill="none" stroke="var(--color-amber)" strokeWidth={0.4}
+                    style={{ filter: 'drop-shadow(0 0 4px var(--color-amber))' }}
+                  />
+                )}
+                <circle r={2.2} fill="rgba(8,12,8,0.85)" stroke={color} strokeWidth={0.3}
+                  style={{ filter: `drop-shadow(0 0 3px ${color})` }}
                 />
                 <text x={0} y={0.4}
                   fontSize="2.6"
-                  fill={info.color}
+                  fill={color}
                   textAnchor="middle"
                   dominantBaseline="middle"
                   pointerEvents="none"
                   style={{
                     fontFamily: "'Share Tech Mono', monospace",
                     fontWeight: 'bold',
-                    textShadow: `0 0 3px ${info.color}`,
+                    textShadow: `0 0 3px ${color}`,
                   }}
                 >
                   {info.glyph}
                 </text>
+                {m.label && (
+                  <text x={0} y={4.2}
+                    fontSize="2"
+                    fill={color}
+                    textAnchor="middle"
+                    dominantBaseline="middle"
+                    pointerEvents="none"
+                    style={{ fontFamily: "'Share Tech Mono', monospace", textShadow: '0 0 2px rgba(0,0,0,0.9)' }}
+                  >
+                    {m.label}
+                  </text>
+                )}
               </g>
             )
           })}
