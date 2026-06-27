@@ -33,6 +33,56 @@ function structBucket(s) {
   return 'Other'
 }
 
+// Passive structures just supply a standing benefit (power, water, defence,
+// shelter, terrain) and are never actively "used" — so they get no USE button.
+// Everything else is used during Settlement Use to gain an effect.
+function structureIsUsable(def) {
+  if (!def) return false
+  if ((def.pwrGen ?? 0) > 0 || (def.waterGen ?? 0) > 0) return false   // generators, pumps, purifiers
+  if (def.category === 'Defense' || (def.defenseValue ?? 0) > 0) return false
+  if (def.category === 'Building' || def.category === 'Non-Structure') return false
+  if (['Crop Field', 'Land', 'Resource Shed'].includes(def.name)) return false
+  return true
+}
+
+// Power / water / perk requirement chips for a structure definition.
+function StructReqChips({ def }) {
+  return (
+    <span className="flex flex-wrap gap-x-2 gap-y-0.5">
+      {def.pwrReq > 0 && <span className="text-muted">PWR {def.pwrReq}</span>}
+      {def.pwrGen > 0 && <span className="text-pip">+{def.pwrGen} PWR</span>}
+      {def.waterReq > 0 && <span className="text-muted">H2O {def.waterReq}</span>}
+      {def.waterGen > 0 && <span className="text-pip">+{def.waterGen} H2O</span>}
+      {def.perk && def.perk !== 'None' && <span className="text-amber">Req: {def.perk}</span>}
+    </span>
+  )
+}
+
+// Structure name that reveals its full rules on hover (desktop) or tap (touch).
+function StructNameTip({ def }) {
+  const [open, setOpen] = useState(false)
+  return (
+    <span className="relative group flex-1 min-w-0">
+      <button
+        type="button"
+        onClick={() => setOpen(o => !o)}
+        className="block w-full text-left text-pip text-[11px] truncate cursor-help"
+      >{def.name}</button>
+      <span
+        className={`absolute z-30 left-0 top-full mt-1 min-w-[11rem] max-w-[16rem] whitespace-pre-wrap break-words border border-pip-mid/60 bg-panel/95 text-[11px] leading-snug tracking-wider px-2 py-1.5 rounded ${open ? 'block' : 'hidden group-hover:block'}`}
+        style={{ boxShadow: '0 0 8px var(--color-pip-glow)' }}
+      >
+        <span className="flex items-center justify-between gap-2 mb-0.5">
+          <span className="text-pip font-bold">{def.name}</span>
+          <span className="text-amber whitespace-nowrap">{def.cost}c</span>
+        </span>
+        <span className="block text-[10px] mb-0.5"><StructReqChips def={def} /></span>
+        <span className="block text-muted">{def.effect}</span>
+      </span>
+    </span>
+  )
+}
+
 
 const FATES = ['Active', 'Delayed', 'Lost', 'Captured', 'Dead']
 const ABSENT_FATES = ['Delayed', 'Lost', 'Captured', 'Dead', 'Pending']
@@ -66,7 +116,6 @@ const BOOST_TYPE_STYLE = {
 export default function HomesteadPage() {
   const { state, setState } = useCampaign()
   const structureUse = useStructureUse()
-  const [step, setStep] = useState('build')                  // 'build' | 'select' | 'use'
   const [structPick, setStructPick] = useState('')
   const [expandedSlot, setExpandedSlot] = useState(null)
   const [showAddUnit, setShowAddUnit] = useState(false)
@@ -325,20 +374,6 @@ export default function HomesteadPage() {
           >
             <Plus size={11} /> ADD UNIT
           </button>
-          <div className="w-px h-5 bg-pip-dim/40 mx-1" />
-          {['build', 'select', 'use'].map(s => (
-            <button
-              key={s}
-              onClick={() => setStep(s)}
-              className={`text-[10px] tracking-widest px-3 py-1.5 border rounded transition-colors ${
-                step === s
-                  ? 'border-amber text-amber bg-amber-dim/10'
-                  : 'border-pip-dim/50 text-pip/70 hover:border-pip hover:text-pip'
-              }`}
-            >
-              {s === 'build' ? '1 · BUILD' : s === 'select' ? '2 · SELECT' : '3 · USE'}
-            </button>
-          ))}
         </div>
       </div>
 
@@ -507,6 +542,20 @@ export default function HomesteadPage() {
                 >ADD</button>
               </div>
 
+              {structPick && STRUCT_BY_ID[structPick] && (() => {
+                const sel = STRUCT_BY_ID[structPick]
+                return (
+                  <div className="border border-pip-mid/40 rounded px-2 py-1.5 bg-panel-alt/60 text-[11px] leading-snug">
+                    <div className="flex items-center justify-between gap-2 mb-0.5">
+                      <span className="text-pip font-bold truncate">{sel.name}</span>
+                      <span className="text-amber whitespace-nowrap">{sel.cost}c</span>
+                    </div>
+                    <div className="text-[10px] mb-0.5"><StructReqChips def={sel} /></div>
+                    <p className="text-muted">{sel.effect}</p>
+                  </div>
+                )
+              })()}
+
               {STRUCT_CATEGORIES.map(cat => {
                 const rows = structures
                   .map(s => ({ s, def: STRUCT_BY_ID[s.structureId] }))
@@ -518,10 +567,11 @@ export default function HomesteadPage() {
                     <div className="space-y-0.5">
                       {rows.map(({ s, def }) => {
                         const needsPower = (def.pwrReq ?? 0) > 0
-                        const canUse = step === 'use' && (!needsPower || s.powered)
+                        const usable = structureIsUsable(def)
+                        const canUse = !needsPower || s.powered
                         return (
                           <div key={s.instanceId} className="flex items-center gap-1.5 border border-pip-dim/30 rounded px-2 py-1 bg-panel-alt">
-                            <span className="text-pip text-[11px] flex-1 truncate">{def.name}</span>
+                            <StructNameTip def={def} />
                             {needsPower && (
                               <button
                                 onClick={() => patchStructure(s.instanceId, { powered: !s.powered })}
@@ -529,12 +579,18 @@ export default function HomesteadPage() {
                                 className={`text-[9px] tracking-widest px-1.5 py-0.5 border rounded ${s.powered ? 'border-pip text-pip' : 'border-danger/50 text-danger'}`}
                               >{s.powered ? 'PWR' : 'OFF'}</button>
                             )}
-                            <button
-                              onClick={() => structureUse.toggleUsed(s.instanceId)}
-                              disabled={!canUse && !s.usedThisRound}
-                              title={s.usedThisRound ? 'Undo use' : 'Use this structure (fires side-effects)'}
-                              className={`text-[9px] tracking-widest px-1.5 py-0.5 border rounded ${s.usedThisRound ? 'border-amber text-amber' : 'border-muted/40 text-muted'} disabled:opacity-30`}
-                            >{s.usedThisRound ? 'USED' : 'USE'}</button>
+                            {usable && (
+                              <button
+                                onClick={() => structureUse.toggleUsed(s.instanceId)}
+                                disabled={!canUse && !s.usedThisRound}
+                                title={
+                                  s.usedThisRound ? 'Undo use'
+                                    : !canUse ? 'Power this structure on first'
+                                    : 'Use this structure (fires side-effects)'
+                                }
+                                className={`text-[9px] tracking-widest px-1.5 py-0.5 border rounded ${s.usedThisRound ? 'border-amber text-amber' : 'border-muted/40 text-muted'} disabled:opacity-30`}
+                              >{s.usedThisRound ? 'USED' : 'USE'}</button>
+                            )}
                             <button
                               onClick={() => removeStructure(s.instanceId)}
                               title="Remove"
