@@ -444,79 +444,6 @@
     "text": "\"Our camp was hit hard by that storm, so it'd be appreciated if we can use yours. We can pay.\" You may mark any usable Structures, currently not used in this Settlement Use as used. For each marked, gain 25 Caps instead of their usual effect. Do not include Infrastructure Structures. This can only provide a maximum of 200 Caps."
   },
   {
-    "id": 61,
-    "name": "EASTFIELD STEELWORKS",
-    "type": "EXPLORE",
-    "deckType": "explore",
-    "text": "Who stacks scrap but doesn't take it away? They must have forgotten about it. Gain 2 Resources.",
-    "consequence": "SETTLEMENT EVENT CONSEQUENCE: The scrap's owners want it back and some compensation. Lose 4 Resources."
-  },
-  {
-    "id": 62,
-    "name": "RELAY TOWER 2SW-314",
-    "type": "EXPLORE",
-    "deckType": "explore",
-    "text": "Someone piled the scrap up but the broken weapons and churned earth looks like they were attacked before they could take it. Gain 2 Resources."
-  },
-  {
-    "id": 63,
-    "name": "TAFFINGTON BOATHOUSE",
-    "type": "EXPLORE",
-    "deckType": "explore",
-    "text": "The old building is decrepit and looks highly dangerous. There's some minor debris on the outside but there could be better inside... either Easy pickings: Gain 2 Resources. or Go inside: Roll and gain that many Resources, plus 1 item."
-  },
-  {
-    "id": 64,
-    "name": "HILLSIDE DRIVE-THRU",
-    "type": "EXPLORE",
-    "deckType": "explore",
-    "text": "This area is relatively rich in materials but the slope above it looks unstable. Time to strip it is limited. Until the Consequence below takes effect, gain 1 additional Resource when Resources are gained from Structures.",
-    "consequence": "SETTLEMENT EVENT CONSEQUENCE: The landslide crashes down and the effect above ends."
-  },
-  {
-    "id": 65,
-    "name": "EAGLE STAR DINER",
-    "type": "EXPLORE",
-    "deckType": "explore",
-    "text": "The scavengers at the diner are keen to help find high-quality scrap for processing for a small payment. You may discard up to 3 items. Next time you gain Resources from a Structure, gain additional Resources equal to 1 plus the number of items discarded."
-  },
-  {
-    "id": 66,
-    "name": "RICKETY SHACK",
-    "type": "EXPLORE",
-    "deckType": "explore",
-    "text": "He's old but an expert in reclamation... for a price. You may discard up to 3 items. Next time you gain Resources from a Structure, roll. If the result is equal to or less than the items that were discarded, gain additional 4 Resources."
-  },
-  {
-    "id": 67,
-    "name": "SUNNY PEAK CAMPSITE",
-    "type": "EXPLORE",
-    "deckType": "explore",
-    "text": "\"I can help you out, but I need building materials. I'll come and help you soon as my shelter's up.\" To add the Consequence: Spend 3 or 6 Resources.",
-    "consequence": "SETTLEMENT EVENT CONSEQUENCE: 3 Resources: Remove 1 token during next Set-up. 6 Resources: Remove 3 tokens during next Set-up."
-  },
-  {
-    "id": 68,
-    "name": "BROKEN HORSE FARM",
-    "type": "EXPLORE",
-    "deckType": "explore",
-    "text": "The Settlement is barely more than a barn and what's left of a farmhouse. \"We got robbed. We can trade you some lumber.\" Discard up to 3 non-Junk items and gain 2 Resources for each."
-  },
-  {
-    "id": 69,
-    "name": "BRAMBLE COTTAGE",
-    "type": "EXPLORE",
-    "deckType": "explore",
-    "text": "The old woman offers food and clothing in exchange for the resources she can no longer search for herself. Draw 3 Food/Clothing items. You may gain any mix of them by spending 2 Resources for each."
-  },
-  {
-    "id": 70,
-    "name": "LURTON CREEK",
-    "type": "EXPLORE",
-    "deckType": "explore",
-    "text": "Approaching the area where you left the materials to build the bridge, you hear scavengers poking around. either Leave them: Lose 2 Resources. or Challenge them: Test CHA: Draw 2 weapon items. Lose 4 Resources."
-  },
-  {
     "id": 71,
     "name": "LOGGING CAMP",
     "type": "EXPLORE",
@@ -530,14 +457,6 @@
     "type": "EXPLORE",
     "deckType": "explore",
     "text": "The engineer says she can boost the output for a small price. You may discard any Weapon/Food/Junk/Chem item to select up to 2 different Structures which output power or water, then permanently increase their output by 1 each."
-  },
-  {
-    "id": 73,
-    "name": "LONELY CABIN",
-    "type": "EXPLORE",
-    "deckType": "explore",
-    "text": "Pretending you didn't know this was their scrap may not cut it. The owner's known for being vindictive. Gain 0 to 4 Resources. If you gain at least 1, add Consequence.",
-    "consequence": "SETTLEMENT EVENT CONSEQUENCE: Resolve Attack: Rating 3 plus 1 per Resource gained. Settlement Scenario: Victory Condition: Vandalise."
   },
   {
     "id": 74,
@@ -612,25 +531,11 @@
     "text": "The cabin's hilltop view is great. A column of smoke can be seen... from the direction of your settlement. either Search the cabin: Draw 3 Food/Junk items, then roll and apply Structural Damage equal to the result. or Return to help: Roll and apply Structural Damage equal to the result minus 2."
   },
   {
-    "id": 84,
-    "name": "PIVERTON QUARRY",
-    "type": "EXPLORE",
-    "deckType": "explore",
-    "text": "The recent digging broke into a network of Mole Rat tunnels which have got out of control. They can help with construction work if you help them. If you clear the site of Mole Rats: Roll. For each Star result, gain 1 Resource, then Repair 2 times."
-  },
-  {
     "id": 85,
     "name": "BROKEN OVERPASS",
     "type": "EXPLORE",
     "deckType": "explore",
     "text": "You know the trader who is under attack. either Help them: Gain Stun Token then Test AGI. Choose 1 of your Item Structures. It draws 3 cards from now on. or Leave them: Remove 1 Item Structure from your Settlement."
-  },
-  {
-    "id": 86,
-    "name": "HOME FIXIT",
-    "type": "EXPLORE",
-    "deckType": "explore",
-    "text": "All but the reference section of the home improvement store has been plundered before. either Read books: For the remainder of this Settlement use, Repairs require 1 fewer Resource. or Search: Test PER-2: Success: Gain 1 Weapon and 1 Junk item."
   },
   {
     "id": 87,
@@ -646,13 +551,6 @@
     "deckType": "explore",
     "text": "Their generator is toast. Could they charge up some industrial batteries from your generator? If you agree, gain 80 Caps and until the Consequence below takes effect, choose 1 of your operating generators to output zero power for you.",
     "consequence": "SETTLEMENT EVENT CONSEQUENCE: Their batteries are charged and the effect above ends."
-  },
-  {
-    "id": 89,
-    "name": "MOTO FITTER",
-    "type": "EXPLORE",
-    "deckType": "explore",
-    "text": "The piles of rubber tires would make excellent barricades back in your settlement. The Stingwings that nest in them may think differently. You may gain 4 barricades. If you do, Test AGI: Success: Gain 1 Resource. Fail: Gain 1 Resource and 1 Stun Token."
   },
   {
     "id": 90,
@@ -684,14 +582,6 @@
     "deckType": "explore",
     "text": "Tom needs to move but could do a quick trade now. either Pass: Discard this card. or Trade: Discard 2 items from your pool to name 1 item type (exc. Chems), then draw 3 item cards of that type and keep 1, then add Consequence.",
     "consequence": "EXPLORE CONSEQUENCE: Resolve this card's effect."
-  },
-  {
-    "id": 94,
-    "name": "DRY LAKEBED",
-    "type": "EXPLORE",
-    "deckType": "explore",
-    "text": "The Radscorpion keeps picking-up your trail. either Avoid it: Add Consequence. or Discourage it: Test STR and discard this card. Success: Gain 1 Resource.",
-    "consequence": "EXPLORE CONSEQUENCE: Gain 1 Stun Token, then resolve this card's effect."
   },
   {
     "id": 95,
